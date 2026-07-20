@@ -1,0 +1,70 @@
+name: AERO Gold Bot
+on:
+  push:
+    branches: [main]                                    # W3: само main
+    paths: ['live_bot.py', 'backtest_stats.json', 'requirements.txt',
+            'weekly_context.json', 'daily_context.json']   # W3: не се пали от README/docs
+  workflow_dispatch:
+    inputs:
+      status:
+        description: 'Прати статус-карта (какво е положението)? yes/no'
+        required: false
+        default: 'no'
+  schedule:
+    - cron: '*/5 5-21 * * 1-5'      # ден: на 5 мин (публично repo = безплатно)
+    - cron: '*/10 22,23 * * 0-5'    # нощ + неделно отваряне: на 10 мин
+    - cron: '*/15 0-4 * * 1-5'      # дълбока нощ: на 15 мин
+permissions:
+  contents: write
+concurrency:
+  group: aero-bot
+  cancel-in-progress: false
+jobs:
+  signal:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+      - run: pip install -r requirements.txt
+      - name: selftest gate                             # W1: счупен код НЕ праща сигнали
+        run: python selftest.py
+      - name: run bot
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          BALANCE: ${{ vars.BALANCE || '1000' }}
+          RISK_PCT: ${{ vars.RISK_PCT || '2' }}
+          STATUS_CARD: ${{ github.event.inputs.status || 'no' }}
+        run: python live_bot.py --send --stats backtest_stats.json --out live
+      - name: save state
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          git config user.name "aero-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add -A live/ || true
+          git commit -m "state" || echo "nothing"
+          ok=0
+          for i in 1 2 3; do
+            git pull --rebase --autostash && git push && ok=1 && break
+            echo "push опит $i неуспешен, чакам 5с"; sleep 5
+          done
+          if [ "$ok" != "1" ]; then
+            echo "::warning::PUSH FAILED - състоянието не се записа"
+            curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage" \
+              -d chat_id="${TELEGRAM_CHAT_ID}" -d parse_mode=HTML \
+              -d text="⚠️ <b>AERO · състоянието НЕ се записа</b>%0A<i>git push се провали 3 пъти — възможна двойна карта на следващия рън. Провери Actions.</i>" || true
+          fi
+      - name: alarm on barrier failure                    # защита срещу ТИХ престой (selftest/зависимост счупени)
+        if: failure()
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage" \
+            -d chat_id="${TELEGRAM_CHAT_ID}" -d parse_mode=HTML \
+            -d text="🔴 <b>AERO · ботът НЕ тръгна</b>%0A<i>selftest или зависимост се счупи → сигналите спряха. Виж Actions лога.</i>" || true
