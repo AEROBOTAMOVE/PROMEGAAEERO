@@ -484,20 +484,21 @@ def _sig_msg(direction, score, agree_n, tier_name, spot, bar_price, bar_ts, lv, 
             L.append("РЕ-ВЛИЗАНЕ — предишната сделка приключи, сигналът още стои.")
         head = "<b>ВХОД</b>" if adv_ok else "<b>АКО ВСЕ ПАК ВЛЕЗЕШ — вход</b>"   # НАХОДКА 1: не карай да влиза при «НЕ»
         src = "спот сега" if spot else "по бара, ~10-15 мин назад — спотът е недостъпен!"
-        L += [f"{head}: <code>{_fmt(entry, dec)}</code> <i>({src})</i>",
-              f"ТП1: <code>{_fmt(lv['tp1'], dec)}</code>",
-              f"ТП2: <code>{_fmt(lv['tp2'], dec)}</code>",
-              f"ТП3: <code>{_fmt(lv['tp3'], dec)}</code>",
-              f"СТОП: <code>{_fmt(lv['sl'], dec)}</code>",
+        vicon = "✅" if advice_txt.startswith("ДА") else ("⏳" if advice_txt.startswith("ИЗЧАКАЙ") else "🚫")
+        L += [f"🎯 {head}: <code>{_fmt(entry, dec)}</code> <i>({src})</i>",
+              f"1️⃣ ТП1: <code>{_fmt(lv['tp1'], dec)}</code>",
+              f"2️⃣ ТП2: <code>{_fmt(lv['tp2'], dec)}</code>",
+              f"3️⃣ ТП3: <code>{_fmt(lv['tp3'], dec)}</code>",
+              f"🛑 СТОП: <code>{_fmt(lv['sl'], dec)}</code>",
               "─────────────────",
-              f"<b>ВЛИЗАЙ:</b> {advice_txt}"]                             # Г1: само при НОВ вход
+              f"{vicon} <b>ВЛИЗАЙ:</b> {advice_txt}"]                     # Г1: само при НОВ вход
         if adv_ok:                                          # инструкцията само когато съветът е ДА
             L.append("→ Сложи нивата при брокера ВЕДНАГА · раздели на 3 (по 1/3 на всяко ТП, стопът е общ).")
     mac = sum(1 for v in macro.values() if v)
     # Г10 + стегнато: бройката се показва В ПОСОКАТА на сделката (за шорт мечо = 3-mac),
     # та «3/3 ✓» винаги да значи «подкрепя» — край на оксиморона «0/3 (подкрепя)»
     mdir = (3 - mac) if direction == "short" else mac
-    ctx = (f"<i>клас {tier_name} {score}/8 · макро за {'шорт' if direction == 'short' else 'лонг'} "
+    ctx = (f"<i>📊 клас {tier_name} {score}/8 · макро за {'шорт' if direction == 'short' else 'лонг'} "
            f"{mdir}/3 {'✓' if mdir >= 2 else '⚠'}")
     # В1/В4: УЛТРА само за ЗЛАТО (среброто няма такъв клас) и само с n≥MIN_N
     if sym == "XAUUSD" and regime and regime.get("vol_rank") is not None and 1 <= streak_n <= 3 and regime["vol_rank"] < 0.40:
@@ -519,18 +520,18 @@ def _sig_msg(direction, score, agree_n, tier_name, spot, bar_price, bar_ts, lv, 
         lot = oz / 100.0
         if lot < 0.01:                             # под брокерския минимум → не лъжи с «0.0 лот»
             mn = 1.0 * SL_D                         # най-малката реална позиция = 0.01 лот = 1 oz
-            L.append(f"Риск ${balance:g}@{risk_pct:g}%: под мин. лот — най-малкото е <b>0.01 лот</b> "
+            L.append(f"💰 Риск ${balance:g}@{risk_pct:g}%: под мин. лот — най-малкото е <b>0.01 лот</b> "
                      f"(1 oz), което рискува −${mn:.0f} = {_rp(mn):.1f}% от баланса")
         else:
-            L.append(f"Риск ${balance:g}@{risk_pct:g}%: <b>{lot:.2f} лот</b> ({oz:.1f} oz) → макс −${risk_amt:.2f}")
+            L.append(f"💰 Риск ${balance:g}@{risk_pct:g}%: <b>{lot:.2f} лот</b> ({oz:.1f} oz) → макс −${risk_amt:.2f}")
     else:
         oz = risk_amt / S_SL                       # 1 лот сребро = 5000 oz · мин. 0.01 лот = 50 oz
         if oz < 50.0:                              # под мин. лот — реалният риск НАДХВЪРЛЯ целта
             mn = 50.0 * S_SL
-            L.append(f"Риск ${balance:g}@{risk_pct:g}%: под мин. лот — най-малкото е <b>0.01 лот</b> "
+            L.append(f"💰 Риск ${balance:g}@{risk_pct:g}%: под мин. лот — най-малкото е <b>0.01 лот</b> "
                      f"(50 oz), което рискува −${mn:.2f} = {_rp(mn):.1f}% (над целта — намали или пропусни)")
         else:
-            L.append(f"Риск ${balance:g}@{risk_pct:g}%: <b>{oz/5000.0:.2f} лот</b> ({oz:.0f} oz) → макс −${risk_amt:.2f}")
+            L.append(f"💰 Риск ${balance:g}@{risk_pct:g}%: <b>{oz/5000.0:.2f} лот</b> ({oz:.0f} oz) → макс −${risk_amt:.2f}")
     if direction == "short" and adv_ok:                 # при «НЕ» присъдата вече го каза — без дублаж
         L.append("<i>Шорт е непотвърден исторически — малък размер.</i>")
     L += ["─────────────────",
@@ -556,7 +557,7 @@ def _exit_msg(kind, tr, price_hit, when, via, gap, spot=None, next_line="", dec=
     opened_txt = f" <i>(сделка от {_sofia(tr['opened'])} София)</i>" if tr.get("opened") else ""   # Г7
     L = [f"{heads.get(kind, kind)} · {metal} {d}{opened_txt}", "─────────────────",
          f"{via_txt}{gap_txt}",
-         f"Вход <code>{_fmt(e, dec)}</code> → <code>{_fmt(price_hit, dec)}</code> = <b>{dol:+.2f}$/oz</b>"]
+         f"💵 Вход <code>{_fmt(e, dec)}</code> → <code>{_fmt(price_hit, dec)}</code> = <b>{dol:+.2f}$/oz</b>"]
     if kind == "tp1":
         L.append(f"→ Премести стопа на <code>{_fmt(e, dec)}</code> (входа) — безрискова сделка.")
         L.append(f"Остават: ТП2 <code>{_fmt(lv['tp2'], dec)}</code> · ТП3 <code>{_fmt(lv['tp3'], dec)}</code>")
