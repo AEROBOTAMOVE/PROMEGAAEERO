@@ -29,7 +29,7 @@ warnings.filterwarnings("ignore")
 import numpy as np
 import pandas as pd
 
-VERSION = "v5.5e"
+VERSION = "v5.5f"
 PIP = 0.10
 SL_PIPS = 200; SL_D = SL_PIPS * PIP                       # стоп: 200п = $20/oz
 TPS = [("ТП1", 75, 7.5), ("ТП2", 120, 12.0), ("ТП3", 200, 20.0)]
@@ -459,15 +459,14 @@ def _fmt(p, dec=2):
 def _sig_msg(direction, score, agree_n, tier_name, spot, bar_price, bar_ts, lv, entry,
              advice_txt, macro, streak_n, regime, stats, balance, risk_pct, weekly=None,
              reentry=False, open_trade=None, sym="XAUUSD", dec=2, extra_ctx=None, adv_ok=True):
-    """Компактна карта: 11-14 реда, всички числа готови."""
+    """Стегната карта: ⏰ час горе, нивата вертикално, 1 присъда, 1 контекст-ред, риск."""
     dcol = "🔴" if direction == "short" else "🟢"
     metal = "ЗЛАТО" if sym == "XAUUSD" else "СРЕБРО"
     dword = "SHORT (продажба)" if direction == "short" else "LONG (купуване)"
     # Г2: тонът от съвета влиза и в цвета/иконата на заглавието
     warn = advice_txt.startswith("НЕ") or advice_txt.startswith("ИЗЧАКАЙ")
     head_icon = "🟡" if warn else dcol
-    tf_part = " · макро+ценова структура" if sym == "XAUUSD" else " · дневен сигнал"   # В2: не «7 независими гласа»
-    L = [f"{head_icon} <b>{metal} {dword}</b> · {tier_name} {score}/8{tf_part}",
+    L = [f"{head_icon} <b>{metal} {dword}</b> · ⏰ {_sofia()} София",
          "─────────────────"]
     if open_trade:
         op = f"{open_trade['opened'][:10]} {_sofia(open_trade['opened'])}"
@@ -483,21 +482,23 @@ def _sig_msg(direction, score, agree_n, tier_name, spot, bar_price, bar_ts, lv, 
     else:
         if reentry:
             L.append("РЕ-ВЛИЗАНЕ — предишната сделка приключи, сигналът още стои.")
-        head = "<b>ВХОД СЕГА</b>" if adv_ok else "<b>АКО ВСЕ ПАК ВЛЕЗЕШ</b>"   # НАХОДКА 1: не карай да влиза при «НЕ»
-        src = "спот, реално време" if spot else "по бара, ~10-15 мин назад — спотът е недостъпен!"
-        L += [f"{head} ({src}): <code>{_fmt(entry, dec)}</code>",
-              f"ТП1 <code>{_fmt(lv['tp1'], dec)}</code> · ТП2 <code>{_fmt(lv['tp2'], dec)}</code> · ТП3 <code>{_fmt(lv['tp3'], dec)}</code>",
-              f"СТОП <code>{_fmt(lv['sl'], dec)}</code>"]
-        if adv_ok:                                          # «сложи веднага / раздели» само когато съветът е ДА
-            L += ["→ Раздели на 3: затвори 1/3 на ТП1, 1/3 на ТП2, 1/3 на ТП3; стопът е общ.",
-                  "→ Сложи нивата при брокера ВЕДНАГА — изпълняват се сами."]
-        if spot:
-            L.append(f"<i>спред {abs(spot['ask']-spot['bid']):.2f} · вход от {'bid' if direction=='short' else 'ask'} страната</i>")
-        L += [f"<b>ВЛИЗАЙ:</b> {advice_txt}"]                             # Г1: само при НОВ вход
+        head = "<b>ВХОД</b>" if adv_ok else "<b>АКО ВСЕ ПАК ВЛЕЗЕШ — вход</b>"   # НАХОДКА 1: не карай да влиза при «НЕ»
+        src = "спот сега" if spot else "по бара, ~10-15 мин назад — спотът е недостъпен!"
+        L += [f"{head}: <code>{_fmt(entry, dec)}</code> <i>({src})</i>",
+              f"ТП1: <code>{_fmt(lv['tp1'], dec)}</code>",
+              f"ТП2: <code>{_fmt(lv['tp2'], dec)}</code>",
+              f"ТП3: <code>{_fmt(lv['tp3'], dec)}</code>",
+              f"СТОП: <code>{_fmt(lv['sl'], dec)}</code>",
+              "─────────────────",
+              f"<b>ВЛИЗАЙ:</b> {advice_txt}"]                             # Г1: само при НОВ вход
+        if adv_ok:                                          # инструкцията само когато съветът е ДА
+            L.append("→ Сложи нивата при брокера ВЕДНАГА · раздели на 3 (по 1/3 на всяко ТП, стопът е общ).")
     mac = sum(1 for v in macro.values() if v)
-    # Г10: макрото спрямо ПОСОКАТА (за short «мечо» подкрепя, за long «бичо»)
-    supports = (mac >= 2 and direction == "long") or (mac <= 1 and direction == "short")
-    ctx = f"Макро {mac}/3 ({'подкрепя ✓' if supports else 'против ⚠'})"
+    # Г10 + стегнато: бройката се показва В ПОСОКАТА на сделката (за шорт мечо = 3-mac),
+    # та «3/3 ✓» винаги да значи «подкрепя» — край на оксиморона «0/3 (подкрепя)»
+    mdir = (3 - mac) if direction == "short" else mac
+    ctx = (f"<i>клас {tier_name} {score}/8 · макро за {'шорт' if direction == 'short' else 'лонг'} "
+           f"{mdir}/3 {'✓' if mdir >= 2 else '⚠'}")
     # В1/В4: УЛТРА само за ЗЛАТО (среброто няма такъв клас) и само с n≥MIN_N
     if sym == "XAUUSD" and regime and regime.get("vol_rank") is not None and 1 <= streak_n <= 3 and regime["vol_rank"] < 0.40:
         u = stats.get("fresh", {}).get(direction, {}).get("ultra", {})
@@ -506,12 +507,11 @@ def _sig_msg(direction, score, agree_n, tier_name, spot, bar_price, bar_ts, lv, 
             ctx += f" · УЛТРА клас: {u['win']}% · {u['net']:+}$/oz (n={u['n']})"
     if weekly:
         lean = weekly.get("gold", {}).get("lean", "")
-        if lean in ("bullish", "bearish"):
-            ag = (lean == "bullish") == (direction == "long")
-            ctx += " · седм. анализ: " + ("съгласен ✓" if ag else "ПРОТИВ ⚠")
+        if lean in ("bullish", "bearish") and (lean == "bullish") != (direction == "long"):
+            ctx += " · седм. анализ ПРОТИВ ⚠"          # стегнато: седмичният говори само когато Е против
     if extra_ctx:
         ctx += " · " + extra_ctx
-    L.append(ctx)
+    L.append(ctx + "</i>")
     risk_amt = balance * risk_pct / 100.0
     _rp = lambda d: (d / balance * 100.0 if balance else 0.0)   # реален % от баланса
     if sym == "XAUUSD":
@@ -531,10 +531,10 @@ def _sig_msg(direction, score, agree_n, tier_name, spot, bar_price, bar_ts, lv, 
                      f"(50 oz), което рискува −${mn:.2f} = {_rp(mn):.1f}% (над целта — намали или пропусни)")
         else:
             L.append(f"Риск ${balance:g}@{risk_pct:g}%: <b>{oz/5000.0:.2f} лот</b> ({oz:.0f} oz) → макс −${risk_amt:.2f}")
-    if direction == "short":
+    if direction == "short" and adv_ok:                 # при «НЕ» присъдата вече го каза — без дублаж
         L.append("<i>Шорт е непотвърден исторически — малък размер.</i>")
     L += ["─────────────────",
-          f"<i>цена от бар {_sofia(str(bar_ts)) if bar_ts is not None else '?'} София · {VERSION} · хартия · не е фин. съвет</i>"]
+          f"<i>бар {_sofia(str(bar_ts)) if bar_ts is not None else '?'} · {VERSION} · хартия · не е фин. съвет</i>"]
     return "\n".join(L)
 
 
