@@ -29,7 +29,7 @@ warnings.filterwarnings("ignore")
 import numpy as np
 import pandas as pd
 
-VERSION = "v5.5f"
+VERSION = "v5.6"
 PIP = 0.10
 SL_PIPS = 200; SL_D = SL_PIPS * PIP                       # стоп: 200п = $20/oz
 TPS = [("ТП1", 75, 7.5), ("ТП2", 120, 12.0), ("ТП3", 200, 20.0)]
@@ -729,6 +729,59 @@ def _status_msg(board, new_dir, trade, s_trade, spot_g, spot_s, basis_g, basis_s
     return "\n".join(L)
 
 
+def _pulse_msg(part, board, best, new_dir, advice_txt, adv_ok, trade, s_trade,
+               spot_g, spot_s, macro, shield, weekend):
+    """Пулс 3× на ден (09/14 София + вечерна равносметка в 21): честно «какво гледам,
+    как се движи, какво чакам» — информативно, не сигнал. Доказва, че ботът е буден."""
+    hdr = {"09": "☀️ <b>УТРИНЕН ПУЛС</b>", "14": "🌤️ <b>ОБЕДЕН ПУЛС</b>"}.get(part, "📡 <b>ПУЛС</b>")
+    L = [f"{hdr} · {_sofia()} София", "─────────────────"]
+    if weekend:
+        L += ["Пазарът е затворен (уикенд) — <b>дежуря, но сделки не търся</b>.",
+              "Златото отваря неделя вечер · ще се обадя щом има какво.",
+              f"<i>{VERSION} · информативно · не е съвет</i>"]
+        return "\n".join(L)
+    mac = sum(macro.values())
+    # какво гледам: най-силният клас + макро в неговата посока
+    if new_dir:
+        mdir = (3 - mac) if new_dir == "short" else mac
+        dword = "ЛОНГ (нагоре)" if new_dir == "long" else "ШОРТ (надолу)"
+        L.append(f"<b>Гледам:</b> най-силен клас <b>{best[4]} {best[2]}/8</b> · накланя се към <b>{dword}</b> · макро {mdir}/3 {'✓' if mdir >= 2 else '⚠'}")
+    else:
+        L.append(f"<b>Гледам:</b> няма ясен клас сега (таймфреймовете са смесени) · макро {mac}/3")
+    # как се движи: спот
+    if spot_g:
+        L.append(f"<b>Цена:</b> злато <code>{spot_g['mid']:,.2f}</code>"
+                 + (f" · сребро <code>{spot_s['mid']:,.3f}</code>" if spot_s else ""))
+    else:
+        L.append("<b>Цена:</b> живият спот е недостъпен този момент (ползвам бара)")
+    # отворени сделки
+    any_tr = False
+    for nm, tr, sp, dec in (("🥇 Злато", trade, spot_g, 2), ("🥈 Сребро", s_trade, spot_s, 3)):
+        if tr:
+            any_tr = True
+            hit = tr.get("hit", {})
+            hits = ", ".join(k.upper() for k in ("tp1", "tp2", "tp3") if hit.get(k)) or "още нищо"
+            pl = ((sp["mid"] - tr["entry"]) if tr["direction"] == "long" else (tr["entry"] - sp["mid"])) if sp else None
+            L.append(f"{nm}: следя <b>{tr['direction'].upper()}</b> от <code>{tr['entry']:,.{dec}f}</code> · ударени: {hits}"
+                     + (f" · сега {pl:+.2f}$/oz" if pl is not None else ""))
+    if not any_tr:
+        L.append("<b>Сделки:</b> няма отворена — дебна за пресен клас/обръщане.")
+    # какво чакам (честно)
+    if shield and new_dir == "short":
+        wait = f"US-щит ({_shield_sofia_label()}) — изчаквам края му преди шорт."
+    elif any_tr:
+        wait = "следя сделката до ТП/СТОП — <b>карта при ВСЕКИ удар</b>."
+    elif new_dir and adv_ok:
+        wait = "класът е за вход — картата идва при потвърждение."
+    elif new_dir:
+        wait = "класът още не е за вход (застоял/слаб) — чакам да се освежи."
+    else:
+        wait = "чакам пазарът да оформи ясна посока."
+    L.append(f"<b>Чакам:</b> {wait}")
+    L.append(f"<i>{VERSION} · информативно · не е съвет</i>")
+    return "\n".join(L)
+
+
 # ---------- следене v5: спот-леджър, барове през базиса + жив спот ----------
 def track_trade(trade, bars, basis, now_price, now_utc, spot=None):
     """bars = фючърсни 5м (пълният път, ~10 мин назад), превеждани в спот
@@ -880,7 +933,7 @@ def _outbox_flush(out_dir, new_msgs, statuses, dry=False):
                        and m.get("first_ts", now_iso) < now_iso)]
     # R1: дедуп по таг за ПРЕПОВТАРЯЩИТЕ се карти (signal/s-signal/digest/status) —
     # при срив на Телеграм не трупай N копия; пази само НАЙ-НОВОТО (последната цена).
-    DEDUP = ("signal", "s-signal", "digest", "status")
+    DEDUP = ("signal", "s-signal", "digest", "status", "pulse")
     seen_last = {}
     for i, msg in enumerate(pending):
         if msg["tag"] in DEDUP:
@@ -1329,6 +1382,17 @@ def main():
         new_msgs.append(("status", _status_msg(board, new_dir, trade, s_tr_now, spot_g, spot_s,
                                                basis_g, basis_s, guard, shield, date, macro)))
 
+    # ПУЛС 3× на ден (09 и 14 София; вечерта е равносметката в 21): «какво гледам/чакам».
+    # Веднъж на слот (meta-пазач), само делник. Информативен — не отваря сделка.
+    pulse_slot = None
+    for ph, hr in (("09", 9), ("14", 14)):
+        if sof_now.hour == hr and meta.get("pulse_" + ph) != date and not weekend:
+            s_tr_p = _load_state(s_tr_f, None)
+            new_msgs.append(("pulse", _pulse_msg(ph, board, best, new_dir, advice_txt, _adv_ok,
+                                                 trade, s_tr_p, spot_g, spot_s, macro, shield, weekend)))
+            pulse_slot = ph
+            break
+
     # === 7) ПРАЩАНЕ през пощенската кутия (Ф8.1) ===
     statuses = []
     sent_tags = _outbox_flush(out, new_msgs, statuses, dry=not args.send)
@@ -1337,6 +1401,8 @@ def main():
 
     if want_digest and "digest" in sent_tags:            # Д3: маркирай чак след пращане
         meta["digest"] = date
+    if pulse_slot and "pulse" in sent_tags:              # пулсът — маркирай слота чак след пращане
+        meta["pulse_" + pulse_slot] = date
 
     # === 7б) Б1: сделка/състояние се пишат САМО след ПОТВЪРДЕНО пращане на картата ===
     if should_sig and "signal" in sent_tags:
