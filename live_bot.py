@@ -29,7 +29,7 @@ warnings.filterwarnings("ignore")
 import numpy as np
 import pandas as pd
 
-VERSION = "v5.6"
+VERSION = "v5.6b"
 PIP = 0.10
 SL_PIPS = 200; SL_D = SL_PIPS * PIP                       # стоп: 200п = $20/oz
 TPS = [("ТП1", 75, 7.5), ("ТП2", 120, 12.0), ("ТП3", 200, 20.0)]
@@ -892,15 +892,26 @@ def _send_raw(text):
             with urllib.request.urlopen(urllib.request.Request(url, data=data), timeout=15) as r:
                 return f"SENT ({r.status})"
         except urllib.error.HTTPError as e:               # HTTP статус от Телеграм
+            # ДИАГНОСТИКА: прочети ТОЧНОТО описание от Телеграм (напр. «chat not found»,
+            # «group upgraded to supergroup» + новото chat_id) — за да не гадаем при 400.
+            desc = ""
+            try:
+                _b = json.loads(e.read().decode())
+                desc = str(_b.get("description", ""))[:140]
+                _mig = _b.get("parameters", {}).get("migrate_to_chat_id")
+                if _mig:
+                    desc += f" [НОВО chat_id={_mig}]"
+            except Exception:
+                pass
             # 429 (rate-limit при catch-up burst), 408 (timeout), 425 (too-early) = МЕКИ →
             # ретрай вечно. Инак 3 поредни 429 триеха реална карта с ПЕРФЕКТЕН HTML (🔴).
             if e.code in (429, 408, 425) or e.code >= 500:
-                last = f"SEND_FAILED: HTTP {e.code} (rate/timeout/server)"
+                last = f"SEND_FAILED: HTTP {e.code} (rate/timeout/server) {desc}".strip()
                 import time; time.sleep(3)
             elif 400 <= e.code < 500:                      # 400/403/404/413 = истински «отровни»
-                return f"HARD_FAIL:{e.code}"               # (развален HTML/забранен/твърде голям)
+                return f"HARD_FAIL:{e.code} {desc}".strip()   # + точната причина от Телеграм
             else:
-                last = f"SEND_FAILED: HTTP {e.code}"
+                last = f"SEND_FAILED: HTTP {e.code} {desc}".strip()
                 import time; time.sleep(3)
         except Exception as e:                            # мрежа/таймаут: МЕК провал → ретрай вечно
             last = f"SEND_FAILED: {str(e)[:80]}"
