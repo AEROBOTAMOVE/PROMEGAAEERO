@@ -29,7 +29,7 @@ warnings.filterwarnings("ignore")
 import numpy as np
 import pandas as pd
 
-VERSION = "v5.6b"
+VERSION = "v5.6c"
 PIP = 0.10
 SL_PIPS = 200; SL_D = SL_PIPS * PIP                       # стоп: 200п = $20/oz
 TPS = [("ТП1", 75, 7.5), ("ТП2", 120, 12.0), ("ТП3", 200, 20.0)]
@@ -734,7 +734,8 @@ def _pulse_msg(part, board, best, new_dir, advice_txt, adv_ok, trade, s_trade,
                spot_g, spot_s, macro, shield, weekend):
     """Пулс 3× на ден (09/14 София + вечерна равносметка в 21): честно «какво гледам,
     как се движи, какво чакам» — информативно, не сигнал. Доказва, че ботът е буден."""
-    hdr = {"09": "☀️ <b>УТРИНЕН ПУЛС</b>", "14": "🌤️ <b>ОБЕДЕН ПУЛС</b>"}.get(part, "📡 <b>ПУЛС</b>")
+    hdr = {"09": "☀️ <b>УТРИНЕН ПУЛС</b>", "14": "🌤️ <b>ОБЕДЕН ПУЛС</b>",
+           "22": "🌙 <b>ВЕЧЕРЕН ПУЛС</b>"}.get(part, "📡 <b>ПУЛС</b>")
     L = [f"{hdr} · {_sofia()} София", "─────────────────"]
     if weekend:
         L += ["Пазарът е затворен (уикенд) — <b>дежуря, но сделки не търся</b>.",
@@ -1397,7 +1398,7 @@ def main():
     # ПУЛС 3× на ден (09 и 14 София; вечерта е равносметката в 21): «какво гледам/чакам».
     # Веднъж на слот (meta-пазач), само делник. Информативен — не отваря сделка.
     pulse_slot = None
-    for ph, hr in (("09", 9), ("14", 14)):
+    for ph, hr in (("09", 9), ("14", 14), ("22", 22)):
         if sof_now.hour == hr and meta.get("pulse_" + ph) != date and not weekend:
             s_tr_p = _load_state(s_tr_f, None)
             new_msgs.append(("pulse", _pulse_msg(ph, board, best, new_dir, advice_txt, _adv_ok,
