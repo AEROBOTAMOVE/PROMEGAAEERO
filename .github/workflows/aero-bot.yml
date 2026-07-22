@@ -34,7 +34,7 @@ jobs:
       - name: run bot
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TELEGRAM_CHAT_ID: "-1003827523037"
           BALANCE: ${{ vars.BALANCE || '1000' }}
           RISK_PCT: ${{ vars.RISK_PCT || '2' }}
           STATUS_CARD: ${{ github.event.inputs.status || 'no' }}
@@ -42,7 +42,7 @@ jobs:
       - name: save state
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TELEGRAM_CHAT_ID: "-1003827523037"
         run: |
           git config user.name "aero-bot"
           git config user.email "bot@users.noreply.github.com"
@@ -63,7 +63,7 @@ jobs:
         if: failure()
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TELEGRAM_CHAT_ID: "-1003827523037"
         run: |
           curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage" \
             -d chat_id="${TELEGRAM_CHAT_ID}" -d parse_mode=HTML \
