@@ -29,7 +29,7 @@ warnings.filterwarnings("ignore")
 import numpy as np
 import pandas as pd
 
-VERSION = "v5.6d"
+VERSION = "v5.6e"
 PIP = 0.10
 SL_PIPS = 200; SL_D = SL_PIPS * PIP                       # стоп: 200п = $20/oz
 TPS = [("ТП1", 75, 7.5), ("ТП2", 120, 12.0), ("ТП3", 200, 20.0)]
@@ -846,6 +846,108 @@ def _pulse_msg(part, board, best, new_dir, advice_txt, adv_ok, trade, s_trade,
     return "\n".join(L)
 
 
+# ---------- CyberQuant (BTC-цикъл + макро-календар) — референция + макро-щит ----------
+def _cq_zone(score):
+    """CQS скор → зона (по бандите на CyberQuant)."""
+    if score < 40: return "Натрупване 🟢"
+    if score < 60: return "Неутрална ⚪"
+    if score < 75: return "Внимание 🟡"
+    if score < 90: return "Опасност 🟠"
+    return "Балон 🔴"
+
+
+def _cq_fetch(now_utc):
+    """CyberQuant публично tRPC API, БЕЗ логин. Защитено — при всеки проблем връща None
+    (никога не чупи бота). Дърпа CQS скор + страх/алчност + макро-календар. Веднъж на ден."""
+    CQ = "https://cyberquant-g2mrw3tb.manus.space/api/trpc/"
+    def _get(procs, inp):
+        u = CQ + procs + "?batch=1&input=" + urllib.parse.quote(json.dumps(inp))
+        with urllib.request.urlopen(urllib.request.Request(u, headers={"User-Agent": "Mozilla/5.0"}), timeout=12) as r:
+            return json.loads(r.read().decode())
+    try:
+        nul = {"json": None, "meta": {"values": ["undefined"]}}
+        d = _get("terminal.getData,fearGreed.getAll", {"0": nul, "1": nul})
+        score = float(d[0]["result"]["data"]["json"]["score"])
+        fg = d[1]["result"]["data"]["json"]
+        c = _get("calendar.getUpcoming", {"0": {"json": {"days": 45}}})
+        raw = c[0]["result"]["data"]["json"]
+        events = []
+        for e in raw:
+            assets = str(e.get("affectsAssets", "")).upper()
+            imp = str(e.get("impact", "")).lower()
+            if imp in ("high", "critical") and any(a in assets for a in ("GOLD", "XAU", "DXY", "USD")):
+                events.append({"name": str(e.get("title", ""))[:60], "dt": str(e.get("eventDate", "")), "impact": imp})
+        return {"score": round(score, 1), "zone": _cq_zone(score),
+                "fg_crypto": fg.get("crypto", {}).get("value"), "fg_crypto_cls": fg.get("crypto", {}).get("classification", ""),
+                "fg_stock": fg.get("stock", {}).get("value"), "fg_stock_cls": fg.get("stock", {}).get("classification", ""),
+                "events": events, "fetched": now_utc}
+    except Exception:
+        return None
+
+
+def _cq_evt_dt(e):
+    """ISO дата (с Z=UTC) → наивен UTC pd.Timestamp или None."""
+    try:
+        ts = pd.Timestamp(e.get("dt", ""))
+        return ts.tz_convert("UTC").tz_localize(None) if ts.tz is not None else ts
+    except Exception:
+        return None
+
+
+def _cq_macro_block(cq, now_utc):
+    """(блокирай_ли, име) — голямо макро събитие (GOLD/DXY, high/critical) в прозорец
+    −20…+40 мин около СЕГА? Блокира НОВ вход (двете посоки) — висока волатилност."""
+    if not cq or not cq.get("events"):
+        return False, None
+    try:
+        now = pd.Timestamp(now_utc)
+    except Exception:
+        return False, None
+    for e in cq["events"]:
+        evt = _cq_evt_dt(e)
+        if evt is None:
+            continue
+        dmin = (now - evt).total_seconds() / 60.0
+        if -20 <= dmin <= 40:
+            return True, e.get("name", "макро събитие")
+    return False, None
+
+
+def _cq_next_event(cq, now_utc):
+    """Най-близкото БЪДЕЩО голямо събитие → етикет (за референцията)."""
+    if not cq or not cq.get("events"):
+        return None
+    try:
+        now = pd.Timestamp(now_utc)
+    except Exception:
+        return None
+    best = None
+    for e in cq["events"]:
+        evt = _cq_evt_dt(e)
+        if evt is not None and evt > now and (best is None or evt < best[0]):
+            best = (evt, e)
+    if best is None:
+        return None
+    evt, e = best
+    return f"{e.get('name', '')} — {evt.strftime('%d.%m')} {_sofia(evt.isoformat())} София"
+
+
+def _cq_msg(cq, now_utc):
+    """Дневна референция-карта от CyberQuant (BTC-цикъл + настроения + следващо събитие)."""
+    L = [f"🌐 <b>CYBERQUANT · дневна референция</b> · {_sofia()} София", "─────────────────",
+         f"<b>Квантов скор (CQS):</b> {cq['score']}% · {cq.get('zone', '')}",
+         "<i>BTC-цикъл — за пазарен контекст, НЕ сигнал за злато/сребро.</i>"]
+    fgc, fgs = cq.get("fg_crypto"), cq.get("fg_stock")
+    if fgc is not None or fgs is not None:
+        L.append(f"<b>Страх и Алчност:</b> крипто {fgc} · акции {fgs}")
+    nxt = _cq_next_event(cq, now_utc)
+    if nxt:
+        L.append(f"📅 <b>Следващо голямо макро</b> (влияе на златото): {nxt}")
+        L.append("<i>Около него ботът НЕ отваря нов вход (висока волатилност).</i>")
+    L.append(f"<i>{VERSION} · референция · не е съвет</i>")
+    return "\n".join(L)
+
+
 # ---------- следене v5: спот-леджър, барове през базиса + жив спот ----------
 def track_trade(trade, bars, basis, now_price, now_utc, spot=None):
     """bars = фючърсни 5м (пълният път, ~10 мин назад), превеждани в спот
@@ -1008,7 +1110,7 @@ def _outbox_flush(out_dir, new_msgs, statuses, dry=False):
                        and m.get("first_ts", now_iso) < now_iso)]
     # R1: дедуп по таг за ПРЕПОВТАРЯЩИТЕ се карти (signal/s-signal/digest/status) —
     # при срив на Телеграм не трупай N копия; пази само НАЙ-НОВОТО (последната цена).
-    DEDUP = ("signal", "s-signal", "digest", "status", "pulse")
+    DEDUP = ("signal", "s-signal", "digest", "status", "pulse", "cq-ref")
     seen_last = {}
     for i, msg in enumerate(pending):
         if msg["tag"] in DEDUP:
@@ -1175,6 +1277,26 @@ def main():
     if guard.get("date") != date:
         guard = {"date": date, "long": 0, "short": 0, "s_long": 0, "s_short": 0}
 
+    # CyberQuant (BTC-цикъл + макро-календар) — референция + макро-щит (дърпа се веднъж на ден)
+    cq = _load_state(out / "cyberquant.json", None)
+    if meta.get("cq_date") != date:                      # веднъж на ден; при провал — ретрай на 60 мин
+        _lt = meta.get("cq_last_try"); _cm = 999.0
+        if _lt:
+            try:
+                _cm = (pd.Timestamp(now_utc) - pd.Timestamp(_lt)).total_seconds() / 60.0
+            except Exception:
+                _cm = 999.0
+        if _cm >= 60:
+            meta["cq_last_try"] = now_utc
+            _cqf = _cq_fetch(now_utc)
+            if _cqf:
+                cq = _cqf
+                (out / "cyberquant.json").write_text(json.dumps(_cqf, ensure_ascii=False), encoding="utf-8")
+                meta["cq_date"] = date
+            else:
+                notes.append("CyberQuant недостъпен този опит — ползвам кеш/прескачам")
+    cq_block, cq_ev = _cq_macro_block(cq, now_utc)        # голямо макро събитие СЕГА? (блокира двете посоки)
+
     # цената за човека: живият спот; резерва — барът минус базиса
     price_user = spot_g["mid"] if spot_g else round(bar_price - basis_g, 2)
 
@@ -1261,6 +1383,9 @@ def main():
     if should_sig and weekend:
         should_sig = False
         notes.append("уикенд — картите почиват до понеделник")
+    if should_sig and cq_block and trade is None:        # макро-щит: голямо събитие → нов вход изчаква
+        should_sig = False
+        notes.append(f"макро събитие ({cq_ev}) — нов вход изчаква (висока волатилност)")
     # F1 (🔴): ОТВОРЕНА сделка + НЕПРЕМИУМ насрещен борд (флипът на 1005 не пали) →
     # ЗАДРЪЖ старата, НЕ отваряй насрещна. Иначе живата позиция се презаписва ТИХО,
     # без изходно съобщение — потребителят никога не научава изхода ѝ.
@@ -1362,6 +1487,8 @@ def main():
             s_should = False; notes.append("сребро карта спряна: стоп-пазач")
         if s_should and weekend:
             s_should = False; notes.append("сребро: уикенд")
+        if s_should and cq_block and s_trade is None:      # макро-щит и за среброто
+            s_should = False; notes.append(f"сребро: макро събитие ({cq_ev}) — изчаква")
         # F1 (🔴): отворена сребърна сделка + непремиум насрещен → задръж старата, без нова
         if s_should and s_trade is not None and s_dir in ("long", "short") and s_trade["direction"] != s_dir:
             s_should = False
@@ -1481,6 +1608,10 @@ def main():
         new_msgs.append(("status", _status_msg(board, new_dir, trade, s_tr_now, spot_g, spot_s,
                                                basis_g, basis_s, guard, shield, date, macro)))
 
+    # CyberQuant дневна референция — веднъж на ден (сутрин 09 София), само делник
+    if sof_now.hour == 9 and meta.get("cq_ref") != date and not weekend and cq:
+        new_msgs.append(("cq-ref", _cq_msg(cq, now_utc)))
+
     # ПУЛС 3× на ден (09 и 14 София; вечерта е равносметката в 21): «какво гледам/чакам».
     # Веднъж на слот (meta-пазач), само делник. Информативен — не отваря сделка.
     pulse_slot = None
@@ -1502,6 +1633,8 @@ def main():
         meta["digest"] = date
     if pulse_slot and "pulse" in sent_tags:              # пулсът — маркирай слота чак след пращане
         meta["pulse_" + pulse_slot] = date
+    if "cq-ref" in sent_tags:                            # CyberQuant референция — маркирай след пращане
+        meta["cq_ref"] = date
 
     # === 7б) Б1: сделка/състояние се пишат САМО след ПОТВЪРДЕНО пращане на картата ===
     if should_sig and "signal" in sent_tags:
