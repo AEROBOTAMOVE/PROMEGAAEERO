@@ -29,7 +29,7 @@ warnings.filterwarnings("ignore")
 import numpy as np
 import pandas as pd
 
-VERSION = "v5.6c"
+VERSION = "v5.6d"
 PIP = 0.10
 SL_PIPS = 200; SL_D = SL_PIPS * PIP                       # стоп: 200п = $20/oz
 TPS = [("ТП1", 75, 7.5), ("ТП2", 120, 12.0), ("ТП3", 200, 20.0)]
@@ -494,6 +494,9 @@ def _sig_msg(direction, score, agree_n, tier_name, spot, bar_price, bar_ts, lv, 
               f"{vicon} <b>ВЛИЗАЙ:</b> {advice_txt}"]                     # Г1: само при НОВ вход
         if adv_ok:                                          # инструкцията само когато съветът е ДА
             L.append("→ Сложи нивата при брокера ВЕДНАГА · раздели на 3 (по 1/3 на всяко ТП, стопът е общ).")
+        else:                                               # СЯНКА: следим хипотетично, ще кажем ако проработи
+            L.append("<i>ℹ️ Следя този сетъп хипотетично — ще ти пратя ако удари ТП по-късно "
+                     "(старите зони често работят със закъснение в дните).</i>")
     mac = sum(1 for v in macro.values() if v)
     # Г10 + стегнато: бройката се показва В ПОСОКАТА на сделката (за шорт мечо = 3-mac),
     # та «3/3 ✓» винаги да значи «подкрепя» — край на оксиморона «0/3 (подкрепя)»
@@ -581,6 +584,65 @@ def _exit_msg(kind, tr, price_hit, when, via, gap, spot=None, next_line="", dec=
         L.append(f"<b>НОВО ВЛИЗАНЕ:</b> {next_line}")
     L.append(f"<i>{VERSION} · хартия · не е съвет</i>")
     return "\n".join(L)
+
+
+def _shadow_exit_msg(kind, tr, price_hit, when, via, gap, spot=None, dec=2):
+    """What-if изход за СЯНКА-сделка (хипотетична — от «не влизай» карта):
+    «сетъпът, който казах да НЕ пипаш, щеше да стигне дотук»."""
+    d = tr["direction"].upper(); e = tr["entry"]
+    sym = tr.get("sym", "XAUUSD"); metal = "ЗЛАТО" if sym == "XAUUSD" else "СРЕБРО"
+    lv = tr["levels"]; sign = 1 if tr["direction"] == "long" else -1
+    dol = (price_hit - e) * sign
+    if abs(dol) < 0.005:
+        dol = 0.0
+    when_txt = _sofia(when) if via in ("бар", "спот") else "по-късно"
+    heads = {"tp1": "✅ СЯНКА · ТП1 щеше да удари", "tp2": "✅✅ СЯНКА · ТП2 щеше да удари",
+             "tp3": "🏆 СЯНКА · ТП3 — щеше да е пълен тейк", "sl": "🛑 СЯНКА · стопът щеше да удари",
+             "time": "⏰ СЯНКА · времеви изход", "flip": "🔄 СЯНКА · посоката се обърна"}
+    op = f" <i>(сетъп от {_sofia(tr['opened'])} София)</i>" if tr.get("opened") else ""
+    L = [f"{heads.get(kind, kind)} · {metal} {d}", "─────────────────",
+         f"Сетъпът, за който казах <b>да НЕ влизаш</b>, щеше да стигне дотук ({when_txt} София).{op}",
+         f"Хипотетично: вход <code>{_fmt(e, dec)}</code> → <code>{_fmt(price_hit, dec)}</code> = <b>{dol:+.2f}$/oz</b>"]
+    if kind == "tp1":
+        L.append(f"Ако беше влязъл: стоп на входа · остават ТП2 <code>{_fmt(lv['tp2'], dec)}</code> · ТП3 <code>{_fmt(lv['tp3'], dec)}</code>")
+    elif kind == "tp2":
+        L.append(f"Ако беше влязъл: 2/3 прибрани · остава ТП3 <code>{_fmt(lv['tp3'], dec)}</code>")
+    if spot:
+        L.append(f"Спот сега: <code>{_fmt(spot['mid'], dec)}</code>")
+    L.append("<i>ℹ️ Само за информация — НЕ е реална сделка (не влиза в статистиката/стоп-пазача). "
+             "Старите зони често работят със закъснение.</i>")
+    return "\n".join(L)
+
+
+def _shadow_cycle(shadow_file, bars, basis, price_user, now_utc, spot,
+                  open_dir, open_entry, open_lv, real_open, date, tier, sym, dec):
+    """СЯНКА-следене: хипотетична сделка от «не влизай» карта. Следи стария сетъп през
+    дните (същият track_trade), праща «какво щеше да е» при всеки удар, отваря нова при
+    информативна карта. НАПЪЛНО ИЗОЛИРАНА — не пипа guard/реалната сделка/статистиката.
+    Връща list[(tag, text)] с what-if изходите."""
+    msgs = []
+    sh = _load_state(shadow_file, None)
+    if sh is not None:
+        sh_obj = copy.deepcopy(sh)                          # снимка за съобщенията
+        sh, events = track_trade(sh, bars, basis, price_user, now_utc, spot=spot)
+        cum = dict(sh_obj["hit"])
+        for kind, px, when, via, gap in events:
+            if kind in ("tp1", "tp2", "tp3"):
+                cum[kind] = True
+            o = dict(sh_obj); o["hit"] = dict(cum)
+            msgs.append(("sh-exit:" + kind, _shadow_exit_msg(kind, o, px, when, via, gap, spot=spot, dec=dec)))
+    if real_open:                                           # реалната сделка измества сянката
+        sh = None
+    elif open_entry is not None and open_dir in ("long", "short"):
+        if sh is None or sh.get("direction") != open_dir:   # нов/обърнат сетъп → (пре)отвори
+            sh = {"direction": open_dir, "entry": round(open_entry, dec), "opened": now_utc,
+                  "checked": now_utc, "levels": dict(open_lv), "hit": {}, "status": "open",
+                  "v2": True, "ledger": "spot", "tier": tier, "date": date, "sym": sym, "shadow": True}
+    if sh is not None and sh.get("status", "open") == "open":
+        shadow_file.write_text(json.dumps(sh, ensure_ascii=False), encoding="utf-8")
+    elif shadow_file.exists():
+        shadow_file.unlink()                                # затворена/изместена → чист диск
+    return msgs
 
 
 def _ma_alert_msg(direction, ma_name, price, mb, macro):
@@ -1263,6 +1325,7 @@ def main():
         s_trade = _load_state(s_tr_f, None)
         s_trade = _migrate_trade(s_trade, basis_s, dec=3, notes=notes)
         s_exits = []
+        sh_s_entry = None; sh_s_lv = None   # СЯНКА-сребро (какво щеше да е при «не влизай»)
         if s_trade:
             s_obj = copy.deepcopy(s_trade)                 # Д3: истинска снимка
             s_trade, s_events = track_trade(s_trade, s5, basis_s, s_price_user, now_utc, spot=spot_s)
@@ -1325,7 +1388,16 @@ def main():
                 silver_trade_new = {"direction": s_dir, "entry": round(s_entry_user, 3), "opened": now_utc,
                                     "checked": now_utc, "levels": s_lv_user, "hit": {}, "status": "open",
                                     "v2": True, "ledger": "spot", "tier": s_tk, "date": date, "sym": "XAGUSD"}
+            if s_open is None and not s_adv_ok:           # СЯНКА за «не влизай» сребро
+                sh_s_entry = round(s_entry_user, 3); sh_s_lv = s_lv_user
         print(f"  сребро: {s_dir} {s_score}/8 {s_tk} · спот {s_price_user}")
+        try:                                               # СЯНКА-следене за среброто (изолирано)
+            silver_new_msgs += _shadow_cycle(out / "shadow_silver.json", s5, basis_s, s_price_user,
+                                             now_utc, spot_s, s_dir if s_dir in ("long", "short") else None,
+                                             sh_s_entry, sh_s_lv, (s_trade is not None or silver_trade_new is not None),
+                                             date, s_tk, "XAGUSD", 3)
+        except Exception as _e:
+            notes.append(f"сянка-сребро пропусната: {type(_e).__name__}")
         # Реконсилиация на СЛЕДЕНАТА сделка — БЕЗУСЛОВНО (огледало на златото §8; поправя
         # сребро-сирака: затворена сделка + неуспяла нова карта → старата НЕ оставаше на диска
         # и се пре-следеше всеки рън = дублирани изходи + фалшив стоп-пазач).
@@ -1380,6 +1452,20 @@ def main():
             pending_trade = {"direction": new_dir, "entry": round(entry_user, 2), "opened": now_utc, "checked": now_utc,
                              "levels": lv_user, "hit": {}, "status": "open", "v2": True, "ledger": "spot",
                              "tier": best[3], "date": date}
+
+    # === 6в) СЯНКА-СЛЕДЕНЕ (какво щеше да е) — злато ===
+    # Хипотетична сделка от «не влизай» карта: следи стария сетъп през дните и казва
+    # «ако беше влязъл, ТП/стоп щеше да удари тук». Изолирано — не пипа guard/реалната сделка.
+    try:
+        sh_open_e = sh_open_lv = None
+        if sig_payload and should_sig and not _adv_ok and open_tr is None and new_dir:
+            sh_open_e, sh_open_lv = sig_payload
+        new_msgs += _shadow_cycle(out / "shadow_trade.json", frames.get("5м"), basis_g, price_user,
+                                  now_utc, spot_g, new_dir, sh_open_e, sh_open_lv,
+                                  (trade is not None or pending_trade is not None),
+                                  date, best[3] if actionable else "", "XAUUSD", 2)
+    except Exception as _e:
+        notes.append(f"сянка-злато пропусната: {type(_e).__name__}")
 
     # === 6б) ВЕЧЕРНА РАВНОСМЕТКА + ПУЛС (Ф5/Ф8.4) и СТАТУС (Ф9.8) ===
     from zoneinfo import ZoneInfo
