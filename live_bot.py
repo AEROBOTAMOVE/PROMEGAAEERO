@@ -29,7 +29,7 @@ warnings.filterwarnings("ignore")
 import numpy as np
 import pandas as pd
 
-VERSION = "v5.6e"
+VERSION = "v5.6f"
 PIP = 0.10
 SL_PIPS = 200; SL_D = SL_PIPS * PIP                       # стоп: 200п = $20/oz
 TPS = [("ТП1", 75, 7.5), ("ТП2", 120, 12.0), ("ТП3", 200, 20.0)]
@@ -1347,6 +1347,14 @@ def main():
     # === 3) БЕЗ СПАМ + защити (Ф2 / Ф9.3) ===
     weekly = _weekly(args.weekly, date=date, notes=notes)
     last = _load_state(out / "last_sent.json", {})
+    # ОДИТ-1 №7: ключът НЕ се нулираше при СМЪРТ на сетъпа. Изчезне ли бордът и се
+    # ВЪРНЕ същия ден, картата се заглушаваше МЪЛЧЕШКОМ (дори без бележка) чак до
+    # смяната на датата = реално изпуснати входове. Нулираме САМО ключа; sent_utc
+    # остава, за да важи 45-мин паузата (нулирането не отваря врата за спам).
+    if not actionable and last.get("key"):
+        last = {k: v for k, v in last.items() if k != "key"}
+        (out / "last_sent.json").write_text(json.dumps(last), encoding="utf-8")
+        notes.append("сетъпът изчезна — анти-спам ключът нулиран (връщането му ще е НОВА карта)")
     key = date + "|" + ";".join(f"{l}:{d}:{t}" for l, d, s, t, _ in board if t != "weak" and d != "wait")
     mins_since = None
     if last.get("sent_utc"):
@@ -1373,6 +1381,12 @@ def main():
             # → НЕ пращай нова карта на насрещната посока (иначе журналът си противоречи).
             should_sig = False
             notes.append(f"ре-влизане отказано: {why_re}" if why_re else "ре-влизане: пауза")
+    # ОДИТ-1 №3: УИКЕНДЪТ Е ПЪРВИ. Преди US-щитът се проверяваше преди него и
+    # 21 от 22 «отложени: US-щит» бяха всъщност събота/неделя (пазарът затворен) —
+    # журналът и всеки одит брояха фалшиви «отложени» карти.
+    if should_sig and weekend:
+        should_sig = False
+        notes.append("уикенд — картите почиват до понеделник")
     # нов вход в US-щита за шорт → отлага се (картата ще дойде след прозореца)
     if should_sig and new_dir == "short" and shield and trade is None:
         should_sig = False
@@ -1380,9 +1394,6 @@ def main():
     if should_sig and new_dir and guard.get(new_dir, 0) >= 2 and trade is None:
         should_sig = False
         notes.append("карта спряна: стоп-пазач (2 стопа днес)")
-    if should_sig and weekend:
-        should_sig = False
-        notes.append("уикенд — картите почиват до понеделник")
     if should_sig and cq_block and trade is None:        # макро-щит: голямо събитие → нов вход изчаква
         should_sig = False
         notes.append(f"макро събитие ({cq_ev}) — нов вход изчаква (висока волатилност)")
@@ -1468,25 +1479,32 @@ def main():
             s_trade = None
         s_actionable = s_dir != "wait" and s_tk != "weak"
         s_last = _load_state(s_state_f, {})
-        s_key = f"{date}|{s_dir}:{s_tk}"
+        # ОДИТ-2 №2/№11: сребро-ШОРТ е математически невъзможно да каже «ДА»
+        # (всички silver.short.* класове са ≤0 → _advice_entry връща False винаги).
+        # Затова за шорт ключът ИГНОРИРА класа: смяната ПРЕМИУМ↔СРЕДЕН вече не
+        # преиздава карта → 1 информативна карта на ден вместо ~3 (сянката остава).
+        s_key = f"{date}|{s_dir}" if s_dir == "short" else f"{date}|{s_dir}:{s_tk}"
         s_mins = None
         if s_last.get("sent_utc"):
             try:
                 s_mins = (pd.Timestamp(now_utc) - pd.Timestamp(s_last["sent_utc"])).total_seconds() / 60
             except Exception:
                 pass
-        s_tier_up = s_actionable and rank.get(s_tk, 0) > rank.get(s_last.get("tier", "weak"), 0) and s_dir == s_last.get("dir")
+        # ъпгрейдът на класа НЕ важи за сребро-шорт (той не може да стане вход) —
+        # иначе би заобиколил дневния ключ отгоре и пак щеше да преиздава карти
+        s_tier_up = (s_actionable and s_dir != "short"
+                     and rank.get(s_tk, 0) > rank.get(s_last.get("tier", "weak"), 0) and s_dir == s_last.get("dir"))
         s_cool = (s_mins is None or s_mins >= 45 or (s_dir != s_last.get("dir") and s_mins >= 15) or s_tier_up)
         s_closed = any(k in ("tp3", "sl", "time", "flip") for k, *_ in s_exits)
         s_guard_n = guard.get("s_" + s_dir, 0) if s_dir in ("long", "short") else 0
         s_should = args.force or (s_actionable and s_cool and (s_last.get("key") != s_key or s_tier_up))   # НАХОДКА 3
         s_reentry = False        # F19-Т2: СРЕБРОТО ТЪРГУВА САМО ДНЕВНАТА КАРТА — без ре-влизания
+        if s_should and weekend:                           # ОДИТ-1 №3: уикендът Е ПЪРВИ (виж златото)
+            s_should = False; notes.append("сребро: уикенд")
         if s_should and s_dir == "short" and shield and s_trade is None:
             s_should = False; notes.append("сребро шорт карта отложена: US-щит")
         if s_should and s_guard_n >= 2 and s_trade is None:
             s_should = False; notes.append("сребро карта спряна: стоп-пазач")
-        if s_should and weekend:
-            s_should = False; notes.append("сребро: уикенд")
         if s_should and cq_block and s_trade is None:      # макро-щит и за среброто
             s_should = False; notes.append(f"сребро: макро събитие ({cq_ev}) — изчаква")
         # F1 (🔴): отворена сребърна сделка + непремиум насрещен → задръж старата, без нова
@@ -1575,6 +1593,12 @@ def main():
         # Б1: НЕ пишем сделка/състояние ТУК — чак СЛЕД потвърдено пращане.
         # НАХОДКА 1: следим сделка САМО ако съветът е ДА (_adv_ok). При «НЕ/ИЗЧАКАЙ»
         # картата е информативна — не отваряме сделка, за която сме казали да не влизаш.
+        # ОДИТ-1 №8 (СЪЗНАТЕЛНО РЕШЕНИЕ, не пропуск): на дневния рестарт (смяна на
+        # date) closed_kinds е празен, затова _reentry_verdict НЕ се пита и F18 не важи.
+        # Оставено НАРОЧНО: това е дневната карта — главният вход на бота (2 от 3
+        # сделки). F18 (−2.75$) е измерено за РЕ-ВЛИЗАНЕ веднага след затворена сделка,
+        # не за нов ден. Включим ли F18 тук, шорт+пресен се блокира и входовете падат
+        # на ~0. Ако някога го променим — трябва нов тест, не догадка.
         if open_tr is None and new_dir and _adv_ok:
             pending_trade = {"direction": new_dir, "entry": round(entry_user, 2), "opened": now_utc, "checked": now_utc,
                              "levels": lv_user, "hit": {}, "status": "open", "v2": True, "ledger": "spot",
@@ -1703,8 +1727,15 @@ if __name__ == "__main__":
         import traceback
         print("ГРЕШКА В БОТА:\n" + traceback.format_exc())
         try:
-            _send_raw(f"⚠️ <b>AERO бот · временен проблем</b>\n<code>{type(e).__name__}: {str(e)[:250]}</code>\n"
+            # ОДИТ-2 №4: ескейпвай текста на грешката — иначе съобщение с < > & чупи
+            # HTML парсването на Телеграм и САМАТА аларма умира тихо (двойно заглушаване).
+            import html as _html
+            _err = _html.escape(f"{type(e).__name__}: {str(e)[:250]}")
+            _send_raw(f"⚠️ <b>AERO бот · временен проблем</b>\n<code>{_err}</code>\n"
                       f"<i>Ще опита пак на следващото пускане.</i>")
         except Exception:
             pass
-        raise SystemExit(0)
+        # ОДИТ-2 №4: изход ≠ 0, за да гръмне и workflow алармата (`if: failure()`).
+        # При изход 0 стъпката се водеше «успешна» и краш минаваше НЕЗАБЕЛЯЗАН.
+        # Записът на състоянието е защитен с `if: always()` в aero-bot.yml.
+        raise SystemExit(1)
