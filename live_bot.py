@@ -29,7 +29,7 @@ warnings.filterwarnings("ignore")
 import numpy as np
 import pandas as pd
 
-VERSION = "v5.6g"
+VERSION = "v5.7"
 PIP = 0.10
 SL_PIPS = 200; SL_D = SL_PIPS * PIP                       # стоп: 200п = $20/oz
 TPS = [("ТП1", 75, 7.5), ("ТП2", 120, 12.0), ("ТП3", 200, 20.0)]
@@ -184,8 +184,17 @@ def _regime(gold_hist, gold_today=None):
             "sma200": float(sma200) if pd.notna(sma200) else None}
 
 
-def _scores(df, refs, macro):
-    cN = float(df["Close"].iloc[-1]); lN = float(df["Low"].iloc[-1]); hN = float(df["High"].iloc[-1])
+def _scores(df, refs, macro, price_adj=0.0):
+    """price_adj (ОДИТ 28.07): корекция за КОНТРАКТЕН БАЗИС. refs идват от ДНЕВНАТА
+    крива на GC=F, а df е ИНТРАДЕЙ крива — Yahoo ги дава на РАЗЛИЧНО ниво (различен
+    контрактен месец). Измерено: интрадей стои над дневния с медиана 9.3$ (5м, 60д)
+    и 17.6$ (1час, 2г), в 69-89% от дните, всичките 11 квартала в една посока.
+    Без корекция лонг-тестовете (cN>sma50/sma20/ago20, hN>=high20) палят излишно —
+    сменя ПОСОКАТА на 6.9% от дните. price_adj=0.0 → старото поведение (фрейм «1ден»,
+    който е на СЪЩАТА крива като refs, и всички тестове)."""
+    cN = float(df["Close"].iloc[-1]) + price_adj
+    lN = float(df["Low"].iloc[-1]) + price_adj
+    hN = float(df["High"].iloc[-1]) + price_adj
     def nn(v): return not (v is None or (isinstance(v, float) and np.isnan(v)))
     ml = [macro["миньори"], macro["долар"], macro["лихви"]]
     ms = [not m for m in ml]
@@ -388,6 +397,35 @@ def _basis_update(state, key, raw_spot, bar_close, notes, cap=40.0, now_utc=None
     else:
         state[key] = round(old + BASIS_ALPHA * (now_b - old), 3)
     return state[key]
+
+
+TF_BASIS_ALPHA = 0.25      # EMA изглаждане на контрактния базис дневна↔интрадей
+TF_BASIS_CAP = 120.0       # |базис| над това = глич/сменен инструмент → пази стария
+def _tf_basis(state, key, intra, daily, notes, days=20):
+    """ОДИТ 28.07 · КОНТРАКТЕН БАЗИС. Дневната и интрадей кривите на GC=F/SI=F от
+    Yahoo НЕ са на едно ценово ниво (дневната следи по-близък контрактен месец).
+    Мерено: дневен Close − интрадей Close = медиана −9.3$ (5м/60д) и −17.6$ (1час/2г),
+    интрадей е ПО-ГОРЕ в 69-89% от дните, всичките 11 квартала в една посока, а при
+    роловър скача до −238$. Това е РАЗЛИЧНО от meta['basis_g'] (фючърс↔Swissquote спот),
+    който превежда баровете в спот-света на брокера за леджъра — той НЕ поправя refs.
+    Връща стойност, която се ДОБАВЯ към интрадей цената, за да легне на дневното ниво.
+    МЕДИАНА (устойчива на роловър-скокове) + EMA, с cap срещу глич."""
+    try:
+        if intra is None or daily is None or len(intra) == 0 or len(daily) == 0:
+            return state.get(key, 0.0)
+        r = intra.resample("1D").agg(Close=("Close", "last")).dropna()
+        j = r.join(daily[["Close"]], how="inner", rsuffix="_d")
+        if len(j) < 5:                                   # малко застъпване → не гадай
+            return state.get(key, 0.0)
+        now = float((j["Close_d"] - j["Close"]).tail(days).median())
+        if not np.isfinite(now) or abs(now) > TF_BASIS_CAP:
+            notes.append(f"контрактен базис {now:+.1f}$ извън диапазон — пазя стария")
+            return state.get(key, 0.0)
+        old = state.get(key)
+        state[key] = round(now if old is None else old + TF_BASIS_ALPHA * (now - old), 3)
+        return state[key]
+    except Exception:
+        return state.get(key, 0.0)
 
 
 # ---------- съвети (Ф1.3 / Ф2 / F18) ----------
@@ -1331,13 +1369,17 @@ def main():
             obj = dict(trade_obj); obj["hit"] = dict(cum_hit)
             exit_msgs.append(("exit:" + kind, (kind, obj, px, when, via, gap), kind, trade_obj["direction"]))
 
-    # === 2) СИГНАЛ на 7-те ТФ (ядрото — непипнато) ===
+    # === 2) СИГНАЛ на 7-те ТФ ===
+    # ОДИТ 28.07: интрадей фреймовете се сравняват срещу ДНЕВНИ refs, а двете криви
+    # на Yahoo са на различно контрактно ниво → корекция преди сравнението.
+    tf_adj = _tf_basis(meta, "tf_basis_g", src, gold_d, notes)
     board = []
     for lbl, *_ in TFS:
         df = frames.get(lbl)
         if df is None or len(df) == 0:
             board.append((lbl, "wait", 0, "weak", "ЧАКАЙ")); continue
-        ls, ss, _c = _scores(df, refs, macro)
+        adj = 0.0 if lbl == "1ден" else tf_adj      # «1ден» Е на кривата на refs → без корекция
+        ls, ss, _c = _scores(df, refs, macro, price_adj=adj)
         board.append((lbl,) + _resolve(ls, ss, macro))
     actionable = [b for b in board if b[1] != "wait" and b[3] != "weak"] if enough_history else []
     rank = {"premium": 3, "strong": 2, "medium": 1, "weak": 0}
@@ -1463,7 +1505,9 @@ def main():
         spot_s = _spot_sane(raw_s, s_bar - basis_s, 0.30, bar_rng=rng_s, spot_jump=jump_s)
         s_price_user = spot_s["mid"] if spot_s else round(s_bar - basis_s, 3)
         s_refs = _refs(sdd)
-        ls_s, ss_s, _ = _scores(s5, s_refs, macro)
+        # ОДИТ 28.07: същият контрактен базис и при среброто (s5 = интрадей, s_refs = дневни)
+        s_tf_adj = _tf_basis(meta, "tf_basis_s", s5, sdd, notes)
+        ls_s, ss_s, _ = _scores(s5, s_refs, macro, price_adj=s_tf_adj)
         s_dir, s_score, s_tk, s_tn = _resolve(ls_s, ss_s, macro)
         s_trade = _load_state(s_tr_f, None)
         s_trade = _migrate_trade(s_trade, basis_s, dec=3, notes=notes)
@@ -1707,7 +1751,7 @@ def main():
                              "spot": (spot_g or {}).get("mid"), "spot_age_sec": (raw_g or {}).get("age_sec"),
                              "spot_src": (spot_g or {}).get("src"), "spot_rejected": spot_rejected_g,
                              "spread": round(spot_g["ask"] - spot_g["bid"], 3) if spot_g else None,
-                             "basis": basis_g, "shield": shield, "stale_bar": stale_bar,
+                             "basis": basis_g, "tf_basis": meta.get("tf_basis_g"), "shield": shield, "stale_bar": stale_bar,
                              "track_mode": track_mode, "silver_ok": silver_ok,
                              "trade": ({"dir": trade["direction"], "entry": trade["entry"], "tier": trade.get("tier")}
                                        if trade else None),
