@@ -425,6 +425,24 @@ ck("НАХОДКА-A роловър ре-анкерва (барът скочи)"
 _mp = {"basis_g": 5.0}
 lb._basis_update(_mp, "basis_g", {"mid": 2400.0, "src": "paxg"}, 2409.0, [], now_utc="2026-07-14T12:30")
 ck("НАХОДКА-B PAXG не обновява базиса", _mp["basis_g"] == 5.0)
+# ── ОДИТ-6 (29.07): резервната ВЕРИГА ──
+# Дефектът: 267 от 1674 делнични ръна без спот, spot_src {'swq':1407, None:267} — PAXG нула.
+# Причина: Actions рънърите са в САЩ, Binance връща 451 на американски IP. Резервата беше
+# тествана там, където ботът НЕ работи. Без спот _advice_entry блокира pending_trade →
+# ботът не може да отвори сделка на всеки шести рън.
+for _s in ("paxg-bin", "paxg-cb", "paxg-kr"):
+    _mx = {"basis_g": 5.0}
+    lb._basis_update(_mx, "basis_g", {"mid": 2400.0, "src": _s}, 2409.0, [], now_utc="2026-07-14T12:30")
+    ck(f"О6 {_s} също НЕ замърсява базиса", _mx["basis_g"] == 5.0)
+_spotsrc = _insp.getsource(lb._spot)
+ck("О6 верига от ТРИ резервни източника", _spotsrc.count("paxg-") == 3)
+ck("О6 Coinbase е във веригата", "api.exchange.coinbase.com" in _spotsrc)
+ck("О6 Kraken е във веригата", "api.kraken.com" in _spotsrc)
+ck("О6 Binance остава първи (работи извън САЩ)", _spotsrc.index("paxg-bin") < _spotsrc.index("paxg-cb"))
+ck("О6 санити диапазон за златото", "500 < b < 20000" in _spotsrc)
+ck("О6 провалът на един източник пробва следващия", "continue" in _spotsrc)
+ck("О6 пазачът на базиса лови по ПРЕФИКС", 'startswith("paxg")' in _src)
+ck("О6 затворен пазар пак не ползва крипто-прокси", "if market_closed:" in _spotsrc)
 
 # M1: за отворена сделка checked не минава отвъд предпоследния бар
 # (свой levels — TR["levels"] е споделен и по-ранен тест мести sl→вход)
