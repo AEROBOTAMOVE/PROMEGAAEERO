@@ -29,7 +29,7 @@ warnings.filterwarnings("ignore")
 import numpy as np
 import pandas as pd
 
-VERSION = "v5.7"
+VERSION = "v5.8"
 PIP = 0.10
 SL_PIPS = 200; SL_D = SL_PIPS * PIP                       # стоп: 200п = $20/oz
 TPS = [("ТП1", 75, 7.5), ("ТП2", 120, 12.0), ("ТП3", 200, 20.0)]
@@ -430,6 +430,7 @@ def _tf_basis(state, key, intra, daily, notes, days=20):
 
 # ---------- съвети (Ф1.3 / Ф2 / F18) ----------
 MIN_N = 100      # В4: под толкова сделки процентът е шум → не се цитира
+REOFFER_H = 4    # ОДИТ-3: сетъпът стои и не си влязъл → напомняща карта на всеки N часа
 def _pct(seg, label):
     """В4/В6: цитирай процент САМО ако има n≥MIN_N; иначе — без число."""
     if seg.get("n") and seg["n"] >= MIN_N and seg.get("win") is not None:
@@ -1404,7 +1405,14 @@ def main():
         last = {k: v for k, v in last.items() if k != "key"}
         (out / "last_sent.json").write_text(json.dumps(last), encoding="utf-8")
         notes.append("сетъпът изчезна — анти-спам ключът нулиран (връщането му ще е НОВА карта)")
-    key = date + "|" + ";".join(f"{l}:{d}:{t}" for l, d, s, t, _ in board if t != "weak" and d != "wait")
+    # 🔴 ОДИТ-3 (29.07): ключът СЪДЪРЖАШЕ `date`, а `date` идва от ДНЕВНИЯ БАР на Yahoo,
+    # който се публикува в 02:10 UTC. Значи ключът се нулираше в 05:10 София ВСЕКИ ДЕН и
+    # ботът моментално пращаше каквото стои на борда — 5 дни подред картата беше точно в
+    # 05:10 при НЕПРОМЕНЕН борд. Картата идваше от КАЛЕНДАРА, не от пазара.
+    # Обратната страна: при устойчив тренд отпечатъкът не се мени → ботът мълчеше цял ден
+    # (22.07: 290 включвания със силен борд без сделка → 1 карта).
+    # ФИКС: датата излиза от ключа. Картата идва когато СЕТЪПЪТ се появи.
+    key = ";".join(f"{l}:{d}:{t}" for l, d, s, t, _ in board if t != "weak" and d != "wait")
     mins_since = None
     if last.get("sent_utc"):
         try:
@@ -1415,7 +1423,14 @@ def main():
     cool_ok = (mins_since is None or mins_since >= 45
                or (new_dir is not None and new_dir != last.get("dir") and mins_since >= 15)
                or tier_up)                                # ъпгрейд на класа минава паузата (Ф9.3)
-    should_sig = args.force or (bool(actionable) and (last.get("key") != key or tier_up) and cool_ok)
+    # ПОВТОРНО ПРЕДЛАГАНЕ: сетъпът още стои, НЕ си влязъл, минали са REOFFER_H часа →
+    # напомняща карта. Без нея силен борд, който трае дни, дава ЕДНА карта общо.
+    reoffer = (bool(actionable) and trade is None and new_dir is not None
+               and rank.get(best[3], 0) >= rank.get("strong", 2)
+               and mins_since is not None and mins_since >= REOFFER_H * 60)
+    should_sig = args.force or (bool(actionable) and (last.get("key") != key or tier_up or reoffer) and cool_ok)
+    if reoffer and last.get("key") == key:
+        notes.append(f"повторно предлагане: сетъпът стои от {mins_since/60:.1f}ч, вход не е взет")
 
     # ре-влизане след приключена сделка — по F18 правилата
     closed_kinds = [k for _, _, k, _ in exit_msgs if k in ("tp3", "sl", "time", "flip")]
@@ -1534,7 +1549,9 @@ def main():
         # (всички silver.short.* класове са ≤0 → _advice_entry връща False винаги).
         # Затова за шорт ключът ИГНОРИРА класа: смяната ПРЕМИУМ↔СРЕДЕН вече не
         # преиздава карта → 1 информативна карта на ден вместо ~3 (сянката остава).
-        s_key = f"{date}|{s_dir}" if s_dir == "short" else f"{date}|{s_dir}:{s_tk}"
+        # ОДИТ-3 (29.07): и тук датата излизаше от дневния бар на Yahoo (02:10 UTC) —
+        # сребърната карта беше закована в 05:10 София 5 дни подред. Датата излиза от ключа.
+        s_key = f"{s_dir}" if s_dir == "short" else f"{s_dir}:{s_tk}"
         s_mins = None
         if s_last.get("sent_utc"):
             try:
@@ -1548,7 +1565,12 @@ def main():
         s_cool = (s_mins is None or s_mins >= 45 or (s_dir != s_last.get("dir") and s_mins >= 15) or s_tier_up)
         s_closed = any(k in ("tp3", "sl", "time", "flip") for k, *_ in s_exits)
         s_guard_n = guard.get("s_" + s_dir, 0) if s_dir in ("long", "short") else 0
-        s_should = args.force or (s_actionable and s_cool and (s_last.get("key") != s_key or s_tier_up))   # НАХОДКА 3
+        s_reoffer = (s_actionable and s_trade is None and s_dir in ("long", "short")
+                     and rank.get(s_tk, 0) >= rank.get("strong", 2)
+                     and s_mins is not None and s_mins >= REOFFER_H * 60)
+        s_should = args.force or (s_actionable and s_cool and (s_last.get("key") != s_key or s_tier_up or s_reoffer))
+        if s_reoffer and s_last.get("key") == s_key:
+            notes.append(f"сребро: повторно предлагане ({s_mins/60:.1f}ч)")
         s_reentry = False        # F19-Т2: СРЕБРОТО ТЪРГУВА САМО ДНЕВНАТА КАРТА — без ре-влизания
         if s_should and weekend:                           # ОДИТ-1 №3: уикендът Е ПЪРВИ (виж златото)
             s_should = False; notes.append("сребро: уикенд")
