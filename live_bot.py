@@ -29,7 +29,7 @@ warnings.filterwarnings("ignore")
 import numpy as np
 import pandas as pd
 
-VERSION = "v5.8a"
+VERSION = "v5.8b"
 PIP = 0.10
 SL_PIPS = 200; SL_D = SL_PIPS * PIP                       # стоп: 200п = $20/oz
 TPS = [("ТП1", 75, 7.5), ("ТП2", 120, 12.0), ("ТП3", 200, 20.0)]
@@ -450,8 +450,21 @@ def _tf_basis(state, key, intra, daily, notes, days=20):
 
 # ---------- съвети (Ф1.3 / Ф2 / F18) ----------
 MIN_N = 100      # В4: под толкова сделки процентът е шум → не се цитира
-REOFFER_H = 4    # ОДИТ-3: сетъпът стои и не си влязъл → напомняща карта на всеки N часа
-REOFFER_LO = 8   # ...но само между тези часове СОФИЯ — вход в 02:20 е шум, не помощ
+# ── ПОВТОРНО ПРЕДЛАГАНЕ (ОДИТ-3, коригирано след паричен тест 29.07) ────────────
+# Първо качих REOFFER_H = 4 без таван на възрастта. ДВА независими агента го премериха
+# на реален bid/ask (19.7 години, 240 месеца) и ГО ОБОРИХА:
+#   • пределните входове, които 6ч-напомнянето създава: −0.878$/сделка (t=−2.65 по дни)
+#   • 4ч: 3044 нови сделки за −186$ общо — плащаш спред 3044 пъти за нула
+#   • ВСИЧКИТЕ 6 хоризонта (3/4/6/8/12/24ч) дават отрицателни пределни входове
+# ПРИЧИНАТА: ръбът живее в първите ~12 часа на сетъпа. Без таван напомнянето прави
+# ВЕРИГА (медиана 40ч след първата карта, 45% над 48ч) и купува остарял сетъп:
+#   <6ч +0.231$ · 6-12ч +0.052$ · 12-24ч −1.590$ · 1-2дни −0.681$ · >2дни −1.219$
+# ЕДИНСТВЕНИЯТ вариант над нулата на целия период: напомняй на 6ч, но САМО докато
+# сетъпът е под 12ч → пределни входове −0.074$ (t=−0.07, тоест нула) и целият
+# вариант +0.021$/сделка. Лекува «ботът мълчи цял ден», без да плаща с късни входове.
+REOFFER_H = 6          # най-рано толкова часа след ПОСЛЕДНАТА карта
+REOFFER_MAX_AGE_H = 12 # ...и само докато САМИЯТ СЕТЪП е по-млад от толкова часа
+REOFFER_LO = 8         # ...и само между тези часове СОФИЯ — вход в 02:20 е шум, не помощ
 REOFFER_HI = 22
 def _pct(seg, label):
     """В4/В6: цитирай процент САМО ако има n≥MIN_N; иначе — без число."""
@@ -1447,13 +1460,26 @@ def main():
                or tier_up)                                # ъпгрейд на класа минава паузата (Ф9.3)
     # ПОВТОРНО ПРЕДЛАГАНЕ: сетъпът още стои, НЕ си влязъл, минали са REOFFER_H часа →
     # напомняща карта. Без нея силен борд, който трае дни, дава ЕДНА карта общо.
+    # ВЪЗРАСТ НА СЕТЪПА: брои се от ПЪРВАТА карта на този ключ, не от последната —
+    # иначе напомнянето се самозахранва във верига и купува сетъп на 40 часа (мерено).
+    key_age_h = None
+    if last.get("key") == key and last.get("key_since"):
+        try:
+            key_age_h = (pd.Timestamp(now_utc) - pd.Timestamp(last["key_since"])).total_seconds() / 3600
+        except Exception:
+            key_age_h = None
     reoffer = (bool(actionable) and trade is None and new_dir is not None
                and rank.get(best[3], 0) >= rank.get("strong", 2)
                and mins_since is not None and mins_since >= REOFFER_H * 60
+               and key_age_h is not None and key_age_h <= REOFFER_MAX_AGE_H
                and _reoffer_hour_ok(now_utc))
     should_sig = args.force or (bool(actionable) and (last.get("key") != key or tier_up or reoffer) and cool_ok)
     if reoffer and last.get("key") == key:
-        notes.append(f"повторно предлагане: сетъпът стои от {mins_since/60:.1f}ч, вход не е взет")
+        notes.append(f"повторно предлагане: сетъпът е на {key_age_h:.1f}ч (таван {REOFFER_MAX_AGE_H}ч), вход не е взет")
+    elif (bool(actionable) and trade is None and last.get("key") == key
+          and key_age_h is not None and key_age_h > REOFFER_MAX_AGE_H
+          and mins_since is not None and mins_since >= REOFFER_H * 60):
+        notes.append(f"НЕ предлагам пак: сетъпът е на {key_age_h:.1f}ч — след {REOFFER_MAX_AGE_H}ч ръбът е изчерпан (мерено)")
 
     # ре-влизане след приключена сделка — по F18 правилата
     closed_kinds = [k for _, _, k, _ in exit_msgs if k in ("tp3", "sl", "time", "flip")]
@@ -1588,13 +1614,20 @@ def main():
         s_cool = (s_mins is None or s_mins >= 45 or (s_dir != s_last.get("dir") and s_mins >= 15) or s_tier_up)
         s_closed = any(k in ("tp3", "sl", "time", "flip") for k, *_ in s_exits)
         s_guard_n = guard.get("s_" + s_dir, 0) if s_dir in ("long", "short") else 0
+        s_key_age_h = None
+        if s_last.get("key") == s_key and s_last.get("key_since"):
+            try:
+                s_key_age_h = (pd.Timestamp(now_utc) - pd.Timestamp(s_last["key_since"])).total_seconds() / 3600
+            except Exception:
+                s_key_age_h = None
         s_reoffer = (s_actionable and s_trade is None and s_dir in ("long", "short")
                      and rank.get(s_tk, 0) >= rank.get("strong", 2)
                      and s_mins is not None and s_mins >= REOFFER_H * 60
+                     and s_key_age_h is not None and s_key_age_h <= REOFFER_MAX_AGE_H
                      and _reoffer_hour_ok(now_utc))
         s_should = args.force or (s_actionable and s_cool and (s_last.get("key") != s_key or s_tier_up or s_reoffer))
         if s_reoffer and s_last.get("key") == s_key:
-            notes.append(f"сребро: повторно предлагане ({s_mins/60:.1f}ч)")
+            notes.append(f"сребро: повторно предлагане (сетъп на {s_key_age_h:.1f}ч, таван {REOFFER_MAX_AGE_H}ч)")
         s_reentry = False        # F19-Т2: СРЕБРОТО ТЪРГУВА САМО ДНЕВНАТА КАРТА — без ре-влизания
         if s_should and weekend:                           # ОДИТ-1 №3: уикендът Е ПЪРВИ (виж златото)
             s_should = False; notes.append("сребро: уикенд")
@@ -1759,8 +1792,12 @@ def main():
 
     # === 7б) Б1: сделка/състояние се пишат САМО след ПОТВЪРДЕНО пращане на картата ===
     if should_sig and "signal" in sent_tags:
+        # key_since = кога този сетъп се появи ПЪРВИ път. Пази се, докато ключът е същият;
+        # нов ключ → нов часовник. От него се мери възрастта за повторното предлагане.
+        key_since = last.get("key_since") if last.get("key") == key and last.get("key_since") else now_utc
         (out / "last_sent.json").write_text(json.dumps({"key": key, "date": date, "sent_ok": True,
-                                                        "dir": new_dir, "tier": best[3], "sent_utc": now_utc}),
+                                                        "dir": new_dir, "tier": best[3], "sent_utc": now_utc,
+                                                        "key_since": key_since}),
                                             encoding="utf-8")
         if pending_trade is not None:
             trade = pending_trade                          # отваряме сделката чак сега
@@ -1772,8 +1809,11 @@ def main():
     if silver_trade_new is not None or s_key is not None:
         if "s-signal" in sent_tags:
             if s_key:
+                s_since = (s_last.get("key_since") if s_last.get("key") == s_key and s_last.get("key_since")
+                           else now_utc)
                 s_state_f.write_text(json.dumps({"key": s_key, "date": date, "sent_ok": True, "dir": s_dir,
-                                                 "tier": s_tk, "sent_utc": now_utc}), encoding="utf-8")
+                                                 "tier": s_tk, "sent_utc": now_utc,
+                                                 "key_since": s_since}), encoding="utf-8")
             if silver_trade_new is not None:
                 s_tr_f.write_text(json.dumps(silver_trade_new, ensure_ascii=False), encoding="utf-8")
                 statuses.append("s-trade=OPENED")
