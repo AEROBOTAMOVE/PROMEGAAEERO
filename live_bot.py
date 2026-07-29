@@ -29,7 +29,7 @@ warnings.filterwarnings("ignore")
 import numpy as np
 import pandas as pd
 
-VERSION = "v5.8b"
+VERSION = "v5.9"
 PIP = 0.10
 SL_PIPS = 200; SL_D = SL_PIPS * PIP                       # стоп: 200п = $20/oz
 TPS = [("ТП1", 75, 7.5), ("ТП2", 120, 12.0), ("ТП3", 200, 20.0)]
@@ -92,13 +92,26 @@ def _rates():
 
 
 # ---------- сигнал (ЯДРОТО — непипнато от v4) ----------
-def _macro(gold_d, gdx_d, dxy_d, rr):
+def _macro(gold_d, gdx_d, dxy_d, rr, health=None):
+    """🔴 ОДИТ-5: `bool(NaN > 0)` е False — няма състояние «не знам». Значи ТРИ МЪРТВИ ФИЙДА
+    дават {False, False, False}, което `_resolve` чете като m3s (макро 3/3 за ШОРТ) и `_tier`
+    вдига на ПРЕМИУМ. Максимално мечи пазар и три умрели входа са БАЙТ-ЗА-БАЙТ неразличими.
+    Живият борд е шорт 14 722 клетки, лонг 0, 74.3% премиум — точно този подпис.
+    `health` (ако е подаден) се пълни с реалната стойност на всяко краче + дали е било NaN,
+    за да влезе в дневника: досега краката се печатаха само в stdout и умираха с Actions лога."""
     idx = gold_d.index
     g = gold_d["Close"]; gd = gdx_d["Close"].reindex(idx).ffill()
     dx = dxy_d["Close"].reindex(idx).ffill(); r = rr.reindex(idx).ffill()
-    return {"миньори": bool(((gd.pct_change(50) - g.pct_change(50)) > 0).iloc[-1]),
-            "долар": bool(((-(dx.pct_change(20))) > 0).iloc[-1]),
-            "лихви": bool(((-(r - r.shift(20))) > 0).iloc[-1])}
+    raw = {"миньори": (gd.pct_change(50) - g.pct_change(50)).iloc[-1],
+           "долар": (-(dx.pct_change(20))).iloc[-1],
+           "лихви": (-(r - r.shift(20))).iloc[-1]}
+    if health is not None:
+        for k, v in raw.items():
+            bad = v is None or (isinstance(v, float) and np.isnan(v))
+            health[k] = None if bad else round(float(v), 6)
+        health["мъртви"] = [k for k in raw if health.get(k) is None]
+    return {k: bool(v > 0) if not (v is None or (isinstance(v, float) and np.isnan(v))) else False
+            for k, v in raw.items()}
 
 
 def _sofia(iso_utc=None):
@@ -109,6 +122,17 @@ def _sofia(iso_utc=None):
         return dt.replace(tzinfo=timezone.utc).astimezone(ZoneInfo("Europe/Sofia")).strftime("%H:%M")
     except Exception:
         return "?"
+
+
+def _ts_le(a, b):
+    """ОДИТ-5 (L1-01): сравнение на моменти по СТОЙНОСТ, не по низ. «2026-07-29 03:00:00» и
+    «2026-07-29T02:10» са един и същи ден, но като низове интервалът е по-малък от 'T' →
+    старото `str(ts) <= be_since` връщаше True за цял ден и гасеше безрисковия стоп.
+    При неразбираем вход връща False = «не гаси» (безопасната страна)."""
+    try:
+        return pd.Timestamp(a) <= pd.Timestamp(b)
+    except Exception:
+        return False
 
 
 def _sofia_hour(iso_utc=None):
@@ -243,6 +267,44 @@ def _resolve(ls, ss, macro):
     if ss > ls:
         tk, tn = _tier(ss, m3s); return ("short", ss, tk, tn)
     return ("wait", max(ls, ss), "weak", "ЧАКАЙ")
+
+
+def _standing_msg(direction, best, age_h, spot, bar_price, price_user, board, macro, health, now_utc):
+    """ОДИТ-5: «сетъпът още стои, но НЕ е вход». Пълни тишината след 12-ия час, без да
+    предлага сделка, за която е мерено, че губи. Никакви нива за влизане — само къде сме."""
+    ico = "🔴" if direction == "short" else "🟢"
+    dn = "ШОРТ (продажба)" if direction == "short" else "ЛОНГ (покупка)"
+    agree = sum(1 for b in board if b[1] == direction and b[3] != "weak")
+    L = [f"⏸ {ico} СТОЯЩ СЕТЪП · {dn} · ⏰ {_sofia(now_utc)} София",
+         "─────────────────",
+         f"Сетъпът стои вече <b>{age_h:.0f} часа</b> ({agree}/7 рамки, клас {best[4]}).",
+         f"Цена сега: <code>{_fmt(price_user, 2)}</code>",
+         "",
+         "🚫 <b>ТОВА НЕ Е ВХОД.</b>",
+         f"<i>Мерено на 19.7 години реален спред: вход в първите 12ч на сетъп носи "
+         f"+0.23$/сделка, а между 12 и 24 часа — <b>−1.59$/сделка</b>. "
+         f"Затова не ти давам нива: ръбът на този сетъп вече е изяден.</i>",
+         "",
+         "Пращам ти го само за да знаеш, че пазарът не е сменил посоката —",
+         "новата карта с вход идва, когато бордът СЕ ПРОМЕНИ."]
+    if health and health.get("мъртви"):
+        L.append(f"\n⚠️ <b>Внимание:</b> макро-краче без данни ({', '.join(health['мъртви'])}) — "
+                 f"класът е занижен, защото мълчанието на счупен фийд не е съгласие.")
+    L += ["─────────────────", f"{VERSION} · информативно · не е фин. съвет"]
+    return "\n".join(L)
+
+
+def _demote_if_dead(resolved, health):
+    """🔴 ОДИТ-5: ПРЕМИУМ значи «и трите макро-крака са съгласни». Ако някое краче е МЪРТВО
+    (NaN → False), съгласието е фалшиво — мълчанието на счупен фийд се брои за глас «за».
+    Затова при мъртво краче класът пада ПРЕМИУМ → СИЛЕН. Не спираме сигнала (цената още
+    говори), но не го обявяваме за максимална увереност на основа, която не съществува."""
+    if not health or not health.get("мъртви"):
+        return resolved
+    d, sc, tk, tn = resolved
+    if tk == "premium":
+        return (d, sc, "strong", "СИЛЕН")
+    return resolved
 
 
 def _levels_gen(entry, direction, tp1, tp2, tp3, sl, dec=2):
@@ -464,6 +526,8 @@ MIN_N = 100      # В4: под толкова сделки процентът е
 # вариант +0.021$/сделка. Лекува «ботът мълчи цял ден», без да плаща с късни входове.
 REOFFER_H = 6          # най-рано толкова часа след ПОСЛЕДНАТА карта
 REOFFER_MAX_AGE_H = 12 # ...и само докато САМИЯТ СЕТЪП е по-млад от толкова часа
+STANDING_H = 8         # ОДИТ-5: след тавана — информативна «стоящ сетъп» карта на всеки N часа
+                       # (реплей показа 4 от 9 дни с НУЛА златни карти само от тавана)
 REOFFER_LO = 8         # ...и само между тези часове СОФИЯ — вход в 02:20 е шум, не помощ
 REOFFER_HI = 22
 def _pct(seg, label):
@@ -1054,7 +1118,15 @@ def track_trade(trade, bars, basis, now_price, now_utc, spot=None):
         # BE-стоп (sl=вход след ТП1) НЕ бива да пали на бара, който УДАРИ ТП1, при
         # преразглеждане (M1 оставя последния бар преразглеждаем) — иначе широк ТП1-бар
         # с фитил под входа затваря фалшиво печелившата сделка на нула.
-        if sl_hit and lv["sl"] == trade["entry"] and trade.get("be_since") and str(ts) <= trade["be_since"]:
+        # 🔴 ОДИТ-5 (L1-01, критичен): тук се сравняваха НИЗОВЕ с РАЗЛИЧЕН формат.
+        # Барният път пишеше be_since = str(ts) → "2026-07-29 03:00:00" (интервал на позиция 10),
+        # спот-пътят пишеше now_utc → "2026-07-29T02:10" (буква T). ' '(0x20) < 'T'(0x54), значи
+        # за ВСЕКИ бар от същия календарен ден сравнението даваше True и BE-стопът се ИЗКЛЮЧВАШЕ
+        # до полунощ. Възпроизведено: ТП1 по спот в 02:10 → барът 02:15 минава ПРЕЗ входа и
+        # track_trade не връща нищо; същият бар с дата 30.07 гърми нормално. Последици: сделката
+        # виси отворена (→ повторното предлагане и насрещните карти мълчат), а после ботът може
+        # да прати «ТП2 ПОСТИГНАТ» за позиция, която ти вече си затворил на нула.
+        if sl_hit and lv["sl"] == trade["entry"] and trade.get("be_since") and _ts_le(ts, trade["be_since"]):
             sl_hit = False
         if sl_hit:                                   # консервативно: стопът първи
             gap = (op <= lv["sl"]) if d == "long" else (op >= lv["sl"])
@@ -1166,6 +1238,12 @@ def _send_raw(text):
 
 
 POISON_HARD_FAILS = 3     # Б6: толкова ТВЪРДИ (4xx) провала = отровно (развален HTML) → хвърли
+# ...но НИКОГА за тези: те съобщават пари, които вече са на риск (ОДИТ-5 / L2-01)
+EXIT_TAGS = ("exit", "s-exit", "sh-exit")
+def _strip_html(t):
+    """Последен шанс за изходна карта, която Телеграм отказва заради HTML: гол текст."""
+    import re as _re, html as _h
+    return _h.unescape(_re.sub(r"<[^>]+>", "", t))
 def _outbox_flush(out_dir, new_msgs, statuses, dry=False):
     """Стари неизпратени първо, после новите. Провалените остават за следващия рън.
     Връща set() с ТАГОВЕТЕ, реално пратени този рън (за да гейтнем записа — Б1).
@@ -1191,21 +1269,33 @@ def _outbox_flush(out_dir, new_msgs, statuses, dry=False):
                        and m.get("first_ts", now_iso) < now_iso)]
     # R1: дедуп по таг за ПРЕПОВТАРЯЩИТЕ се карти (signal/s-signal/digest/status) —
     # при срив на Телеграм не трупай N копия; пази само НАЙ-НОВОТО (последната цена).
-    DEDUP = ("signal", "s-signal", "digest", "status", "pulse", "cq-ref")
+    DEDUP = ("signal", "s-signal", "digest", "status", "pulse", "cq-ref", "standing")
     seen_last = {}
     for i, msg in enumerate(pending):
         if msg["tag"] in DEDUP:
             seen_last[msg["tag"]] = i          # последният индекс за тоя таг
     pending = [m for i, m in enumerate(pending)
                if m["tag"] not in DEDUP or seen_last[m["tag"]] == i]
-    remaining = []; sent_tags = set()
+    remaining = []; sent_tags = set(); no_token = False
     for msg in pending:
         msg.setdefault("first_ts", now_iso); msg["attempts"] = msg.get("attempts", 0) + 1
         # ОТРОВНО = само ТВЪРДИ провали (развален HTML, 4xx); мрежов срив НЕ брои →
         # легитимен изход не се хвърля при дълъг Телеграм срив (краен-случай находка).
-        if msg.get("hard_fails", 0) >= 3:
-            statuses.append(f"{msg['tag']}=ОТРОВНО-ХВЪРЛЕНО (развален HTML)")
-            continue
+        # 🔴 ОДИТ-5 (L2-01, критичен): но ИЗХОДНИТЕ карти НИКОГА не се хвърлят. Те съобщават
+        # пари, които ВЕЧЕ са на риск: сделката е затворена на диска, стоп-пазачът е ударил,
+        # а човекът не знае, че е излязъл — държи позиция, за която ботът мисли, че е закрита.
+        # 15 минути 4xx (3 ръна на 5-минутна каденция) стигаха, за да изчезне «СТОП УДАРЕН».
+        # Изходите чакат вечно; при 3+ твърди провала пращаме гол текст без HTML (последен шанс).
+        if msg.get("hard_fails", 0) >= POISON_HARD_FAILS:
+            if msg["tag"].split(":")[0] in EXIT_TAGS:
+                if not msg.get("plain"):
+                    msg["plain"] = True
+                    msg["text"] = _strip_html(msg["text"])
+                    statuses.append(f"{msg['tag']}=ИЗХОД: HTML махнат, продължавам да опитвам")
+                # пада надолу и се пробва пак — изходна карта НЕ се хвърля
+            else:
+                statuses.append(f"{msg['tag']}=ОТРОВНО-ХВЪРЛЕНО (развален HTML)")
+                continue
         if dry:
             statuses.append(f"{msg['tag']}=DRY"); sent_tags.add(msg["tag"]); continue
         st = _send_raw(msg["text"])
@@ -1218,9 +1308,19 @@ def _outbox_flush(out_dir, new_msgs, statuses, dry=False):
         elif st.startswith("HARD_FAIL"):
             msg["hard_fails"] = msg.get("hard_fails", 0) + 1
             remaining.append(msg)                         # ще опита още 2 пъти, после отровно
-        elif not st.startswith("DRY_RUN"):
+        elif st.startswith("DRY_RUN"):
+            # 🔴 ОДИТ-5 (L2-02, критичен): «няма токен» НЕ е успешно пращане. Преди този клон
+            # съобщението просто изчезваше — липсващ/изтекъл секрет изтриваше цялата поща, а
+            # рънът оставаше ЗЕЛЕН. Конфигурационна грешка изглеждаше точно като тих пазар.
+            remaining.append(msg)                         # ПАЗИ съобщението
+            no_token = True
+        else:
             remaining.append(msg)                         # мек провал → ретрай вечно (не брои за отровно)
     ob_f.write_text("\n".join(json.dumps(m, ensure_ascii=False) for m in remaining), encoding="utf-8")
+    if no_token:
+        statuses.append(f"🔴 ЛИПСВА TELEGRAM_TOKEN/CHAT_ID — {len(remaining)} карти чакат в пощата")
+        raise SystemExit(f"КОНФИГУРАЦИЯ: няма TELEGRAM_TOKEN/TELEGRAM_CHAT_ID; "
+                         f"{len(remaining)} карти НЕ са изпратени и остават в outbox.jsonl")
     return sent_tags
 
 
@@ -1256,7 +1356,12 @@ def main():
     enough_history = len(gold_h) >= 200
     if not enough_history:
         notes.append(f"недостатъчна история ({len(gold_h)} дневни бара < 200) — сигналът е ненадежден, въздържане")
-    macro = _macro(gold_h, gdx_h, dxy_h, rr); refs = _refs(gold_h)
+    macro_health = {}
+    macro = _macro(gold_h, gdx_h, dxy_h, rr, health=macro_health); refs = _refs(gold_h)
+    # ОДИТ-5: мъртъв фийд НЕ бива да минава за «максимално мечи макро» — казваме го на глас
+    if macro_health.get("мъртви"):
+        notes.append("🔴 МЪРТВО МАКРО-КРАЧЕ: " + ", ".join(macro_health["мъртви"])
+                     + " — класът е занижен до СИЛЕН (мъртъв фийд не е убеждение)")
     regime = _regime(gold_h, gold_today=gold_d)
     regime["streaks"] = _streaks(gold_h, gdx_h, dxy_h, rr)
 
@@ -1416,7 +1521,7 @@ def main():
             board.append((lbl, "wait", 0, "weak", "ЧАКАЙ")); continue
         adj = 0.0 if lbl == "1ден" else tf_adj      # «1ден» Е на кривата на refs → без корекция
         ls, ss, _c = _scores(df, refs, macro, price_adj=adj)
-        board.append((lbl,) + _resolve(ls, ss, macro))
+        board.append((lbl,) + _demote_if_dead(_resolve(ls, ss, macro), macro_health))
     actionable = [b for b in board if b[1] != "wait" and b[3] != "weak"] if enough_history else []
     rank = {"premium": 3, "strong": 2, "medium": 1, "weak": 0}
     best = max(board, key=lambda x: (rank[x[3]], x[2])) if actionable else board[0]
@@ -1476,10 +1581,28 @@ def main():
     should_sig = args.force or (bool(actionable) and (last.get("key") != key or tier_up or reoffer) and cool_ok)
     if reoffer and last.get("key") == key:
         notes.append(f"повторно предлагане: сетъпът е на {key_age_h:.1f}ч (таван {REOFFER_MAX_AGE_H}ч), вход не е взет")
-    elif (bool(actionable) and trade is None and last.get("key") == key
-          and key_age_h is not None and key_age_h > REOFFER_MAX_AGE_H
-          and mins_since is not None and mins_since >= REOFFER_H * 60):
-        notes.append(f"НЕ предлагам пак: сетъпът е на {key_age_h:.1f}ч — след {REOFFER_MAX_AGE_H}ч ръбът е изчерпан (мерено)")
+    # 🔴 ОДИТ-5: таванът от 12ч сам по себе си превръща «една карта на ДЕН» в «една карта на
+    # СЕТЪП» — реплей на живия борд показа ЧЕТИРИ дни от девет с НУЛА златни карти (два борда
+    # стояха 48.0ч и 42.8ч; датата в ключа беше единственото, което ги нулираше). Мълчанието
+    # е вярно като СЪВЕТ (късните входове губят), но е грешно като ИНФОРМАЦИЯ.
+    # Затова: след тавана НЕ мълчим — пращаме СТОЯЩ СЕТЪП, който изрично НЕ е вход.
+    # собствен часовник: стоящата карта НЕ пише last_sent.json (не е сигнал), значи
+    # mins_since не се нулира от нея — иначе би излизала на всеки рън до безкрай.
+    st_mins = None
+    if meta.get("standing_utc"):
+        try:
+            st_mins = (pd.Timestamp(now_utc) - pd.Timestamp(meta["standing_utc"])).total_seconds() / 60
+        except Exception:
+            st_mins = None
+    stale_setup = (bool(actionable) and trade is None and new_dir is not None
+                   and last.get("key") == key and not reoffer
+                   and key_age_h is not None and key_age_h > REOFFER_MAX_AGE_H
+                   and mins_since is not None and mins_since >= STANDING_H * 60
+                   and (st_mins is None or st_mins >= STANDING_H * 60)
+                   and _reoffer_hour_ok(now_utc))
+    if stale_setup:
+        notes.append(f"стоящ сетъп: {key_age_h:.1f}ч — информативна карта, НЕ вход "
+                     f"(след {REOFFER_MAX_AGE_H}ч ръбът е изчерпан, мерено)")
 
     # ре-влизане след приключена сделка — по F18 правилата
     closed_kinds = [k for _, _, k, _ in exit_msgs if k in ("tp3", "sl", "time", "flip")]
@@ -1572,7 +1695,7 @@ def main():
         # ОДИТ 28.07: същият контрактен базис и при среброто (s5 = интрадей, s_refs = дневни)
         s_tf_adj = _tf_basis(meta, "tf_basis_s", s5, sdd, notes)
         ls_s, ss_s, _ = _scores(s5, s_refs, macro, price_adj=s_tf_adj)
-        s_dir, s_score, s_tk, s_tn = _resolve(ls_s, ss_s, macro)
+        s_dir, s_score, s_tk, s_tn = _demote_if_dead(_resolve(ls_s, ss_s, macro), macro_health)
         s_trade = _load_state(s_tr_f, None)
         s_trade = _migrate_trade(s_trade, basis_s, dec=3, notes=notes)
         s_exits = []
@@ -1762,6 +1885,15 @@ def main():
         new_msgs.append(("status", _status_msg(board, new_dir, trade, s_tr_now, spot_g, spot_s,
                                                basis_g, basis_s, guard, shield, date, macro)))
 
+    # 🔴 ОДИТ-5: СТОЯЩ СЕТЪП — картата, която пълни тишината след 12-ия час. Изрично НЕ е вход:
+    # мереното казва, че късен вход губи (12-24ч −1.590$/сделка), но собственикът има право да
+    # ЗНАЕ, че сетъпът още стои и къде е цената спрямо нивата. Без нея таванът от 12ч правеше
+    # четири от девет дни напълно неми за златото.
+    if stale_setup and not should_sig and not weekend:
+        new_msgs.append(("standing", _standing_msg(new_dir, best, key_age_h, spot_g, bar_price,
+                                                   price_user, board, macro, macro_health, now_utc)))
+        meta["standing_utc"] = now_utc
+
     # CyberQuant дневна референция — веднъж на ден (сутрин 09 София), само делник
     if sof_now.hour == 9 and meta.get("cq_ref") != date and not weekend and cq:
         new_msgs.append(("cq-ref", _cq_msg(cq, now_utc)))
@@ -1841,6 +1973,10 @@ def main():
                              "track_mode": track_mode, "silver_ok": silver_ok,
                              "trade": ({"dir": trade["direction"], "entry": trade["entry"], "tier": trade.get("tier")}
                                        if trade else None),
+                             # 🔴 ОДИТ-5: най-важният вход на бота нямаше ТРАЙНА следа — краката
+                             # се печатаха само в stdout и умираха с Actions лога. Без тях
+                             # «защо е шорт-премиум от 8 дни» е неотговорим въпрос завинаги.
+                             "macro": macro, "macro_raw": macro_health,
                              "board": {l: [d, s, t] for l, d, s, t, _ in board},
                              "exits": [k for _, _, k, _ in exit_msgs],
                              "notes": notes, "status": statuses}, ensure_ascii=False) + "\n")
