@@ -200,7 +200,7 @@ ck("О3 повторно иска клас поне СИЛЕН", 'rank.get(best[
 ck("О3 повторно се вписва в дневника", "повторно предлагане" in _src)
 # нощен филтър: повторното предлагане важи само в часове, в които човек може да влезе
 ck("О3 нощен филтър съществува", "REOFFER_LO" in _src and "REOFFER_HI" in _src
-   and _src.count("_reoffer_hour_ok(now_utc)") == 2)          # злато И сребро
+   and _src.count("_reoffer_hour_ok(now_utc)") >= 2)          # злато, сребро (+стоящ сетъп)
 ck("О3 нощният прозорец е разумен (6-9 → 21-23)", 6 <= lb.REOFFER_LO <= 9 and 21 <= lb.REOFFER_HI <= 23)
 ck("О3 лято: 06:00 UTC = 09:00 София → ДА", lb._reoffer_hour_ok("2026-07-29T06:00") is True)
 ck("О3 лято: 23:20 UTC = 02:20 София → НЕ", lb._reoffer_hour_ok("2026-07-29T23:20") is False)
@@ -229,7 +229,7 @@ ck("О4 key_since се ЗАПАЗВА докато ключът е същият"
 ck("О4 сребро: key_since също се запазва",
    's_last.get("key_since") if s_last.get("key") == s_key and s_last.get("key_since")' in _src)
 ck("О4 key_since се пише в състоянието", '"key_since": key_since' in _src and '"key_since": s_since' in _src)
-ck("О4 отказът се вписва честно в дневника", "след 12ч ръбът е изчерпан" in _src or "ръбът е изчерпан (мерено)" in _src)
+ck("О4 отказът се вписва честно в дневника", "ръбът е изчерпан" in _src)
 # поведение: часовникът тръгва наново само при НОВ ключ
 _ks = lambda old_key, old_since, new_key, now: (old_since if old_key == new_key and old_since else now)
 ck("О4 същият ключ → часовникът НЕ се нулира", _ks("A", "T0", "A", "T9") == "T0")
@@ -237,6 +237,64 @@ ck("О4 нов ключ → часовникът тръгва наново", _ks
 ck("О4 липсващ key_since (стар файл) → тръгва от сега", _ks("A", None, "A", "T9") == "T9")
 # без key_since НЯМА повторно предлагане (стар state не бива да пуска верига)
 ck("О4 без key_since повторното е ИЗКЛЮЧЕНО", "key_age_h is not None and" in _src)
+
+# ── ОДИТ-5 (29.07): 5 находки от 14-агентна армия, всички потвърдени адверсарно ──
+# L1-01 (4/4 гласа, КРИТИЧНО): BE-стопът се гасеше цял ден заради сравнение на НИЗОВЕ
+# «2026-07-29 03:00:00» vs «2026-07-29T02:10» — интервалът (0x20) < 'T' (0x54).
+ck("L1-01 сравнението е по СТОЙНОСТ, не по низ", "_ts_le(ts, trade[\"be_since\"])" in _src)
+ck("L1-01 старото сравнение го няма", 'str(ts) <= trade["be_since"]' not in _src)
+ck("L1-01 смесени формати: интервал vs T", lb._ts_le("2026-07-29 02:15:00", "2026-07-29T02:10") is False)
+ck("L1-01 наистина по-рано → True", lb._ts_le("2026-07-29 02:05:00", "2026-07-29T02:10") is True)
+ck("L1-01 боклук не гаси стопа", lb._ts_le("боклук", "2026-07-29T02:10") is False)
+# поведение end-to-end: ТП1 по СПОТ, после бар през входа СЪЩИЯ ден → стопът ТРЯБВА да гръмне
+_tbe = {"direction": "long", "entry": 4000.0, "opened": "2026-07-29T02:00", "checked": "2026-07-29T02:00",
+        "levels": lb._levels(4000.0, "long"), "hit": {}, "status": "open", "v2": True, "ledger": "spot"}
+lb.track_trade(_tbe, bars([(4000, 4001, 3999, 4000)], "2026-07-29 02:00:00"), 0.0, 4007.5, "2026-07-29T02:10",
+               spot={"bid": 4007.5, "ask": 4007.9, "mid": 4007.7})
+ck("L1-01 ТП1 по спот вдига BE", _tbe["hit"].get("tp1") and _tbe["levels"]["sl"] == 4000.0)
+_tbe, _ebe = lb.track_trade(_tbe, bars([(3999, 4000, 3990, 3995)], "2026-07-29 02:15:00"), 0.0, 3995.0, "2026-07-29T02:20")
+ck("L1-01 БЕ-стопът гърми СЪЩИЯ ден (дефектът беше тук)", any(e[0] == "sl" for e in _ebe))
+# L2-01 (4/4, КРИТИЧНО): изходна карта се хвърляше след 3× 4xx, при вече затворена сделка
+ck("L2-01 изходните тагове са изключени от отровното", "EXIT_TAGS" in _src and 'in EXIT_TAGS' in _src)
+ck("L2-01 изходите включват трите семейства", set(lb.EXIT_TAGS) == {"exit", "s-exit", "sh-exit"})
+ck("L2-01 последен шанс без HTML", "_strip_html" in _src and "<b>" not in lb._strip_html("<b>x</b>"))
+ck("L2-01 _strip_html пази текста", lb._strip_html("<b>СТОП</b> на 4000") == "СТОП на 4000")
+# L2-02 (4/4, КРИТИЧНО): липсващ токен триеше цялата поща, а рънът оставаше зелен
+ck("L2-02 DRY_RUN ПАЗИ съобщението", "remaining.append(msg)                         # ПАЗИ съобщението" in _src)
+ck("L2-02 липсващ токен вдига аларма", "КОНФИГУРАЦИЯ: няма TELEGRAM_TOKEN" in _src)
+ck("L2-02 старото тихо изпускане го няма", 'elif not st.startswith("DRY_RUN"):' not in _src)
+# ОДИТ-5 макро: мъртъв фийд не бива да минава за ПРЕМИУМ, и трябва да оставя следа
+ck("О5 макро-краката влизат в дневника", '"macro": macro, "macro_raw": macro_health' in _src)
+ck("О5 _macro връща и здраве", "health=macro_health" in _src)
+ck("О5 мъртво краче сваля ПРЕМИУМ→СИЛЕН", lb._demote_if_dead(("short", 8, "premium", "ПРЕМИУМ"),
+                                                              {"мъртви": ["долар"]})[2] == "strong")
+ck("О5 живо макро не пипа класа", lb._demote_if_dead(("short", 8, "premium", "ПРЕМИУМ"),
+                                                     {"мъртви": []})[2] == "premium")
+ck("О5 празно здраве не пипа класа", lb._demote_if_dead(("long", 7, "premium", "ПРЕМИУМ"), {})[2] == "premium")
+ck("О5 сваля само ПРЕМИУМ, не по-надолу", lb._demote_if_dead(("short", 5, "medium", "СРЕДЕН"),
+                                                              {"мъртви": ["долар"]})[2] == "medium")
+ck("О5 мъртвото краче се вписва в бележките", "МЪРТВО МАКРО-КРАЧЕ" in _src)
+# ОДИТ-5 стоящ сетъп: таванът от 12ч правеше 4 от 9 дни НЕМИ — картата пълни тишината
+ck("О5 STANDING_H съществува", "STANDING_H" in _src and isinstance(lb.STANDING_H, int))
+ck("О5 стоящата карта се праща", 'new_msgs.append(("standing"' in _src)
+ck("О5 стоящата карта има свой часовник", 'meta["standing_utc"] = now_utc' in _src and "st_mins" in _src)
+ck("О5 стоящата НЕ се праща при активен сигнал", "stale_setup and not should_sig" in _src)
+ck("О5 стоящата иска ПРАЗНА позиция", "stale_setup = (bool(actionable) and trade is None" in _src)
+ck("О5 стоящата е в дедупа", '"cq-ref", "standing"' in _src)
+_stm = lb._standing_msg("short", ("1час", "short", 7, "premium", "ПРЕМИУМ"), 27.4,
+                        {"bid": 4000.0, "ask": 4000.4, "mid": 4000.2}, 4006.0, 4000.2,
+                        [("1час", "short", 7, "premium", "ПРЕМИУМ")] * 7,
+                        {"миньори": False, "долар": False, "лихви": False}, {"мъртви": []}, "2026-07-29T10:00")
+ck("О5 стоящата карта: рендер/HTML/лимит", 30 < len(_stm) < 4096
+   and _stm.count("<b>") == _stm.count("</b>") and _stm.count("<i>") == _stm.count("</i>"))
+ck("О5 стоящата карта КАЗВА, че не е вход", "ТОВА НЕ Е ВХОД" in _stm)
+ck("О5 стоящата карта НЕ дава нива за влизане",
+   "ТП1" not in _stm and "ТП2" not in _stm and "СТОП:" not in _stm)
+ck("О5 стоящата карта показва възрастта", "27 часа" in _stm)
+_stm2 = lb._standing_msg("short", ("1час", "short", 7, "strong", "СИЛЕН"), 20.0, None, 4006.0, 4000.2,
+                         [("1час", "short", 7, "strong", "СИЛЕН")] * 7,
+                         {"миньори": False, "долар": False, "лихви": False}, {"мъртви": ["долар"]}, "2026-07-29T10:00")
+ck("О5 стоящата карта предупреждава за мъртъв фийд", "макро-краче без данни" in _stm2)
 # поведение: същият борд → същият ключ (без дата няма фалшиво нулиране в полунощ)
 _bk = lambda board: ";".join(f"{l}:{d}:{t}" for l, d, t in board)
 _b1 = [("1час", "short", "premium"), ("4час", "short", "premium")]
@@ -289,12 +347,22 @@ ck("Б5 миграция минава при потвърден базис", lb.
 from pathlib import Path as _P
 _od = _P("outbox_test"); _od.mkdir(exist_ok=True)
 # Б6: отровно = 3 ТВЪРДИ провала (развален HTML), не общ брой опити.
-# (таг exit:sl — не-ефемерен; ефемерните signal/s-signal ги чисти НАХОДКА-B филтърът, друг път)
-(_od / "outbox.jsonl").write_text(json.dumps({"tag": "exit:sl", "text": "x", "first_ts": "2026-07-01T00:00:00",
+# ⚠️ ОДИТ-5 смени тага: exit:* ВЕЧЕ НЕ СЕ ХВЪРЛЯ (L2-01). Отровното важи за информативните.
+(_od / "outbox.jsonl").write_text(json.dumps({"tag": "digest", "text": "x", "first_ts": "2026-07-01T00:00:00",
                                               "attempts": 5, "hard_fails": 3}, ensure_ascii=False), encoding="utf-8")
 _st = []; _orig = lb._send_raw; lb._send_raw = lambda t: "SENT (200)"
 lb._outbox_flush(_od, [], _st); lb._send_raw = _orig
-ck("Б6 отровно (3 твърди провала) се хвърля", any("ОТРОВНО" in s for s in _st))
+ck("Б6 отровно (3 твърди провала) се хвърля — за ИНФОРМАТИВНА карта", any("ОТРОВНО" in s for s in _st))
+# L2-01: същото състояние, но ИЗХОДНА карта → НЕ се хвърля, а се пробва като гол текст
+for _tg in ("exit:sl", "s-exit:tp3", "sh-exit:sl"):
+    (_od / "outbox.jsonl").write_text(json.dumps({"tag": _tg, "text": "<b>СТОП</b> ударен",
+                                                  "first_ts": "2026-07-01T00:00:00",
+                                                  "attempts": 9, "hard_fails": 7}, ensure_ascii=False), encoding="utf-8")
+    _st = []; _orig = lb._send_raw; lb._send_raw = lambda t: "SENT (200)"
+    _tags = lb._outbox_flush(_od, [], _st); lb._send_raw = _orig
+    ck(f"L2-01 {_tg} НЕ се хвърля при 7 твърди провала",
+       not any("ОТРОВНО" in s for s in _st) and _tg in _tags)
+    ck(f"L2-01 {_tg}: HTML е махнат за последен опит", any("HTML махнат" in s for s in _st))
 # F-краен: МРЕЖОВ провал (не HTML) НЕ хвърля изхода дори след 50 опита
 (_od / "outbox.jsonl").write_text(json.dumps({"tag": "exit:sl", "text": "стоп", "first_ts": "2026-07-01T00:00:00",
                                               "attempts": 50, "hard_fails": 0}, ensure_ascii=False), encoding="utf-8")
