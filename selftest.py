@@ -198,6 +198,18 @@ ck("О3 сребро: повторно предлагане съществува
 ck("О3 повторно иска ПРАЗНА позиция", "trade is None and new_dir is not None" in _src)
 ck("О3 повторно иска клас поне СИЛЕН", 'rank.get(best[3], 0) >= rank.get("strong", 2)' in _src)
 ck("О3 повторно се вписва в дневника", "повторно предлагане" in _src)
+# нощен филтър: повторното предлагане важи само в часове, в които човек може да влезе
+ck("О3 нощен филтър съществува", "REOFFER_LO" in _src and "REOFFER_HI" in _src
+   and _src.count("_reoffer_hour_ok(now_utc)") == 2)          # злато И сребро
+ck("О3 нощният прозорец е разумен (6-9 → 21-23)", 6 <= lb.REOFFER_LO <= 9 and 21 <= lb.REOFFER_HI <= 23)
+ck("О3 лято: 06:00 UTC = 09:00 София → ДА", lb._reoffer_hour_ok("2026-07-29T06:00") is True)
+ck("О3 лято: 23:20 UTC = 02:20 София → НЕ", lb._reoffer_hour_ok("2026-07-29T23:20") is False)
+ck("О3 лято: 03:10 UTC = 06:10 София → НЕ", lb._reoffer_hour_ok("2026-07-29T03:10") is False)
+ck("О3 зима: 07:00 UTC = 09:00 София → ДА", lb._reoffer_hour_ok("2026-01-15T07:00") is True)
+ck("О3 зима: 06:00 UTC = 08:00 София → ДА (границата)", lb._reoffer_hour_ok("2026-01-15T06:00") is True)
+ck("О3 зима: 05:00 UTC = 07:00 София → НЕ", lb._reoffer_hour_ok("2026-01-15T05:00") is False)
+ck("О3 повреден час не гърми и НЕ пуска", lb._reoffer_hour_ok("боклук") is False)
+ck("О3 часът е с реална часова зона (не +3 на ръка)", "Europe/Sofia" in _insp.getsource(lb._sofia_hour))
 # поведение: същият борд → същият ключ (без дата няма фалшиво нулиране в полунощ)
 _bk = lambda board: ";".join(f"{l}:{d}:{t}" for l, d, t in board)
 _b1 = [("1час", "short", "premium"), ("4час", "short", "premium")]
