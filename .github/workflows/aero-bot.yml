@@ -30,8 +30,14 @@ jobs:
           cache: 'pip'
       - run: pip install -r requirements.txt
       - name: selftest gate                             # W1: счупен код НЕ праща сигнали
+        timeout-minutes: 5
         run: python selftest.py
       - name: run bot
+        # 🔴 ОДИТ-5: без таван един увиснал yfinance-разговор държи concurrency групата
+        # «aero-bot» и GitHub ОТМЕНЯ наредените следващи рънове. Мерено в живия дневник:
+        # 35-минутна дупка на 24.07 16:01→16:36 UTC, в средата на нюйоркската сесия,
+        # делник, три */5 слота изчезнали. Нормалният рън е ~40 секунди.
+        timeout-minutes: 8
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT_ID: "-1003827523037"
@@ -40,7 +46,8 @@ jobs:
           STATUS_CARD: ${{ github.event.inputs.status || 'no' }}
         run: python live_bot.py --send --stats backtest_stats.json --out live
       - name: save state
-        if: always()          # ОДИТ-2 №4: ботът вече излиза с код 1 при краш —
+        if: always()
+        timeout-minutes: 6          # ОДИТ-2 №4: ботът вече излиза с код 1 при краш —
                               # състоянието ТРЯБВА да се запише и тогава (иначе двойна карта)
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
