@@ -9,8 +9,10 @@ spec = importlib.util.spec_from_file_location("lb", "live_bot.py")
 lb = importlib.util.module_from_spec(spec); spec.loader.exec_module(lb)
 
 FAILS = []
+_RAN = [0]          # ОДИТ-3: брояч — за да се вижда, ако цял блок е спрял да се пуска
 def ck(name, ok):
     ok = bool(ok)
+    _RAN[0] += 1
     print(("PASS" if ok else "FAIL"), "·", name)
     if not ok:
         FAILS.append(name)
@@ -100,6 +102,115 @@ for kind in ("tp1", "tp2", "tp3", "sl", "flip", "time"):
     if len(mm) > 4096 or mm.count("<b>") != mm.count("</b>"):
         ok_all = False
 ck("изходи: HTML/лимит", ok_all)
+
+# ПУЛС карта — рендерира се във всички режими, HTML балансиран, разумна дължина
+_board = [("1ден", "long", 7, "premium", "ПРЕМИУМ")]
+_best = _board[0]
+_pulse_ok = True
+for _part in ("09", "14", "22"):
+    for _tr, _wknd in ((None, False), (TR, False), (None, True)):
+        pm = lb._pulse_msg(_part, _board, _best, "long", "ДА — пресен", True,
+                           _tr, None, sp, None, {"миньори": True, "долар": True, "лихви": True}, False, _wknd)
+        if not (30 < len(pm) < 4096 and pm.count("<b>") == pm.count("</b>") and "ПУЛС" in pm):
+            _pulse_ok = False
+ck("пулс карта: рендер/HTML/лимит (всички режими)", _pulse_ok)
+# пулсът с празен борд (new_dir=None) не гърми
+_pm2 = lb._pulse_msg("09", [("1ден", "wait", 0, "weak", "ЧАКАЙ")], ("1ден", "wait", 0, "weak", "ЧАКАЙ"),
+                     None, "", False, None, None, None, None, {"миньори": False, "долар": False, "лихви": False}, False, False)
+ck("пулс: смесен борд + недостъпен спот не гърми", "ПУЛС" in _pm2 and _pm2.count("<b>") == _pm2.count("</b>"))
+
+# ── СЯНКА-следене (what-if от «не влизай» карта) ──
+import tempfile as _tf
+_shd = lb.Path(_tf.mkdtemp()); _shf = _shd / "shadow_trade.json"
+_lvls = {"tp1": 4116.07, "tp2": 4111.57, "tp3": 4103.57, "sl": 4143.57}
+# 1) отваря сянка при информативна карта (open_entry подаден, няма реална)
+_sm1 = lb._shadow_cycle(_shf, None, 0.0, 4120.0, "2026-07-22T08:00", None,
+                        "short", 4123.57, _lvls, False, "2026-07-22", "premium", "XAUUSD", 2)
+ck("сянка: отваря се при «не влизай»", _shf.exists() and _sm1 == [])
+# 2) цената пада до ТП1 (нов бар след входа) → what-if изход
+_bars = lb.pd.DataFrame({"Open": [4119.0], "High": [4119.0], "Low": [4115.0], "Close": [4116.0]},
+                        index=[lb.pd.Timestamp("2026-07-22T09:00")])
+_sm2 = lb._shadow_cycle(_shf, _bars, 0.0, 4116.0, "2026-07-22T09:05", None,
+                        "short", None, None, False, "2026-07-22", "premium", "XAUUSD", 2)
+ck("сянка: ТП1 what-if изход", any(t == "sh-exit:tp1" for t, _ in _sm2)
+   and any("СЯНКА" in m for _, m in _sm2) and _shf.exists())
+# 3) реална сделка → сянката отпада (не се двои с реалната)
+lb._shadow_cycle(_shf, None, 0.0, 4116.0, "2026-07-22T09:10", None,
+                 "short", None, None, True, "2026-07-22", "premium", "XAUUSD", 2)
+ck("сянка: реална сделка я маха", not _shf.exists())
+# 4) рендер на всички what-if изходи (HTML балансиран, «СЯНКА» вътре)
+_sh_render_ok = True
+for _k in ("tp1", "tp2", "tp3", "sl", "time", "flip"):
+    _sxm = lb._shadow_exit_msg(_k, {"direction": "short", "entry": 4123.57, "sym": "XAUUSD",
+                                    "levels": _lvls, "hit": {}, "opened": "2026-07-22T08:00"},
+                               4116.07, "2026-07-22T09:00", "бар", False)
+    if not (30 < len(_sxm) < 4096 and _sxm.count("<b>") == _sxm.count("</b>") and "СЯНКА" in _sxm):
+        _sh_render_ok = False
+ck("сянка: what-if рендер (всички изходи)", _sh_render_ok)
+
+# ── CyberQuant референция + макро-щит ──
+ck("CQ зона: скор→зона", lb._cq_zone(30.6).startswith("Натрупване")
+   and lb._cq_zone(65).startswith("Внимание") and lb._cq_zone(95).startswith("Балон"))
+_cq = {"score": 30.6, "zone": lb._cq_zone(30.6), "fg_crypto": 33, "fg_stock": 41,
+       "events": [{"name": "FOMC решение", "dt": "2026-07-22T12:00:00.000Z", "impact": "critical"},
+                  {"name": "CPI", "dt": "2026-08-30T12:30:00.000Z", "impact": "high"}]}
+_blk, _ev = lb._cq_macro_block(_cq, "2026-07-22T12:05")            # 5 мин след събитието → в прозореца
+ck("CQ макро-щит: блокира в прозореца", _blk and "FOMC" in (_ev or ""))
+_blk2, _ = lb._cq_macro_block(_cq, "2026-07-22T09:00")            # 3ч преди → извън
+ck("CQ макро-щит: НЕ блокира извън прозореца", not _blk2)
+ck("CQ макро-щит: None не гърми (безопасен fallback)", lb._cq_macro_block(None, "2026-07-22T12:05") == (False, None))
+_cqm = lb._cq_msg(_cq, "2026-07-22T09:00")                        # 09:00 → следващо е FOMC (12:00 днес)
+ck("CQ карта: рендер/HTML/без гол &", 30 < len(_cqm) < 4096 and _cqm.count("<b>") == _cqm.count("</b>")
+   and "CYBERQUANT" in _cqm and "&" not in _cqm.replace("&amp;", "") and "FOMC" in _cqm)
+
+# ── ОДИТ-ПОПРАВКИ v5.6f ──
+import inspect as _insp
+_src = _insp.getsource(lb)
+# П1: аварийното съобщение ескейпва HTML и излиза с код ≠0
+ck("П1 краш-аларма: HTML ескейпнат", "html.escape" in _src or "_html.escape" in _src)
+ck("П1 краш-аларма: изход ≠0 (workflow алармата гърми)", "raise SystemExit(1)" in _src)
+# П2: ключът се нулира при смърт на сетъпа
+ck("П2 ключът се нулира при смърт на сетъпа",
+   'if not actionable and last.get("key")' in _src and "анти-спам ключът нулиран" in _src)
+# П3: уикендът се проверява ПРЕДИ US-щита (и за двата метала)
+_i_wk = _src.index("уикенд — картите почиват"); _i_sh = _src.index("шорт карта отложена: US-щит")
+ck("П3 злато: уикенд ПРЕДИ US-щит", _i_wk < _i_sh)
+_j_wk = _src.index("сребро: уикенд"); _j_sh = _src.index("сребро шорт карта отложена")
+ck("П3 сребро: уикенд ПРЕДИ US-щит", _j_wk < _j_sh)
+# П4: сребро-шорт ключът игнорира класа (стабилен при смяна ПРЕМИУМ↔СРЕДЕН)
+ck("П4 сребро-шорт: ключът без клас", 's_key = f"{s_dir}" if s_dir == "short"' in _src)
+ck("П4 сребро-шорт: без tier_up заобикаляне", 's_actionable and s_dir != "short"' in _src)
+_k = lambda d, t: (f"{d}" if d == "short" else f"{d}:{t}")
+ck("П4 шорт ключ не мърда при смяна на клас", _k("short", "premium") == _k("short", "medium"))
+ck("П4 лонг ключ ПАК мърда при смяна на клас", _k("long", "premium") != _k("long", "medium"))
+
+# ── ОДИТ-3: ДАТАТА ИЗЛИЗА ОТ АНТИ-СПАМ КЛЮЧА ──
+# Дефектът: `date` идваше от дневния бар на Yahoo (публикува се 02:10 UTC) →
+# ключът се нулираше в 05:10 София ВСЕКИ ДЕН и картата излизаше от календара,
+# а не от пазара. 5 дни подред картата беше точно в 05:10 при непроменен борд.
+ck("О3 злато: датата НЕ е в ключа", 'key = ";".join(f"{l}:{d}:{t}"' in _src)
+ck("О3 злато: старият ключ с дата го няма", 'date + "|" + ";".join' not in _src)
+ck("О3 сребро: датата НЕ е в ключа", 'f"{date}|{s_dir}"' not in _src)
+ck("О3 константа REOFFER_H", "REOFFER_H = " in _src and isinstance(lb.REOFFER_H, int))
+ck("О3 REOFFER_H е разумен (2-12ч)", 2 <= lb.REOFFER_H <= 12)
+ck("О3 злато: повторно предлагане съществува", "reoffer = (bool(actionable)" in _src)
+ck("О3 сребро: повторно предлагане съществува", "s_reoffer = (s_actionable" in _src)
+ck("О3 повторно иска ПРАЗНА позиция", "trade is None and new_dir is not None" in _src)
+ck("О3 повторно иска клас поне СИЛЕН", 'rank.get(best[3], 0) >= rank.get("strong", 2)' in _src)
+ck("О3 повторно се вписва в дневника", "повторно предлагане" in _src)
+# поведение: същият борд → същият ключ (без дата няма фалшиво нулиране в полунощ)
+_bk = lambda board: ";".join(f"{l}:{d}:{t}" for l, d, t in board)
+_b1 = [("1час", "short", "premium"), ("4час", "short", "premium")]
+ck("О3 един и същ борд → един и същ ключ", _bk(_b1) == _bk(list(_b1)))
+# ПАЗАЧ НА САМИЯ ОДИТОР: бариерата (sys.exit) трябва да е СЛЕД последния ck().
+# Дефектът, който това ловù: гейтът стоеше на ред 354, П5/П6 идваха след него → червено = зелено.
+_selfsrc = open("selftest.py", encoding="utf-8").read()
+_EXIT = "sys.ex" + "it(1)"          # разцепен, за да не се брои самият тест
+_GREEN = "ВСИЧКО " + "ЗЕЛЕНО"
+ck("О3 бариерата е СЛЕД последния тест", _selfsrc.rindex(_EXIT) > _selfsrc.rindex('ck("'))
+ck("О3 има само ЕДНА бариера", _selfsrc.count(_EXIT) == 1)
+ck("О3 финалният печат е накрая", _selfsrc.rindex(_GREEN) > _selfsrc.rindex('ck("'))
+ck("О3 смяна на класа → НОВ ключ", _bk(_b1) != _bk([("1час", "short", "strong"), ("4час", "short", "premium")]))
 
 # ── ГРУПА А (време/цена) ──
 ck("A3 петък 22ч UTC затворено", lb._market_closed("2026-07-17T22:00") is True)
@@ -243,11 +354,66 @@ _tr_burst = {"direction": "long", "entry": 4000.0,
 _em = lb._exit_msg("sl", _tr_burst, 4000.0, "2026-07-16T10:00", "бар", False, dec=2)
 ck("burst: 1/3 сметка вярна при ТП1+ТП2+СТОП в 1 рън", "+6.50$/oz" in _em and "удари TP1, TP2" in _em)
 
+# П5: MA-картата вече НЕ показва невъзпроизводимото нето, а честното предупреждение
+_mam = lb._ma_alert_msg("long", "ma50", 4100.0, {"win": 62.8, "net": 4.64, "n": 470}, {})
+ck("П5 MA-карта: махнато подвеждащото +нето$/oz", "+4.64$/oz" not in _mam and "4.64" not in _mam)
+ck("П5 MA-карта: показва процента", "62.8%" in _mam and "n=470" in _mam)
+ck("П5 MA-карта: честно предупреждение за отрицателна сметка", "ОТРИЦАТЕЛНА" in _mam)
+ck("П5 MA-карта: HTML балансиран", _mam.count("<i>") == _mam.count("</i>") and _mam.count("<b>") == _mam.count("</b>"))
+
+
+# ── П6: КОНТРАКТЕН БАЗИС дневна↔интрадей (ОДИТ 28.07) ──
+_rf = {"sma50": 4000.0, "sma20": 4010.0, "ago5": 3990.0, "ago20": 4005.0,
+       "low20": 3900.0, "high20": 4100.0}
+_mc = {"миньори": False, "долар": False, "лихви": False}      # макро 0/3 → чист ценови ефект
+_bar = bars([(4012, 4014, 4008, 4012)])                        # интрадей: 12$ над sma50
+# без корекция: цената е НАД sma50/sma20/ago20 → лонг точки
+_l0, _s0, _ = lb._scores(_bar, _rf, _mc)
+# с корекция −15$ (интрадей стои 15$ над дневната крива) → пада ПОД тях → шорт точки
+_l1, _s1, _ = lb._scores(_bar, _rf, _mc, price_adj=-15.0)
+ck("П6 price_adj мести точките лонг→шорт", _l1 < _l0 and _s1 > _s0)
+ck("П6 price_adj=0 е точно старото поведение", (_l0, _s0) == lb._scores(_bar, _rf, _mc, price_adj=0.0)[:2])
+ck("П6 корекцията може да ОБЪРНЕ посоката",
+   lb._resolve(_l0, _s0, _mc)[0] != lb._resolve(_l1, _s1, _mc)[0])
+# _tf_basis: измерва медианата дневен−интрадей и я изглажда
+_di = pd.date_range("2026-06-01", periods=30, freq="D")
+_intra = pd.DataFrame({"Open": 4020.0, "High": 4025.0, "Low": 4015.0, "Close": 4020.0}, index=_di)
+_daily = pd.DataFrame({"Open": 4000.0, "High": 4005.0, "Low": 3995.0, "Close": 4000.0}, index=_di)
+_stt = {}; _nn = []
+_v = lb._tf_basis(_stt, "tf", _intra, _daily, _nn)
+ck("П6 _tf_basis мери верния знак (дневен под интрадей → отрицателен)", _v < 0 and abs(_v + 20.0) < 0.01)
+ck("П6 _tf_basis запазва в състоянието", _stt.get("tf") == _v)
+# EMA изглаждане при промяна
+_intra2 = _intra.copy(); _intra2["Close"] = 4040.0
+_v2 = lb._tf_basis(_stt, "tf", _intra2, _daily, _nn)
+ck("П6 _tf_basis изглажда (EMA), не скача", -40.0 < _v2 < _v)
+# глич/абсурд → пази стария
+_intra3 = _intra.copy(); _intra3["Close"] = 9000.0
+_v3 = lb._tf_basis(_stt, "tf", _intra3, _daily, _nn)
+ck("П6 _tf_basis отхвърля глич над cap", _v3 == _v2 and any("извън диапазон" in x for x in _nn))
+# малко застъпване → не гадае
+ck("П6 _tf_basis при <5 общи дни връща старото",
+   lb._tf_basis({"k": 7.0}, "k", _intra.head(2), _daily.head(2), []) == 7.0)
+ck("П6 _tf_basis при None не гърми", lb._tf_basis({}, "k", None, _daily, []) == 0.0)
+# «1ден» НЕ се коригира (той е на кривата на refs)
+import re as _re
+_msrc = _insp.getsource(lb.main)
+ck("П6 «1ден» остава без корекция", 'adj = 0.0 if lbl == "1ден" else tf_adj' in _msrc)
+ck("П6 среброто също е поправено", "tf_basis_s" in _msrc)
+ck("П6 базисът влиза в журнала", '"tf_basis": meta.get("tf_basis_g")' in _msrc)
+
+
+# ═══════════════════════════════════════════════════════════════════════
+# 🔴 ОДИТ-3 (29.07): БАРИЕРАТА СТОЕШЕ В СРЕДАТА НА ФАЙЛА.
+# финалният печат и изходният код бяха на ред 354, а П5 и П6 идваха
+# СЛЕД тях → 15 теста печатаха PASS/FAIL, но НЕ можеха да счупят качването:
+# гейтът вече беше минал. Червено в П5/П6 = зелено CI. Бариерата слиза НАЙ-ДОЛУ.
+# ═══════════════════════════════════════════════════════════════════════
 print()
 # чистене: не оставяй тестов боклук в repo-папката (иначе се качва в публичното repo)
 import shutil as _sh3
 for _d in ("outbox_test", "outbox_test2"):
     _sh3.rmtree(_d, ignore_errors=True)
 if FAILS:
-    print("SELFTEST FAIL:", FAILS); sys.exit(1)
-print("SELFTEST: ВСИЧКО ЗЕЛЕНО")
+    print("SELFTEST FAIL:", len(FAILS), "от", _RAN[0], "→", FAILS); sys.exit(1)
+print(f"SELFTEST: ВСИЧКО ЗЕЛЕНО · {_RAN[0]} теста")
