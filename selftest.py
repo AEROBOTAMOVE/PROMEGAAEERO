@@ -210,6 +210,33 @@ ck("О3 зима: 06:00 UTC = 08:00 София → ДА (границата)", l
 ck("О3 зима: 05:00 UTC = 07:00 София → НЕ", lb._reoffer_hour_ok("2026-01-15T05:00") is False)
 ck("О3 повреден час не гърми и НЕ пуска", lb._reoffer_hour_ok("боклук") is False)
 ck("О3 часът е с реална часова зона (не +3 на ръка)", "Europe/Sofia" in _insp.getsource(lb._sofia_hour))
+
+# ── ОДИТ-4 (29.07): ТАВАН НА ВЪЗРАСТТА НА СЕТЪПА ──
+# Два независими парични агента на реален bid/ask (19.7 години) обориха REOFFER_H=4 без таван:
+# пределните входове −0.878$/сделка (t=−2.65 по дни); всичките 6 хоризонта отрицателни.
+# Ръбът живее в първите ~12ч: <6ч +0.231$ · 6-12ч +0.052$ · 12-24ч −1.590$ · >2дни −1.219$.
+# Единственият вариант над нулата: 6ч напомняне САМО докато сетъпът е под 12ч.
+ck("О4 таван на възрастта съществува", "REOFFER_MAX_AGE_H" in _src and isinstance(lb.REOFFER_MAX_AGE_H, int))
+ck("О4 таванът е в мереното (6-18ч)", 6 <= lb.REOFFER_MAX_AGE_H <= 18)
+ck("О4 REOFFER_H вече е 6 (не 4)", lb.REOFFER_H == 6)
+ck("О4 напомнянето идва СЛЕД тавана в кода", _src.index("REOFFER_MAX_AGE_H = ") < _src.index("key_age_h <= REOFFER_MAX_AGE_H"))
+ck("О4 злато: възрастта влиза в условието", "key_age_h is not None and key_age_h <= REOFFER_MAX_AGE_H" in _src)
+ck("О4 сребро: възрастта влиза в условието", "s_key_age_h is not None and s_key_age_h <= REOFFER_MAX_AGE_H" in _src)
+ck("О4 възрастта се брои от key_since, не от последната карта",
+   'last["key_since"]' in _src and 's_last["key_since"]' in _src)
+ck("О4 key_since се ЗАПАЗВА докато ключът е същият",
+   'last.get("key_since") if last.get("key") == key and last.get("key_since") else now_utc' in _src)
+ck("О4 сребро: key_since също се запазва",
+   's_last.get("key_since") if s_last.get("key") == s_key and s_last.get("key_since")' in _src)
+ck("О4 key_since се пише в състоянието", '"key_since": key_since' in _src and '"key_since": s_since' in _src)
+ck("О4 отказът се вписва честно в дневника", "след 12ч ръбът е изчерпан" in _src or "ръбът е изчерпан (мерено)" in _src)
+# поведение: часовникът тръгва наново само при НОВ ключ
+_ks = lambda old_key, old_since, new_key, now: (old_since if old_key == new_key and old_since else now)
+ck("О4 същият ключ → часовникът НЕ се нулира", _ks("A", "T0", "A", "T9") == "T0")
+ck("О4 нов ключ → часовникът тръгва наново", _ks("A", "T0", "B", "T9") == "T9")
+ck("О4 липсващ key_since (стар файл) → тръгва от сега", _ks("A", None, "A", "T9") == "T9")
+# без key_since НЯМА повторно предлагане (стар state не бива да пуска верига)
+ck("О4 без key_since повторното е ИЗКЛЮЧЕНО", "key_age_h is not None and" in _src)
 # поведение: същият борд → същият ключ (без дата няма фалшиво нулиране в полунощ)
 _bk = lambda board: ";".join(f"{l}:{d}:{t}" for l, d, t in board)
 _b1 = [("1час", "short", "premium"), ("4час", "short", "premium")]
