@@ -29,7 +29,7 @@ warnings.filterwarnings("ignore")
 import numpy as np
 import pandas as pd
 
-VERSION = "v5.9"
+VERSION = "v5.9a"
 PIP = 0.10
 SL_PIPS = 200; SL_D = SL_PIPS * PIP                       # стоп: 200п = $20/oz
 TPS = [("ТП1", 75, 7.5), ("ТП2", 120, 12.0), ("ТП3", 200, 20.0)]
@@ -325,7 +325,7 @@ def _levels_silver(entry, direction):
 SPOT_MAX_AGE = 90        # A1: котировка по-стара от 90 сек не е «реално време»
 CLOCK_SKEW = 60          # T1: сървърният ts може да води с ~1с спрямо рънъра → толеранс
 def _spot(instr="XAU/USD", market_closed=False):
-    """Swissquote публичен фийд, без ключ; за злато има РЕЗЕРВА (Binance PAXG).
+    """Swissquote публичен фийд, без ключ; за злато има РЕЗЕРВНА ВЕРИГА (PAXG: Binance → Coinbase → Kraken).
     A1: избира цена САМО от ПРЯСНА платформа; прозорец 90 сек. Връща bid/ask/mid/src/age_sec.
     T1: под-секундно часово разминаване (age малко под 0) НЕ бракува фийда."""
     import time as _t
@@ -351,17 +351,34 @@ def _spot(instr="XAU/USD", market_closed=False):
         pass
     if market_closed:                                     # T5: не ползвай крипто-прокси при затворен пазар
         return None
-    if instr == "XAU/USD":                                # Ф9.5: резервен източник (PAXG ≈ злато)
-        try:
-            url = "https://api.binance.com/api/v3/ticker/bookTicker?symbol=PAXGUSDT"
-            with urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"}), timeout=8) as r:
-                q = json.loads(r.read().decode())
-            b, a = float(q["bidPrice"]), float(q["askPrice"])
-            if 0 < b < a:
-                return {"bid": round(b, 2), "ask": round(a, 2), "mid": round((b + a) / 2, 2),
-                        "src": "paxg", "age_sec": None}
-        except Exception:
-            pass
+    if instr == "XAU/USD":
+        # 🔴 ОДИТ-6 (29.07): РЕЗЕРВАТА БЕШЕ МЪРТВА. Мерено на реалния дневник: 267 от 1674
+        # делнични ръна (15.9%) са БЕЗ спот, и spot_src е {'swq': 1407, None: 267} —
+        # PAXG не е дал НИТО ЕДНА котировка. Причината: GitHub Actions рънърите са в САЩ,
+        # а Binance връща 451 на американски IP-та. Тествано на живо от БГ машина: Binance
+        # работи (bid 4041.71). Тоест резервата беше проверена там, където не работи ботът.
+        # Без спот `_advice_entry(stale_price=True)` връща ok=False и за двете посоки →
+        # `pending_trade` се блокира → ботът НЕ МОЖЕ да отвори сделка на всеки шести рън.
+        # ФИКС: верига от три източника. Coinbase и Kraken са американски борси — те се
+        # виждат от Actions. Всеки връща собствен `src`, за да се вижда в дневника кой е дал.
+        for src, url, pick in (
+            ("paxg-bin", "https://api.binance.com/api/v3/ticker/bookTicker?symbol=PAXGUSDT",
+             lambda q: (float(q["bidPrice"]), float(q["askPrice"]))),
+            ("paxg-cb", "https://api.exchange.coinbase.com/products/PAXG-USD/ticker",
+             lambda q: (float(q["bid"]), float(q["ask"]))),
+            ("paxg-kr", "https://api.kraken.com/0/public/Ticker?pair=PAXGUSD",
+             lambda q: (lambda t: (float(t["b"][0]), float(t["a"][0])))(list(q["result"].values())[0])),
+        ):
+            try:
+                req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+                with urllib.request.urlopen(req, timeout=8) as r:
+                    q = json.loads(r.read().decode())
+                b, a = pick(q)
+                if 0 < b < a and 500 < b < 20000:          # груб санити: злато в разумен диапазон
+                    return {"bid": round(b, 2), "ask": round(a, 2), "mid": round((b + a) / 2, 2),
+                            "src": src, "age_sec": None}
+            except Exception:
+                continue
     return None
 
 
@@ -459,7 +476,9 @@ def _basis_update(state, key, raw_spot, bar_close, notes, cap=40.0, now_utc=None
     state[key + "_bar"] = round(bar_close, 3)        # за кръстосана проверка следващия рън
     # НАХОДКА-B: резервата PAXG търгува с ~$1-4 премия → НЕ замърсявай базис-EMA с нея;
     # дръж последния swq-базис за конверсията, изчакай swq да се върне.
-    if raw_spot.get("src") == "paxg":
+    # ОДИТ-6: резервата вече е ВЕРИГА (paxg-bin / paxg-cb / paxg-kr) → пазачът хваща по ПРЕФИКС,
+    # иначе новите имена биха се промъкнали и биха замърсили базиса с крипто-премията.
+    if str(raw_spot.get("src") or "").startswith("paxg"):
         return state.get(key, round(now_b, 3))
     if old is None:                                 # НАХОДКА-D: студен старт без глич-защита
         if abs(now_b) <= cap:
