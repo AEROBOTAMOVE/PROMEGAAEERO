@@ -82,7 +82,15 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          H=$(TZ=Europe/Sofia date +%H); M=$(TZ=Europe/Sofia date +%M)
+          # НЕ ползваме `TZ=Europe/Sofia date` — мерено: в среда без tzdata връща UTC
+          # мълчаливо и будилникът щеше да стреля 3 часа по-рано. Ползваме СЪЩИЯ метод
+          # като самия бот (zoneinfo), който доказано дава верния час на картите.
+          SOF=$(python -c "from zoneinfo import ZoneInfo
+          from datetime import datetime, timezone
+          print(datetime.now(timezone.utc).astimezone(ZoneInfo('Europe/Sofia')).strftime('%H %M'))" 2>/dev/null || true)
+          H=${SOF%% *}; M=${SOF##* }
+          if [ -z "$SOF" ]; then echo "не мога да определя софийския час — не будя"; exit 0; fi
+          echo "София: $H:$M"
           case "$H" in 05|07|09|12|15|18|21) ;; *) echo "не е целеви час ($H:$M София)"; exit 0;; esac
           if [ "$H" = "21" ] && [ "$M" -lt 30 ]; then echo "21ч, но преди :30"; exit 0; fi
           LAST=$(curl -s -H "Authorization: Bearer $GH_TOKEN" \
