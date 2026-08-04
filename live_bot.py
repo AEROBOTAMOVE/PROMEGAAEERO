@@ -754,16 +754,29 @@ def _exit_msg(kind, tr, price_hit, when, via, gap, spot=None, next_line="", dec=
     dol = (price_hit - e) * sign
     if abs(dol) < 0.005:                 # безрисков стоп на входа → «0.00», не «-0.00»
         dol = 0.0
+    thirds, n_hit = _ladder_pnl(kind, hit, lv, e, sign, dol)      # ОДИТ-7
     via_txt = {"бар": f"ударен в {_sofia(when)} София (по бара)",
                "спот": f"ударен СЕГА ({_sofia(when)} София, по живия спот)",
                "време": "времеви изход"}.get(via, via)
     gap_txt = " · <b>изпълнено с гап</b> — реалната цена прескочи нивото" if gap else ""
     heads = {"tp1": "✅ ТП1 ПОСТИГНАТ", "tp2": "✅✅ ТП2 ПОСТИГНАТ", "tp3": "🏆 ТП3 — ПЪЛЕН ТЕЙК",
              "sl": "🛑 СТОП", "flip": "🔄 ПОСОКАТА СЕ ОБЪРНА — затворено", "time": "⏰ ВРЕМЕВИ ИЗХОД"}
+    # ОДИТ-7 (собственикът, 04.08): «СТОП Е УДАРЕН 1 ПЪТ ЗА ВСИЧКИ СИГНАЛИ ... а той
+    # никога не е удрял». Прав е. Мерено в live/sent_log.jsonl: 8 стоп-карти, от които
+    # 5 са БЕЗРИСКОВ ИЗХОД след взети ТП (стопът стои на ВХОДА) и само 3 са истински
+    # стоп. Картата ги наричаше еднакво «🛑 СТОП» → изглежда, че сделката е ударила
+    # стоп, а тя е приключила на печалба. Сянката беше оправена сутринта; реалният
+    # изход — НЕ. Сега двата пътя говорят еднакво.
+    if kind == "sl" and n_hit > 0:
+        head = ("✅ БЕЗРИСКОВ ИЗХОД" if thirds >= 0 else "🛑 СТОП")
+        head += f" — стопът беше на ВХОДА · {n_hit} ТП вече прибрани"
+    else:
+        head = heads.get(kind, kind)
     opened_txt = f" <i>(сделка от {_sofia(tr['opened'])} София)</i>" if tr.get("opened") else ""   # Г7
-    L = [f"{heads.get(kind, kind)} · {metal} {d}{opened_txt}", "─────────────────",
+    L = [f"{head} · {metal} {d}{opened_txt}", "─────────────────",
          f"{via_txt}{gap_txt}",
-         f"💵 Вход <code>{_fmt(e, dec)}</code> → <code>{_fmt(price_hit, dec)}</code> = <b>{dol:+.2f}$/oz</b>"]
+         f"💵 Вход <code>{_fmt(e, dec)}</code> → <code>{_fmt(price_hit, dec)}</code> = "
+         f"<b>{dol:+.2f}$/oz</b>" + (" <i>(само последната 1/3)</i>" if n_hit else "")]
     if kind == "tp1":
         L.append(f"→ Премести стопа на <code>{_fmt(e, dec)}</code> (входа) — безрискова сделка.")
         L.append(f"Остават: ТП2 <code>{_fmt(lv['tp2'], dec)}</code> · ТП3 <code>{_fmt(lv['tp3'], dec)}</code>")
@@ -771,10 +784,12 @@ def _exit_msg(kind, tr, price_hit, when, via, gap, spot=None, next_line="", dec=
         L.append(f"→ 2/3 прибрани. Остава: ТП3 <code>{_fmt(lv['tp3'], dec)}</code> (стопът стои на входа).")
     elif kind in ("tp3", "sl", "flip", "time"):
         # двете сметки (Ф9.6-предварително): цяла позиция + съветът 1/3
-        thirds, n_hit = _ladder_pnl(kind, hit, lv, e, sign, dol)
-        L.append(f"Сметка: цяла позиция <b>{dol:+.2f}$/oz</b> · по съвета 1/3 на ТП ≈ <b>{thirds:+.2f}$/oz</b>")
-        if kind == "sl" and any(hit.get(k2) for k2 in ("tp1", "tp2")):
-            L.append("<i>(преди стопа удари " + ", ".join(k2.upper() for k2 in ("tp1", "tp2") if hit.get(k2)) + " — затова 1/3 сметката е по-добра)</i>")
+        L.append(f"<b>СМЕТКА по стълбата 1/3: {thirds:+.2f}$/oz</b>"
+                 + (f" · цяла позиция {dol:+.2f}$/oz" if not n_hit else ""))
+        if kind == "sl" and n_hit:
+            got = ", ".join(k2.upper() for k2 in ("tp1", "tp2") if hit.get(k2))
+            L.append(f"<i>Стопът НЕ е ударен на −${SL_D:.0f}. Той беше преместен на входа "
+                     f"след {got}, значи последната 1/3 излезе на нула, а прибраното остава.</i>")
     if spot:
         L.append(f"Спот сега: <code>{_fmt(spot['mid'], dec)}</code>")
     if next_line:
