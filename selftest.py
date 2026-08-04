@@ -1140,6 +1140,65 @@ _sh4.rmtree(_d, ignore_errors=True)
 
 
 # ═══════════════════════════════════════════════════════════════════════
+# П16 · ОДИТ-13: ДВА ТИХИ НАЧИНА ДА СЕ ЗАГУБИ КАРТА ЗА ПАРИ НА РИСК.
+# И двата възпроизведени върху ЖИВИЯ код, преди поправката.
+# ═══════════════════════════════════════════════════════════════════════
+# --- А · СУХ РЪН (без --send) изтриваше пощата и я обявяваше за пратена ---
+_dm = [_M("exit:sl", "СТОП УДАРЕН"), _M("digest", "равносметка")]
+_d = _P(_tf.mkdtemp())
+(_d / "outbox.jsonl").write_text(
+    chr(10).join(json.dumps(m, ensure_ascii=False) for m in _dm), encoding="utf-8")
+_stq = []
+_tg = lb._outbox_flush(_d, [], _stq, dry=True)
+_rem = [json.loads(x) for x in (_d / "outbox.jsonl").read_text(encoding="utf-8").splitlines() if x.strip()]
+ck("П16 сух рън ПАЗИ чакащите карти (преди ги триеше)", len(_rem) == 2)
+ck("П16 сух рън НЕ ги обявява за пратени (иначе трови състоянието)", not _tg)
+ck("П16 сухият рън го КАЗВА в статуса", any("остава в пощата" in s for s in _stq))
+_sh4.rmtree(_d, ignore_errors=True)
+
+# --- Б · HTTP 200 без ok:true се броеше за доставено ---
+class _TgResp:
+    def __init__(s, body, status=200): s._b, s.status = body, status
+    def __enter__(s): return s
+    def __exit__(s, *a): return False
+    def read(s): return s._b
+
+
+def _tg_send(body, status=200):
+    """Пуска ИСТИНСКИЯ _send_raw срещу подменен HTTP отговор."""
+    _o = _ur15.urlopen
+    _ur15.urlopen = lambda *a, **k: _TgResp(body, status)
+    _ot, _oc = _os.environ.get("TELEGRAM_TOKEN"), _os.environ.get("TELEGRAM_CHAT_ID")
+    _os.environ["TELEGRAM_TOKEN"] = "t"; _os.environ["TELEGRAM_CHAT_ID"] = "c"
+    _sl2 = _time.sleep; _time.sleep = lambda *a: None
+    try:
+        return lb._send_raw("тест")
+    finally:
+        _ur15.urlopen = _o; _time.sleep = _sl2
+        if _ot is None: _os.environ.pop("TELEGRAM_TOKEN", None)
+        else: _os.environ["TELEGRAM_TOKEN"] = _ot
+        if _oc is None: _os.environ.pop("TELEGRAM_CHAT_ID", None)
+        else: _os.environ["TELEGRAM_CHAT_ID"] = _oc
+
+
+_r_ok = _tg_send(b'{"ok":true,"result":{"message_id":7}}')
+ck("П16 истинският успех (ok:true) СЕ брои за пратено", _r_ok.startswith("SENT"))
+_r_no = _tg_send(b'{"ok":false,"error_code":400,"description":"Bad Request: chat not found"}')
+ck("П16 200 + ok:false НЕ се брои за пратено", not _r_no.startswith("SENT"))
+ck("П16 отказът носи ПРИЧИНАТА от Телеграм", "chat not found" in _r_no)
+ck("П16 200 + ok:false е МЕК провал (ретрай), не отровно",
+   _r_no.startswith("SEND_FAILED") and not _r_no.startswith("HARD_FAIL"))
+_r_junk = _tg_send(b"<html>captive portal</html>")
+ck("П16 200 с чуждо тяло (прокси/портал) НЕ се брои за пратено", not _r_junk.startswith("SENT"))
+# и картата НЕ се трие, нито влиза в книгата
+_s16, _r16, _st16, _d16 = _ob_run([_M("exit:sl", "СТОП")],
+                                  lambda t: "SEND_FAILED: HTTP 200 без ok:true — chat not found")
+ck("П16 недоставена карта ОСТАВА в пощата", len(_r16) == 1)
+ck("П16 недоставена карта НЕ влиза в sent_log", not (_d16 / "sent_log.jsonl").exists())
+_sh4.rmtree(_d16, ignore_errors=True)
+
+
+# ═══════════════════════════════════════════════════════════════════════
 # 🔴 ОДИТ-3 (29.07): БАРИЕРАТА СТОЕШЕ В СРЕДАТА НА ФАЙЛА.
 # финалният печат и изходният код бяха на ред 354, а П5 и П6 идваха
 # СЛЕД тях → 15 теста печатаха PASS/FAIL, но НЕ можеха да счупят качването:

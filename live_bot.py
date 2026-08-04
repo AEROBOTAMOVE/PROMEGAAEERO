@@ -1429,7 +1429,25 @@ def _send_raw(text):
     for _ in range(2):                                    # 2 опита на пускане
         try:
             with urllib.request.urlopen(urllib.request.Request(url, data=data), timeout=15) as r:
-                return f"SENT ({r.status})"
+                # 🔴 ОДИТ-13 (ПАРИ): 2xx НЕ значи доставено. Телеграм маркира отказа с
+                # ok:false; прокси/капан-портал/грешен хост връща 200 с чуждо тяло.
+                # Преди това тялото изобщо не се четеше → картата се ТРИЕШЕ от пощата И
+                # влизаше в sent_log.jsonl като доставена, а одит-роботът, който чете
+                # sent_log, го потвърждаваше. Двойно заглушаване.
+                # Възпроизведено: 200 + {"ok":false,"description":"chat not found"} → 'SENT (200)'.
+                # Без ok:true = МЕК провал (ретрай вечно), НЕ отровно — за да не хвърлим
+                # изходна карта заради непознат, но валиден отговор.
+                try:
+                    _b = json.loads(r.read().decode("utf-8", "replace"))
+                except Exception:
+                    _b = None
+                if isinstance(_b, dict) and _b.get("ok") is True:
+                    return f"SENT ({r.status})"
+                _why = (str(_b.get("description", "нечетлив отговор"))[:100]
+                        if isinstance(_b, dict) else "нечетлив отговор")
+                last = f"SEND_FAILED: HTTP {r.status} без ok:true — {_why}"
+                import time; time.sleep(3)
+                continue
         except urllib.error.HTTPError as e:               # HTTP статус от Телеграм
             # ДИАГНОСТИКА: прочети ТОЧНОТО описание от Телеграм (напр. «chat not found»,
             # «group upgraded to supergroup» + новото chat_id) — за да не гадаем при 400.
@@ -1518,7 +1536,14 @@ def _outbox_flush(out_dir, new_msgs, statuses, dry=False):
                 statuses.append(f"{msg['tag']}=ОТРОВНО-ХВЪРЛЕНО (развален HTML)")
                 continue
         if dry:
-            statuses.append(f"{msg['tag']}=DRY"); sent_tags.add(msg["tag"]); continue
+            # 🔴 ОДИТ-13 (ПАРИ): сух рън НЕ е доставка. Преди това нямаше remaining.append,
+            # значи съобщението се ТРИЕШЕ от пощата, и се добавяше в sent_tags, значи се
+            # обявяваше за ПРАТЕНО. Едно `python live_bot.py --out live` без --send
+            # изтриваше чакащата «СТОП УДАРЕН» карта за позиция, която е НА РИСК, и
+            # маркираше meta["digest"] за деня, тъй че вечерната карта повече не излизаше.
+            # Възпроизведено: 2 карти в пощата → 0 останали, обявени ['digest','exit:sl'].
+            statuses.append(f"{msg['tag']}=DRY (остава в пощата)")
+            remaining.append(msg); continue
         # ОДИТ-9 (П13): `_send_raw` лови всичко ВЪТРЕ в цикъла си, но кодът ПРЕДИ цикъла
         # (urlencode на текста) може да хвърли. Тогава изключението излизаше чак от main(),
         # ботът крашваше, а `outbox.jsonl` се записва ЧАК СЛЕД тази обиколка → ЦЯЛАТА поща
