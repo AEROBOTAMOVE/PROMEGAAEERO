@@ -674,8 +674,12 @@ def _sig_msg(direction, score, agree_n, tier_name, spot, bar_price, bar_ts, lv, 
     # Г10 + стегнато: бройката се показва В ПОСОКАТА на сделката (за шорт мечо = 3-mac),
     # та «3/3 ✓» винаги да значи «подкрепя» — край на оксиморона «0/3 (подкрепя)»
     mdir = (3 - mac) if direction == "short" else mac
+    # ОДИТ-6/T4-01+T2-04: «2/3 ✓» стоеше на СЪЩАТА карта, която казва «макрото не е
+    # ПОДРЕДЕНО днес» — 28 от 29 карти с това противоречие. Причината: ✓ се даваше от 2,
+    # а стрийкът иска И ТРИТЕ крака. Сега отметката съвпада с ПРАГА, който решава.
+    mmark = "✓ подредено" if mdir == 3 else (f"⚠ {3 - mdir} против — не е пълно подреждане" if mdir else "⚠ нищо не подкрепя")
     ctx = (f"<i>📊 клас {tier_name} {score}/8 · макро за {'шорт' if direction == 'short' else 'лонг'} "
-           f"{mdir}/3 {'✓' if mdir >= 2 else '⚠'}")
+           f"{mdir}/3 {mmark}")
     # В1/В4: УЛТРА само за ЗЛАТО (среброто няма такъв клас) и само с n≥MIN_N
     if sym == "XAUUSD" and regime and regime.get("vol_rank") is not None and 1 <= streak_n <= 3 and regime["vol_rank"] < 0.40:
         u = stats.get("fresh", {}).get(direction, {}).get("ultra", {})
@@ -1022,7 +1026,9 @@ def _pulse_msg(part, board, best, new_dir, advice_txt, adv_ok, trade, s_trade,
     if new_dir:
         mdir = (3 - mac) if new_dir == "short" else mac
         dword = "ЛОНГ (нагоре)" if new_dir == "long" else "ШОРТ (надолу)"
-        L.append(f"<b>Гледам:</b> най-силен клас <b>{best[4]} {best[2]}/8</b> · накланя се към <b>{dword}</b> · макро {mdir}/3 {'✓' if mdir >= 2 else '⚠'}")
+        # ОДИТ-6/T4-01: същата отметка като на сигналната карта — ✓ само при ПЪЛНО подреждане
+        pm = "✓ подредено" if mdir == 3 else (f"⚠ {3 - mdir} против" if mdir else "⚠ нищо не подкрепя")
+        L.append(f"<b>Гледам:</b> най-силен клас <b>{best[4]} {best[2]}/8</b> · накланя се към <b>{dword}</b> · макро {mdir}/3 {pm}")
     else:
         L.append(f"<b>Гледам:</b> няма ясен клас сега (таймфреймовете са смесени) · макро {mac}/3")
     # как се движи: спот
