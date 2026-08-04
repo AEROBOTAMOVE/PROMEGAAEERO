@@ -118,6 +118,21 @@ def jlines(p):
     return out
 
 
+def jall(live: Path, name: str):
+    """ОДИТ-9 (A2): ботът РОТИРА дневника месечно в live/archive/, а одитът четеше
+    само текущия файл — тоест виждаше ~11% от историята и обявяваше «наред е» върху
+    една десета от доказателствата. Сега чете архива + текущия, по ред."""
+    rows = []
+    stem = name.split(".")[0]
+    try:
+        for p in sorted((live / "archive").glob(stem + "-*.jsonl")):
+            rows.extend(jlines(p))
+    except Exception:
+        pass
+    rows.extend(jlines(live / name))
+    return rows
+
+
 def http(url, timeout=10, headers=None):
     req = urllib.request.Request(url, headers=headers or {"User-Agent": "Mozilla/5.0"})
     with urllib.request.urlopen(req, timeout=timeout) as r:
@@ -127,7 +142,7 @@ def http(url, timeout=10, headers=None):
 # ─────────────────── ⏱ ВРЕМЕ (приоритет №1) ───────────────────
 def check_time(live: Path, code_dir: Path, bars):
     cat = "ВРЕМЕ"
-    J = jlines(live / "live_journal.jsonl")
+    J = jall(live, "live_journal.jsonl")
     if not J:
         A.fail(cat, "В0", "журналът е празен/липсва", "няма какво да се одитира",
                "провери дали repo-то е клонирано и дали ботът пише в live/")
@@ -220,7 +235,7 @@ def check_delay_engine(live: Path, bars5, A_):
     """В5 · Точното закъснение: за всеки пратен ТП/СТОП реконструира кога РЕАЛНО е ударен."""
     import pandas as pd
     cat = "ВРЕМЕ"
-    J = jlines(live / "live_journal.jsonl")
+    J = jall(live, "live_journal.jsonl")
     # възстановяваме сделките от git историята на състоянието
     trades = reconstruct_trades(live)
     if not trades or bars5 is None:
@@ -383,7 +398,7 @@ def check_accuracy(live: Path, code_dir: Path, lb, bars5):
         A.ok(cat, "Т4", "пропуснат удар", "няма отворена сделка за проверка")
 
     # Т5 · съответствие карта ↔ спот (само v5)
-    J = jlines(live / "live_journal.jsonl")
+    J = jall(live, "live_journal.jsonl")
     v5 = [r for r in J if r.get("spot") and r.get("bar")]
     if v5:
         offs = [abs(r["bar"] - r["spot"]) for r in v5 if r.get("spot")]
@@ -475,7 +490,7 @@ def check_dead(live: Path):
             A.ok(cat, "М4", f"{f}", f"от {d.get(key)}")
 
     # М5 · дублирани карти (един ключ, пратен 2 пъти)
-    J = jlines(live / "live_journal.jsonl")
+    J = jall(live, "live_journal.jsonl")
     sig_runs = [r for r in J if any("signal=SENT" in s for s in r.get("status", []))]
     days = {}
     for r in sig_runs:
@@ -502,21 +517,40 @@ def check_dead(live: Path):
 def check_integrity(live: Path, code_dir: Path, repo: Path, skip_selftest=False):
     cat = "ЦЯЛОСТ"
     # Ц1 · живата версия == нашата?
+    # ОДИТ-9 (A9/Ц1): ТАВТОЛОГИЯ. Workflow-ът вика `--repo . --code .`, значи
+    # `repo/live_bot.py` и `code_dir/live_bot.py` бяха ЕДИН И СЪЩ ФАЙЛ и сравнението
+    # `rtxt == local` беше винаги True. Най-важната проверка за цялост НЕ МОЖЕШЕ да гръмне.
+    # Сега сравняваме с ЖИВИЯ файл от GitHub API (не raw — raw кешира и лъже).
     local = (code_dir / "live_bot.py").read_text(encoding="utf-8", errors="ignore")
     m = re.search(r'VERSION\s*=\s*"([^"]+)"', local)
     lv = m.group(1) if m else "?"
     rf = repo / "live_bot.py"
-    if rf.exists():
-        rtxt = rf.read_text(encoding="utf-8", errors="ignore")
+    same_file = rf.exists() and rf.resolve() == (code_dir / "live_bot.py").resolve()
+    rtxt = None
+    src = "GitHub API"
+    try:
+        import base64 as _b64
+        _api = "https://api.github.com/repos/AEROBOTAMOVE/PROMEGAAEERO/contents/live_bot.py?ref=main"
+        rtxt = _b64.b64decode(json.loads(http(_api, 12))["content"]).decode("utf-8")
+    except Exception as e:
+        if rf.exists() and not same_file:
+            rtxt = rf.read_text(encoding="utf-8", errors="ignore"); src = "repo-папка"
+        else:
+            A.warn(cat, "Ц1", "живата версия — НЕПРОВЕРИМА",
+                   f"GitHub API не отговори ({type(e).__name__}), а локалният път сочи същия файл",
+                   "не приемай това за зелено — просто не можах да сверя")
+    if rtxt is not None:
         m2 = re.search(r'VERSION\s*=\s*"([^"]+)"', rtxt)
         rv = m2.group(1) if m2 else "v4 (без версия)"
-        if rtxt == local:
-            A.ok(cat, "Ц1", "живата версия", f"{rv} — идентична с локалната")
+        import hashlib as _hl
+        h_live = _hl.sha256(rtxt.encode("utf-8")).hexdigest()[:12]
+        h_loc = _hl.sha256(local.encode("utf-8")).hexdigest()[:12]
+        if h_live == h_loc:
+            A.ok(cat, "Ц1", "живата версия", f"{rv} — идентична с локалната (sha {h_live}, по {src})")
         else:
-            A.fail(cat, "Ц1", "ЖИВАТА ВЕРСИЯ Е РАЗЛИЧНА", f"repo: {rv} · локално: {lv}",
+            A.fail(cat, "Ц1", "ЖИВАТА ВЕРСИЯ Е РАЗЛИЧНА",
+                   f"живо: {rv} sha {h_live} · локално: {lv} sha {h_loc}",
                    "качи новия live_bot.py — иначе одитираш едно, а работи друго!")
-    else:
-        A.warn(cat, "Ц1", "живата версия", "не намерих live_bot.py в repo-то")
 
     # Ц2 · selftest
     st = code_dir / "selftest.py"
@@ -775,10 +809,17 @@ def main():
     R, Y = scoreboard()
     if args.send:
         try:
-            lb._send_raw(telegram_msg(R, Y))
-            print("отчетът е пратен в Телеграм")
+            res = lb._send_raw(telegram_msg(R, Y))
+            # ОДИТ-9 (A1): преди това всеки провал се печаташе и се излизаше с код 0 —
+            # Actions показваше зелено, а отчетът не беше стигнал доникъде. Мълчалив
+            # провал на самия одитор е по-опасен от всяко негово червено.
+            if res is None or "SENT" not in str(res):
+                print("::error::отчетът НЕ Е ДОСТАВЕН — Телеграм върна:", res)
+                sys.exit(1)
+            print("отчетът е пратен в Телеграм:", res)
         except Exception as e:
-            print("пращането се провали:", e)
+            print("::error::пращането се провали:", e)
+            sys.exit(1)
     sys.exit(0)
 
 
