@@ -507,7 +507,11 @@ def check_dead(live: Path):
         days.setdefault(r["run_utc"][:10], []).append(r["run_utc"])
     burst = {d: v for d, v in days.items() if len(v) >= 6}
     if burst:
-        A.warn(cat, "М5", "много карти в един ден", f"{ {d: len(v) for d, v in burst.items()} }",
+        # ОДИТ-12: печаташе СУРОВ python речник — нечетимо на телефон. Сега: най-лошият
+        # ден + бройката, човешки.
+        _wd, _wn = max(((d, len(v)) for d, v in burst.items()), key=lambda x: x[1])
+        A.warn(cat, "М5", "много карти в един ден",
+               f"{len(burst)} такива дни · най-много на {_wd[8:10]}.{_wd[5:7]} — {_wn} карти",
                "възможен спам или нервен пазар — виж дали е оправдано")
     else:
         A.ok(cat, "М5", "брой карти на ден", "в норма (<6)")
@@ -743,24 +747,62 @@ def scoreboard(passes_info=""):
     return R, Y
 
 
+# ОДИТ-12: ИЗВЕСТНИ И ПРИЕТИ. Тези не са новини — те са факти за бота, които собственикът
+# вече знае и е решил да живее с тях. Всеки ден на върха на отчета са ШУМ: научават го да
+# не гледа жълтото, точно както фалшивото червено го научи да не гледа червеното.
+# Слизат най-долу, в един ред, без подробности.
+ЗНАЙНИ = {"Ч1", "Ч2", "М5", "Ч3"}
+# ОДИТ-12: когато yfinance/мрежата липсва, ТРИ проверки викат за ЕДНА причина (В4, В5, Т6).
+# На телефона това изглежда като три счупени неща. Слепват се в един ред.
+ЕДНА_ПРИЧИНА = [({"В4", "В5", "Т6"}, "няма барове",
+                 "пазарни данни недостъпни в този рън (yfinance/мрежа) → В4, В5 и Т6 не могат да се проверят")]
+
+
+def _esc(t):
+    """ОДИТ-12: Телеграм чете < като начало на HTML таг. «pandas>=2.2,<4» стигаше до
+    човека като «pandas>=2.2,» — изяден текст. При лош баланс Телеграм връща 400 и
+    ЦЯЛАТА карта не се доставя. Всяко ЧУЖДО съдържание минава оттук."""
+    return (str(t).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"))
+
+
 def telegram_msg(R, Y):
-    L = [f"🤖 <b>ОДИТ НА БОТА</b> · {sofia(now_utc()):%d.%m %H:%M}", "─────────────────"]
-    for icon, cat in CATS:
-        r, y = A.count(cat, RED), A.count(cat, YEL)
-        s = "✅" if r == 0 and y == 0 else ("⚠️" if r == 0 else "❌")
-        L.append(f"{s} {icon} {cat}: {r} червени · {y} жълти")
-    L.append("─────────────────")
-    if R == 0 and Y == 0:
-        L.append("🟢 <b>ВСИЧКО НАРЕД</b> — ботът е здрав.")
+    L = [f"🤖 <b>ОДИТ НА БОТА</b> · {sofia(now_utc()):%d.%m %H:%M}"]
+    _new = [x for x in (A.reds + A.yellows) if x["code"] not in ЗНАЙНИ]
+    _kn = [x for x in (A.reds + A.yellows) if x["code"] in ЗНАЙНИ]
+    # слепваме групите с ОБЩА причина в един ред (само ако ВСИЧКИ са жълти)
+    _merged = []
+    for codes, name, why in ЕДНА_ПРИЧИНА:
+        hit = [x for x in _new if x["code"] in codes]
+        if len(hit) >= 2 and all(x["level"] == YEL for x in hit):
+            _new = [x for x in _new if x["code"] not in codes]
+            _merged.append({"code": "+".join(sorted(codes)), "name": name,
+                            "detail": why, "level": YEL, "fix": ""})
+    _new = _merged + _new
+    _nr = sum(1 for x in _new if x["level"] == RED)
+    # ЕДНО изречение най-горе, което казва СЪСТОЯНИЕТО — не таблица с пет реда
+    if _nr:
+        L.append(f"🔴 <b>{_nr} ПРОБЛЕМА — виж долу</b>")
+    elif _new:
+        L.append(f"🟡 <b>Няма счупено</b> · {len(_new)} за наблюдение")
     else:
-        _all = A.reds + A.yellows
-        for x in _all[:10]:
-            ic = "❌" if x["level"] == RED else "⚠️"
-            L.append(f"{ic} <b>{x['code']}</b> {x['name']}")
-            if x["detail"]:
-                L.append(f"   <i>{x['detail'][:150]}</i>")
-        if len(_all) > 10:
-            L.append("<i>+%d непоказани: %s</i>" % (len(_all) - 10, ", ".join(x["code"] for x in _all[10:])))
+        L.append("🟢 <b>ВСИЧКО НАРЕД</b> — ботът е здрав.")
+    L.append("─────────────────")
+    # ЧЕРВЕНОТО първо и с лекарството; жълтото след него, без лекарство
+    for x in sorted(_new, key=lambda z: 0 if z["level"] == RED else 1)[:10]:
+        ic = "❌" if x["level"] == RED else "⚠️"
+        L.append(f"{ic} <b>{_esc(x['code'])}</b> {_esc(x['name'])}")
+        if x["detail"]:
+            L.append(f"   <i>{_esc(x['detail'])[:160]}</i>")
+        if x["level"] == RED and x.get("fix"):
+            L.append(f"   → <b>{_esc(x['fix'])[:120]}</b>")
+    if len(_new) > 10:
+        L.append("<i>+%d непоказани: %s</i>" % (len(_new) - 10, _esc(", ".join(x["code"] for x in _new[10:]))))
+    # непроверените — важно е да се знае, но не е тревога
+    _sk = [x for x in A.rows if x["level"] == SKP]
+    if _sk:
+        L.append(f"⊘ <i>непроверени ({len(_sk)}): {_esc(', '.join(x['code'] for x in _sk))} — нямаше вход</i>")
+    if _kn:
+        L.append(f"📌 <i>знайни и приети: {_esc(', '.join(x['code'] for x in _kn))}</i>")
     L.append(f"<i>одит-робот v{AUDIT_VERSION}</i>")
     return "\n".join(L)
 
