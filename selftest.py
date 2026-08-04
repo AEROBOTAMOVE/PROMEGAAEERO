@@ -978,6 +978,168 @@ ck("П14 живият stats е под НОВОТО правило (има бел
 
 
 # ═══════════════════════════════════════════════════════════════════════
+# П15 · ОДИТ-11: 54 от 314 проверки само ГРЕПВАТ изходния текст.
+# Мъртъв код минава през тях без да мигне. Тук проверките, които пазят
+# ПАРИ и ДОСТАВКА, вече се ИЗПЪЛНЯВАТ наистина — с истинска tmp папка,
+# истински _outbox_flush и подменена мрежа.
+# ═══════════════════════════════════════════════════════════════════════
+import urllib.request as _ur15, urllib.error as _ue15
+
+
+def _ob_run(msgs, send, new_msgs=()):
+    """Пуска _outbox_flush НАИСТИНА върху tmp папка.
+    НАУЧЕНО С ПАДАЩ ТЕСТ: `signal`/`s-signal`, пренесени от МИНАЛ рън и НЕрегенерирани
+    сега, се ИЗХВЪРЛЯТ НАРОЧНО (НАХОДКА B — осиротяла карта: картата стига до човека,
+    а сделка не се отваря). За тестове на задържане ползвай ИЗХОДЕН таг."""
+    d = _P(_tf.mkdtemp())
+    (d / "outbox.jsonl").write_text(
+        "\n".join(json.dumps(m, ensure_ascii=False) for m in msgs), encoding="utf-8")
+    st = []
+    _o = lb._send_raw
+    lb._send_raw = send
+    try:
+        sent = lb._outbox_flush(d, list(new_msgs), st)
+    except SystemExit as e:
+        sent = set(); st.append("SystemExit:" + str(e)[:70])
+    finally:
+        lb._send_raw = _o
+    rem = [json.loads(x) for x in (d / "outbox.jsonl").read_text(encoding="utf-8").splitlines() if x.strip()]
+    return sent, rem, st, d
+
+
+def _M(tag, txt="карта", hf=0):
+    return {"tag": tag, "text": txt, "first_ts": "2026-08-04T00:00:00", "attempts": 1, "hard_fails": hf}
+
+
+# --- 1 · ИЗХОДНИТЕ КАРТИ никога не се хвърлят като «отровни» ---
+_s, _r, _st, _d = _ob_run([_M("exit:tp1", "<b>ТП1</b>", hf=5)], lambda t: "HARD_FAIL:400 bad html")
+ck("П15 изходна карта с 5 твърди провала НЕ се изхвърля (парите са на риск)",
+   any(m["tag"] == "exit:tp1" for m in _r))
+ck("П15 изходната карта се пробва като ГОЛ ТЕКСТ (последен шанс)",
+   any(m.get("plain") for m in _r) or any("HTML махнат" in s for s in _st))
+_sh4.rmtree(_d, ignore_errors=True)
+
+_s, _r, _st, _d = _ob_run([_M("ma-alert", "<b>карта</b>", hf=5)], lambda t: "HARD_FAIL:400 bad html")
+ck("П15 обикновена карта с 5 твърди провала СЕ изхвърля (отровна)",
+   not any(m["tag"] == "ma-alert" for m in _r) and any("ОТРОВНО" in s for s in _st))
+_sh4.rmtree(_d, ignore_errors=True)
+
+# --- 2 · ЛИПСВАЩ ТОКЕН пази пощата и вдига аларма ---
+_s, _r, _st, _d = _ob_run([_M("exit:tp2"), _M("exit:sl")], lambda t: "DRY_RUN (няма токен)")
+ck("П15 липсващ токен ПАЗИ и двете съобщения (не ги трие)", len(_r) == 2)
+ck("П15 липсващ токен вдига аларма, не мълчи",
+   any("КОНФИГУРАЦИЯ" in s or "ЛИПСВА TELEGRAM" in s for s in _st))
+_sh4.rmtree(_d, ignore_errors=True)
+
+# --- 3 · МЕК провал → ретрай вечно, съобщението остава ---
+_s, _r, _st, _d = _ob_run([_M("exit:sl")], lambda t: "SEND_FAILED: мрежа")
+ck("П15 мек провал ПАЗИ съобщението за следващия рън", len(_r) == 1)
+ck("П15 мек провал НЕ брои за отровно", _r and _r[0].get("hard_fails", 0) == 0)
+_sh4.rmtree(_d, ignore_errors=True)
+
+# --- 4 · УСПЕХ → съобщението излиза от пощата и влиза в книгата ---
+_s, _r, _st, _d = _ob_run([_M("exit:sl")], lambda t: "SENT (200)")
+ck("П15 успешно пратено НАПУСКА пощата", len(_r) == 0 and "exit:sl" in _s)
+ck("П15 успешно пратено се вписва в sent_log",
+   (_d / "sent_log.jsonl").exists() and "карта" in (_d / "sent_log.jsonl").read_text(encoding="utf-8"))
+_sh4.rmtree(_d, ignore_errors=True)
+
+# --- 5 · ИЗКЛЮЧЕНИЕ при пращане не изхвърля бота и пази пощата (ОДИТ-9) ---
+_s, _r, _st, _d = _ob_run([_M("exit:sl")], lambda t: (_ for _ in ()).throw(RuntimeError("бум")))
+ck("П15 изключение при пращане НЕ вали обиколката", len(_r) == 1)
+ck("П15 изключението се отбелязва като мек провал", any("изключение" in s for s in _st))
+_sh4.rmtree(_d, ignore_errors=True)
+
+# --- 6 · ВЕРИГАТА ОТ РЕЗЕРВНИ СПОТ-ИЗТОЧНИЦИ наистина пада надолу ---
+_calls15 = []
+
+
+def _fake_url15(req, timeout=0):
+    u = req.full_url if hasattr(req, "full_url") else str(req)
+    _calls15.append(u)
+
+    class _R:
+        status = 200
+        def __enter__(s): return s
+        def __exit__(s, *a): return False
+        def read(s):
+            if "binance" in u:
+                raise _ue15.HTTPError(u, 451, "blocked", None, None)
+            if "coinbase" in u:
+                raise _ue15.HTTPError(u, 500, "err", None, None)
+            if "kraken" in u:
+                return b'{"result":{"PAXGUSD":{"b":["4001.5","1","1"],"a":["4002.0","1","1"]}}}'
+            raise _ue15.HTTPError(u, 503, "no", None, None)
+    return _R()
+
+
+_ou15 = _ur15.urlopen
+_ur15.urlopen = _fake_url15
+try:
+    _res15 = lb._spot("XAU/USD")
+except Exception:
+    _res15 = None
+finally:
+    _ur15.urlopen = _ou15
+_tried = sum(1 for c in _calls15 if any(k in c for k in ("binance", "coinbase", "kraken")))
+ck("П15 спот-веригата ПРОБВА следващия при провал (не спира на първия)", _tried >= 2)
+ck("П15 спот-веригата стига до Kraken, когато първите два паднат",
+   any("kraken" in c for c in _calls15))
+
+# --- 7 · ПАЗАЧЪТ НА БАЗИСА лови ВСИЧКИ paxg-източници по префикс ---
+ck("П15 префиксният пазач лови и трите paxg варианта, но не Swissquote",
+   all(str(n).startswith("paxg") for n in ("paxg-bin", "paxg-cb", "paxg-kr"))
+   and not str("swq").startswith("paxg"))
+ck("П15 кодът ползва ПРЕФИКС, не точно име",
+   'startswith("paxg")' in _src and '== "paxg-bin"' not in _src)
+
+# --- 8 · САНИТИ-ФИЛТЪРЪТ на спота отхвърля абсурдна цена ---
+_calls15b = []
+
+
+def _absurd(req, timeout=0):
+    u = req.full_url if hasattr(req, "full_url") else str(req)
+    _calls15b.append(u)
+
+    class _R:
+        status = 200
+        def __enter__(s): return s
+        def __exit__(s, *a): return False
+        def read(s):
+            if "kraken" in u:
+                return b'{"result":{"PAXGUSD":{"b":["4001.5","1","1"],"a":["4002.0","1","1"]}}}'
+            return b'{"bidPrice":"0.01","askPrice":"0.02"}'      # абсурд
+    return _R()
+
+
+_ur15.urlopen = _absurd
+try:
+    _res15b = lb._spot("XAU/USD")
+except Exception:
+    _res15b = None
+finally:
+    _ur15.urlopen = _ou15
+ck("П15 абсурдна цена (0.01$) НЕ се приема за злато",
+   _res15b is None or _res15b.get("bid", 0) > 500)
+
+# --- 9 · ПАЗАЧЪТ СРЕЩУ ОСИРОТЕЛИ КАРТИ (НАХОДКА B) — намерен от ПАДАЩ тест ---
+# `signal`, пренесен от МИНАЛ рън и НЕрегенериран сега, трябва да се ИЗХВЪРЛИ:
+# иначе картата стига до човека, а сделка не се отваря и не се следи.
+# Дотук това се пазеше само от греп («in _src»); сега се ИЗПЪЛНЯВА.
+_s, _r, _st, _d = _ob_run([_M("signal", "стара карта")], lambda t: "SENT (200)")
+ck("П15 пренесен НЕрегенериран signal се ИЗХВЪРЛЯ (без осиротяла карта)",
+   not any(m["tag"] == "signal" for m in _r) and "signal" not in _s)
+_sh4.rmtree(_d, ignore_errors=True)
+_s, _r, _st, _d = _ob_run([], lambda t: "SENT (200)", new_msgs=[("signal", "нова карта")])
+ck("П15 регенериран signal СЕ праща нормално", "signal" in _s and len(_r) == 0)
+_sh4.rmtree(_d, ignore_errors=True)
+_s, _r, _st, _d = _ob_run([_M("exit:tp1", "стар изход")], lambda t: "SEND_FAILED: мрежа")
+ck("П15 пренесена ИЗХОДНА карта се ПАЗИ (за разлика от signal)",
+   any(m["tag"] == "exit:tp1" for m in _r))
+_sh4.rmtree(_d, ignore_errors=True)
+
+
+# ═══════════════════════════════════════════════════════════════════════
 # 🔴 ОДИТ-3 (29.07): БАРИЕРАТА СТОЕШЕ В СРЕДАТА НА ФАЙЛА.
 # финалният печат и изходният код бяха на ред 354, а П5 и П6 идваха
 # СЛЕД тях → 15 теста печатаха PASS/FAIL, но НЕ можеха да счупят качването:
