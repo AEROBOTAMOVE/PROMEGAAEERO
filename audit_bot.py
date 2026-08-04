@@ -23,6 +23,7 @@ from pathlib import Path
 
 AUDIT_VERSION = "1.0"
 RED, YEL, GRN = "ЧЕРВЕНО", "ЖЪЛТО", "ЗЕЛЕНО"
+SKP = "НЕПРОВЕРЕНО"     # има ли вход изобщо? без него зеленото е самохвалство
 CATS = [("⏱", "ВРЕМЕ"), ("🎯", "ТОЧНОСТ"), ("💀", "МЪРТВИ"), ("🔒", "ЦЯЛОСТ"), ("📊", "ЧЕСТНОСТ")]
 
 
@@ -34,7 +35,7 @@ class Audit:
     def add(self, cat, code, name, level, detail="", fix=""):
         self.rows.append({"cat": cat, "code": code, "name": name, "level": level,
                           "detail": detail, "fix": fix})
-        icon = {RED: "❌", YEL: "⚠️", GRN: "✅"}[level]
+        icon = {RED: "❌", YEL: "⚠️", GRN: "✅", SKP: "⊘"}[level]
         line = f"  {icon} {code} · {name}"
         if detail:
             line += f" — {detail}"
@@ -48,6 +49,9 @@ class Audit:
 
     def fail(self, cat, code, name, detail="", fix=""):
         self.add(cat, code, name, RED, detail, fix)
+
+    def skip(self, cat, code, name, detail=""):
+        self.add(cat, code, name, SKP, detail)
 
     def count(self, cat, level):
         return sum(1 for r in self.rows if r["cat"] == cat and r["level"] == level)
@@ -338,7 +342,7 @@ def check_accuracy(live: Path, code_dir: Path, lb, bars5):
         if want != t["levels"]:
             bad.append(f"{name}: записани {t['levels']} ≠ сметнати {want}")
     if not tr and not s_tr:
-        A.ok(cat, "Т1", "аритметика на нивата", "няма отворени сделки")
+        A.skip(cat, "Т1", "аритметика на нивата — НЕ Е ПРОВЕРЕНА", "няма отворени сделки")
     elif bad:
         A.fail(cat, "Т1", "НИВАТА НЕ СЪВПАДАТ с формулата", " | ".join(bad),
                "състоянието е повредено или версията е сменена насред сделка")
@@ -348,7 +352,7 @@ def check_accuracy(live: Path, code_dir: Path, lb, bars5):
     # Т2 · спот-леджър (мигрирани ли са сделките)
     unmig = [n for n, t in (("злато", tr), ("сребро", s_tr)) if t and t.get("ledger") != "spot"]
     if not (tr or s_tr):
-        A.ok(cat, "Т2", "спот-леджър", "няма сделки")
+        A.skip(cat, "Т2", "спот-леджър — НЕ Е ПРОВЕРЕН", "няма сделки")
     elif unmig:
         A.warn(cat, "Т2", "сделка с ФЮЧЪРСНИ нива", f"{', '.join(unmig)} — старата версия",
                "новият бот ще ги мигрира сам при първото пускане")
@@ -360,11 +364,14 @@ def check_accuracy(live: Path, code_dir: Path, lb, bars5):
     bg = meta.get("basis_g")
     if bg is None:
         A.warn(cat, "Т3", "базис фючърс−спот", "не се мери (стара версия)")
-    elif abs(bg) <= 25:
-        A.ok(cat, "Т3", "базис фючърс−спот", f"{bg:+.2f}$ (нормално 3-10$)")
     else:
-        A.fail(cat, "Т3", "БАЗИСЪТ Е ИЗБЯГАЛ", f"{bg:+.2f}$ — възможен пропуснат роловър",
-               "нивата може да са изместени; провери ръчно")
+        _sp = meta.get("last_spot_g") or 2000.0
+        _cap = max(25.0, 0.02 * _sp)          # кери = спот x лихва x срок; при 4088$ това е ~55$
+        if abs(bg) <= _cap:
+            A.ok(cat, "Т3", "базис фючърс-спот", f"{bg:+.2f}$ = {bg / _sp * 100:+.2f}% от спота (кери, нормално)")
+        else:
+            A.fail(cat, "Т3", "БАЗИСЪТ Е АБСУРДЕН", f"{bg:+.2f}$ = {bg / _sp * 100:+.2f}% от спота (таван {_cap:.0f}$)",
+                   "това не е кери; дали базисът превежда вярно казва Т5")
 
     # Т4 · ПРОПУСНАТ УДАР ← това е бъгът от 14.07
     if tr and bars5 is not None:
@@ -395,20 +402,20 @@ def check_accuracy(live: Path, code_dir: Path, lb, bars5):
     elif tr:                                      # има отворена сделка, но НЯМА барове (мрежа долу)
         A.warn(cat, "Т4", "пропуснат удар — непроверим", "yfinance недостъпен — не мога да сверя удар")
     else:
-        A.ok(cat, "Т4", "пропуснат удар", "няма отворена сделка за проверка")
+        A.skip(cat, "Т4", "пропуснат удар — НЕ Е ПРОВЕРЕН", "няма отворена сделка")
 
     # Т5 · съответствие карта ↔ спот (само v5)
     J = jall(live, "live_journal.jsonl")
     v5 = [r for r in J if r.get("spot") and r.get("bar")]
     if v5:
-        offs = [abs(r["bar"] - r["spot"]) for r in v5 if r.get("spot")]
+        offs = [abs(r["bar"] - (r.get("basis") or 0.0) - r["spot"]) for r in v5 if r.get("spot")]
         if offs:
             mx = max(offs)
             if mx <= 25:
-                A.ok(cat, "Т5", "спот срещу бар", f"най-голяма разлика {mx:.1f}$ (базис+закъснение)")
+                A.ok(cat, "Т5", "спот срещу бар", f"най-голяма разлика {mx:.1f}$ СЛЕД базиса (остатъчна)")
             else:
-                A.fail(cat, "Т5", "СПОТЪТ И БАРЪТ СЕ РАЗМИНАВАТ", f"до {mx:.1f}$",
-                       "санити-проверката не е сработила")
+                A.fail(cat, "Т5", "СПОТЪТ И БАРЪТ СЕ РАЗМИНАВАТ", f"до {mx:.1f}$ СЛЕД изваждане на базиса",
+                       "базисът вече не превежда бара в спот — провери _basis_update/роловъра")
     else:
         A.warn(cat, "Т5", "спот срещу бар", "живата версия не записва спот")
 
@@ -425,8 +432,11 @@ def check_accuracy(live: Path, code_dir: Path, lb, bars5):
             else:
                 A.warn(cat, "Т6", "геометрия ≠ волатилност", det,
                        "стопът/целите не пасват на текущия ATR — обмисли ATR-мащаб (отделен тест)")
-        except Exception:
-            A.ok(cat, "Т6", "геометрия срещу волатилност", "непресметната")
+        except Exception as e:
+            A.warn(cat, "Т6", "геометрия — НЕПРЕСМЕТНАТА", type(e).__name__,
+                   "проверката гръмна — това не е зелено")
+    else:
+        A.warn(cat, "Т6", "геометрия — НЕПРОВЕРЕНА", "няма барове (yfinance недостъпен)")
 
 
 def TP3_D(lb):
@@ -576,21 +586,31 @@ def check_integrity(live: Path, code_dir: Path, repo: Path, skip_selftest=False)
         "спот злато (Swissquote)": ("https://forex-data-feed.swissquote.com/public-quotes/bboquotes/instrument/XAU/USD", 3000, 6000),
         "спот сребро (Swissquote)": ("https://forex-data-feed.swissquote.com/public-quotes/bboquotes/instrument/XAG/USD", 15, 150),
         "резерва PAXG (Binance)": ("https://api.binance.com/api/v3/ticker/bookTicker?symbol=PAXGUSDT", 3000, 6000),
+        "резерва PAXG (Coinbase)": ("https://api.exchange.coinbase.com/products/PAXG-USD/ticker", 3000, 6000),
+        "резерва PAXG (Kraken)": ("https://api.kraken.com/0/public/Ticker?pair=PAXGUSD", 3000, 6000),
     }
     for name, (url, lo, hi) in feeds.items():
         try:
             d = json.loads(http(url, 10))
-            if "bidPrice" in str(d):
+            if isinstance(d, dict) and "bidPrice" in d:            # Binance
                 px = float(d["bidPrice"])
-            else:
+            elif isinstance(d, dict) and d.get("result"):          # Kraken
+                px = float(list(d["result"].values())[0]["b"][0])
+            elif isinstance(d, dict) and "bid" in d:               # Coinbase
+                px = float(d["bid"])
+            else:                                                  # Swissquote
                 px = float(d[0]["spreadProfilePrices"][0]["bid"])
             if lo <= px <= hi:
                 A.ok(cat, "Ц3", name, f"жив · {px:.2f}")
             else:
                 A.fail(cat, "Ц3", name, f"абсурдна цена {px}")
         except Exception as e:
-            A.fail(cat, "Ц3", f"{name} НЕ ОТГОВАРЯ", f"{type(e).__name__}",
-                   "ботът ще падне на бар-цени (по-бавно, но работи)")
+            # Binance е забранен за US-IP (рънърите): 0 котировки в 4075 живи ръна.
+            # Първи е във веригата, но НЕ е този, който спасява -> жълто, не червено.
+            # името остава СЪЩОТО и при провал -> редът е сравним между преминаванията
+            (A.warn if "Binance" in name else A.fail)(
+                cat, "Ц3", name, f"НЕ ОТГОВАРЯ ({type(e).__name__})",
+                "ботът ще падне на бар-цени (по-бавно, но работи)")
     try:
         txt = http("https://fred.stlouisfed.org/graph/fredgraph.csv?id=DFII10", 25)
         A.ok(cat, "Ц3", "лихви (FRED)", f"жив · {len(txt.splitlines())} реда")
@@ -600,17 +620,27 @@ def check_integrity(live: Path, code_dir: Path, repo: Path, skip_selftest=False)
     # Ц4 · workflow-и + заковани версии
     try:
         import yaml
-        for p in (code_dir / ".github/workflows/aero-bot.yml", code_dir / ".github/workflows/tests.yml"):
-            if p.exists():
-                yaml.safe_load(p.read_text(encoding="utf-8"))
-        A.ok(cat, "Ц4", "workflow файловете", "валидни")
+        _wf = ("aero-bot.yml", "tests.yml", "audit.yml")
+        _miss = [w for w in _wf if not (code_dir / ".github/workflows" / w).exists()]
+        for w in _wf:
+            _p = code_dir / ".github/workflows" / w
+            if _p.exists():
+                yaml.safe_load(_p.read_text(encoding="utf-8"))
+        if _miss:
+            A.fail(cat, "Ц4", "ЛИПСВА WORKFLOW", ", ".join(_miss), "без него нищо не се пуска")
+        else:
+            A.ok(cat, "Ц4", "workflow файловете", f"{len(_wf)} валидни: " + ", ".join(_wf))
     except Exception as e:
         A.fail(cat, "Ц4", "WORKFLOW СЧУПЕН", str(e)[:120])
     req = (code_dir / "requirements.txt").read_text(encoding="utf-8") if (code_dir / "requirements.txt").exists() else ""
-    if "==" in req:
+    _un = [l.strip() for l in req.splitlines()
+           if l.strip() and not l.lstrip().startswith("#") and "==" not in l]
+    if req and not _un:
         A.ok(cat, "Ц5", "заковани версии", req.replace("\n", " ").strip())
     else:
-        A.warn(cat, "Ц5", "версиите не са заковани", "нов yfinance може да счупи бота за една нощ")
+        A.warn(cat, "Ц5", "версиите НЕ са заковани",
+               ("незаковани: " + ", ".join(_un)) if _un else "няма requirements.txt",
+               "нов pandas/numpy може да счупи бота за една нощ")
 
 
 # ─────────────────── 📊 ЧЕСТНОСТ ───────────────────
@@ -644,7 +674,9 @@ def check_honesty(code_dir: Path, data_dir: Path):
 
     # Ч3-5 · леджерите са изследователски (не се качват в repo-то) → само ако папката е налична
     if not data_dir.exists():
-        A.ok(cat, "Ч3", "леджери", "не са в repo-то (изследователски файлове — нормално)")
+        A.warn(cat, "Ч3", "ЧЕСТНОСТ не е проверена",
+               "папката с леджери липсва в тази среда -> Ч3/Ч4/Ч5 НЕ СА ИЗПЪЛНЕНИ",
+               "подай --data; windows-пътят по подразбиране никога не съществува на рънъра")
         return
     rules = {"US-щит": "f18_runs", "ре-влизане": "f18_runs", "флип само премиум": "f19_runs",
              "замразени референции": "f19_runs", "сребро само дневна": "f19_runs",
@@ -679,15 +711,17 @@ def scoreboard(passes_info=""):
     print("═" * 74)
     print(f"🤖 ТАБЛО НА ОДИТ-РОБОТА · {sofia(now_utc()):%d.%m.%Y %H:%M} София{passes_info}")
     print("═" * 74)
-    print(f"{'група':<14}{'❌ червени':>12}{'⚠️ жълти':>12}{'✅ зелени':>12}")
+    print(f"{'група':<14}{'❌ червени':>12}{'⚠️ жълти':>12}{'✅ зелени':>12}{'⊘ непров.':>12}")
     print("─" * 74)
     for icon, cat in CATS:
         r, y, g = A.count(cat, RED), A.count(cat, YEL), A.count(cat, GRN)
+        k = A.count(cat, SKP)
         mark = "" if r == 0 else "  ← ГЛЕДАЙ ТУК"
-        print(f"{icon} {cat:<12}{r:>12}{y:>12}{g:>12}{mark}")
+        print(f"{icon} {cat:<12}{r:>12}{y:>12}{g:>12}{k:>12}{mark}")
     print("─" * 74)
     R, Y = len(A.reds), len(A.yellows)
-    print(f"{'ОБЩО':<14}{R:>12}{Y:>12}{len(A.rows)-R-Y:>12}")
+    K = sum(1 for r in A.rows if r["level"] == SKP)
+    print(f"{'ОБЩО':<14}{R:>12}{Y:>12}{len(A.rows)-R-Y-K:>12}{K:>12}")
     print()
     if R == 0 and Y == 0:
         print("🟢 ВСИЧКО НАРЕД — всички нули. Ботът е здрав.")
@@ -719,11 +753,14 @@ def telegram_msg(R, Y):
     if R == 0 and Y == 0:
         L.append("🟢 <b>ВСИЧКО НАРЕД</b> — ботът е здрав.")
     else:
-        for x in (A.reds + A.yellows)[:6]:
+        _all = A.reds + A.yellows
+        for x in _all[:10]:
             ic = "❌" if x["level"] == RED else "⚠️"
             L.append(f"{ic} <b>{x['code']}</b> {x['name']}")
             if x["detail"]:
                 L.append(f"   <i>{x['detail'][:150]}</i>")
+        if len(_all) > 10:
+            L.append("<i>+%d непоказани: %s</i>" % (len(_all) - 10, ", ".join(x["code"] for x in _all[10:])))
     L.append(f"<i>одит-робот v{AUDIT_VERSION}</i>")
     return "\n".join(L)
 
@@ -797,12 +834,13 @@ def main():
                 check_honesty(code_dir, data_dir)
             A.add = _sink
         if pi == 0:
-            worst = {r["code"]: r for r in A.rows}
+            worst = {(r["code"], r["name"]): r for r in A.rows}
         else:
             for r in A.rows:                              # запази по-лошия статус
                 sev = {GRN: 0, YEL: 1, RED: 2}
-                if r["code"] not in worst or sev[r["level"]] > sev[worst[r["code"]]["level"]]:
-                    worst[r["code"]] = r
+                _k = (r["code"], r["name"])
+                if _k not in worst or sev[r["level"]] > sev[worst[_k]["level"]]:
+                    worst[_k] = r
     if passes > 1:
         A.rows = list(worst.values())
 
