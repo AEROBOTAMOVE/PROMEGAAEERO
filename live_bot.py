@@ -1485,7 +1485,16 @@ def _outbox_flush(out_dir, new_msgs, statuses, dry=False):
                 continue
         if dry:
             statuses.append(f"{msg['tag']}=DRY"); sent_tags.add(msg["tag"]); continue
-        st = _send_raw(msg["text"])
+        # ОДИТ-9 (П13): `_send_raw` лови всичко ВЪТРЕ в цикъла си, но кодът ПРЕДИ цикъла
+        # (urlencode на текста) може да хвърли. Тогава изключението излизаше чак от main(),
+        # ботът крашваше, а `outbox.jsonl` се записва ЧАК СЛЕД тази обиколка → ЦЯЛАТА поща
+        # се губеше, включително изходни карти за пари, които вече са на риск.
+        # Мерено с изпълнен тест: RuntimeError в _send_raw → traceback от main() + нула outbox.
+        # Сега всяко изключение е МЕК провал: съобщението остава и се пробва пак.
+        try:
+            st = _send_raw(msg["text"])
+        except Exception as _e:
+            st = f"SEND_FAILED: изключение {type(_e).__name__}: {str(_e)[:60]}"
         statuses.append(f"{msg['tag']}={st}")
         if st.startswith("SENT"):
             sent_tags.add(msg["tag"])

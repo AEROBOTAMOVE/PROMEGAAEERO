@@ -811,6 +811,118 @@ ck("П12 живият backtest_stats.json има разделена кофа",
 
 
 # ═══════════════════════════════════════════════════════════════════════
+# П13 · ОДИТ-9: main() — 679 реда оркестратор — имаше НУЛА изпълнени теста.
+# Досега се проверяваше само с грепване на изходния текст (`"низ" in _msrc`),
+# което мъртъв код минава без да мигне. Тук main() се ИЗПЪЛНЯВА наистина,
+# срещу изкуствени данни и БЕЗ мрежа, и се твърди за ПОВЕДЕНИЕТО му.
+# ═══════════════════════════════════════════════════════════════════════
+import tempfile as _tf, shutil as _sh4, contextlib as _ctx, io as _io2
+import numpy as _np
+import time as _t13
+
+_REAL = {k: getattr(lb, k) for k in ("_yf", "_rates", "_spot", "_cq_fetch", "_fng_live", "_send_raw")}
+_REAL_SLEEP = _t13.sleep
+
+
+def _fx(n, start, freq, px, drift=0.0):
+    """Изкуствена свещна серия — детерминирана, без случайност."""
+    i = pd.date_range(start, periods=n, freq=freq)
+    c = px + _np.arange(n) * drift + _np.sin(_np.arange(n) / 7.0) * 2.0
+    return pd.DataFrame({"Open": c, "High": c + 1.5, "Low": c - 1.5, "Close": c,
+                         "Volume": 1000.0}, index=i)
+
+
+def _run_main(spot=None, stats_path="backtest_stats.json", send_ok=True, extra_argv=()):
+    """Пуска ЦЕЛИЯ main() в tmp папка, без мрежа. Връща (изходен_код, пратени, папка)."""
+    D = {"GC=F": _fx(800, "2024-01-01", "D", 3800, 0.35),
+         "GDX": _fx(600, "2024-06-01", "D", 40, 0.02),
+         "DX-Y.NYB": _fx(600, "2024-06-01", "D", 100, -0.005),
+         "SI=F": _fx(900, "2026-07-20", "5min", 46.0, 0.001)}
+    sent = []
+    lb._yf = lambda s, period="2y", interval="1d": D.get(s, _fx(900, "2026-07-20", "5min", 4000, 0.002)).copy()
+    lb._rates = lambda: pd.Series(2.0 - _np.arange(600) * 0.0008,
+                                  index=pd.date_range("2024-06-01", periods=600, freq="D"))
+    lb._spot = lambda instr="XAU/USD", market_closed=False: spot
+    lb._cq_fetch = lambda now: None
+    lb._fng_live = lambda timeout=8: None
+    lb._send_raw = (lambda t: (sent.append(t), "SENT (200)")[1]) if send_ok \
+        else (lambda t: (_ for _ in ()).throw(RuntimeError("HARD_FAIL:400 тест")))
+    _t13.sleep = lambda *a, **k: None
+    tmp = _P(_tf.mkdtemp())
+    old_argv = sys.argv
+    sys.argv = ["live_bot.py", "--out", str(tmp), "--stats", stats_path,
+                "--balance", "1000", "--risk", "2", "--send", "--force", *extra_argv]
+    code = 0
+    try:
+        with _ctx.redirect_stdout(_io2.StringIO()):
+            lb.main()
+    except SystemExit as e:
+        code = e.code if isinstance(e.code, int) else 1
+    except Exception as e:
+        code = f"ГРЪМНА: {type(e).__name__}: {e}"
+    finally:
+        sys.argv = old_argv
+        for k, v in _REAL.items():
+            setattr(lb, k, v)
+        _t13.sleep = _REAL_SLEEP
+    return code, sent, tmp
+
+
+_SP = {"bid": 4079.0, "ask": 4079.5, "mid": 4079.25, "src": "тест", "age_sec": 2}
+
+# --- А · нормален рън ---
+_c, _s, _t1 = _run_main(spot=_SP)
+ck("П13 main() минава ДО КРАЯ без изключение", _c == 0)
+ck("П13 main() записва журнал", (_t1 / "live_journal.jsonl").exists())
+_jr = [json.loads(x) for x in (_t1 / "live_journal.jsonl").read_text(encoding="utf-8").strip().split("\n") if x.strip()]
+ck("П13 журналът има точно 1 запис за 1 рън", len(_jr) == 1)
+ck("П13 записът носи версията", _jr[0].get("v") == lb.VERSION)
+ck("П13 записът носи ТРИТЕ макро крака",
+   set(_jr[0].get("macro", {})) == {"миньори", "долар", "лихви"})
+ck("П13 записът носи СУРОВИТЕ макро числа (проверимост)",
+   all(k in (_jr[0].get("macro_raw") or {}) for k in ("миньори", "долар", "лихви")))
+ck("П13 записът носи борда по 7 рамки", len(_jr[0].get("board") or {}) == 7)
+ck("П13 записът носи статус", isinstance(_jr[0].get("status"), list))
+ck("П13 main() записва състоянието", (_t1 / "meta.json").exists() and (_t1 / "guard.json").exists())
+ck("П13 main() води книга на пратеното", (_t1 / "sent_log.jsonl").exists())
+_sh4.rmtree(_t1, ignore_errors=True)
+
+# --- Б · БЕЗ спот (фийдът е паднал) ---
+_c2, _s2, _t2 = _run_main(spot=None)
+ck("П13 липсващ спот НЕ чупи бота", _c2 == 0)
+_jr2 = [json.loads(x) for x in (_t2 / "live_journal.jsonl").read_text(encoding="utf-8").strip().split("\n") if x.strip()]
+ck("П13 липсващият спот се ОТБЕЛЯЗВА в журнала, не се крие",
+   _jr2[0].get("spot") is None or "спот" in " ".join(_jr2[0].get("notes") or []).lower())
+_sh4.rmtree(_t2, ignore_errors=True)
+
+# --- В · ПОВРЕДЕН stats файл ---
+_bad = _P(_tf.mkdtemp()) / "bad_stats.json"
+_bad.write_text("{това не е json", encoding="utf-8")
+_c3, _s3, _t3 = _run_main(spot=_SP, stats_path=str(_bad))
+ck("П13 повреден backtest_stats.json НЕ чупи бота (излиза чисто)",
+   _c3 == 0 or (isinstance(_c3, int) and _c3 == 1))
+ck("П13 при повреден stats НЕ се праща вход-карта",
+   not any("ВЛИЗАЙ" in x or "ВХОД" in x for x in _s3))
+_sh4.rmtree(_t3, ignore_errors=True); _sh4.rmtree(_bad.parent, ignore_errors=True)
+
+# --- Г · Телеграм отказва → съобщението НЕ изчезва ---
+_c4, _s4, _t4 = _run_main(spot=_SP, send_ok=False)
+_ob = (_t4 / "outbox.jsonl")
+ck("П13 изключение при пращане НЕ изхвърля бота (беше traceback от main)", _c4 == 0)
+ck("П13 изключение при пращане → съобщението ОСТАВА в пощата",
+   _ob.exists() and _ob.read_text(encoding="utf-8").strip() != "")
+_j4 = [json.loads(x) for x in
+       (_t4 / "live_journal.jsonl").read_text(encoding="utf-8").strip().splitlines() if x.strip()]
+ck("П13 изключението се ОТБЕЛЯЗВА като мек провал, не се крие",
+   any("изключение" in " ".join(r.get("status") or []) for r in _j4))
+_sh4.rmtree(_t4, ignore_errors=True)
+
+# --- Д · истинските функции са ВЪРНАТИ (тестът да не трови следващите) ---
+ck("П13 подмените са върнати след теста",
+   all(getattr(lb, k) is v for k, v in _REAL.items()) and _t13.sleep is _REAL_SLEEP)
+
+
+# ═══════════════════════════════════════════════════════════════════════
 # 🔴 ОДИТ-3 (29.07): БАРИЕРАТА СТОЕШЕ В СРЕДАТА НА ФАЙЛА.
 # финалният печат и изходният код бяха на ред 354, а П5 и П6 идваха
 # СЛЕД тях → 15 теста печатаха PASS/FAIL, но НЕ можеха да счупят качването:
