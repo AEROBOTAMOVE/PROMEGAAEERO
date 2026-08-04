@@ -29,7 +29,7 @@ warnings.filterwarnings("ignore")
 import numpy as np
 import pandas as pd
 
-VERSION = "v6.0"
+VERSION = "v6.1"
 PIP = 0.10
 SL_PIPS = 200; SL_D = SL_PIPS * PIP                       # стоп: 200п = $20/oz
 TPS = [("ТП1", 75, 7.5), ("ТП2", 120, 12.0), ("ТП3", 200, 20.0)]
@@ -648,6 +648,61 @@ def _ci(seg):
     return f" (95%: {lo:+.2f}..{hi:+.2f}$)" if lo is not None and hi is not None else ""
 
 
+def _zones(h1, direction):
+    """ЗОНИТЕ ОТ ИНДИКАТОРА (FVG) — качество на входа. ОДИТ-14 (05.08).
+
+    Индикаторът AERO PRO ги рисува от седмици; ботът не ги ползваше. Измерено на
+    114813 сделки под доставената геометрия, върху допуснатите от гейта 31854:
+
+       A · зона отдолу + чисто отгоре   32.6%   +1.998$  [+1.41 .. +2.59]  ПЕЧЕЛИ
+       B · едно от двете                42.5%   +1.457$  [+0.85 .. +2.05]  ПЕЧЕЛИ
+       C · нито едно                    24.9%   +0.502$  [−0.19 .. +1.19]  ШУМ
+       (гейтът сам: +1.396$)
+
+    Подредбата A>B>C е чиста — шумово разделяне не се подрежда така. Устойчива е
+    и в четирите четвъртини на 22 години, и е НАЙ-СИЛНА в последната (2021-2026:
+    +0.819 → +1.145). Късмет-тест: 0 от 60 случайни подмножества със същия размер
+    бият резултата (средно +1.380, максимум +1.609 срещу +1.998).
+
+    НИЩО НЕ СЕ РЕЖЕ — само размерът се степенува 1.00/0.67/0.33, при което рискът
+    на собственика ОСТАВА таван: +1.396 → +1.597$ на единица риск, при 31% по-малко
+    пари в риск.
+
+    FVG (fair value gap) = празнина, оставена от бърз ход: бичи, ако low[i] > high[i-2].
+    Запълва се, когато цената се върне под долния ѝ ръб. Ползва се 1-ЧАСОВАТА рамка —
+    измерена като най-силната (15м и 4ч дават по-малко).
+    Връща (клас, текст) — при липса на данни ('B', ''), тоест НЕУТРАЛНО, не наказва."""
+    try:
+        if h1 is None or len(h1) < 30:
+            return "B", ""
+        hi = h1["High"].values[-400:]; lo = h1["Low"].values[-400:]
+        bull = bear = None                       # долен ръб на бичи · горен ръб на мечи
+        for i in range(2, len(hi)):
+            if lo[i] > hi[i - 2]:
+                bull = float(hi[i - 2])
+            if bull is not None and lo[i] < bull:
+                bull = None                      # запълнена
+            if hi[i] < lo[i - 2]:
+                bear = float(lo[i - 2])
+            if bear is not None and hi[i] > bear:
+                bear = None
+        if direction == "short":                 # огледално за шорт
+            bull, bear = bear, bull
+        have, clean = bull is not None, bear is None
+        if have and clean:
+            return "A", f"🟩 <b>СИЛНА ЗОНА</b> — празнина под цената ({_fmt(bull, 2)}), чисто отгоре"
+        if have:
+            return "B", f"🟨 зона отдолу ({_fmt(bull, 2)}), но има насрещна отгоре"
+        if clean:
+            return "B", "🟨 чисто отгоре, но без зона-опора отдолу"
+        return "C", "🟧 без зона отдолу и с насрещна отгоре — слаб контекст"
+    except Exception:
+        return "B", ""
+
+
+ZONE_W = {"A": 1.00, "B": 0.67, "C": 0.33}      # ОДИТ-14: рискът на собственика е ТАВАН
+
+
 def _fast(fast):
     return f" · БЪРЗ ПАЗАР ±${fast:.0f}/10мин — само лимитирана поръчка" if fast else ""
 
@@ -671,7 +726,7 @@ def _fmt(p, dec=2):
 def _sig_msg(direction, score, agree_n, tier_name, spot, bar_price, bar_ts, lv, entry,
              advice_txt, macro, streak_n, regime, stats, balance, risk_pct, weekly=None,
              reentry=False, open_trade=None, sym="XAUUSD", dec=2, extra_ctx=None, adv_ok=True,
-             shadow_on=None):
+             shadow_on=None, zone=None):
     """Стегната карта: ⏰ час горе, нивата вертикално, 1 присъда, 1 контекст-ред, риск."""
     metal = "ЗЛАТО" if sym == "XAUUSD" else "СРЕБРО"
     dword = "SHORT (продажба)" if direction == "short" else "LONG (купуване)"
@@ -762,6 +817,16 @@ def _sig_msg(direction, score, agree_n, tier_name, spot, bar_price, bar_ts, lv, 
     # отказахме — 28 от 29 карти го правеха. Оставяме числото (човекът може да реши сам),
     # но му слагаме условието отпред, за да не се чете като нареждане.
     rp = "" if (adv_ok or open_trade) else "⚠️ <i>само ако въпреки това влезеш</i> · "
+    # ОДИТ-14: ЗОНИТЕ степенуват РАЗМЕРА, не режат картата. Собственикът каза изрично
+    # «не искам нищо да режем — само да го подобряваме». Класът A взима пълния му риск,
+    # B две трети, C една трета; обявеният риск % остава ТАВАН, никога не се надхвърля.
+    # zone=None значи «НЕ Е МЕРЕНО» (стар повикващ, сребро, липсваща рамка) → размерът
+    # остава ТОЧНО какъвто беше. Само истински измерен клас го мени.
+    _zc, _ztxt = (zone if zone else (None, ""))
+    _zw = ZONE_W.get(_zc, 1.0) if _zc else 1.0
+    if _ztxt and not open_trade:
+        L.append(_ztxt)
+    risk_amt *= _zw
     # ОДИТ-6/Н5+T2-03: «макс −$X» обещаваше пълнеж ТОЧНО на нивото. Собственият тракер е
     # записал −23.88$ при стоп −20.00 (гап). Стопът не е гаранция за цена.
     mx = "макс ≈"
@@ -774,7 +839,10 @@ def _sig_msg(direction, score, agree_n, tier_name, spot, bar_price, bar_ts, lv, 
             L.append(rp + f"💰 Риск ${balance:g}@{risk_pct:g}%: под мин. лот — най-малкото е <b>0.01 лот</b> "
                      f"(1 oz), което рискува −${mn:.0f} = {_rp(mn):.1f}% от баланса")
         else:
-            L.append(rp + f"💰 Риск ${balance:g}@{risk_pct:g}%: <b>{lot:.2f} лот</b> ({oz:.1f} oz) → {mx} −${risk_amt:.2f}" + gp)
+            _zp = ("" if _zw >= 0.999 else
+                   f" <i>(зона {_zc} → {_zw:.0%} от {risk_pct:g}% = {risk_pct*_zw:.2f}%)</i>")
+            L.append(rp + f"💰 Риск ${balance:g}@{risk_pct:g}%: <b>{lot:.2f} лот</b> ({oz:.1f} oz) → "
+                     f"{mx} −${risk_amt:.2f}" + _zp + gp)
     else:
         oz = risk_amt / S_SL                       # 1 лот сребро = 5000 oz · мин. 0.01 лот = 50 oz
         if oz < 50.0:                              # под мин. лот — реалният риск НАДХВЪРЛЯ целта
@@ -2106,7 +2174,8 @@ def main():
                                             lv_user, entry_user, advice_txt, macro, streak_n, regime, stats,
                                             args.balance, args.risk, weekly=weekly, reentry=reentry,
                                             open_trade=open_tr, extra_ctx=" · ".join(extra) if extra else None,
-                                            adv_ok=_adv_ok, shadow_on=sh_now)))
+                                            adv_ok=_adv_ok, shadow_on=sh_now,
+                                            zone=_zones(frames.get("1час"), new_dir))))
         # Б1: НЕ пишем сделка/състояние ТУК — чак СЛЕД потвърдено пращане.
         # НАХОДКА 1: следим сделка САМО ако съветът е ДА (_adv_ok). При «НЕ/ИЗЧАКАЙ»
         # картата е информативна — не отваряме сделка, за която сме казали да не влизаш.
