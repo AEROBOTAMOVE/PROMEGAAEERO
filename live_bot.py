@@ -29,7 +29,7 @@ warnings.filterwarnings("ignore")
 import numpy as np
 import pandas as pd
 
-VERSION = "v5.9a"
+VERSION = "v5.9b"
 PIP = 0.10
 SL_PIPS = 200; SL_D = SL_PIPS * PIP                       # стоп: 200п = $20/oz
 TPS = [("ТП1", 75, 7.5), ("ТП2", 120, 12.0), ("ТП3", 200, 20.0)]
@@ -615,14 +615,17 @@ def _fmt(p, dec=2):
 
 def _sig_msg(direction, score, agree_n, tier_name, spot, bar_price, bar_ts, lv, entry,
              advice_txt, macro, streak_n, regime, stats, balance, risk_pct, weekly=None,
-             reentry=False, open_trade=None, sym="XAUUSD", dec=2, extra_ctx=None, adv_ok=True):
+             reentry=False, open_trade=None, sym="XAUUSD", dec=2, extra_ctx=None, adv_ok=True,
+             shadow_on=None):
     """Стегната карта: ⏰ час горе, нивата вертикално, 1 присъда, 1 контекст-ред, риск."""
-    dcol = "🔴" if direction == "short" else "🟢"
     metal = "ЗЛАТО" if sym == "XAUUSD" else "СРЕБРО"
     dword = "SHORT (продажба)" if direction == "short" else "LONG (купуване)"
-    # Г2: тонът от съвета влиза и в цвета/иконата на заглавието
+    # Г2: тонът от съвета влиза и в цвета/иконата на заглавието.
+    # ОДИТ-6/T4+L6-3: старото 🔴 значеше само «шорт» — тоест ЧЕРВЕНО стоеше над картите,
+    # на които ТРЯБВА да действаш, а 🟡 над тези, на които трябва да спреш. Обратно на
+    # всяка човешка представа. Сега иконата казва ДЕЙСТВИЕ, посоката си има думата до нея.
     warn = advice_txt.startswith("НЕ") or advice_txt.startswith("ИЗЧАКАЙ")
-    head_icon = "🟡" if warn else dcol
+    head_icon = "🛑" if advice_txt.startswith("НЕ") else ("⏳" if warn else "✅")
     L = [f"{head_icon} <b>{metal} {dword}</b> · ⏰ {_sofia()} София",
          "─────────────────"]
     if open_trade:
@@ -642,18 +645,31 @@ def _sig_msg(direction, score, agree_n, tier_name, spot, bar_price, bar_ts, lv, 
         head = "<b>ВХОД</b>" if adv_ok else "<b>АКО ВСЕ ПАК ВЛЕЗЕШ — вход</b>"   # НАХОДКА 1: не карай да влиза при «НЕ»
         src = "спот сега" if spot else "по бара, ~10-15 мин назад — спотът е недостъпен!"
         vicon = "✅" if advice_txt.startswith("ДА") else ("⏳" if advice_txt.startswith("ИЗЧАКАЙ") else "🚫")
-        L += [f"🎯 {head}: <code>{_fmt(entry, dec)}</code> <i>({src})</i>",
+        # ОДИТ-6/L6-1: присъдата стоеше на 9-и ред от 14 — под пет реда готови за копиране
+        # числа. Човек с телефон вижда първо цените и чак после «не влизай». Сега е ПЪРВА.
+        vword, _, vwhy = advice_txt.partition(" — ")
+        L += [f"{vicon} <b>{vword}</b>" + (f" · {vwhy}" if vwhy else ""),
+              "─────────────────",
+              f"🎯 {head}: <code>{_fmt(entry, dec)}</code> <i>({src})</i>",
               f"1️⃣ ТП1: <code>{_fmt(lv['tp1'], dec)}</code>",
               f"2️⃣ ТП2: <code>{_fmt(lv['tp2'], dec)}</code>",
               f"3️⃣ ТП3: <code>{_fmt(lv['tp3'], dec)}</code>",
-              f"🛑 СТОП: <code>{_fmt(lv['sl'], dec)}</code>",
-              "─────────────────",
-              f"{vicon} <b>ВЛИЗАЙ:</b> {advice_txt}"]                     # Г1: само при НОВ вход
+              f"🛑 СТОП: <code>{_fmt(lv['sl'], dec)}</code>"]
         if adv_ok:                                          # инструкцията само когато съветът е ДА
             L.append("→ Сложи нивата при брокера ВЕДНАГА · раздели на 3 (по 1/3 на всяко ТП, стопът е общ).")
         else:                                               # СЯНКА: следим хипотетично, ще кажем ако проработи
-            L.append("<i>ℹ️ Следя този сетъп хипотетично — ще ти пратя ако удари ТП по-късно "
-                     "(старите зони често работят със закъснение в дните).</i>")
+            # ОДИТ-6/T2-01: старият текст обещаваше «ТОЗИ сетъп», а сянката НАРОЧНО държи
+            # ПЪРВИЯ от серията (пре-отваря само при обърната посока) — в 20 от 29 карти
+            # обещанието беше невярно. Поведението е желано; лъжеше ТЕКСТЪТ.
+            if shadow_on and abs(float(shadow_on.get("entry", entry)) - entry) >= 0.01:
+                so = shadow_on
+                st = f" <i>(от {_sofia(so['opened'])} София)</i>" if so.get("opened") else ""
+                L.append(f"<i>ℹ️ Сянката следи ПЪРВИЯ сетъп от тази серия — вход "
+                         f"<code>{_fmt(float(so['entry']), dec)}</code>{st}, НЕ този. Така се вижда дали "
+                         "старата зона проработва със закъснение. Ще ти пратя при удар.</i>")
+            else:
+                L.append("<i>ℹ️ Следя този сетъп хипотетично — ще ти пратя ако удари ТП по-късно "
+                         "(старите зони често работят със закъснение в дните).</i>")
     mac = sum(1 for v in macro.values() if v)
     # Г10 + стегнато: бройката се показва В ПОСОКАТА на сделката (за шорт мечо = 3-mac),
     # та «3/3 ✓» винаги да значи «подкрепя» — край на оксиморона «0/3 (подкрепя)»
@@ -675,28 +691,54 @@ def _sig_msg(direction, score, agree_n, tier_name, spot, bar_price, bar_ts, lv, 
     L.append(ctx + "</i>")
     risk_amt = balance * risk_pct / 100.0
     _rp = lambda d: (d / balance * 100.0 if balance else 0.0)   # реален % от баланса
+    # ОДИТ-6/T5: при присъда «НЕ» лотът е инструкция за размер на сделка, която току-що
+    # отказахме — 28 от 29 карти го правеха. Оставяме числото (човекът може да реши сам),
+    # но му слагаме условието отпред, за да не се чете като нареждане.
+    rp = "" if (adv_ok or open_trade) else "⚠️ <i>само ако въпреки това влезеш</i> · "
+    # ОДИТ-6/Н5+T2-03: «макс −$X» обещаваше пълнеж ТОЧНО на нивото. Собственият тракер е
+    # записал −23.88$ при стоп −20.00 (гап). Стопът не е гаранция за цена.
+    mx = "макс ≈"
+    gp = " <i>(при гап може повече — стопът пази нивото, не цената)</i>"
     if sym == "XAUUSD":
         oz = risk_amt / SL_D                       # 1 oz губи $20 при 200п стоп · 1 лот = 100 oz
         lot = oz / 100.0
         if lot < 0.01:                             # под брокерския минимум → не лъжи с «0.0 лот»
             mn = 1.0 * SL_D                         # най-малката реална позиция = 0.01 лот = 1 oz
-            L.append(f"💰 Риск ${balance:g}@{risk_pct:g}%: под мин. лот — най-малкото е <b>0.01 лот</b> "
+            L.append(rp + f"💰 Риск ${balance:g}@{risk_pct:g}%: под мин. лот — най-малкото е <b>0.01 лот</b> "
                      f"(1 oz), което рискува −${mn:.0f} = {_rp(mn):.1f}% от баланса")
         else:
-            L.append(f"💰 Риск ${balance:g}@{risk_pct:g}%: <b>{lot:.2f} лот</b> ({oz:.1f} oz) → макс −${risk_amt:.2f}")
+            L.append(rp + f"💰 Риск ${balance:g}@{risk_pct:g}%: <b>{lot:.2f} лот</b> ({oz:.1f} oz) → {mx} −${risk_amt:.2f}" + gp)
     else:
         oz = risk_amt / S_SL                       # 1 лот сребро = 5000 oz · мин. 0.01 лот = 50 oz
         if oz < 50.0:                              # под мин. лот — реалният риск НАДХВЪРЛЯ целта
             mn = 50.0 * S_SL
-            L.append(f"💰 Риск ${balance:g}@{risk_pct:g}%: под мин. лот — най-малкото е <b>0.01 лот</b> "
+            L.append(rp + f"💰 Риск ${balance:g}@{risk_pct:g}%: под мин. лот — най-малкото е <b>0.01 лот</b> "
                      f"(50 oz), което рискува −${mn:.2f} = {_rp(mn):.1f}% (над целта — намали или пропусни)")
         else:
-            L.append(f"💰 Риск ${balance:g}@{risk_pct:g}%: <b>{oz/5000.0:.2f} лот</b> ({oz:.0f} oz) → макс −${risk_amt:.2f}")
+            L.append(rp + f"💰 Риск ${balance:g}@{risk_pct:g}%: <b>{oz/5000.0:.2f} лот</b> ({oz:.0f} oz) → {mx} −${risk_amt:.2f}" + gp)
     if direction == "short" and adv_ok:                 # при «НЕ» присъдата вече го каза — без дублаж
         L.append("<i>Шорт е непотвърден исторически — малък размер.</i>")
     L += ["─────────────────",
           f"<i>бар {_sofia(str(bar_ts)) if bar_ts is not None else '?'} · {VERSION} · хартия · не е фин. съвет</i>"]
     return "\n".join(L)
+
+
+def _ladder_pnl(kind, hit, lv, entry, sign, dol):
+    """ОДИТ-6/Н1: сметката по стълбата 1/3 — ЕДИН източник за реалния И за сянка-изхода.
+    Преди това само `_exit_msg` я имаше; `_shadow_exit_msg` показваше голото
+    (изход − вход), тоест «+0.00$» на безрисков стоп след взети ТП1+ТП2, където
+    стълбата дава +6.50$. Мерено в live/sent_log.jsonl: 4 карти, скрити +22.00$/oz.
+    Връща (сметка_по_стълбата, брой_вече_прибрани_ТП)."""
+    thirds = 0.0
+    n_hit = 0
+    for k2 in ("tp1", "tp2"):
+        if hit.get(k2) and k2 != kind:
+            thirds += (lv[k2] - entry) * sign / 3.0
+            n_hit += 1
+    thirds += dol * (3 - n_hit) / 3.0
+    if abs(thirds) < 0.005:                      # «0.00», не «-0.00»
+        thirds = 0.0
+    return round(thirds, 2), n_hit
 
 
 def _exit_msg(kind, tr, price_hit, when, via, gap, spot=None, next_line="", dec=2):
@@ -725,13 +767,7 @@ def _exit_msg(kind, tr, price_hit, when, via, gap, spot=None, next_line="", dec=
         L.append(f"→ 2/3 прибрани. Остава: ТП3 <code>{_fmt(lv['tp3'], dec)}</code> (стопът стои на входа).")
     elif kind in ("tp3", "sl", "flip", "time"):
         # двете сметки (Ф9.6-предварително): цяла позиция + съветът 1/3
-        thirds = 0.0
-        parts = {"tp1": lv["tp1"], "tp2": lv["tp2"]}
-        n_hit = 0
-        for k2, px in parts.items():
-            if hit.get(k2) and k2 != kind:
-                thirds += (px - e) * sign / 3.0; n_hit += 1
-        thirds += dol * (3 - n_hit) / 3.0
+        thirds, n_hit = _ladder_pnl(kind, hit, lv, e, sign, dol)
         L.append(f"Сметка: цяла позиция <b>{dol:+.2f}$/oz</b> · по съвета 1/3 на ТП ≈ <b>{thirds:+.2f}$/oz</b>")
         if kind == "sl" and any(hit.get(k2) for k2 in ("tp1", "tp2")):
             L.append("<i>(преди стопа удари " + ", ".join(k2.upper() for k2 in ("tp1", "tp2") if hit.get(k2)) + " — затова 1/3 сметката е по-добра)</i>")
@@ -748,22 +784,35 @@ def _shadow_exit_msg(kind, tr, price_hit, when, via, gap, spot=None, dec=2):
     «сетъпът, който казах да НЕ пипаш, щеше да стигне дотук»."""
     d = tr["direction"].upper(); e = tr["entry"]
     sym = tr.get("sym", "XAUUSD"); metal = "ЗЛАТО" if sym == "XAUUSD" else "СРЕБРО"
-    lv = tr["levels"]; sign = 1 if tr["direction"] == "long" else -1
+    lv = tr["levels"]; hit = tr.get("hit", {}); sign = 1 if tr["direction"] == "long" else -1
     dol = (price_hit - e) * sign
     if abs(dol) < 0.005:
         dol = 0.0
+    thirds, n_hit = _ladder_pnl(kind, hit, lv, e, sign, dol)     # ОДИТ-6/Н1
     when_txt = _sofia(when) if via in ("бар", "спот") else "по-късно"
     heads = {"tp1": "✅ СЯНКА · ТП1 щеше да удари", "tp2": "✅✅ СЯНКА · ТП2 щеше да удари",
              "tp3": "🏆 СЯНКА · ТП3 — щеше да е пълен тейк", "sl": "🛑 СЯНКА · стопът щеше да удари",
              "time": "⏰ СЯНКА · времеви изход", "flip": "🔄 СЯНКА · посоката се обърна"}
+    # Н1-б: «стоп» след взети ТП не е загуба — стопът стои на ВХОДА, сметката е плюс.
+    # Старият текст лепеше 🛑 и «+0.00$» върху изход, който по стълбата носи +6.50$.
+    if kind == "sl" and n_hit > 0:
+        head = ("✅ СЯНКА · безрисков изход" if thirds >= 0 else "🛑 СЯНКА · стоп")
+        head += f" (стопът беше на входа · {n_hit} ТП вече прибрани)"
+    else:
+        head = heads.get(kind, kind)
     op = f" <i>(сетъп от {_sofia(tr['opened'])} София)</i>" if tr.get("opened") else ""
-    L = [f"{heads.get(kind, kind)} · {metal} {d}", "─────────────────",
+    L = [f"{head} · {metal} {d}", "─────────────────",
          f"Сетъпът, за който казах <b>да НЕ влизаш</b>, щеше да стигне дотук ({when_txt} София).{op}",
-         f"Хипотетично: вход <code>{_fmt(e, dec)}</code> → <code>{_fmt(price_hit, dec)}</code> = <b>{dol:+.2f}$/oz</b>"]
+         f"Хипотетично: вход <code>{_fmt(e, dec)}</code> → <code>{_fmt(price_hit, dec)}</code> = <b>{dol:+.2f}$/oz</b> <i>(само този крак)</i>"]
+    # Н1: САМАТА СМЕТКА — реалният изход я имаше, сянката не. Сега е един и същ код.
+    if kind in ("tp3", "sl", "flip", "time") or n_hit:
+        got = ", ".join(k2.upper() for k2 in ("tp1", "tp2") if hit.get(k2) and k2 != kind)
+        note = f" <i>(вкл. вече прибраните {got})</i>" if got else ""
+        L.append(f"<b>СМЕТКА по стълбата 1/3: {thirds:+.2f}$/oz</b>{note}")
     if kind == "tp1":
         L.append(f"Ако беше влязъл: стоп на входа · остават ТП2 <code>{_fmt(lv['tp2'], dec)}</code> · ТП3 <code>{_fmt(lv['tp3'], dec)}</code>")
     elif kind == "tp2":
-        L.append(f"Ако беше влязъл: 2/3 прибрани · остава ТП3 <code>{_fmt(lv['tp3'], dec)}</code>")
+        L.append(f"Ако беше влязъл: 2/3 от позицията прибрани · остава последната 1/3 до ТП3 <code>{_fmt(lv['tp3'], dec)}</code>")
     if spot:
         L.append(f"Спот сега: <code>{_fmt(spot['mid'], dec)}</code>")
     L.append("<i>ℹ️ Само за информация — НЕ е реална сделка (не влиза в статистиката/стоп-пазача). "
@@ -1010,7 +1059,25 @@ def _pulse_msg(part, board, best, new_dir, advice_txt, adv_ok, trade, s_trade,
     return "\n".join(L)
 
 
-# ---------- CyberQuant (BTC-цикъл + макро-календар) — референция + макро-щит ----------
+# ---------- CyberQuant / КИБЕР КВАНТ (BTC-цикъл + макро-календар) — референция + макро-щит ----------
+# Живата страница на собственика: https://kiber-kvant.vercel.app
+# Сверено 04.08.2026: страницата показва индекс 28,1 и клъстери 37/9/23/48, а tRPC API-то
+# връща score 28.14 и clusterScores {1:36.01, 2:10.27, 3:22.69, 4:48.63} → ЕДНА И СЪЩА
+# система. Затова НЕ дърпаме HTML — четем API-то (по-стабилно), но вече и в ДЪЛБОЧИНА:
+# четирите клъстера + историята на зоната, които преди се хвърляха.
+KV_URL = "https://kiber-kvant.vercel.app"
+CQ_CLUSTERS = {"1": "валуация", "2": "моментум", "3": "настроения", "4": "on-chain"}
+# Историята на зоната от терминала (2013→днес, 4962 дни). Показва се като БАЗОВА ЧЕСТОТА,
+# не като прогноза — това е за BTC, не за злато, и картата го казва изрично.
+CQ_ZONE_HIST = {
+    "капитулация": ("0-15", "рядка зона — 3% от дните"),
+    "натрупване":  ("15-40", "16% от дните · 51 епизода от 2013"),
+    "неутрална":   ("40-60", "44% от дните — най-честата"),
+    "еуфория":     ("60-85", "27% от дните"),
+    "мания":       ("85-100", "11% от дните"),
+}
+
+
 def _cq_zone(score):
     """CQS скор → зона (по бандите на CyberQuant)."""
     if score < 40: return "Натрупване 🟢"
@@ -1018,6 +1085,14 @@ def _cq_zone(score):
     if score < 75: return "Внимание 🟡"
     if score < 90: return "Опасност 🟠"
     return "Балон 🔴"
+
+
+def _cq_clusters_line(cq):
+    """Четирите клъстера като един ред. Празен низ, ако ги няма (стар кеш / провал)."""
+    cl = cq.get("clusters") or {}
+    parts = [f"{nm} {int(round(float(cl[k])))}" for k, nm in CQ_CLUSTERS.items()
+             if cl.get(k) is not None]
+    return " · ".join(parts)
 
 
 def _cq_fetch(now_utc):
@@ -1041,10 +1116,37 @@ def _cq_fetch(now_utc):
             imp = str(e.get("impact", "")).lower()
             if imp in ("high", "critical") and any(a in assets for a in ("GOLD", "XAU", "DXY", "USD")):
                 events.append({"name": str(e.get("title", ""))[:60], "dt": str(e.get("eventDate", "")), "impact": imp})
-        return {"score": round(score, 1), "zone": _cq_zone(score),
+        # КИБЕР КВАНТ: четирите клъстера (валуация/моментум/настроения/on-chain).
+        # Защитено — липсват ли, останалото пак минава.
+        cl = {}
+        try:
+            for k, v in (d[0]["result"]["data"]["json"].get("clusterScores") or {}).items():
+                if v is not None:
+                    cl[str(k)] = round(float(v), 1)
+        except Exception:
+            cl = {}
+        return {"score": round(score, 1), "zone": _cq_zone(score), "clusters": cl,
                 "fg_crypto": fg.get("crypto", {}).get("value"), "fg_crypto_cls": fg.get("crypto", {}).get("classification", ""),
                 "fg_stock": fg.get("stock", {}).get("value"), "fg_stock_cls": fg.get("stock", {}).get("classification", ""),
                 "events": events, "fetched": now_utc}
+    except Exception:
+        return None
+
+
+def _fng_live(timeout=8):
+    """ЖИВИЯТ страх-и-алчност (alternative.me, без ключ) — сверено 04.08.2026: работи и от
+    US рънър, ~0.5s. Кибер Квант чете точно него. Ползва се като СВЕЖА стойност срещу
+    дневната снимка на терминала. Защитено: при всеки проблем → None, ботът не спира."""
+    try:
+        req = urllib.request.Request("https://api.alternative.me/fng/?limit=1",
+                                     headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, timeout=timeout) as r:
+            d = json.loads(r.read().decode())
+        it = (d.get("data") or [None])[0]
+        v = int(it["value"])
+        if not (0 <= v <= 100):
+            return None
+        return {"value": v, "cls": str(it.get("value_classification", ""))[:24]}
     except Exception:
         return None
 
@@ -1096,18 +1198,34 @@ def _cq_next_event(cq, now_utc):
     return f"{e.get('name', '')} — {evt.strftime('%d.%m')} {_sofia(evt.isoformat())} София"
 
 
-def _cq_msg(cq, now_utc):
-    """Дневна референция-карта от CyberQuant (BTC-цикъл + настроения + следващо събитие)."""
-    L = [f"🌐 <b>CYBERQUANT · дневна референция</b> · {_sofia()} София", "─────────────────",
-         f"<b>Квантов скор (CQS):</b> {cq['score']}% · {cq.get('zone', '')}",
-         "<i>BTC-цикъл — за пазарен контекст, НЕ сигнал за злато/сребро.</i>"]
+def _cq_msg(cq, now_utc, fng_live=None):
+    """Дневна референция-карта от КИБЕР КВАНТ (BTC-цикъл + настроения + следващо събитие).
+    v5.9b: + четирите клъстера, + базовата честота на зоната, + жив страх-и-алчност."""
+    zone = str(cq.get("zone", ""))
+    L = [f"🌐 <b>КИБЕР КВАНТ · дневна референция</b> · {_sofia()} София", "─────────────────",
+         f"<b>Индекс на цикъла:</b> {cq['score']} от 100 · {zone}"]
+    hist = CQ_ZONE_HIST.get(zone.split()[0].lower() if zone else "")
+    if hist:
+        L.append(f"<i>Зоната {hist[0]} · {hist[1]} — базова честота, не прогноза.</i>")
+    cls = _cq_clusters_line(cq)
+    if cls:
+        L.append(f"<b>Клъстери:</b> {cls}")
+        L.append("<i>Тежести: валуация 35% · моментум 25% · настроения 25% · on-chain 15%.</i>")
+    L.append("<i>BTC-цикъл — за пазарен контекст, НЕ сигнал за злато/сребро.</i>")
     fgc, fgs = cq.get("fg_crypto"), cq.get("fg_stock")
     if fgc is not None or fgs is not None:
-        L.append(f"<b>Страх и Алчност:</b> крипто {fgc} · акции {fgs}")
+        ln = f"<b>Страх и Алчност:</b> крипто {fgc} · акции {fgs}"
+        # свежата стойност се показва САМО ако наистина се разминава със снимката
+        if fng_live and fgc is not None and abs(int(fng_live["value"]) - int(fgc)) >= 2:
+            ln += f" · <i>крипто сега: {fng_live['value']} ({fng_live['cls']})</i>"
+        elif fng_live and fgc is None:
+            ln = f"<b>Страх и Алчност:</b> крипто {fng_live['value']} ({fng_live['cls']}) · акции {fgs}"
+        L.append(ln)
     nxt = _cq_next_event(cq, now_utc)
     if nxt:
         L.append(f"📅 <b>Следващо голямо макро</b> (влияе на златото): {nxt}")
         L.append("<i>Около него ботът НЕ отваря нов вход (висока волатилност).</i>")
+    L.append(f'🔗 <a href="{KV_URL}">Терминалът на цикъла</a>')
     L.append(f"<i>{VERSION} · референция · не е съвет</i>")
     return "\n".join(L)
 
@@ -1796,10 +1914,14 @@ def main():
             s_advice, s_adv_ok = _advice_entry(s_dir, s_streak, stats, None, shield, s_guard_n,
                                                sym="XAGUSD", stale_price=(spot_s is None))
             s_open = s_trade if (s_trade and s_trade["direction"] == s_dir) else None
+            sh_s_now = _load_state(out / "shadow_silver.json", None)     # ОДИТ-6/T2-01
+            if sh_s_now is not None and sh_s_now.get("direction") != s_dir:
+                sh_s_now = None
             silver_new_msgs.append(("s-signal", _sig_msg(
                 s_dir, s_score, 1, s_tn, spot_s, s_bar, s5.index[-1], s_lv_user,
                 s_entry_user, s_advice, macro, s_streak, regime, stats, args.balance, args.risk,
-                weekly=None, reentry=s_reentry, open_trade=s_open, sym="XAGUSD", dec=3, adv_ok=s_adv_ok)))
+                weekly=None, reentry=s_reentry, open_trade=s_open, sym="XAGUSD", dec=3,
+                adv_ok=s_adv_ok, shadow_on=sh_s_now)))
             if s_open is None and s_adv_ok:               # НАХОДКА 1: следи сделка само при съвет ДА
                 # Б1: НЕ пишем сребърна сделка/състояние тук — чак след потвърдено пращане (7в)
                 silver_trade_new = {"direction": s_dir, "entry": round(s_entry_user, 3), "opened": now_utc,
@@ -1857,11 +1979,16 @@ def main():
             extra.append(f"днес: {daily_ctx['gold_view']}")
         if ev_label:
             extra.append(("⚠ ЩИТ: " if ev_shield else "⚠ ") + ev_label)
+        # ОДИТ-6/T2-01: коя сянка ВЕЧЕ се следи (файлът се чете преди _shadow_cycle по-долу),
+        # за да не обещава картата «този сетъп», когато сянката държи по-стар.
+        sh_now = _load_state(out / "shadow_trade.json", None)
+        if sh_now is not None and sh_now.get("direction") != new_dir:
+            sh_now = None                                   # ще бъде пре-отворена → картата е права
         new_msgs.append(("signal", _sig_msg(new_dir, best[2], agree_n, best[4], spot_g, bar_price, bar_ts,
                                             lv_user, entry_user, advice_txt, macro, streak_n, regime, stats,
                                             args.balance, args.risk, weekly=weekly, reentry=reentry,
                                             open_trade=open_tr, extra_ctx=" · ".join(extra) if extra else None,
-                                            adv_ok=_adv_ok)))
+                                            adv_ok=_adv_ok, shadow_on=sh_now)))
         # Б1: НЕ пишем сделка/състояние ТУК — чак СЛЕД потвърдено пращане.
         # НАХОДКА 1: следим сделка САМО ако съветът е ДА (_adv_ok). При «НЕ/ИЗЧАКАЙ»
         # картата е информативна — не отваряме сделка, за която сме казали да не влизаш.
@@ -1913,9 +2040,14 @@ def main():
                                                    price_user, board, macro, macro_health, now_utc)))
         meta["standing_utc"] = now_utc
 
-    # CyberQuant дневна референция — веднъж на ден (сутрин 09 София), само делник
+    # КИБЕР КВАНТ дневна референция — веднъж на ден (сутрин 09 София), само делник.
+    # Живият страх-и-алчност се дърпа САМО в този един момент (не на всеки рън) — така
+    # не се добавя мрежова тежест на 5-минутния цикъл. Провал → картата пак излиза.
     if sof_now.hour == 9 and meta.get("cq_ref") != date and not weekend and cq:
-        new_msgs.append(("cq-ref", _cq_msg(cq, now_utc)))
+        _fng = _fng_live()
+        if _fng:
+            notes.append(f"страх-алчност живо: {_fng['value']} ({_fng['cls']})")
+        new_msgs.append(("cq-ref", _cq_msg(cq, now_utc, fng_live=_fng)))
 
     # ПУЛС 3× на ден (09 и 14 София; вечерта е равносметката в 21): «какво гледам/чакам».
     # Веднъж на слот (meta-пазач), само делник. Информативен — не отваря сделка.
