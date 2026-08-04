@@ -570,10 +570,14 @@ def _advice_entry(direction, streak_n, stats, fast, shield, guard_n, sym="XAUUSD
         fr = stats.get("fresh", {}).get(direction, {})
         seg_fresh = fr.get("day1" if streak_n == 1 else "fresh", {})
         seg_stale = fr.get("stale", {})
+        # ОДИТ-8: смесено макро (стрийк 0) вече има СВОЯ клетка. Липсва ли я (стар
+        # stats файл) — падаме на `stale`, тоест точно старото поведение.
+        seg_mixed = fr.get("mixed") or seg_stale
         src = "пресен ден-" + str(streak_n)
     else:                                                # В1: сребро — от stats['silver'], не злато!
         sv = stats.get("silver", {}).get(direction, {})
         seg_fresh = sv.get("fresh", {}); seg_stale = sv.get("stale", {})
+        seg_mixed = sv.get("mixed") or seg_stale      # ОДИТ-8: среброто няма разделена кофа
         src = "сребро пресен"
     # F4: «ден N» валиден само за ЗЛАТОТО (стрийкът е от златната цена); сребро → без ден-номер
     dn = f"ден {streak_n}" if is_gold else "по макро-подреждане"
@@ -582,15 +586,40 @@ def _advice_entry(direction, streak_n, stats, fast, shield, guard_n, sym="XAUUSD
         if seg.get("n", 0) >= MIN_N and seg.get("net", 0) <= 0:   # В5: пресен, но нулев/губещ клас
             return f"ИЗЧАКАЙ — пресен ({src}), но исторически {seg['win']}% · {seg['net']:+}$/oz — без ръб", False
         return f"ДА — пресен сигнал ({dn})" + _pct(seg, src) + _fast(fast), True
-    seg = seg_stale
-    if seg.get("n", 0) >= MIN_N and seg.get("net", 0) < 0:
+    # ОДИТ-8 (04.08): кофата `stale` СЛИВАШЕ две различни състояния — «макрото ДНЕС е
+    # смесено» (стрийк 0) и «сигналът е ОСТАРЯЛ от дни» (стрийк 4+). Мерено на същите
+    # 114813 сделки, блоков бутстрап по ден: long/mixed −0.04$ (ШУМ, n=40094) срещу
+    # long/stale +1.18$ (ПЕЧЕЛИ, n=12062). Слети даваха +0.24$ — размит сигнал, и ботът
+    # пращаше «ДА (слаб)» на 40 хиляди сделки, които не носят нищо.
+    # Разделени: +0.518 → +1.469$/сделка, общо +32956 → +34571$. Картите падат от 152
+    # на 53 дни/година — но махнатите са именно тези на нулата.
+    mixed = streak_n == 0
+    seg = (seg_mixed if mixed else seg_stale)
+    if seg.get("n", 0) >= MIN_N and (seg.get("net", 0) < 0 or _noise(seg)):
         # НЕ обвинявай «макрото» (то може да е за тази посока, напр. 0/3 подкрепя шорт) —
         # губещ е ИСТОРИЧЕСКИЯТ КЛАС на този сетъп.
-        cls = "този клас исторически губи (макрото не е ПОДРЕДЕНО днес)" if streak_n == 0 else f"застоял ({dn})"
-        return f"НЕ — {cls}: {seg['win']}% · {seg['net']:+}$/oz — ГУБЕЩ клас" + _fast(fast), False
+        if mixed:
+            cls = ("макрото днес е СМЕСЕНО, а този клас не носи нищо"
+                   if _noise(seg) else "макрото днес е СМЕСЕНО и този клас исторически губи")
+        else:
+            cls = f"застоял ({dn})"
+        return f"НЕ — {cls}: {seg['win']}% · {seg['net']:+}$/oz{_ci(seg)}" + _fast(fast), False
     # положителен-но-слаб клас: текстът СЪОТВЕТСТВА на action (следи се) — «ДА (слаб)», не «ИЗЧАКАЙ»
-    ctx = "макро-подреждането не е активно днес — сигналът е по ценова структура" if streak_n == 0 else f"застоял ({dn}) — ръбът е по-слаб"
+    ctx = "макро-подреждането не е активно днес — сигналът е по ценова структура" if mixed else f"застоял ({dn}) — ръбът е по-слаб"
     return f"ДА (слаб) — {ctx}; малък размер" + _pct(seg, "клас") + _fast(fast), True
+
+
+def _noise(seg):
+    """ОДИТ-8: клетка, чийто 95% интервал минава през нулата, е ШУМ — не ръб.
+    Празни lo/hi (стар stats файл) → не съдим, връщаме False (старото поведение)."""
+    lo, hi = seg.get("lo"), seg.get("hi")
+    return lo is not None and hi is not None and lo <= 0 <= hi
+
+
+def _ci(seg):
+    """Интервалът в текста — за да е проверимо число, не мнение."""
+    lo, hi = seg.get("lo"), seg.get("hi")
+    return f" (95%: {lo:+.2f}..{hi:+.2f}$)" if lo is not None and hi is not None else ""
 
 
 def _fast(fast):
