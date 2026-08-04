@@ -16,6 +16,7 @@ on:
     - cron: '*/15 0-4 * * 1-5'      # дълбока нощ: на 15 мин
 permissions:
   contents: write
+  actions: write            # ОДИТ-6: ботът буди одит-робота (GitHub cron-ът го изпуска)
 concurrency:
   group: aero-bot
   cancel-in-progress: false
@@ -68,6 +69,36 @@ jobs:
               -d chat_id="${TELEGRAM_CHAT_ID}" -d parse_mode=HTML \
               -d text="⚠️ <b>AERO · състоянието НЕ се записа</b>%0A<i>git push се провали 3 пъти — възможна двойна карта на следващия рън. Провери Actions.</i>" || true
           fi
+      # ═══ ОДИТ-6: БУДИЛНИК ЗА ОДИТ-РОБОТА ═══
+      # Мерено 04.08.2026 през API-то: одитът има 7 крона на ден, но реалните пускания
+      # закъсняват +227, +108, +82 мин, а на 04.08 до обед НЕ Е СЕ ПУСНАЛ НИТО ВЕДНЪЖ.
+      # Шест от седемте крона стоят на КРЪГЪЛ ЧАС — точно когато GitHub изхвърля
+      # разписания. Ботът обаче тръгва надеждно (12/12 ръна). Затова ТОЙ го буди:
+      # ако сме в целеви час по София и одитът не е бягал в последните 50 мин → dispatch.
+      # Не пипа самия одит-робот; кроновете му остават като втори колан.
+      - name: wake the audit robot
+        if: always()
+        continue-on-error: true          # будилникът НИКОГА не бива да вали сигналния рън
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          H=$(TZ=Europe/Sofia date +%H); M=$(TZ=Europe/Sofia date +%M)
+          case "$H" in 05|07|09|12|15|18|21) ;; *) echo "не е целеви час ($H:$M София)"; exit 0;; esac
+          if [ "$H" = "21" ] && [ "$M" -lt 30 ]; then echo "21ч, но преди :30"; exit 0; fi
+          LAST=$(curl -s -H "Authorization: Bearer $GH_TOKEN" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/workflows/audit.yml/runs?per_page=1" \
+            | grep -o '"created_at": *"[^"]*"' | head -1 | sed 's/.*"\([^"]*\)"$/\1/')
+          echo "последен одит: ${LAST:-няма}"
+          if [ -n "$LAST" ]; then
+            AGE=$(( ( $(date -u +%s) - $(date -u -d "$LAST" +%s) ) / 60 ))
+            echo "възраст: ${AGE} мин"
+            if [ "$AGE" -lt 50 ]; then echo "бягал е преди ${AGE} мин — не го будя"; exit 0; fi
+          fi
+          echo "будя одит-робота (${H}:${M} София)"
+          curl -s -X POST -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/workflows/audit.yml/dispatches" \
+            -d '{"ref":"main"}' -w "HTTP %{http_code}\n"
       - name: alarm on barrier failure                    # защита срещу ТИХ престой (selftest/зависимост счупени)
         if: failure()
         env:
