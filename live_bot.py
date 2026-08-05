@@ -29,7 +29,7 @@ warnings.filterwarnings("ignore")
 import numpy as np
 import pandas as pd
 
-VERSION = "v6.2"
+VERSION = "v6.2a"
 PIP = 0.10
 SL_PIPS = 200; SL_D = SL_PIPS * PIP                       # стоп: 200п = $20/oz
 TPS = [("ТП1", 75, 7.5), ("ТП2", 120, 12.0), ("ТП3", 200, 20.0)]
@@ -575,14 +575,24 @@ def _pct(seg, label):
     return " (историята е малка — без число)"
 
 
-def _advice_entry(direction, streak_n, stats, fast, shield, guard_n, sym="XAUUSD", stale_price=False):
+def _advice_entry(direction, streak_n, stats, fast, shield, guard_n, sym="XAUUSD", stale_price=False, trace=None):
     """(текст, ok) за реда «ВЛИЗАЙ». В1: сребро цитира САМО сребърни числа.
-    Г2: изходът е ясен — ДА / ИЗЧАКАЙ / НЕ. В5: губещ клас се казва явно."""
+    Г2: изходът е ясен — ДА / ИЗЧАКАЙ / НЕ. В5: губещ клас се казва явно.
+    ОДИТ-15/б: `trace` (по избор) казва КОЙ ПЛАСТ е решил. Без него дневникът
+    записваше кофата дори когато решението е дошло от стоп-пазача, щита или
+    старата цена — тоест ПРЕДИ клетката изобщо да бъде погледната. Който после
+    брои «колко отказа клетката mixed», брои чужди откази."""
+    def _by(k):
+        if trace is not None:
+            trace["by"] = k
     if guard_n >= 2:
+        _by("стоп-пазач")
         return "НЕ — 2 стопа днес в тази посока (стоп-пазач)", False
     if shield and direction == "short":
+        _by("US-щит")
         return f"НЕ СЕГА — US-щит ({_shield_sofia_label()}); изчакай края му", False
     if stale_price:                                      # Г9: спотът недостъпен → цената е стара
+        _by("стара цена")
         return "ИЗЧАКАЙ — цената е ~10-15 мин стара (спотът недостъпен); само лимитирана поръчка на нивото", False
     is_gold = sym == "XAUUSD"
     if is_gold:
@@ -608,9 +618,11 @@ def _advice_entry(direction, streak_n, stats, fast, shield, guard_n, sym="XAUUSD
         # Измерването, което избра това правило, го третираше като ОТКАЗ — гейтът трябва
         # да прави същото, иначе ботът работи по едни числа, а е оценен по други.
         if seg.get("n", 0) >= MIN_N and (seg.get("net", 0) <= 0 or _noise(seg)):
+            _by("клетка")
             why = "не носи нищо (нулата е в интервала)" if _noise(seg) else "без ръб"
             return (f"ИЗЧАКАЙ — пресен ({src}), но исторически {seg['win']}% · "
                     f"{seg['net']:+}$/oz{_ci(seg)} — {why}"), False
+        _by("клетка")
         return f"ДА — пресен сигнал ({dn})" + _pct(seg, src) + _fast(fast), True
     # ОДИТ-8 (04.08): кофата `stale` СЛИВАШЕ две различни състояния — «макрото ДНЕС е
     # смесено» (стрийк 0) и «сигналът е ОСТАРЯЛ от дни» (стрийк 4+). Мерено на същите
@@ -629,9 +641,11 @@ def _advice_entry(direction, streak_n, stats, fast, shield, guard_n, sym="XAUUSD
                    if _noise(seg) else "макрото днес е СМЕСЕНО и този клас исторически губи")
         else:
             cls = f"застоял ({dn})"
+        _by("клетка")
         return f"НЕ — {cls}: {seg['win']}% · {seg['net']:+}$/oz{_ci(seg)}" + _fast(fast), False
     # положителен-но-слаб клас: текстът СЪОТВЕТСТВА на action (следи се) — «ДА (слаб)», не «ИЗЧАКАЙ»
     ctx = "макро-подреждането не е активно днес — сигналът е по ценова структура" if mixed else f"застоял ({dn}) — ръбът е по-слаб"
+    _by("клетка")
     return f"ДА (слаб) — {ctx}; малък размер" + _pct(seg, "клас") + _fast(fast), True
 
 
@@ -1980,8 +1994,10 @@ def main():
         notes.append(f"насрещен непремиум {new_dir} при отворена {trade['direction']} — задържам старата, без нова карта")
 
     streak_n = regime["streaks"].get(new_dir, 0) if new_dir else 0
+    _gate_trace = {}
     advice_txt, _adv_ok = _advice_entry(new_dir, streak_n, stats, fast_g, shield, guard.get(new_dir or "", 0),
-                                        sym="XAUUSD", stale_price=(spot_g is None)) if new_dir else ("", False)
+                                        sym="XAUUSD", stale_price=(spot_g is None),
+                                        trace=_gate_trace) if new_dir else ("", False)
 
     # честота: информативна «НЕ/ИЗЧАКАЙ» карта (adv_ok=False, сделка НЕ се отваря) да НЕ минава
     # по бързата 15-мин flip-лента — само по пълната 45-мин пауза. Инак на хаотичен ден бордът
@@ -2335,8 +2351,11 @@ def main():
                              # Без нея форуърд-тестът е неизмерим: «защо отказа» се
                              # реконструира по текста на картите, а старите карти дори
                              # не носят причината. САМО ЗАПИС — решението НЕ се променя.
+                             # `by` = кой пласт РЕШИ. `cell` е кофата, която БИ важала —
+                             # тя е меродавна САМО когато by == "клетка".
                              "gate": ({"dir": new_dir, "streak": streak_n,
                                        "cell": _cell_name(streak_n), "ok": bool(_adv_ok),
+                                       "by": _gate_trace.get("by"),
                                        "why": advice_txt} if new_dir else None),
                              "board": {l: [d, s, t] for l, d, s, t, _ in board},
                              "exits": [k for _, _, k, _ in exit_msgs],
