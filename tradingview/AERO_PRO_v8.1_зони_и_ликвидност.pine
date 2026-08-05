@@ -77,9 +77,10 @@ uSS = input.bool(true, "Оцвети сесиите", group=g9)
 uSh = input.bool(true, "US-ЩИТ 15:25-16:15 (ботът не влиза)", group=g9)
 
 gA   = "10 · AERO НИВА"
-cmpL = input.bool(true, "Компактни надписи — знак вместо изречение", group=g10,
+cmpL = input.bool(true, "Компактни надписи — знак вместо изречение", group=gA,
      tooltip="Пълният текст се показва в балонче при посочване с мишката.")
-gapL = input.int(8, "  Минимално разстояние между надписи (свещи)", minval=0, maxval=60, group=g10)
+gapL = input.int(8, "  Минимално разстояние между надписи (свещи)", minval=0, maxval=60, group=gA,
+     tooltip="0 = без пазач (както беше). Пропуска се само НАДПИСЪТ, не самото събитие.")
 uL   = input.bool(true, "ТП1/ТП2/ТП3/СТОП (ДНЕВНА геометрия — не за скалп)", group=gA)
 dirM = input.string("Автоматично", "Посока", options=["Автоматично", "ШОРТ", "ЛОНГ"], group=gA)
 
@@ -340,9 +341,13 @@ if uSW and array.size(qY) > 0
             swUp := true
         if not array.get(qH, i) and low < y and close > y
             swDn := true
-if swUp
+var int evUpO = na
+var int evDnO = na
+if swUp and (na(evUpO) or bar_index - evUpO >= gapL)
+    evUpO := bar_index
     label.new(bar_index, high, cmpL ? "⚡↑" : "⚡ ОБРАНИ СТОПОВЕ ГОРЕ", tooltip="ОБРАНИ СТОПОВЕ ГОРЕ", style=label.style_label_down, color=color.new(C_DN, 0), textcolor=color.white, size=size.tiny)
-if swDn
+if swDn and (na(evDnO) or bar_index - evDnO >= gapL)
+    evDnO := bar_index
     label.new(bar_index, low, cmpL ? "⚡↓" : "⚡ ОБРАНИ СТОПОВЕ ДОЛУ", tooltip="ОБРАНИ СТОПОВЕ ДОЛУ", style=label.style_label_up, color=color.new(C_UP, 0), textcolor=color.white, size=size.tiny)
 
 // ═══ 4 · СТРУКТУРА: BOS / CHoCH ═══
