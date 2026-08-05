@@ -29,7 +29,7 @@ warnings.filterwarnings("ignore")
 import numpy as np
 import pandas as pd
 
-VERSION = "v6.1"
+VERSION = "v6.2"
 PIP = 0.10
 SL_PIPS = 200; SL_D = SL_PIPS * PIP                       # стоп: 200п = $20/oz
 TPS = [("ТП1", 75, 7.5), ("ТП2", 120, 12.0), ("ТП3", 200, 20.0)]
@@ -633,6 +633,22 @@ def _advice_entry(direction, streak_n, stats, fast, shield, guard_n, sym="XAUUSD
     # положителен-но-слаб клас: текстът СЪОТВЕТСТВА на action (следи се) — «ДА (слаб)», не «ИЗЧАКАЙ»
     ctx = "макро-подреждането не е активно днес — сигналът е по ценова структура" if mixed else f"застоял ({dn}) — ръбът е по-слаб"
     return f"ДА (слаб) — {ctx}; малък размер" + _pct(seg, "клас") + _fast(fast), True
+
+
+def _cell_name(streak_n):
+    """ОДИТ-15: ИМЕТО на кофата, с която `_advice_entry` съди — за да може решението
+    да се ЗАПИШЕ в дневника. Дотук гейтът беше единственото важно решение на бота
+    БЕЗ трайна следа: `macro` и `board` се пишат (ОДИТ-5), присъдата — не. Затова
+    «защо отказа този шорт на 23.07» се четеше по археология в текста на картите,
+    а картите отпреди v6.0 дори не носят причината.
+    Пази се синхронно с `_advice_entry` чрез ИЗПЪЛНЯВАН тест (П18), не чрез греп."""
+    if streak_n == 1:
+        return "day1"
+    if 2 <= streak_n <= 3:
+        return "fresh"
+    if streak_n == 0:
+        return "mixed"
+    return "stale"
 
 
 def _noise(seg):
@@ -2315,6 +2331,13 @@ def main():
                              # се печатаха само в stdout и умираха с Actions лога. Без тях
                              # «защо е шорт-премиум от 8 дни» е неотговорим въпрос завинаги.
                              "macro": macro, "macro_raw": macro_health,
+                             # 🔴 ОДИТ-15: присъдата на ГЕЙТА — най-важното решение на бота.
+                             # Без нея форуърд-тестът е неизмерим: «защо отказа» се
+                             # реконструира по текста на картите, а старите карти дори
+                             # не носят причината. САМО ЗАПИС — решението НЕ се променя.
+                             "gate": ({"dir": new_dir, "streak": streak_n,
+                                       "cell": _cell_name(streak_n), "ok": bool(_adv_ok),
+                                       "why": advice_txt} if new_dir else None),
                              "board": {l: [d, s, t] for l, d, s, t, _ in board},
                              "exits": [k for _, _, k, _ in exit_msgs],
                              "notes": notes, "status": statuses}, ensure_ascii=False) + "\n")
