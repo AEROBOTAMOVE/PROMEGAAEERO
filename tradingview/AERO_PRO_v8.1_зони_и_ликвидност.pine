@@ -17,7 +17,7 @@
 //   "Error on bar 9291: The requested historical offset (110) is beyond the
 //    historical buffer's limit (109). at f_tcount():395"
 // и нищо не се рисува. Явното max_bars_back заделя буфера предварително.
-indicator("AERO PRO v8.1 · зони и ликвидност", overlay=true, max_bars_back=500, max_boxes_count=200, max_lines_count=300, max_labels_count=400)
+indicator("AERO PRO v8.2 · зони и ликвидност", overlay=true, max_bars_back=500, max_boxes_count=200, max_lines_count=300, max_labels_count=400)
 
 g0    = "0 · ВИДИМОСТ (пази мащаба)"
 bMode = input.string("Автоматично (по ATR)", "Колко далеч да чертае", options=["Автоматично (по ATR)", "Ръчно (% от цената)"], group=g0)
@@ -77,6 +77,9 @@ uSS = input.bool(true, "Оцвети сесиите", group=g9)
 uSh = input.bool(true, "US-ЩИТ 15:25-16:15 (ботът не влиза)", group=g9)
 
 gA   = "10 · AERO НИВА"
+cmpL = input.bool(true, "Компактни надписи — знак вместо изречение", group=g10,
+     tooltip="Пълният текст се показва в балонче при посочване с мишката.")
+gapL = input.int(8, "  Минимално разстояние между надписи (свещи)", minval=0, maxval=60, group=g10)
 uL   = input.bool(true, "ТП1/ТП2/ТП3/СТОП (ДНЕВНА геометрия — не за скалп)", group=gA)
 dirM = input.string("Автоматично", "Посока", options=["Автоматично", "ШОРТ", "ЛОНГ"], group=gA)
 
@@ -338,9 +341,9 @@ if uSW and array.size(qY) > 0
         if not array.get(qH, i) and low < y and close > y
             swDn := true
 if swUp
-    label.new(bar_index, high, "⚡ ОБРАНИ СТОПОВЕ ГОРЕ", style=label.style_label_down, color=color.new(C_DN, 0), textcolor=color.white, size=size.tiny)
+    label.new(bar_index, high, cmpL ? "⚡↑" : "⚡ ОБРАНИ СТОПОВЕ ГОРЕ", tooltip="ОБРАНИ СТОПОВЕ ГОРЕ", style=label.style_label_down, color=color.new(C_DN, 0), textcolor=color.white, size=size.tiny)
 if swDn
-    label.new(bar_index, low, "⚡ ОБРАНИ СТОПОВЕ ДОЛУ", style=label.style_label_up, color=color.new(C_UP, 0), textcolor=color.white, size=size.tiny)
+    label.new(bar_index, low, cmpL ? "⚡↓" : "⚡ ОБРАНИ СТОПОВЕ ДОЛУ", tooltip="ОБРАНИ СТОПОВЕ ДОЛУ", style=label.style_label_up, color=color.new(C_UP, 0), textcolor=color.white, size=size.tiny)
 
 // ═══ 4 · СТРУКТУРА: BOS / CHoCH ═══
 stH = ta.pivothigh(high, stP, stP)

@@ -5,7 +5,7 @@
 // ликвидност · FVG · BOS/CHoCH/MSS · японски свещи · setup state · аларми
 // ВАЖНО: Индикаторът е помощник за анализ, а не гаранция за печалба.
 // ═══════════════════════════════════════════════════════════════════════════
-indicator("AERO PRO v9.3 · Пазарна карта BG", overlay = true, max_bars_back = 1200,
+indicator("AERO PRO v9.4 · Пазарна карта BG", overlay = true, max_bars_back = 1200,
      max_boxes_count = 360, max_lines_count = 460, max_labels_count = 500,
      dynamic_requests = true)
 
@@ -112,6 +112,10 @@ trendTouchGap = input.int(4, "Минимум свещи между отделн�
 // 10 · ПАНЕЛИ
 // ═══════════════════════════════════════════════════════════════════════════
 g10 = "10 · ПАНЕЛИ"
+compactLabels = input.bool(true, "Компактни надписи — знак вместо изречение", group = g10,
+     tooltip = "Пълният текст НЕ се губи: показва се в балонче, като посочиш надписа с мишката.")
+labelGapBars  = input.int(8, "  Минимално разстояние между надписи (свещи)", minval = 0, maxval = 60, group = g10,
+     tooltip = "0 = без пазач (както беше). Пропуска се само НАДПИСЪТ; събитието се брои нормално.")
 showTradeLevels = input.bool(true, "Чертай ВХОД / СТОП / ЦЕЛ като линии на графиката", group = g10,
      tooltip = "Индикаторът вече пресмяташе тези нива, но ги показваше само като текст. Сега се чертаят и се виждат.")
 tradeLevelsWide = input.bool(true, "Оцвети зоната на риска и на печалбата", group = g10)
@@ -362,10 +366,18 @@ bool structureDown = showStructure and f_bar_confirmed() and not na(lastSwingLow
 bool bullishChoch = structureUp and structureDirection == -1
 bool bearishChoch = structureDown and structureDirection == 1
 
+// ── ЧЕТИМОСТ · памет за последния надпис от всяка страна на свещта ──────────
+// Pine не позволява функция да пипа глобална променлива, затова пазачът стои
+// вписан на всяко място. `evAbove` = последен надпис НАД свещите, `evBelow` = ПОД.
+var int evAbove = na
+var int evBelow = na
+
 if structureUp
     string txt = bullishChoch ? "ПЪРВИ ЗНАК ЗА ОБРЪЩАНЕ НАГОРЕ (CHoCH)" : "ПРОБИВ НА СТРУКТУРАТА НАГОРЕ (BOS)"
     line.new(lastSwingHighTime, lastSwingHigh, time, lastSwingHigh, xloc = xloc.bar_time, color = color.new(bullishChoch ? C_STRUCTURE : C_BUY, 10), width = 2, style = line.style_dotted)
-    label.new(bar_index, lastSwingHigh, txt, style = label.style_label_down, color = bullishChoch ? C_STRUCTURE : C_BUY, textcolor = C_TEXT, size = uiMode == "Лесен" ? size.small : size.tiny)
+    if na(evAbove) or bar_index - evAbove >= labelGapBars
+        evAbove := bar_index
+        label.new(bar_index, lastSwingHigh, compactLabels ? (bullishChoch ? "⟲↑" : "⇗") : txt, tooltip = txt, style = label.style_label_down, color = bullishChoch ? C_STRUCTURE : C_BUY, textcolor = C_TEXT, size = uiMode == "Лесен" ? size.small : size.tiny)
     brokenHighLevel := lastSwingHigh
     waitingBullRetest := true
     waitingBearRetest := false
@@ -378,7 +390,9 @@ if structureUp
 if structureDown
     string txt = bearishChoch ? "ПЪРВИ ЗНАК ЗА ОБРЪЩАНЕ НАДОЛУ (CHoCH)" : "ПРОБИВ НА СТРУКТУРАТА НАДОЛУ (BOS)"
     line.new(lastSwingLowTime, lastSwingLow, time, lastSwingLow, xloc = xloc.bar_time, color = color.new(bearishChoch ? C_STRUCTURE : C_SELL, 10), width = 2, style = line.style_dotted)
-    label.new(bar_index, lastSwingLow, txt, style = label.style_label_up, color = bearishChoch ? C_STRUCTURE : C_SELL, textcolor = C_TEXT, size = uiMode == "Лесен" ? size.small : size.tiny)
+    if na(evBelow) or bar_index - evBelow >= labelGapBars
+        evBelow := bar_index
+        label.new(bar_index, lastSwingLow, compactLabels ? (bearishChoch ? "⟲↓" : "⇘") : txt, tooltip = txt, style = label.style_label_up, color = bearishChoch ? C_STRUCTURE : C_SELL, textcolor = C_TEXT, size = uiMode == "Лесен" ? size.small : size.tiny)
     brokenLowLevel := lastSwingLow
     waitingBearRetest := true
     waitingBullRetest := false
@@ -394,16 +408,24 @@ bool bearRetestHeld = showRetest and waitingBearRetest and f_bar_confirmed() and
 bool bullRetestFailed = showRetest and waitingBullRetest and f_bar_confirmed() and close < brokenHighLevel - atr * 0.15
 bool bearRetestFailed = showRetest and waitingBearRetest and f_bar_confirmed() and close > brokenLowLevel + atr * 0.15
 if bullRetestHeld
-    label.new(bar_index, low, "РЕТЕСТЪТ ЗАДЪРЖА НАГОРЕ", style = label.style_label_up, color = C_BUY, textcolor = C_TEXT, size = size.tiny)
+    if na(evBelow) or bar_index - evBelow >= labelGapBars
+        evBelow := bar_index
+        label.new(bar_index, low, compactLabels ? "✓↑" : "РЕТЕСТЪТ ЗАДЪРЖА НАГОРЕ", tooltip = "РЕТЕСТЪТ ЗАДЪРЖА НАГОРЕ", style = label.style_label_up, color = C_BUY, textcolor = C_TEXT, size = size.tiny)
     waitingBullRetest := false
 if bearRetestHeld
-    label.new(bar_index, high, "РЕТЕСТЪТ ЗАДЪРЖА НАДОЛУ", style = label.style_label_down, color = C_SELL, textcolor = C_TEXT, size = size.tiny)
+    if na(evAbove) or bar_index - evAbove >= labelGapBars
+        evAbove := bar_index
+        label.new(bar_index, high, compactLabels ? "✓↓" : "РЕТЕСТЪТ ЗАДЪРЖА НАДОЛУ", tooltip = "РЕТЕСТЪТ ЗАДЪРЖА НАДОЛУ", style = label.style_label_down, color = C_SELL, textcolor = C_TEXT, size = size.tiny)
     waitingBearRetest := false
 if bullRetestFailed
-    label.new(bar_index, high, "НЕУСПЕШЕН ВЪЗХОДЯЩ РЕТЕСТ", style = label.style_label_down, color = C_WARN, textcolor = C_TEXT, size = size.tiny)
+    if na(evAbove) or bar_index - evAbove >= labelGapBars
+        evAbove := bar_index
+        label.new(bar_index, high, compactLabels ? "✗↑" : "НЕУСПЕШЕН ВЪЗХОДЯЩ РЕТЕСТ", tooltip = "НЕУСПЕШЕН ВЪЗХОДЯЩ РЕТЕСТ", style = label.style_label_down, color = C_WARN, textcolor = C_TEXT, size = size.tiny)
     waitingBullRetest := false
 if bearRetestFailed
-    label.new(bar_index, low, "НЕУСПЕШЕН НИЗХОДЯЩ РЕТЕСТ", style = label.style_label_up, color = C_WARN, textcolor = C_TEXT, size = size.tiny)
+    if na(evBelow) or bar_index - evBelow >= labelGapBars
+        evBelow := bar_index
+        label.new(bar_index, low, compactLabels ? "✗↓" : "НЕУСПЕШЕН НИЗХОДЯЩ РЕТЕСТ", tooltip = "НЕУСПЕШЕН НИЗХОДЯЩ РЕТЕСТ", style = label.style_label_up, color = C_WARN, textcolor = C_TEXT, size = size.tiny)
     waitingBearRetest := false
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -482,9 +504,13 @@ if array.size(liqPrices) > 0
                     lastSweepBelowPrice := low
 
 if showSweepMarkers and sweepAbove
-    label.new(bar_index, high, "ОБРАНИ СА СТОПОВЕТЕ НАД ВЪРХОВЕТЕ", style = label.style_label_down, color = C_SELL, textcolor = C_TEXT, size = size.small)
+    if na(evAbove) or bar_index - evAbove >= labelGapBars
+        evAbove := bar_index
+        label.new(bar_index, high, compactLabels ? "⚡↑" : "ОБРАНИ СА СТОПОВЕТЕ НАД ВЪРХОВЕТЕ", tooltip = "ОБРАНИ СА СТОПОВЕТЕ НАД ВЪРХОВЕТЕ", style = label.style_label_down, color = C_SELL, textcolor = C_TEXT, size = size.small)
 if showSweepMarkers and sweepBelow
-    label.new(bar_index, low, "ОБРАНИ СА СТОПОВЕТЕ ПОД ДЪНАТА", style = label.style_label_up, color = C_BUY, textcolor = C_TEXT, size = size.small)
+    if na(evBelow) or bar_index - evBelow >= labelGapBars
+        evBelow := bar_index
+        label.new(bar_index, low, compactLabels ? "⚡↓" : "ОБРАНИ СА СТОПОВЕТЕ ПОД ДЪНАТА", tooltip = "ОБРАНИ СА СТОПОВЕТЕ ПОД ДЪНАТА", style = label.style_label_up, color = C_BUY, textcolor = C_TEXT, size = size.small)
 
 bool recentSweepAbove = not na(lastSweepAboveBar) and bar_index - lastSweepAboveBar <= sweepFreshBars
 bool recentSweepBelow = not na(lastSweepBelowBar) and bar_index - lastSweepBelowBar <= sweepFreshBars
@@ -889,7 +915,9 @@ var label[] candleLabels = array.new_label()
 bool importantCandle = candleText != "Няма важно свещно потвърждение"
 if showCandles and importantCandle
     color candleColor = candleDirection == 1 ? C_BUY : candleDirection == -1 ? C_SELL : C_WARN
-    label marker = label.new(bar_index, candleDirection == 1 ? low : high, candleText,
+    string candleShort = candleDirection == 1 ? "▲" : candleDirection == -1 ? "▼" : "◆"
+    label marker = label.new(bar_index, candleDirection == 1 ? low : high,
+         compactLabels ? candleShort : candleText, tooltip = candleText,
          style = candleDirection == 1 ? label.style_label_up : label.style_label_down,
          color = candleColor, textcolor = C_TEXT, size = uiMode == "Лесен" ? size.small : size.tiny)
     array.push(candleLabels, marker)
