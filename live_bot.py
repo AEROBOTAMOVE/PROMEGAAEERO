@@ -30,7 +30,7 @@ warnings.filterwarnings("ignore")
 import numpy as np
 import pandas as pd
 
-VERSION = "v7.0"
+VERSION = "v7.0a"
 PIP = 0.10
 SL_PIPS = 200; SL_D = SL_PIPS * PIP                       # стоп: 200п = $20/oz
 TPS = [("ТП1", 75, 7.5), ("ТП2", 120, 12.0), ("ТП3", 200, 20.0)]
@@ -2456,7 +2456,11 @@ def main():
     # от това. Тук го вижда — и го праща като ОТДЕЛНИ карти.
     # ЖЕЛЯЗНО: тези карти НЕ отварят сделка и НЕ пипат trade/guard/board.
     # Те са СВЕДЕНИЕ. Мереното правило си остава единственото, което търгува.
-    if CB is not None and not weekend:
+    if CB is None:
+        notes.append("🧠 мозъкът е изключен (CHART_BRAIN=0)")
+    elif weekend:
+        notes.append("🧠 мозъкът мълчи — борсата е затворена")
+    else:
         try:
             # 15м С ОБЕМ — ресемплваният `frames` е без обем, а групата ОБЕМИ
             # му трябва. Затова СОБСТВЕН речник; `frames` остава недокоснат.
@@ -2500,9 +2504,13 @@ def main():
                     _warn.append(f"барът е {bar_age_min:.0f} мин стар — картата може да е закъсняла")
                 new_msgs.append((f"brain:{_s.get('рамка')}:{_s.get('посока')}",
                                  CB.карта(_s, мерено=_m, предупреждения=_warn or None)))
-            if _setups:
-                notes.append(f"🧠 мозък: {len(_setups)} повода, "
-                             f"{sum(1 for x in _setups if x.get('праща'))} пуснати")
+            # ОДИТ-25: бележката се пише ВИНАГИ, дори при нула повода.
+            # Дотук мълчанието на мозъка изглеждаше точно като спънат мозък —
+            # и двете даваха празни `notes`. Точно това сляпо петно ме подведе
+            # два пъти днес: обявявах «работи», без да мога да го докажа.
+            notes.append(f"🧠 мозък: {len(_setups)} повода"
+                         + (f", {sum(1 for x in _setups if x.get('праща'))} пуснати"
+                            if _setups else " (тихо — няма събитие на този бар)"))
         except Exception as _e:
             notes.append(f"🧠 мозъкът се спъна ({type(_e).__name__}: {str(_e)[:90]}) — прескочен")
 
