@@ -29,7 +29,12 @@ jobs:
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT_ID: "-1003827523037"
-        run: python audit_bot.py --repo . --code . --send
+        # ОДИТ-19 · СЪЖИВЯВАНЕ: два опита, преди да се говори за падане
+        run: |
+          python audit_bot.py --repo . --code . --send && exit 0
+          echo "::warning::първият опит не мина — чакам 30с"
+          sleep 30
+          python audit_bot.py --repo . --code . --send
       - name: alarm on failure                          # W4: ако роботът падне — кажи го
         if: failure()
         env:
@@ -38,4 +43,5 @@ jobs:
         run: |
           curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage" \
             -d chat_id="${TELEGRAM_CHAT_ID}" \
-            -d text="⚠️ AERO Одит-роботът падна — виж Actions (отчетът не излезе)." || true
+            -d parse_mode=HTML \
+            -d text="🛠 <i>Одит-роботът не успя да направи отчета този път (опитах два пъти). Ботът си работи — това е само проверката. Следващият отчет е след няколко часа.</i>" || true

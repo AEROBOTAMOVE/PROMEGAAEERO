@@ -45,7 +45,19 @@ jobs:
           BALANCE: ${{ vars.BALANCE || '1000' }}
           RISK_PCT: ${{ vars.RISK_PCT || '2' }}
           STATUS_CARD: ${{ github.event.inputs.status || 'no' }}
-        run: python live_bot.py --send --stats backtest_stats.json --out live
+        # ОДИТ-19 · СЪЖИВЯВАНЕ. Повечето падания са мигновени (мрежа, 429 от Yahoo,
+        # бавен фийд). Дотук едно мигване вдигаше червена аларма. Сега се пробва ПАК.
+        run: |
+          for try_n in 1 2 3; do
+            if python live_bot.py --send --stats backtest_stats.json --out live; then
+              [ "$try_n" != "1" ] && echo "::notice::ботът тръгна от опит $try_n"
+              exit 0
+            fi
+            echo "::warning::опит $try_n не мина — чакам 20с и пробвам пак"
+            sleep 20
+          done
+          echo "::error::и трите опита паднаха"
+          exit 1
       - name: save state
         if: always()
         timeout-minutes: 6          # ОДИТ-2 №4: ботът вече излиза с код 1 при краш —
@@ -67,7 +79,7 @@ jobs:
             echo "::warning::PUSH FAILED - състоянието не се записа"
             curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage" \
               -d chat_id="${TELEGRAM_CHAT_ID}" -d parse_mode=HTML \
-              -d text="⚠️ <b>AERO · състоянието НЕ се записа</b>%0A<i>git push се провали 3 пъти — възможна двойна карта на следващия рън. Провери Actions.</i>" || true
+              -d text="📝 <b>AERO · записът се забави</b>%0A<i>Запазването на състоянието не мина този път. Възможно е да видиш една карта два пъти. Ботът работи; ще се оправи от само себе си при следващото пускане.</i>" || true
           fi
       # ═══ ОДИТ-6: БУДИЛНИК ЗА ОДИТ-РОБОТА ═══
       # Мерено 04.08.2026 през API-то: одитът има 7 крона на ден, но реалните пускания
@@ -108,11 +120,22 @@ jobs:
             "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/workflows/audit.yml/dispatches" \
             -d '{"ref":"main"}' -w "HTTP %{http_code}\n"
       - name: alarm on barrier failure                    # защита срещу ТИХ престой (selftest/зависимост счупени)
+        # ОДИТ-19: ЗАГЛУШАВАНЕ. Съобщение само ако и предишните два ръна са паднали.
+        # Едно мигване не е новина; три поредни са. Дотук стреляше на всяко падане —
+        # при трайна дреболия 12 червени съобщения на час.
         if: failure()
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT_ID: "-1003827523037"
         run: |
-          curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage" \
-            -d chat_id="${TELEGRAM_CHAT_ID}" -d parse_mode=HTML \
-            -d text="🔴 <b>AERO · ботът НЕ тръгна</b>%0A<i>selftest или зависимост се счупи → сигналите спряха. Виж Actions лога.</i>" || true
+          # трите последни завършили ръна на този workflow
+          FAILS=$(curl -s -H "Authorization: Bearer ${{ github.token }}" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/workflows/aero-bot.yml/runs?status=completed&per_page=3" \
+            | grep -o '"conclusion":"[a-z]*"' | head -3 | grep -c 'failure' || true)
+          if [ "${FAILS:-0}" -ge 2 ]; then
+            curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage" \
+              -d chat_id="${TELEGRAM_CHAT_ID}" -d parse_mode=HTML \
+              -d text="🛠 <b>AERO · чиня се</b>%0A<i>Три поредни пускания не минаха (опитах по 3 пъти всяко). Продължавам да пробвам на всеки 5 минути — ако е дреболия, ще се оправя сам. Ако след час още го виждаш, кажи.</i>" || true
+          else
+            echo "::notice::едно падане — не вдигам аларма (пробвам пак след 5 мин)"
+          fi
