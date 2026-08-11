@@ -76,10 +76,10 @@ jobs:
             echo "push опит $i неуспешен, чакам 5с"; sleep 5
           done
           if [ "$ok" != "1" ]; then
-            echo "::warning::PUSH FAILED - състоянието не се записа"
-            curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage" \
-              -d chat_id="${TELEGRAM_CHAT_ID}" -d parse_mode=HTML \
-              -d text="📝 <b>AERO · записът се забави</b>%0A<i>Запазването на състоянието не мина този път. Възможно е да видиш една карта два пъти. Ботът работи; ще се оправи от само себе си при следващото пускане.</i>" || true
+            # ОДИТ-21: БЕЗ СЪОБЩЕНИЕ. Собственикът не може да направи нищо по
+            # неуспешен git push — това е мой проблем, не негов. Остава в лога;
+            # одит-роботът и без това следи за двойни карти (М-групата).
+            echo "::warning::PUSH FAILED - състоянието не се записа (без съобщение, по избор на собственика)"
           fi
       # ═══ ОДИТ-6: БУДИЛНИК ЗА ОДИТ-РОБОТА ═══
       # Мерено 04.08.2026 през API-то: одитът има 7 крона на ден, но реалните пускания
@@ -128,14 +128,17 @@ jobs:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT_ID: "-1003827523037"
         run: |
-          # трите последни завършили ръна на този workflow
+          # ОДИТ-21 · ЕДИНСТВЕНОТО техническо съобщение, което остава.
+          # Праща се САМО ако ботът мълчи достатъчно дълго, че да пропусне сделки:
+          # 6 поредни падания × 5 минути = 30 минути тишина. Всяко пускане вече
+          # опитва по 3 пъти вътрешно, значи това са 18 неуспешни опита.
           FAILS=$(curl -s -H "Authorization: Bearer ${{ github.token }}" \
-            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/workflows/aero-bot.yml/runs?status=completed&per_page=3" \
-            | grep -o '"conclusion":"[a-z]*"' | head -3 | grep -c 'failure' || true)
-          if [ "${FAILS:-0}" -ge 2 ]; then
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/workflows/aero-bot.yml/runs?status=completed&per_page=6" \
+            | grep -o '"conclusion":"[a-z]*"' | head -6 | grep -c 'failure' || true)
+          if [ "${FAILS:-0}" -ge 5 ]; then
             curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage" \
               -d chat_id="${TELEGRAM_CHAT_ID}" -d parse_mode=HTML \
-              -d text="🛠 <b>AERO · чиня се</b>%0A<i>Три поредни пускания не минаха (опитах по 3 пъти всяко). Продължавам да пробвам на всеки 5 минути — ако е дреболия, ще се оправя сам. Ако след час още го виждаш, кажи.</i>" || true
+              -d text="🔕 <b>Половин час съм тих</b>%0A<i>Не успявам да тръгна вече 30 минути — може да си пропуснал сигнали. Продължавам да опитвам на всеки 5 минути. Това е единственото техническо съобщение, което ще получиш.</i>" || true
           else
-            echo "::notice::едно падане — не вдигам аларма (пробвам пак след 5 мин)"
+            echo "::notice::падане, но под прага за съобщение (${FAILS:-0}/5) — пробвам пак"
           fi

@@ -35,13 +35,9 @@ jobs:
           echo "::warning::първият опит не мина — чакам 30с"
           sleep 30
           python audit_bot.py --repo . --code . --send
-      - name: alarm on failure                          # W4: ако роботът падне — кажи го
+      - name: log failure                               # ОДИТ-21: БЕЗ съобщение в Телеграм
         if: failure()
-        env:
-          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
-          TELEGRAM_CHAT_ID: "-1003827523037"
-        run: |
-          curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage" \
-            -d chat_id="${TELEGRAM_CHAT_ID}" \
-            -d parse_mode=HTML \
-            -d text="🛠 <i>Одит-роботът не успя да направи отчета този път (опитах два пъти). Ботът си работи — това е само проверката. Следващият отчет е след няколко часа.</i>" || true
+        # Одит-роботът е ИНСТРУМЕНТ ЗА ПРОВЕРКА, не част от търговията. Падне ли,
+        # собственикът не може да направи нищо и не губи сделки. Остава в лога.
+        # Отчетът, който той поиска «хубав и готин», си върви нормално по-горе.
+        run: echo "::warning::одит-роботът не успя и двата пъти — виж лога (без съобщение, по избор на собственика)"

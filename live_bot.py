@@ -30,7 +30,7 @@ warnings.filterwarnings("ignore")
 import numpy as np
 import pandas as pd
 
-VERSION = "v6.5"
+VERSION = "v6.6"
 PIP = 0.10
 SL_PIPS = 200; SL_D = SL_PIPS * PIP                       # стоп: 200п = $20/oz
 TPS = [("ТП1", 75, 7.5), ("ТП2", 120, 12.0), ("ТП3", 200, 20.0)]
@@ -2552,17 +2552,19 @@ if __name__ == "__main__":
                     _fresh = (pd.Timestamp(now_utc) - pd.Timestamp(_prev)).total_seconds() > 3 * 3600
                 except Exception:
                     _fresh = True
-            if _fresh:
-                _send_raw(f"⚠️ <b>AERO бот · временен проблем</b>\n<code>{_err}</code>\n"
-                          f"<i>Ще опита пак на следващото пускане. Ако се повтори, ще ти кажа "
-                          f"най-рано след 3 часа — за да не те залея.</i>")
-                _seen[_sig] = str(now_utc)
-                try:
-                    _ef.write_text(json.dumps(_seen, ensure_ascii=False), encoding="utf-8")
-                except Exception:
-                    pass
-            else:
-                print(f"грешката е същата като преди <3ч — не я пращам пак ({_sig})")
+            # ОДИТ-21: БЕЗ СЪОБЩЕНИЕ ЗА ТЕХНИЧЕСКА ГРЕШКА.
+            # Собственикът не може да направи нищо по «RuntimeError: празни данни»
+            # и изрично поиска тези съобщения да ги няма. Пускането се повтаря
+            # 3 пъти само по себе си; мълчи ли ботът и след 30 минути, workflow-ът
+            # праща ЕДНО съобщение — то е достатъчно и е единственото техническо.
+            # Грешката остава в лога и в err_seen.json, за да я вижда одит-роботът.
+            _seen[_sig] = str(now_utc)
+            try:
+                _ef.write_text(json.dumps(_seen, ensure_ascii=False), encoding="utf-8")
+            except Exception:
+                pass
+            print(f"грешка {_sig} записана в лога, БЕЗ съобщение (по избор на собственика)"
+                  + ("" if _fresh else " · същата като преди <3ч"))
         except Exception:
             pass
         # ОДИТ-2 №4: изход ≠ 0, за да гръмне и workflow алармата (`if: failure()`).
