@@ -686,13 +686,19 @@ def _advice_entry(direction, streak_n, stats, fast, shield, guard_n, sym="XAUUSD
         # да прави същото, иначе ботът работи по едни числа, а е оценен по други.
         if seg.get("n", 0) >= MIN_N and (seg.get("net", 0) <= 0 or _noise(seg)):
             _by("клетка"); _мерено(seg, src)
-            return ("ИЗЧАКАЙ — прясно е, но такива случаи не носят нищо"
-                    + _fast(fast)), False
+            return "ИЗЧАКАЙ — прясно е, но такива случаи не носят нищо", False
         _by("клетка"); _мерено(seg, src)
-        _накъде = "нагоре" if direction == "long" else "надолу"
+        # 🔴 ОДИТ-30 · ОБЪРНАТ ЗНАК, качен от мен днес. В кода `m_l` (лонг
+        # стрийк) значи доларът ПАДА и лихвите ПАДАТ — това вдига златото
+        # (`macro["долар"]=True` е `-(dx.pct_change(20))>0`). Първата ми
+        # версия писа «доларът и лихвите НАГОРЕ» на карта за ПОКУПКА —
+        # точно обратното на истината, върху реда, по който той решава.
+        _накъде = "падат" if direction == "long" else "растат"
         _откога = (("от днес" if streak_n == 1 else f"вече {streak_n} дни")
                    if is_gold else "днес")
-        return f"ДА — доларът и лихвите {_накъде} {_откога}" + _fast(fast), True
+        _ефект = "вдига" if direction == "long" else "сваля"
+        return (f"ДА — доларът и лихвите {_накъде} {_откога}, това {_ефект} златото"
+                + _fast(fast)), True
     # ОДИТ-8 (04.08): кофата `stale` СЛИВАШЕ две различни състояния — «макрото ДНЕС е
     # смесено» (стрийк 0) и «сигналът е ОСТАРЯЛ от дни» (стрийк 4+). Мерено на същите
     # 114813 сделки, блоков бутстрап по ден: long/mixed −0.04$ (ШУМ, n=40094) срещу
@@ -707,9 +713,9 @@ def _advice_entry(direction, streak_n, stats, fast, shield, guard_n, sym="XAUUSD
         # губещ е ИСТОРИЧЕСКИЯТ КЛАС на този сетъп.
         _by("клетка"); _мерено(seg, "mixed" if mixed else "stale")
         if mixed:
-            return "НЕ — доларът и лихвите се карат днес" + _fast(fast), False
+            return "НЕ — доларът и лихвите се карат днес", False
         _откога = (f"отпреди {streak_n} дни" if is_gold else "отдавна")
-        return f"НЕ — подреждането е {_откога}, изхабило се е" + _fast(fast), False
+        return f"НЕ — подреждането е {_откога}, изхабило се е", False
     # положителен-но-слаб клас: текстът СЪОТВЕТСТВА на action (следи се) — «ДА (слаб)», не «ИЗЧАКАЙ»
     _by("клетка"); _мерено(seg, "mixed" if mixed else "stale")
     if mixed:
@@ -840,8 +846,13 @@ def _sig_msg(direction, score, agree_n, tier_name, spot, bar_price, bar_ts, lv, 
              f"{'покупка' if open_trade.get('direction', direction) == 'long' else 'продажба'} · "
              f"{_sofia()}",
              f"🎯 вход <code>{_fmt(open_trade['entry'], dec)}</code>",
-             "🛑 стоп <code>%s</code>%s" % (_fmt(ol["sl"], dec),
-                                            " (на входа — без риск)" if hit.get("tp1") else ""),
+             # ОДИТ-30: съди по САМИЯ стоп, не по флага. `track_trade` мести
+             # `lv["sl"]` на входа при ТП1; ако по някаква причина не е преместен,
+             # картата не бива да твърди «без риск».
+             "🛑 стоп <code>%s</code>%s" % (
+                 _fmt(ol["sl"], dec),
+                 " (на входа — без риск)"
+                 if abs(float(ol.get("sl", 0)) - float(open_trade["entry"])) < 0.01 else ""),
              " · ".join(f"{n} <code>{_fmt(ol[k], dec)}</code>{' ✅' if hit.get(k) else ''}"
                         for n, k in (("1️⃣", "tp1"), ("2️⃣", "tp2"), ("3️⃣", "tp3")))]
         if spot:
