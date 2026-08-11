@@ -23,13 +23,14 @@ live_bot.py — AERO METALS BOT v5.0 «ТОЧНОСТ ПРЕДИ ВСИЧКО» 
 """
 from __future__ import annotations
 import argparse, copy, io, json, os, urllib.parse, urllib.request, warnings
+import hashlib as _hashlib_e
 from datetime import datetime, timezone
 from pathlib import Path
 warnings.filterwarnings("ignore")
 import numpy as np
 import pandas as pd
 
-VERSION = "v6.3"
+VERSION = "v6.4"
 PIP = 0.10
 SL_PIPS = 200; SL_D = SL_PIPS * PIP                       # стоп: 200п = $20/oz
 TPS = [("ТП1", 75, 7.5), ("ТП2", 120, 12.0), ("ТП3", 200, 20.0)]
@@ -1715,6 +1716,96 @@ def _outbox_flush(out_dir, new_msgs, statuses, dry=False):
 
 
 # ================================================================== MAIN ===
+# ═══════════════════════════════════════════════════════════════════════════
+# УИКЕНД-РЕЖИМ · ОДИТ-17
+# ═══════════════════════════════════════════════════════════════════════════
+WEEKEND_MSGS = {
+    "сутрин": [
+        "Пазарът спи. Ползвай го — прегледай миналата седмица, докато никой не ти мърда цената.",
+        "Най-добрите сделки за понеделник се намират в събота.",
+        "Графиката няма да се промени днес. Ти можеш.",
+        "Въпрос за тази сутрин: коя сделка от миналата седмица би направил пак по същия начин?",
+        "Търговията е 10% натискане на бутони и 90% чакане. Днес е ден от деветдесетте.",
+        "Отвори дневника. Числата помнят това, което главата е разкрасила.",
+        "Спокоен пазар, спокойна глава. Точно за това служи уикендът.",
+        "Планът се пише при затворен пазар. В понеделник вече е късно.",
+    ],
+    "следобед": [
+        "Знаеш ли кой не загуби пари този уикенд? Ти. Борсата е затворена.",
+        "Търпението също е позиция. И точно сега е на печалба.",
+        "Единственият сигурен начин да не хванеш стоп е да не влезеш. Днес го правим по неволя.",
+        "Ако графиката ти липсва — това е информация за теб, не за пазара.",
+        "Най-скъпите сделки са онези от скука. Днес няма как да ги направиш.",
+        "Стар въпрос: колко от сделките ти миналата седмица бяха по план и колко по настроение?",
+        "Пазарът ще е там в понеделник. Винаги е бил.",
+        "Дисциплината не е да влезеш правилно. Дисциплината е да НЕ влезеш.",
+    ],
+    "вечер": [
+        "Затвори лаптопа. Утре графиката ще е същата.",
+        "Днес не изгуби нищо. В тази игра и това е резултат.",
+        "Добрият трейдър се познава по това, което НЕ прави.",
+        "Сметката расте от малки добри решения, повторени много пъти. Не от едно голямо.",
+        "Ако мислиш за пазара в неделя вечер — нормално е. Ако не спиш заради него — намали размера.",
+        "Понеделник е чист лист. Не носи миналата седмица със себе си.",
+        "Най-подценяваното умение в занаята: да си далеч от екрана.",
+        "Числата не бързат. И ти не бързай.",
+    ],
+}
+
+
+def _weekend_slot(now_utc):
+    """Кой слот сме по СОФИЙСКО време. Извън трите прозореца → None (мълчи)."""
+    h = _sofia_hour(now_utc)
+    if h is None:
+        return None
+    if 9 <= h < 12:
+        return "сутрин"
+    if 15 <= h < 18:
+        return "следобед"
+    if 20 <= h < 23:
+        return "вечер"
+    return None
+
+
+def _weekend_msg(slot, date):
+    """Детерминиран избор по датата — една и съща картичка не се повтаря през ден."""
+    pool = WEEKEND_MSGS[slot]
+    try:
+        idx = int(str(date).replace("-", "")) % len(pool)
+    except Exception:
+        idx = 0
+    ico = {"сутрин": "☕", "следобед": "🌤", "вечер": "🌙"}[slot]
+    return (f"{ico} <b>УИКЕНД · {slot.upper()}</b>\n"
+            f"─────────────────\n"
+            f"{pool[idx]}\n\n"
+            f"<i>Борсата за злато е затворена (петък 17:00 до неделя 18:00 нюйоркско). "
+            f"Ботът е буден и здрав — просто няма какво да следи.</i>")
+
+
+def _weekend_cycle(out, now_utc, send):
+    """Уикенд: НИКАКВИ данни, никакви сигнали, чист изход. Само по една картичка на слот.
+    Тук е поправката на спама: `_market_closed` се пита ПРЕДИ дърпането на данните."""
+    date = str(now_utc)[:10]
+    st_f = out / "weekend.json"
+    st = _load_state(st_f, {})
+    slot = _weekend_slot(now_utc)
+    sent = None
+    if slot and st.get(f"{date}·{slot}") is None:
+        txt = _weekend_msg(slot, date)
+        res = _send_raw(txt) if send else "DRY (без --send)"
+        if str(res).startswith("SENT") or not send:
+            st[f"{date}·{slot}"] = str(now_utc)
+            sent = slot
+    st = {k: v for k, v in st.items() if str(k)[:10] >= date[:8] + "01"}   # чисти стар месец
+    st_f.write_text(json.dumps(st, ensure_ascii=False), encoding="utf-8")
+    with (out / "live_journal.jsonl").open("a", encoding="utf-8") as fh:
+        fh.write(json.dumps({"run_utc": now_utc, "date": date, "v": VERSION,
+                             "weekend": True, "slot": slot, "sent": sent,
+                             "status": ["уикенд — борсата е затворена, ботът мълчи"]},
+                            ensure_ascii=False) + "\n")
+    print(f"УИКЕНД · слот {slot or '—'} · пратено: {sent or 'нищо (вече е пратено или извън прозорец)'}")
+
+
 def main():
     ap = argparse.ArgumentParser(description=f"AERO LIVE bot {VERSION}")
     ap.add_argument("--out", default="live"); ap.add_argument("--stats", default="backtest_stats.json")
@@ -1728,6 +1819,13 @@ def main():
     out = Path(args.out); (out / "data").mkdir(parents=True, exist_ok=True)
     now_utc = datetime.now(timezone.utc).replace(tzinfo=None).isoformat(timespec="minutes")
     notes = []
+
+    # ОДИТ-17: пазарът затворен ли е — ПИТА СЕ ПЪРВО. Дотук се питаше чак на ред
+    # ~1824, СЛЕД `_yf`, а `_yf` вдига «празни данни» при спяща борса → грешка →
+    # съобщение + изход 1 → workflow алармата. Две съобщения на 5 минути, цял уикенд.
+    if _market_closed(now_utc) and not args.force:
+        _weekend_cycle(out, now_utc, args.send)
+        return
 
     import time
     print(f"AERO {VERSION} · дърпам дневни данни...")
@@ -2435,8 +2533,30 @@ if __name__ == "__main__":
             # HTML парсването на Телеграм и САМАТА аларма умира тихо (двойно заглушаване).
             import html as _html
             _err = _html.escape(f"{type(e).__name__}: {str(e)[:250]}")
-            _send_raw(f"⚠️ <b>AERO бот · временен проблем</b>\n<code>{_err}</code>\n"
-                      f"<i>Ще опита пак на следващото пускане.</i>")
+            # ОДИТ-17: ЗАГЛУШАВАНЕ. Ботът се буди на 5 минути; трайна грешка пращаше
+            # по 12 еднакви съобщения на час. Една и съща грешка — най-много веднъж
+            # на 3 часа. РАЗЛИЧНА грешка минава веднага (нова информация).
+            _sig = _hashlib_e.sha1(f"{type(e).__name__}:{str(e)[:120]}".encode()).hexdigest()[:12]
+            _ef = Path(args.out) / "err_seen.json"
+            _seen = _load_state(_ef, {})
+            _prev = _seen.get(_sig)
+            _fresh = True
+            if _prev:
+                try:
+                    _fresh = (pd.Timestamp(now_utc) - pd.Timestamp(_prev)).total_seconds() > 3 * 3600
+                except Exception:
+                    _fresh = True
+            if _fresh:
+                _send_raw(f"⚠️ <b>AERO бот · временен проблем</b>\n<code>{_err}</code>\n"
+                          f"<i>Ще опита пак на следващото пускане. Ако се повтори, ще ти кажа "
+                          f"най-рано след 3 часа — за да не те залея.</i>")
+                _seen[_sig] = str(now_utc)
+                try:
+                    _ef.write_text(json.dumps(_seen, ensure_ascii=False), encoding="utf-8")
+                except Exception:
+                    pass
+            else:
+                print(f"грешката е същата като преди <3ч — не я пращам пак ({_sig})")
         except Exception:
             pass
         # ОДИТ-2 №4: изход ≠ 0, за да гръмне и workflow алармата (`if: failure()`).
