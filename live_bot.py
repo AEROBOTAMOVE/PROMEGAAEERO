@@ -30,7 +30,7 @@ warnings.filterwarnings("ignore")
 import numpy as np
 import pandas as pd
 
-VERSION = "v8.5"
+VERSION = "v8.6"
 PIP = 0.10
 SL_PIPS = 200; SL_D = SL_PIPS * PIP                       # стоп: 200п = $20/oz
 TPS = [("ТП1", 75, 7.5), ("ТП2", 120, 12.0), ("ТП3", 200, 20.0)]
@@ -354,6 +354,14 @@ def _standing_msg(direction, best, age_h, spot, bar_price, price_user, board, ma
          f"🎯 <code>{_fmt(price_user, 2)}</code> · 🛑 <code>{_fmt(lv['sl'], 2)}</code>",
          " · ".join(f"{n} <code>{_fmt(lv[k], 2)}</code>"
                     for n, k in (("1️⃣", "tp1"), ("2️⃣", "tp2"), ("3️⃣", "tp3")))]
+    # ОДИТ-35 · `macro` се подаваше на функцията и НЕ се ползваше никъде.
+    # Точно то решава дали сетъпът има шанс — картата мълчеше за него.
+    _реш = [k for k in ("долар", "лихви") if k in (macro or {})]
+    _за = sum(1 for k in _реш if (macro[k] if direction == "long" else not macro[k]))
+    if _реш:
+        L.append("📌 доларът и лихвите са в същата посока" if _за == len(_реш)
+                 else ("⚠️ доларът и лихвите са СРЕЩУ тази посока" if _за == 0
+                       else "⚠️ доларът и лихвите не са единодушни"))
     if health and health.get("мъртви"):
         L.append(f"⚠️ мълчи: {', '.join(health['мъртви'])}")
     L.append("👁 не влизам · не е пресен")
@@ -665,7 +673,9 @@ def _advice_entry(direction, streak_n, stats, fast, shield, guard_n, sym="XAUUSD
 
     if guard_n >= 2:
         _by("стоп-пазач")
-        return "НЕ — два стопа днес, спирам до утре", False
+        # ОДИТ-35: «два» беше заковано, а `guard_n` може да е 3, 4…
+        # При трети стоп картата лъжеше за собствения му ден.
+        return f"НЕ — {guard_n} стопа днес в тази посока, спирам до утре", False
     if shield and direction == "short":
         _by("US-щит")
         return f"НЕ — американски данни {_shield_sofia_label()}, чакам ги", False
@@ -840,12 +850,15 @@ def _fast(fast):
 
 def _reentry_verdict(direction, streak_n, shield, guard_n):
     """(може_ли, защо) за ре-влизане след приключена сделка — F18 правилата."""
+    # ОДИТ-35 · единственият текст, който не бях пипал днес — още носеше
+    # «F18», «US-щит» и латиница. Той влиза в реда «♻️ ново влизане».
     if guard_n >= 2:
-        return False, "2 стопа днес в тази посока — стоп-пазач до утре"
+        return False, f"{guard_n} стопа днес в тази посока — спирам до утре"
     if direction == "short" and shield:
-        return False, f"US-щит ({_shield_sofia_label()}) — шорт в прозореца губи (F18: −2.14$)"
+        return False, (f"американските данни излизат в {_shield_sofia_label()} — "
+                       f"продажба в този прозорец губи")
     if direction == "short" and 1 <= streak_n <= 3:
-        return False, "шорт ре-влизане при пресен сигнал исторически губи (F18: −2.75$)"
+        return False, "втора продажба по същия пресен сигнал исторически губи"
     return True, ""
 
 
@@ -922,7 +935,10 @@ def _sig_msg(direction, score, agree_n, tier_name, spot, bar_price, bar_ts, lv, 
     if лот < 0.01:
         L.append(f"💰 под мин. лот · 0.01 лот = риск ${ед * (1.0 if sym == 'XAUUSD' else 50.0):.0f}")
     else:
-        L.append(f"💰 {лот_окр:.2f} лот · риск ${риск:.0f}"
+        # ОДИТ-35 · «риск $60» е обещание. Кодът нарочно пишеше «макс ≈»:
+        # собственият тракер е записал −23.88$ при стоп −20.00 (гап).
+        # Стопът пази НИВОТО, не цената.
+        L.append(f"💰 {лот_окр:.2f} лот · риск ≈${риск:.0f}"
                  + ("" if _zw >= 0.999 else " (намален)") + " · по 1/3 на цел")
     L.append(f"📌 {защо}")
     if reentry:
@@ -974,6 +990,9 @@ def _exit_msg(kind, tr, price_hit, when, via, gap, spot=None, next_line="", dec=
         L.append(f"🎯 остават 2️⃣ <code>{_fmt(lv['tp2'], dec)}</code> · "
                  f"3️⃣ <code>{_fmt(lv['tp3'], dec)}</code>")
     elif kind == "tp2":
+        # ОДИТ-35: `_ladder_pnl` смята общата сметка безусловно, а картата не я
+        # печаташе при ТП1/ТП2 — сянката я казваше, реалният изход не.
+        L.append(f"💰 дотук сделката носи <b>{стълба:+.2f}$</b>/унция")
         L.append(f"🎯 остава 3️⃣ <code>{_fmt(lv['tp3'], dec)}</code> · 2/3 са прибрани")
     else:
         L.append(f"💰 сделката донесе <b>{стълба:+.2f}$</b>/унция общо")
@@ -1229,6 +1248,17 @@ def _status_msg(board, new_dir, trade, s_trade, spot_g, spot_s, basis_g, basis_s
                 guard, shield, date, macro):
     """ОДИТ-29 · снимка на момента, четири реда."""
     L = [f"📌 КЪДЕ СМЕ · {_sofia()}"]
+    # ОДИТ-35 · посоката падна и при празна сметка картата се свиваше до
+    # «няма сделка · няма сделка · две цени». Той я пита НА РЪКА точно за да
+    # разбере какво вижда ботът — а получаваше по-малко от автоматичния пулс.
+    if new_dir:
+        _съгл = sum(1 for b in (board or []) if b[1] == new_dir and b[3] != "weak")
+        L.append(f"{'🟢' if new_dir == 'long' else '🔴'} очертава се "
+                 f"{'нагоре' if new_dir == 'long' else 'надолу'} · {_съгл}/7 мащаба")
+    else:
+        L.append("📌 посоката е разбъркана")
+    if shield:
+        L.append("⚠️ американски данни сега — продажбите чакат края им")
     for нм, tr, sp, dec in (("🥇", trade, spot_g, 2), ("🥈", s_trade, spot_s, 3)):
         if tr:
             прибр = [n for n, k in (("1️⃣", "tp1"), ("2️⃣", "tp2"), ("3️⃣", "tp3"))
@@ -1282,7 +1312,9 @@ def _pulse_msg(part, board, best, new_dir, advice_txt, adv_ok, trade, s_trade,
     if shield and new_dir == "short":
         L.append("👁 чакам американските данни")
     elif има:
-        L.append("👁 следя до целите · ти не пипай")
+        # ОДИТ-35: «до целите» обещаваше само единия край — сделката може да
+        # свърши и на стоп, и той трябва да го чака, не да го смята за изключен.
+        L.append("👁 следя до целите ИЛИ до стопа · пиша при всеки удар")
     elif new_dir and adv_ok:
         L.append("👁 чакам потвърждение · пращам вход")
     elif new_dir:
