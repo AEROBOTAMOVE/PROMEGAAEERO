@@ -30,7 +30,7 @@ warnings.filterwarnings("ignore")
 import numpy as np
 import pandas as pd
 
-VERSION = "v8.2"
+VERSION = "v8.3"
 PIP = 0.10
 SL_PIPS = 200; SL_D = SL_PIPS * PIP                       # стоп: 200п = $20/oz
 TPS = [("ТП1", 75, 7.5), ("ТП2", 120, 12.0), ("ТП3", 200, 20.0)]
@@ -72,6 +72,9 @@ CHART_BRAIN_ON = os.environ.get("CHART_BRAIN", "1") == "1"
 # минимум между КОИТО И ДА Е две мозъчни карти. По-висока степен минава —
 # иначе 💎 се губи зад едно 👀 отпреди пет минути.
 МОЗЪК_РАЗРЕД_МИН = int(os.environ.get("МОЗЪК_РАЗРЕД_МИН", "10"))
+# ОДИТ-33 · следи ли какво става със сетъпите си. Собственикът: «да си има
+# пак ТП-та». Хипотетично — без пари, без лот, без пипане на реалната сделка.
+МОЗЪК_СЛЕДЕНЕ = os.environ.get("МОЗЪК_СЛЕДЕНЕ", "1") == "1"
 CB = None
 if CHART_BRAIN_ON:
     try:
@@ -1000,6 +1003,87 @@ def _shadow_exit_msg(kind, tr, price_hit, when, via, gap, spot=None, dec=2):
         f"💵 <code>{_fmt(e, dec)}</code> → <code>{_fmt(price_hit, dec)}</code> · "
         f"<b>{стълба:+.2f}$</b>/унция",
         "📌 не съм влизал · само да знаеш"])
+
+def _мозък_следене(файл, дневник, цена, now_utc, нов=None):
+    """ОДИТ-33 · хипотетично следене на мозъчен сетъп. Без пари, без лот.
+
+    файл    : brain_track.json — единственото отворено следене
+    дневник : brain_result.jsonl — всеки затворен изход, ред по ред
+    цена    : ЖИВАТА цена (същата скала като нивата на картата)
+    нов     : сетъп за отваряне, ако няма отворен
+
+    Връща list[(tag, text)] — картите за пращане.
+    Нищо тук не докосва trade.json, guard.json или статистиката.
+    """
+    msgs = []
+    т = _load_state(файл, None)
+
+    if т is not None and цена is not None:
+        лонг = т["посока"] == "long"
+        зн = 1 if лонг else -1
+        удар = None
+        # стопът се проверява ПРЪВ: ако и двете са докоснати в един рън,
+        # честното допускане е по-лошото. Инак следенето би се хвалило.
+        if (цена - т["стоп"]) * зн <= 0:
+            удар = ("стоп", т["стоп"])
+        elif т.get("цел2") is not None and (цена - т["цел2"]) * зн >= 0:
+            удар = ("цел2", т["цел2"])
+        elif not т.get("цел1_взета") and (цена - т["цел1"]) * зн >= 0:
+            удар = ("цел1", т["цел1"])
+
+        if удар and удар[0] == "цел1":
+            т["цел1_взета"] = True
+            файл.write_text(json.dumps(т, ensure_ascii=False, default=str), encoding="utf-8")
+            msgs.append(("brain-exit:цел1", _мозък_изход_msg(т, "цел1", удар[1], зн)))
+        elif удар:
+            msgs.append(("brain-exit:" + удар[0], _мозък_изход_msg(т, удар[0], удар[1], зн)))
+            т["изход"] = удар[0]
+            т["цена_изход"] = round(float(удар[1]), 2)
+            т["затворен"] = now_utc
+            т["резултат"] = round((удар[1] - т["вход"]) * зн, 2)
+            try:
+                with io.open(дневник, "a", encoding="utf-8") as f:
+                    f.write(json.dumps(т, ensure_ascii=False, default=str) + "\n")
+            except Exception:
+                pass
+            try:
+                файл.unlink()
+            except Exception:
+                pass
+            т = None
+
+    # ── ново следене само ако няма отворено ──────────────────────────────
+    if т is None and нов is not None:
+        з = нов.get("залог") or {}
+        if з.get("вход") is not None and з.get("стоп") is not None and з.get("цел") is not None:
+            т = {"посока": "long" if нов.get("лонг") else "short",
+                 "рамка": нов.get("рамка"), "степен": нов.get("степен"),
+                 "точки": нов.get("точки"), "отворен": now_utc,
+                 "вход": round(float(з["вход"]), 2), "стоп": round(float(з["стоп"]), 2),
+                 "цел1": round(float(з["цел"]), 2),
+                 "цел2": (round(float(з["цел2"]), 2) if з.get("цел2") is not None else None),
+                 "цел1_взета": False}
+            файл.write_text(json.dumps(т, ensure_ascii=False, default=str), encoding="utf-8")
+    return msgs
+
+
+def _мозък_изход_msg(т, вид, цена, зн):
+    """ОДИТ-33 · развръзката на едно наблюдение. Четири реда, като всичко друго."""
+    посока = "нагоре" if т["посока"] == "long" else "надолу"
+    пари = (цена - т["вход"]) * зн
+    глави = {"цел1": ("✅", "ПЪРВАТА ЦЕЛ падна"),
+             "цел2": ("🏆", "ВТОРАТА ЦЕЛ падна"),
+             "стоп": ("🛑", "СТОПЪТ удари")}
+    ико, дума = глави.get(вид, ("📌", вид))
+    L = [f"{ико} {дума} · наблюдението от {_sofia(т['отворен'])} · злато {посока}",
+         f"💵 {_fmt(т['вход'], 2)} → {_fmt(цена, 2)} · <b>{пари:+.2f}$</b>/унция"]
+    if вид == "цел1" and т.get("цел2") is not None:
+        L.append(f"🎯 остава {_fmt(т['цел2'], 2)}")
+    else:
+        L.append("👁 наблюдението приключи")
+    L.append("🧪 без пари — само за да знаеш дали работи")
+    return "\n".join(L)
+
 
 def _shadow_cycle(shadow_file, bars, basis, price_user, now_utc, spot,
                   open_dir, open_entry, open_lv, real_open, date, tier, sym, dec):
@@ -2442,6 +2526,8 @@ def main():
             (out / "brain_state.json").write_text(
                 json.dumps(_bstate, ensure_ascii=False, default=str), encoding="utf-8")
             _bstreaks = regime.get("streaks") or {}
+            _за_следене = None          # ОДИТ-33: първият пуснат сетъп в този рън
+            _изм_посл = 0.0             # изместването, с което е пратен
             for _s in _setups:
                 with (out / "brain_journal.jsonl").open("a", encoding="utf-8") as _bj:
                     _bj.write(json.dumps({"utc": now_utc, "рамка": _s.get("рамка"),
@@ -2465,10 +2551,29 @@ def main():
                 # ОДИТ-31 · базисът сваля нивата до скалата на ЖИВАТА графика;
                 # часът е СЕГА, не часът на бара (карта в 17:16 пишеше 17:00).
                 _изм = (float(basis_g) if (МОЗЪК_ЖИВА_ЦЕНА and basis_g is not None) else 0.0)
+                _изм_посл = _изм
                 new_msgs.append((f"brain:{_s.get('рамка')}:{_s.get('посока')}",
                                  CB.карта(_s, мерено=_m, предупреждения=_warn or None,
                                           изместване=_изм, час_сега=_sofia())))
                 _bstate["_последна_карта"] = {"utc": now_utc, "ранг": int(_s.get("ранг", 0))}
+                _за_следене = _за_следене or _s
+            # ОДИТ-33 · развръзката: какво стана с предишното наблюдение и
+            # отваряне на ново. Нивата вече са на живата скала (ОДИТ-31),
+            # значи и следенето е по нея.
+            if МОЗЪК_СЛЕДЕНЕ:
+                try:
+                    _нов = None
+                    if _за_следене is not None:
+                        _з = dict(_за_следене.get("залог") or {})
+                        for _k in ("вход", "стоп", "цел", "цел2"):
+                            if _з.get(_k) is not None:
+                                _з[_k] = float(_з[_k]) - _изм_посл
+                        _нов = dict(_за_следене, залог=_з)
+                    new_msgs += _мозък_следене(out / "brain_track.json",
+                                               out / "brain_result.jsonl",
+                                               price_user, now_utc, нов=_нов)
+                except Exception as _e:
+                    notes.append(f"🧠 следенето се спъна ({type(_e).__name__}) — прескочено")
             # ОДИТ-25: бележката се пише ВИНАГИ, дори при нула повода.
             # Дотук мълчанието на мозъка изглеждаше точно като спънат мозък —
             # и двете даваха празни `notes`. Точно това сляпо петно ме подведе
