@@ -2482,6 +2482,12 @@ def main():
                              "gate": ({"dir": new_dir, "streak": streak_n,
                                        "cell": _cell_name(streak_n), "ok": bool(_adv_ok),
                                        "by": _gate_trace.get("by"),
+                                       # ОДИТ-29: числата от бектеста излязоха от КАРТАТА
+                                       # (Коста: «неразбираш нищо от тях») и трябва да влязат
+                                       # ТУК. Иначе твърдението остава без произход — правило 1
+                                       # от протокола. Първата версия ги забрави: следата ги
+                                       # носеше, дневникът пишеше фиксиран списък ключове.
+                                       "мерено": _gate_trace.get("мерено"),
                                        "dd20": (None if dd20_g is None else round(dd20_g, 5)),
                                        "why": advice_txt} if new_dir else None),
                              "board": {l: [d, s, t] for l, d, s, t, _ in board},
