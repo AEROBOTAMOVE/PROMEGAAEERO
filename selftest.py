@@ -2535,7 +2535,13 @@ ck("П37 бележката казва, че входовете спират, а
    "НОВИ ВХОДОВЕ" in _src37 and "следенето" in _src37)
 
 import numpy as np
-_o37 = _P("_o37"); _sh34.rmtree(_o37, ignore_errors=True); _o37.mkdir()
+# ОДИТ-40 · ПАПКАТА Е АБСОЛЮТНА И УНИКАЛНА. Един пуск от осем гръмна с
+# «FileNotFoundError: _o37\outbox.jsonl» — относителен път, изчезнал под
+# краката на main(). Не можах да го възпроизведа (8 пуска, 1 провал), затова
+# махам самата възможност: абсолютен път + уникално име + проверка, че
+# папката СЪЩЕСТВУВА точно преди main().
+_o37 = (_P(__file__).resolve().parent / f"_o37_{_os.getpid()}")
+_sh34.rmtree(_o37, ignore_errors=True); _o37.mkdir(parents=True)
 _idx37 = pd.date_range("2024-06-01", periods=800, freq="D")
 _дн37 = pd.DataFrame({"Open": np.linspace(2000, 4400, 800), "High": np.linspace(2005, 4405, 800),
                       "Low": np.linspace(1995, 4395, 800), "Close": np.linspace(2000, 4400, 800),
@@ -2560,6 +2566,7 @@ _аргс37 = sys.argv
 sys.argv = ["live_bot.py", "--out", str(_o37), "--stats", "backtest_stats.json",
             "--balance", "5000", "--risk", "2", "--force"]
 _код37 = 0
+ck("П37 папката съществува точно преди main()", _o37.is_dir())
 try:
     with _ctx.redirect_stdout(_io2.StringIO()):
         lb.main()
