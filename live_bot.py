@@ -1087,7 +1087,7 @@ def _digest_msg(out, date, trade, s_trade, spot_g, spot_s, guard, weekly_part=Fa
         return r
     рънове = _редове("live_journal.jsonl", lambda r: r.get("date") == date)
     пратени = _редове("sent_log.jsonl", lambda r: str(r.get("utc", ""))[:10] == date)
-    L = [f"🌙 Коста, как мина денят · {_sofia()}"]
+    L = [f"🌙 Как мина денят · {_sofia()}"]
     for нм, tr, sp, dec in (("🥇", trade, spot_g, 2), ("🥈", s_trade, spot_s, 3)):
         if tr:
             прибр = [n for n, k in (("1️⃣", "tp1"), ("2️⃣", "tp2"), ("3️⃣", "tp3"))
@@ -1136,7 +1136,7 @@ def _pulse_msg(part, board, best, new_dir, advice_txt, adv_ok, trade, s_trade,
     """ОДИТ-29 · 3× на ден: жив съм, това гледам, това чакам."""
     ико, кога = {"09": ("☀️", "добро утро"), "14": ("🌤️", "докъде сме"),
                  "22": ("🌙", "как мина денят")}.get(part, ("📌", "какво гледам"))
-    L = [f"{ико} Коста, {кога} · {_sofia()}"]
+    L = [f"{ико} {кога.capitalize()} · {_sofia()}"]
     if weekend:
         L.append("😴 борсата спи · отваря неделя вечер")
         return "\n".join(L)
@@ -1660,7 +1660,7 @@ def _weekend_msg(slot, date):
     ико = {"сутрин": "☀️", "следобед": "🌤️", "вечер": "🌙"}[slot]
     кога = {"сутрин": "добро утро", "следобед": "приятен следобед",
             "вечер": "лека вечер"}[slot]
-    return (f"{ико} Коста, {кога} · {_sofia()}\n"
+    return (f"{ико} {кога.capitalize()} · {_sofia()}\n"
             f"📌 {pool[idx]}\n"
             f"😴 борсата спи до неделя вечер")
 

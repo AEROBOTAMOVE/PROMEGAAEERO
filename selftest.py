@@ -111,14 +111,14 @@ for _part in ("09", "14", "22"):
     for _tr, _wknd in ((None, False), (TR, False), (None, True)):
         pm = lb._pulse_msg(_part, _board, _best, "long", "ДА — пресен", True,
                            _tr, None, sp, None, {"миньори": True, "долар": True, "лихви": True}, False, _wknd)
-        if not (30 < len(pm) < 4096 and pm.count("<b>") == pm.count("</b>") and "Коста" in pm):   # ОДИТ-29
+        if not (30 < len(pm) < 4096 and pm.count("<b>") == pm.count("</b>") and "·" in pm):   # ОДИТ-30: без име — собственикът каза «не Коста»
             _pulse_ok = False
 ck("пулс карта: рендер/HTML/лимит (всички режими)", _pulse_ok)
 # пулсът с празен борд (new_dir=None) не гърми
 _pm2 = lb._pulse_msg("09", [("1ден", "wait", 0, "weak", "ЧАКАЙ")], ("1ден", "wait", 0, "weak", "ЧАКАЙ"),
                      None, "", False, None, None, None, None, {"миньори": False, "долар": False, "лихви": False}, False, False)
 ck("пулс: смесен борд + недостъпен спот не гърми",     # ОДИТ-29: «ПУЛС» → поздрав по име
-   "Коста" in _pm2 and _pm2.count("<b>") == _pm2.count("</b>"))
+   "добро утро" in _pm2.lower() and _pm2.count("<b>") == _pm2.count("</b>"))
 
 # ── СЯНКА-следене (what-if от «не влизай» карта) ──
 import tempfile as _tf
@@ -2310,8 +2310,10 @@ try:
 except Exception:
     pass
 if _ab27 is not None:
-    ck("П27 всеки поздрав вика Коста по име",
-       all("Коста" in x for x in _ab27.ПОЗДРАВИ) and len(_ab27.ПОЗДРАВИ) >= 6)
+    # ОДИТ-30: НЕ по име — собственикът каза «не Коста».
+    ck("П27 поздравът е топъл, но БЕЗ измислено име",
+       len(_ab27.ПОЗДРАВИ) >= 6
+       and not any("," in x for x in _ab27.ПОЗДРАВИ))
     ck("П27 никъде няма «Добър ден/Добро утро»",
        not any("Добър ден" in x or "Добро утро" in x for x in _ab27.ПОЗДРАВИ))
     _src27 = open("audit_bot.py", encoding="utf-8").read()
