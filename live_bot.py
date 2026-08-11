@@ -30,7 +30,7 @@ warnings.filterwarnings("ignore")
 import numpy as np
 import pandas as pd
 
-VERSION = "v6.6"
+VERSION = "v7.0"
 PIP = 0.10
 SL_PIPS = 200; SL_D = SL_PIPS * PIP                       # стоп: 200п = $20/oz
 TPS = [("ТП1", 75, 7.5), ("ТП2", 120, 12.0), ("ТП3", 200, 20.0)]
@@ -42,6 +42,24 @@ MACRO_LBL = ["миньори", "долар", "лихви"]
 BASIS_ALPHA = 0.25          # EMA тегло на базиса фючърс−спот
 ROLLOVER_JUMP = 8.0         # скок на базиса >$8 за нощ = роловър → ре-анкер
 SHIELD_ET = (8 * 60 + 25, 9 * 60 + 15)   # US-щит: 8:25–9:15 Ню Йорк (САМО short)
+
+# ── 🧠 МОЗЪКЪТ НА ГРАФИКАТА · ОДИТ-24 ────────────────────────────────────
+# Логиката, която собственикът чете с очи на TradingView — обрани стопове,
+# ликвидност, незапълнени гапове, зони, структурни пробиви, обеми — пренесена
+# в Python и слята в 7 степени. Ботът дотук НЕ виждаше нищо от това.
+# НЕ пипа нищо старо: само ДОБАВЯ карти с таг `brain:*`.
+# ИЗКЛЮЧВАТЕЛ: CHART_BRAIN=0 го спира моментално, без качване на код.
+CHART_BRAIN_ON = os.environ.get("CHART_BRAIN", "1") == "1"
+CB = None
+if CHART_BRAIN_ON:
+    try:
+        import importlib.util as _ilu
+        _cbp = Path(__file__).resolve().parent / "brain" / "chart_brain.py"
+        _cbs = _ilu.spec_from_file_location("chart_brain", _cbp)
+        CB = _ilu.module_from_spec(_cbs); _cbs.loader.exec_module(CB)
+    except Exception as _e:
+        CB = None
+        print(f"🧠 мозъкът не се зареди ({type(_e).__name__}: {_e}) — ботът работи без него")
 
 
 # ---------- дърпане на данни (упорито) ----------
@@ -2432,6 +2450,61 @@ def main():
                                                  trade, s_tr_p, spot_g, spot_s, macro, shield, weekend)))
             pulse_slot = ph
             break
+
+    # === 6.5) 🧠 МОЗЪКЪТ НА ГРАФИКАТА · ОДИТ-24 ===
+    # Собственикът чете индикатора си на 1/5/15м. Ботът дотук не виждаше НИЩО
+    # от това. Тук го вижда — и го праща като ОТДЕЛНИ карти.
+    # ЖЕЛЯЗНО: тези карти НЕ отварят сделка и НЕ пипат trade/guard/board.
+    # Те са СВЕДЕНИЕ. Мереното правило си остава единственото, което търгува.
+    if CB is not None and not weekend:
+        try:
+            # 15м С ОБЕМ — ресемплваният `frames` е без обем, а групата ОБЕМИ
+            # му трябва. Затова СОБСТВЕН речник; `frames` остава недокоснат.
+            _bagg = dict(Open=("Open", "first"), High=("High", "max"),
+                         Low=("Low", "min"), Close=("Close", "last"))
+            if src is not None and "Volume" in src.columns:
+                _bagg["Volume"] = ("Volume", "sum")
+            _bfr = {}
+            if src is not None:
+                for _lbl, _rule in (("15м", "15min"), ("1час", "60min"), ("4час", "4h")):
+                    try:
+                        _bfr[_lbl] = src.resample(_rule).agg(**_bagg).dropna()
+                    except Exception:
+                        _bfr[_lbl] = None
+            _bstate = _load_state(out / "brain_state.json", {})
+            # ПРАГ 0 · по изрично решение на собственика: праща ВСИЧКО, вкл. «✨ ИСКРА».
+            # «всичко е важно и трябва да се знае — има човешки фактор, той преценява.»
+            _setups = CB.сканирай(_bfr, сега=now_utc, състояние=_bstate, праг=0)
+            (out / "brain_state.json").write_text(
+                json.dumps(_bstate, ensure_ascii=False, default=str), encoding="utf-8")
+            _bstreaks = regime.get("streaks") or {}
+            for _s in _setups:
+                with (out / "brain_journal.jsonl").open("a", encoding="utf-8") as _bj:
+                    _bj.write(json.dumps({"utc": now_utc, "рамка": _s.get("рамка"),
+                                          "посока": _s.get("посока"), "степен": _s.get("степен"),
+                                          "точки": _s.get("точки"), "повод": _s.get("повод"),
+                                          "ниво": _s.get("ниво"), "вход": _s.get("вход"),
+                                          "стоп": _s.get("стоп"), "цел": _s.get("цел"),
+                                          "праща": _s.get("праща")}, ensure_ascii=False,
+                                         default=str) + "\n")
+                if not _s.get("праща"):
+                    continue
+                # кофата е за ПОСОКАТА НА КАРТАТА, не за посоката на бота
+                _bcell = _cell_name(_bstreaks.get("long" if _s.get("лонг") else "short", 0))
+                try:
+                    _m = CB.мерено_от_стата(stats, _bcell, _s.get("лонг"))
+                except Exception:
+                    _m = None
+                _warn = []
+                if stale_bar:
+                    _warn.append(f"барът е {bar_age_min:.0f} мин стар — картата може да е закъсняла")
+                new_msgs.append((f"brain:{_s.get('рамка')}:{_s.get('посока')}",
+                                 CB.карта(_s, мерено=_m, предупреждения=_warn or None)))
+            if _setups:
+                notes.append(f"🧠 мозък: {len(_setups)} повода, "
+                             f"{sum(1 for x in _setups if x.get('праща'))} пуснати")
+        except Exception as _e:
+            notes.append(f"🧠 мозъкът се спъна ({type(_e).__name__}: {str(_e)[:90]}) — прескочен")
 
     # === 7) ПРАЩАНЕ през пощенската кутия (Ф8.1) ===
     statuses = []
