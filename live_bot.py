@@ -30,7 +30,7 @@ warnings.filterwarnings("ignore")
 import numpy as np
 import pandas as pd
 
-VERSION = "v9.3"
+VERSION = "v9.4"
 PIP = 0.10
 SL_PIPS = 200; SL_D = SL_PIPS * PIP                       # стоп: 200п = $20/oz
 TPS = [("ТП1", 75, 7.5), ("ТП2", 120, 12.0), ("ТП3", 200, 20.0)]
@@ -78,6 +78,11 @@ CHART_BRAIN_ON = os.environ.get("CHART_BRAIN", "1") == "1"
 # О2(в) · колко от риска остава, когато присъдата казва «малък размер».
 # 1.0 връща старото поведение (думата без число).
 МАЛЪК_РАЗМЕР_W = float(os.environ.get("МАЛЪК_РАЗМЕР_W", "0.5"))
+# 🔴 ОДИТ-44 · КЛАСЪТ, НУЖЕН ЗА ПОВТОРНО ПРЕДЛАГАНЕ. Беше зазидан «strong»
+# и спираше 69.6% от всички ръна — след 06.08 сто процента от тях.
+# «medium» е прагът, който `actionable` така или иначе налага.
+# РЕОФЕР_КЛАС=strong връща старото поведение.
+РЕОФЕР_КЛАС = os.environ.get("РЕОФЕР_КЛАС", "medium")
 # ОДИТ-39 · от кой РАНГ нагоре мозъчната карта е ВХОД (с лот), а не наблюдение.
 # 3 = «ГОТОВ». 99 = никога — връща старото «само наблюдение».
 МОЗЪК_РАНГ_ВХОД = int(os.environ.get("МОЗЪК_РАНГ_ВХОД", "3"))
@@ -2206,7 +2211,13 @@ def main():
         except Exception:
             key_age_h = None
     reoffer = (bool(actionable) and trade is None and new_dir is not None
-               and rank.get(best[3], 0) >= rank.get("strong", 2)
+               # 🔴 ОДИТ-44 · ГЛАВНИЯТ ЗАГЛУШИТЕЛ. Мерено на 1928 живи ръна:
+               # 1341 (69.6%) са спрени ТОЧНО тук, а след 06.08 — 967 от 967
+               # (100%), защото класът е «medium», не «strong».
+               # `actionable` по-горе вече изисква tier != weak — това Е прагът
+               # на входа. «strong» беше втори, недокументиран праг върху него.
+               # РЕОФЕР_КЛАС=strong връща старото поведение с една дума.
+               and rank.get(best[3], 0) >= rank.get(РЕОФЕР_КЛАС, 1)
                and mins_since is not None and mins_since >= REOFFER_H * 60
                and key_age_h is not None and key_age_h <= REOFFER_MAX_AGE_H
                and _reoffer_hour_ok(now_utc))
@@ -2431,7 +2442,7 @@ def main():
             except Exception:
                 s_key_age_h = None
         s_reoffer = (s_actionable and s_trade is None and s_dir in ("long", "short")
-                     and rank.get(s_tk, 0) >= rank.get("strong", 2)
+                     and rank.get(s_tk, 0) >= rank.get(РЕОФЕР_КЛАС, 1)
                      and s_mins is not None and s_mins >= REOFFER_H * 60
                      and s_key_age_h is not None and s_key_age_h <= REOFFER_MAX_AGE_H
                      and _reoffer_hour_ok(now_utc))
@@ -2685,8 +2696,10 @@ def main():
                     _s["праща"] = False
                     _s["застудяване"] = "таван за рън"
                 notes.append(f"🧠 таван: {len(_пуснати)} готови, пуснати {МОЗЪК_ТАВАН}")
-            (out / "brain_state.json").write_text(
-                json.dumps(_bstate, ensure_ascii=False, default=str), encoding="utf-8")
+            # 🔴 ОДИТ-44 · ЗАПИСЪТ БЕШЕ ТУК — ПРЕДИ цикъла, който пълни
+            # `_последна_карта` и вика `запиши_застудяване`. Значи всеки рън
+            # четеше празно състояние и двата пазача срещу заливане, които
+            # построих преди часове, не помнеха НИЩО. Записът слиза долу.
             _bstreaks = regime.get("streaks") or {}
             _за_следене = None          # ОДИТ-33: първият пуснат сетъп в този рън
             _изм_посл = 0.0             # изместването, с което е пратен
@@ -2723,7 +2736,12 @@ def main():
                     # Не се трие — той иска да вижда всичко; просто не е вход.
                     _rr1 = float(_s.get("съотношение") or 0)
                     if _rr1 and _rr1 < МОЗЪК_МИН_RR and int(_s.get("ранг", 0)) >= МОЗЪК_РАНГ_ВХОД:
+                        # 🔴 ОДИТ-44: свалях САМО външния сетъп, а картата чете
+                        # ранга от `_карта_вход` — слабият сетъп пак излизаше
+                        # като съвет-вход. Мерено: 34% от кандидатите.
                         _s["ранг"] = МОЗЪК_РАНГ_ВХОД - 1
+                        if isinstance(_s.get("_карта_вход"), dict):
+                            _s["_карта_вход"]["ранг"] = МОЗЪК_РАНГ_ВХОД - 1
                         notes.append(f"🧠 {_s.get('рамка')}: {_rr1:.1f}x риска е под "
                                      f"{МОЗЪК_МИН_RR:.1f}x — наблюдение, не вход")
                     if _рм > 0.01 and int(_s.get("ранг", 0)) >= МОЗЪК_РАНГ_ВХОД:
@@ -2762,6 +2780,11 @@ def main():
                                                price_user, now_utc, нов=_нов)
                 except Exception as _e:
                     notes.append(f"🧠 следенето се спъна ({type(_e).__name__}) — прескочено")
+            # ОДИТ-44 · СЪСТОЯНИЕТО СЕ ЗАПИСВА ТУК — след като цикълът е
+            # минал и `запиши_застудяване` е навило часовника за реално
+            # пратените карти. Дотук се записваше ПРЕДИ това и не помнеше нищо.
+            (out / "brain_state.json").write_text(
+                json.dumps(_bstate, ensure_ascii=False, default=str), encoding="utf-8")
             # ОДИТ-25: бележката се пише ВИНАГИ, дори при нула повода.
             # Дотук мълчанието на мозъка изглеждаше точно като спънат мозък —
             # и двете даваха празни `notes`. Точно това сляпо петно ме подведе
