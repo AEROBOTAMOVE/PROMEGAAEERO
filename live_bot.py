@@ -30,7 +30,7 @@ warnings.filterwarnings("ignore")
 import numpy as np
 import pandas as pd
 
-VERSION = "v7.2"
+VERSION = "v8.0"
 PIP = 0.10
 SL_PIPS = 200; SL_D = SL_PIPS * PIP                       # стоп: 200п = $20/oz
 TPS = [("ТП1", 75, 7.5), ("ТП2", 120, 12.0), ("ТП3", 200, 20.0)]
@@ -308,44 +308,31 @@ def _resolve(ls, ss, macro):
 
 
 def _спряна_msg(direction, best, price_user, причина, обяснение, now_utc, board):
-    """ОДИТ-26: ботът ВИЖДА сетъп, но правило му спира картата.
-    Дотук това беше ред в дневника, който собственикът никога не вижда.
-    Сега излиза карта: какво видях и защо не го предлагам.
-    БЕЗ нива за вход — за да не се чете като покана. Решението не се променя:
-    сделка не се отваря, стоп-пазачът и бордът не се пипат."""
-    ico = "🔴" if direction == "short" else "🟢"
-    dn = "ШОРТ (продажба)" if direction == "short" else "ЛОНГ (покупка)"
-    agree = sum(1 for b in board if b[1] == direction and b[3] != "weak") if board else 0
-    L = [f"⏸ {ico} <b>ВИЖДАМ {dn}</b> · но не го предлагам · {_sofia(now_utc)} София",
-         "─────────────────",
-         f"Клас {best[4] if best and len(best) > 4 else '—'} · {agree}/7 рамки · "
-         f"цена <code>{_fmt(price_user, 2)}</code>",
-         "",
-         f"<b>Защо не:</b> {причина}"]
-    return "\n".join(L)
-
+    """ОДИТ-26/29 · виждам сетъп, спирачка го спира. Четири реда, без нива."""
+    ико = "🟢" if direction == "long" else "🔴"
+    посока = "покупка" if direction == "long" else "продажба"
+    съгл = sum(1 for b in board if b[1] == direction and b[3] != "weak") if board else 0
+    return "\n".join([
+        f"⏸ ВИЖДАМ {посока.upper()} · но не я давам · {_sofia(now_utc)}",
+        f"{ико} {съгл}/7 мащаба натам · <code>{_fmt(price_user, 2)}</code>",
+        f"📌 {причина}",
+        "👁 нищо сега · пиша щом падне спирачката"])
 
 def _standing_msg(direction, best, age_h, spot, bar_price, price_user, board, macro, health, now_utc):
-    """ОДИТ-5 → ОДИТ-20: «сетъпът още стои». Дотук картата ОТКАЗВАШЕ нива и обясняваше
-    три реда защо. Мерката е вярна (късните входове губят), но начинът беше грешен:
-    човекът ги иска, за да ГЛЕДА къде е пазарът, и като не ги получи, ги смята на око.
-    Сега нивата ги ИМА, а измереното се казва с ЕДИН ред."""
-    ico = "🔴" if direction == "short" else "🟢"
-    dn = "ШОРТ (продажба)" if direction == "short" else "ЛОНГ (покупка)"
-    agree = sum(1 for b in board if b[1] == direction and b[3] != "weak")
+    """ОДИТ-29 · сетъпът стои, но не е пресен. Четири реда."""
+    ико = "🟢" if direction == "long" else "🔴"
+    посока = "покупка" if direction == "long" else "продажба"
+    съгл = sum(1 for b in board if b[1] == direction and b[3] != "weak")
     lv = _levels(round(price_user, 2), direction)
-    L = [f"⏸ {ico} <b>СТОЯЩ СЕТЪП · {dn}</b> · {_sofia(now_utc)} София",
-         "─────────────────",
-         f"Посоката се държи вече <b>{age_h:.0f} часа</b> · {agree}/7 рамки · клас {best[4]}",
-         f"Цена сега: <code>{_fmt(price_user, 2)}</code>",
-         "",
-         "<b>Нива:</b>",
-         f"1️⃣ {_fmt(lv['tp1'], 2)}   2️⃣ {_fmt(lv['tp2'], 2)}   3️⃣ {_fmt(lv['tp3'], 2)}",
-         f"🛑 стоп {_fmt(lv['sl'], 2)}"]
+    L = [f"⏸ СТОИ · {посока} злато · {_sofia(now_utc)}",
+         f"{ико} {съгл}/7 мащаба натам · вече {age_h:.0f}ч",
+         f"🎯 <code>{_fmt(price_user, 2)}</code> · 🛑 <code>{_fmt(lv['sl'], 2)}</code>",
+         " · ".join(f"{n} <code>{_fmt(lv[k], 2)}</code>"
+                    for n, k in (("1️⃣", "tp1"), ("2️⃣", "tp2"), ("3️⃣", "tp3")))]
     if health and health.get("мъртви"):
-        L.append(f"⚠ мълчи: {', '.join(health['мъртви'])} · класът е занижен")
+        L.append(f"⚠️ мълчи: {', '.join(health['мъртви'])}")
+    L.append("👁 не влизам · не е пресен")
     return "\n".join(L)
-
 
 def _demote_if_dead(resolved, health):
     """🔴 ОДИТ-5: ПРЕМИУМ значи «и трите макро-крака са съгласни». Ако някое краче е МЪРТВО
@@ -643,15 +630,23 @@ def _advice_entry(direction, streak_n, stats, fast, shield, guard_n, sym="XAUUSD
     def _by(k):
         if trace is not None:
             trace["by"] = k
+
+    def _мерено(seg, етикет):
+        """ОДИТ-28: числата от бектеста НЕ отиват при Коста — отиват в дневника.
+        Той иска присъда; проверимостта остава за одит-робота и за мен."""
+        if trace is not None and seg:
+            trace["мерено"] = {"кофа": етикет, "win": seg.get("win"), "net": seg.get("net"),
+                               "n": seg.get("n"), "lo": seg.get("lo"), "hi": seg.get("hi")}
+
     if guard_n >= 2:
         _by("стоп-пазач")
-        return "НЕ — 2 стопа днес в тази посока (стоп-пазач)", False
+        return "НЕ — два стопа днес, спирам до утре", False
     if shield and direction == "short":
         _by("US-щит")
-        return f"НЕ СЕГА — US-щит ({_shield_sofia_label()}); изчакай края му", False
+        return f"НЕ — американски данни {_shield_sofia_label()}, чакам ги", False
     if stale_price:                                      # Г9: спотът недостъпен → цената е стара
         _by("стара цена")
-        return "ИЗЧАКАЙ — цената е ~10-15 мин стара (спотът недостъпен); само лимитирана поръчка на нивото", False
+        return "ИЗЧАКАЙ — живата цена мълчи, само лимитна поръчка", False
     is_gold = sym == "XAUUSD"
     if is_gold:
         fr = stats.get("fresh", {}).get(direction, {})
@@ -682,22 +677,22 @@ def _advice_entry(direction, streak_n, stats, fast, shield, guard_n, sym="XAUUSD
                 and dd20 is not None and np.isfinite(dd20) and dd20 < NEAR_HIGH_DD20
                 and seg_near.get("n", 0) >= MIN_N and seg_near.get("net", 0) > 0
                 and not _noise(seg_near)):
-            _by("клетка")
-            return (f"ДА — шорт при злато ДО ВЪРХА СИ ({dn}; спад от 20-дневния връх "
-                    f"{100 * dd20:.2f}% < {100 * NEAR_HIGH_DD20:.1f}%)"
-                    + _pct(seg_near, "връх-шорт") + _fast(fast)), True
+            _by("клетка"); _мерено(seg_near, "връх-шорт")
+            return "ДА — злато на върха си от 20 дни, обръща се" + _fast(fast), True
         # ОДИТ-10: шум-пазачът важи и ТУК. Дотук само `mixed`/`stale` го имаха, а
         # `day1`/`fresh` минаваха на голо «нето>0» — тоест short/day1 (+0.44$, интервал
         # [−1.07 .. +1.85], тоест НУЛАТА е вътре) щеше да пуска вход върху шум.
         # Измерването, което избра това правило, го третираше като ОТКАЗ — гейтът трябва
         # да прави същото, иначе ботът работи по едни числа, а е оценен по други.
         if seg.get("n", 0) >= MIN_N and (seg.get("net", 0) <= 0 or _noise(seg)):
-            _by("клетка")
-            why = "не носи нищо (нулата е в интервала)" if _noise(seg) else "без ръб"
-            return (f"ИЗЧАКАЙ — пресен ({src}), но исторически {seg['win']}% · "
-                    f"{seg['net']:+}$/oz{_ci(seg)} — {why}"), False
-        _by("клетка")
-        return f"ДА — пресен сигнал ({dn})" + _pct(seg, src) + _fast(fast), True
+            _by("клетка"); _мерено(seg, src)
+            return ("ИЗЧАКАЙ — прясно е, но такива случаи не носят нищо"
+                    + _fast(fast)), False
+        _by("клетка"); _мерено(seg, src)
+        _накъде = "нагоре" if direction == "long" else "надолу"
+        _откога = (("от днес" if streak_n == 1 else f"вече {streak_n} дни")
+                   if is_gold else "днес")
+        return f"ДА — доларът и лихвите {_накъде} {_откога}" + _fast(fast), True
     # ОДИТ-8 (04.08): кофата `stale` СЛИВАШЕ две различни състояния — «макрото ДНЕС е
     # смесено» (стрийк 0) и «сигналът е ОСТАРЯЛ от дни» (стрийк 4+). Мерено на същите
     # 114813 сделки, блоков бутстрап по ден: long/mixed −0.04$ (ШУМ, n=40094) срещу
@@ -710,17 +705,17 @@ def _advice_entry(direction, streak_n, stats, fast, shield, guard_n, sym="XAUUSD
     if seg.get("n", 0) >= MIN_N and (seg.get("net", 0) < 0 or _noise(seg)):
         # НЕ обвинявай «макрото» (то може да е за тази посока, напр. 0/3 подкрепя шорт) —
         # губещ е ИСТОРИЧЕСКИЯТ КЛАС на този сетъп.
+        _by("клетка"); _мерено(seg, "mixed" if mixed else "stale")
         if mixed:
-            cls = ("макрото днес е СМЕСЕНО, а този клас не носи нищо"
-                   if _noise(seg) else "макрото днес е СМЕСЕНО и този клас исторически губи")
-        else:
-            cls = f"застоял ({dn})"
-        _by("клетка")
-        return f"НЕ — {cls}: {seg['win']}% · {seg['net']:+}$/oz{_ci(seg)}" + _fast(fast), False
+            return "НЕ — доларът и лихвите се карат днес" + _fast(fast), False
+        _откога = (f"отпреди {streak_n} дни" if is_gold else "отдавна")
+        return f"НЕ — подреждането е {_откога}, изхабило се е" + _fast(fast), False
     # положителен-но-слаб клас: текстът СЪОТВЕТСТВА на action (следи се) — «ДА (слаб)», не «ИЗЧАКАЙ»
-    ctx = "макро-подреждането не е активно днес — сигналът е по ценова структура" if mixed else f"застоял ({dn}) — ръбът е по-малък"
-    _by("клетка")
-    return f"ДА (умерено) — {ctx}; малък размер" + _pct(seg, "клас") + _fast(fast), True
+    _by("клетка"); _мерено(seg, "mixed" if mixed else "stale")
+    if mixed:
+        return "ДА (малък размер) — макрото мълчи, само по цена" + _fast(fast), True
+    _откога = (f"отпреди {streak_n} дни" if is_gold else "отдавна")
+    return f"ДА (малък размер) — подреждането е {_откога}" + _fast(fast), True
 
 
 def _cell_name(streak_n):
@@ -808,7 +803,8 @@ ZONE_W = {"A": 1.00, "B": 0.67, "C": 0.33}      # ОДИТ-14: рискът на
 
 
 def _fast(fast):
-    return f" · БЪРЗ ПАЗАР ±${fast:.0f}/10мин — само лимитирана поръчка" if fast else ""
+    """ОДИТ-28: «БЪРЗ ПАЗАР ±$12/10мин» е телеграма. Казва се с думи."""
+    return f" · бърз пазар ±${fast:.0f}/10мин, само лимитна" if fast else ""
 
 
 def _reentry_verdict(direction, streak_n, shield, guard_n):
@@ -831,126 +827,65 @@ def _sig_msg(direction, score, agree_n, tier_name, spot, bar_price, bar_ts, lv, 
              advice_txt, macro, streak_n, regime, stats, balance, risk_pct, weekly=None,
              reentry=False, open_trade=None, sym="XAUUSD", dec=2, extra_ctx=None, adv_ok=True,
              shadow_on=None, zone=None):
-    """Стегната карта: ⏰ час горе, нивата вертикално, 1 присъда, 1 контекст-ред, риск."""
-    metal = "ЗЛАТО" if sym == "XAUUSD" else "СРЕБРО"
-    dword = "SHORT (продажба)" if direction == "short" else "LONG (купуване)"
-    # Г2: тонът от съвета влиза и в цвета/иконата на заглавието.
-    # ОДИТ-6/T4+L6-3: старото 🔴 значеше само «шорт» — тоест ЧЕРВЕНО стоеше над картите,
-    # на които ТРЯБВА да действаш, а 🟡 над тези, на които трябва да спреш. Обратно на
-    # всяка човешка представа. Сега иконата казва ДЕЙСТВИЕ, посоката си има думата до нея.
-    warn = advice_txt.startswith("НЕ") or advice_txt.startswith("ИЗЧАКАЙ")
-    head_icon = "🛑" if advice_txt.startswith("НЕ") else ("⏳" if warn else "✅")
-    L = [f"{head_icon} <b>{metal} {dword}</b> · ⏰ {_sofia()} София",
-         "─────────────────"]
-    if open_trade:
-        op = f"{open_trade['opened'][:10]} {_sofia(open_trade['opened'])}"
-        hit = open_trade.get("hit", {})
-        def hmark(k): return " ✅" if hit.get(k) else ""
-        be = " · <i>стопът е на входа (безрисково)</i>" if hit.get("tp1") else ""   # Г / №9
-        L += [f"СЪЩИЯТ СИГНАЛ ПРОДЪЛЖАВА — следим сделката от <code>{_fmt(open_trade['entry'], dec)}</code> <i>(от {op})</i>, НЕ нов вход.",
-              f"ТП1 <code>{_fmt(open_trade['levels']['tp1'], dec)}</code>{hmark('tp1')} · ТП2 <code>{_fmt(open_trade['levels']['tp2'], dec)}</code>{hmark('tp2')} · ТП3 <code>{_fmt(open_trade['levels']['tp3'], dec)}</code>{hmark('tp3')}",
-              f"СТОП <code>{_fmt(open_trade['levels']['sl'], dec)}</code>{be}"]
-        if spot:
-            L.append(f"Спот сега: <code>{_fmt(spot['mid'], dec)}</code>")
-        L.append("<b>ДРЪЖ:</b> сделката тече — <b>не отваряй нова</b>.")   # Г1: НЕ «ВЛИЗАЙ» при отворена
-    else:
-        if reentry:
-            L.append("РЕ-ВЛИЗАНЕ — предишната сделка приключи, сигналът още стои.")
-        head = "<b>ВХОД</b>" if adv_ok else "<b>АКО ВСЕ ПАК ВЛЕЗЕШ — вход</b>"   # НАХОДКА 1: не карай да влиза при «НЕ»
-        src = "спот сега" if spot else "по бара, ~10-15 мин назад — спотът е недостъпен!"
-        vicon = "✅" if advice_txt.startswith("ДА") else ("⏳" if advice_txt.startswith("ИЗЧАКАЙ") else "🚫")
-        # ОДИТ-6/L6-1: присъдата стоеше на 9-и ред от 14 — под пет реда готови за копиране
-        # числа. Човек с телефон вижда първо цените и чак после «не влизай». Сега е ПЪРВА.
-        vword, _, vwhy = advice_txt.partition(" — ")
-        L += [f"{vicon} <b>{vword}</b>" + (f" · {vwhy}" if vwhy else ""),
-              "─────────────────",
-              f"🎯 {head}: <code>{_fmt(entry, dec)}</code> <i>({src})</i>",
-              f"1️⃣ ТП1: <code>{_fmt(lv['tp1'], dec)}</code>",
-              f"2️⃣ ТП2: <code>{_fmt(lv['tp2'], dec)}</code>",
-              f"3️⃣ ТП3: <code>{_fmt(lv['tp3'], dec)}</code>",
-              f"🛑 СТОП: <code>{_fmt(lv['sl'], dec)}</code>"]
-        if adv_ok:
-            pass                                            # ОДИТ-27: «сложи ги при брокера» е едно и също всеки път
-        else:                                               # СЯНКА: следим хипотетично, ще кажем ако проработи
-            # ОДИТ-6/T2-01: старият текст обещаваше «ТОЗИ сетъп», а сянката НАРОЧНО държи
-            # ПЪРВИЯ от серията (пре-отваря само при обърната посока) — в 20 от 29 карти
-            # обещанието беше невярно. Поведението е желано; лъжеше ТЕКСТЪТ.
-            if shadow_on and abs(float(shadow_on.get("entry", entry)) - entry) >= 0.01:
-                so = shadow_on
-                st = f" ({_sofia(so['opened'])})" if so.get("opened") else ""
-                L.append(f"<i>👁 сянка: следя от <code>{_fmt(float(so['entry']), dec)}</code>{st}</i>")
-            else:
-                L.append("<i>👁 сянка: следя този хипотетично</i>")
-    mac = sum(1 for v in macro.values() if v)
-    # Г10 + стегнато: бройката се показва В ПОСОКАТА на сделката (за шорт мечо = 3-mac),
-    # та «3/3 ✓» винаги да значи «подкрепя» — край на оксиморона «0/3 (подкрепя)»
-    mdir = (3 - mac) if direction == "short" else mac
-    # ОДИТ-6/T4-01+T2-04: «2/3 ✓» стоеше на СЪЩАТА карта, която казва «макрото не е
-    # ПОДРЕДЕНО днес» — 28 от 29 карти с това противоречие. Причината: ✓ се даваше от 2,
-    # а стрийкът иска И ТРИТЕ крака. Сега отметката съвпада с ПРАГА, който решава.
-    # ОДИТ-10: ПОДРЕЖДАНЕТО вече е по ДОЛАРА и ЛИХВИТЕ (виж `_streaks`). Миньорите се
-    # ПОКАЗВАТ като контекст, но НЕ решават — картата трябва да го каже, иначе човек
-    # ще брои три крака, а гейтът брои два.
-    _dec = [k for k in ("долар", "лихви") if k in macro]
-    _agree = sum(1 for k in _dec if (macro[k] if direction == "long" else not macro[k]))
-    mmark = ("✓ подредено" if _agree == len(_dec) and _dec else
-             (f"⚠ {len(_dec) - _agree} против" if _dec else "⚠"))
-    ctx = (f"<i>📊 {tier_name} {score}/8 · долар+лихви "
-           f"{_agree}/{len(_dec) or 2} {mmark}")
-    # В1/В4: УЛТРА само за ЗЛАТО (среброто няма такъв клас) и само с n≥MIN_N
-    if sym == "XAUUSD" and regime and regime.get("vol_rank") is not None and 1 <= streak_n <= 3 and regime["vol_rank"] < 0.40:
-        u = stats.get("fresh", {}).get(direction, {}).get("ultra", {})
-        # УЛТРА само при СМИСЛЕН ръб (>$1/oz над спреда) — не при +0.04 (шорт-ултра = монета на ръба)
-        if u.get("n", 0) >= MIN_N and u.get("net", 0) >= 1.0:
-            ctx += f" · УЛТРА клас: {u['win']}% · {u['net']:+}$/oz (n={u['n']})"
-    if weekly:
-        lean = weekly.get("gold", {}).get("lean", "")
-        if lean in ("bullish", "bearish") and (lean == "bullish") != (direction == "long"):
-            ctx += " · седм. анализ ПРОТИВ ⚠"          # стегнато: седмичният говори само когато Е против
-    if extra_ctx:
-        ctx += " · " + extra_ctx
-    L.append(ctx + "</i>")
-    risk_amt = balance * risk_pct / 100.0
-    _rp = lambda d: (d / balance * 100.0 if balance else 0.0)   # реален % от баланса
-    # ОДИТ-6/T5: при присъда «НЕ» лотът е инструкция за размер на сделка, която току-що
-    # отказахме — 28 от 29 карти го правеха. Оставяме числото (човекът може да реши сам),
-    # но му слагаме условието отпред, за да не се чете като нареждане.
-    rp = "" if (adv_ok or open_trade) else "⚠️ <i>само ако въпреки това влезеш</i> · "
-    # ОДИТ-14: ЗОНИТЕ степенуват РАЗМЕРА, не режат картата. Собственикът каза изрично
-    # «не искам нищо да режем — само да го подобряваме». Класът A взима пълния му риск,
-    # B две трети, C една трета; обявеният риск % остава ТАВАН, никога не се надхвърля.
-    # zone=None значи «НЕ Е МЕРЕНО» (стар повикващ, сребро, липсваща рамка) → размерът
-    # остава ТОЧНО какъвто беше. Само истински измерен клас го мени.
-    _zc, _ztxt = (zone if zone else (None, ""))
-    _zw = ZONE_W.get(_zc, 1.0) if _zc else 1.0
-    if _ztxt and not open_trade:
-        L.append(_ztxt)
-    risk_amt *= _zw
-    # ОДИТ-6/Н5+T2-03: «макс −$X» обещаваше пълнеж ТОЧНО на нивото. Собственият тракер е
-    # записал −23.88$ при стоп −20.00 (гап). Стопът не е гаранция за цена.
-    mx = "макс ≈"
-    gp = ""                                       # ОДИТ-27: гап-обяснението падна
-    if sym == "XAUUSD":
-        oz = risk_amt / SL_D                       # 1 oz губи $20 при 200п стоп · 1 лот = 100 oz
-        lot = oz / 100.0
-        if lot < 0.01:                             # под брокерския минимум → не лъжи с «0.0 лот»
-            mn = 1.0 * SL_D                         # най-малката реална позиция = 0.01 лот = 1 oz
-            L.append(rp + f"💰 под мин. лот: най-малкото е <b>0.01 лот</b> (1 oz) → "
-                     f"−${mn:.0f} = {_rp(mn):.1f}% от баланса")
-        else:
-            _zp = "" if _zw >= 0.999 else f" <i>(зона {_zc})</i>"
-            L.append(rp + f"💰 <b>{lot:.2f} лот</b> ({oz:.1f} oz) · по 1/3 на всяко ТП · "
-                     f"{mx} −${risk_amt:.2f}" + _zp + gp)
-    else:
-        oz = risk_amt / S_SL                       # 1 лот сребро = 5000 oz · мин. 0.01 лот = 50 oz
-        if oz < 50.0:                              # под мин. лот — реалният риск НАДХВЪРЛЯ целта
-            mn = 50.0 * S_SL
-            L.append(rp + f"💰 под мин. лот: най-малкото е <b>0.01 лот</b> (50 oz) → "
-                     f"−${mn:.2f} = {_rp(mn):.1f}% <i>(над целта)</i>")
-        else:
-            L.append(rp + f"💰 <b>{oz/5000.0:.2f} лот</b> ({oz:.0f} oz) · по 1/3 на всяко ТП · {mx} −${risk_amt:.2f}" + gp)
-    return "\n".join(L)
+    """ОДИТ-29 · един ред, едно нещо, едно емоджи отпред.
+    Дотук картата беше добър български и лоша карта: изречения с подчинени
+    и точка в средата. На телефон се чете РЕД, не абзац."""
+    метал = "ЗЛАТО" if sym == "XAUUSD" else "СРЕБРО"
+    _, _, защо = advice_txt.partition(" — ")
+    защо = защо or advice_txt
 
+    if open_trade:
+        hit = open_trade.get("hit", {}); ol = open_trade["levels"]
+        L = [f"📌 СДЕЛКАТА ТЕЧЕ · {метал} "
+             f"{'покупка' if open_trade.get('direction', direction) == 'long' else 'продажба'} · "
+             f"{_sofia()}",
+             f"🎯 вход <code>{_fmt(open_trade['entry'], dec)}</code>",
+             "🛑 стоп <code>%s</code>%s" % (_fmt(ol["sl"], dec),
+                                            " (на входа — без риск)" if hit.get("tp1") else ""),
+             " · ".join(f"{n} <code>{_fmt(ol[k], dec)}</code>{' ✅' if hit.get(k) else ''}"
+                        for n, k in (("1️⃣", "tp1"), ("2️⃣", "tp2"), ("3️⃣", "tp3")))]
+        if spot:
+            L.append(f"💵 сега <code>{_fmt(spot['mid'], dec)}</code>")
+        L.append("👁 дръж я · не отваряй нова")
+        return "\n".join(L)
+
+    if not adv_ok:
+        L = [f"⏸ БЕЗ ВХОД · {метал} "
+             f"{'нагоре' if direction == 'long' else 'надолу'} · {_sofia()}",
+             f"📌 {защо}",
+             f"🎯 ако решиш сам: <code>{_fmt(entry, dec)}</code> · "
+             f"🛑 <code>{_fmt(lv['sl'], dec)}</code>",
+             " · ".join(f"{n} <code>{_fmt(lv[k], dec)}</code>"
+                        for n, k in (("1️⃣", "tp1"), ("2️⃣", "tp2"), ("3️⃣", "tp3")))]
+        if shadow_on and abs(float(shadow_on.get("entry", entry)) - entry) >= 0.01:
+            L.append(f"👁 следя наум от <code>{_fmt(float(shadow_on['entry']), dec)}</code>")
+        else:
+            L.append("👁 следя го наум")
+        return "\n".join(L)
+
+    ико = "🟢" if direction == "long" else "🔴"
+    глагол = "КУПИ" if direction == "long" else "ПРОДАЙ"
+    _zc, _ = (zone if zone else (None, ""))
+    _zw = ZONE_W.get(_zc, 1.0) if _zc else 1.0
+    риск = balance * risk_pct / 100.0 * _zw
+    ед = SL_D if sym == "XAUUSD" else S_SL
+    дел = 100.0 if sym == "XAUUSD" else 5000.0
+    лот = риск / ед / дел
+    L = [f"{ико} {глагол} {метал} · {_sofia()}",
+         f"🎯 вход <code>{_fmt(entry, dec)}</code>"
+         + ("" if spot else " <i>(по бара — живата цена мълчи)</i>"),
+         f"🛑 стоп <code>{_fmt(lv['sl'], dec)}</code>",
+         " · ".join(f"{n} <code>{_fmt(lv[k], dec)}</code>"
+                    for n, k in (("1️⃣", "tp1"), ("2️⃣", "tp2"), ("3️⃣", "tp3")))]
+    if лот < 0.01:
+        L.append(f"💰 под мин. лот · 0.01 лот = риск ${ед * (1.0 if sym == 'XAUUSD' else 50.0):.0f}")
+    else:
+        L.append(f"💰 {лот:.2f} лот · риск ${риск:.0f}"
+                 + ("" if _zw >= 0.999 else " (намален)") + " · по 1/3 на цел")
+    L.append(f"📌 {защо}")
+    if reentry:
+        L.append("♻️ ре-влизане · предишната приключи")
+    return "\n".join(L)
 
 def _ladder_pnl(kind, hit, lv, entry, sign, dol):
     """ОДИТ-6/Н1: сметката по стълбата 1/3 — ЕДИН източник за реалния И за сянка-изхода.
@@ -971,96 +906,61 @@ def _ladder_pnl(kind, hit, lv, entry, sign, dol):
 
 
 def _exit_msg(kind, tr, price_hit, when, via, gap, spot=None, next_line="", dec=2):
-    """Изход v5: час на РЕАЛНИЯ удар, готови числа, какво остава, двете сметки."""
-    d = tr["direction"].upper(); e = tr["entry"]
-    sym = tr.get("sym", "XAUUSD"); metal = "ЗЛАТО" if sym == "XAUUSD" else "СРЕБРО"
-    lv = tr["levels"]; hit = tr.get("hit", {})
-    sign = 1 if tr["direction"] == "long" else -1
-    dol = (price_hit - e) * sign
-    if abs(dol) < 0.005:                 # безрисков стоп на входа → «0.00», не «-0.00»
-        dol = 0.0
-    thirds, n_hit = _ladder_pnl(kind, hit, lv, e, sign, dol)      # ОДИТ-7
-    via_txt = {"бар": f"ударен в {_sofia(when)} София (по бара)",
-               "спот": f"ударен СЕГА ({_sofia(when)} София, по живия спот)",
-               "време": "времеви изход"}.get(via, via)
-    gap_txt = " · <b>с гап</b>" if gap else ""
-    heads = {"tp1": "✅ ТП1 ПОСТИГНАТ", "tp2": "✅✅ ТП2 ПОСТИГНАТ", "tp3": "🏆 ТП3 — ПЪЛЕН ТЕЙК",
-             "sl": "🛑 СТОП", "flip": "🔄 ПОСОКАТА СЕ ОБЪРНА — затворено", "time": "⏰ ВРЕМЕВИ ИЗХОД"}
-    # ОДИТ-7 (собственикът, 04.08): «СТОП Е УДАРЕН 1 ПЪТ ЗА ВСИЧКИ СИГНАЛИ ... а той
-    # никога не е удрял». Прав е. Мерено в live/sent_log.jsonl: 8 стоп-карти, от които
-    # 5 са БЕЗРИСКОВ ИЗХОД след взети ТП (стопът стои на ВХОДА) и само 3 са истински
-    # стоп. Картата ги наричаше еднакво «🛑 СТОП» → изглежда, че сделката е ударила
-    # стоп, а тя е приключила на печалба. Сянката беше оправена сутринта; реалният
-    # изход — НЕ. Сега двата пътя говорят еднакво.
-    if kind == "sl" and n_hit > 0:
-        head = ("✅ БЕЗРИСКОВ ИЗХОД" if thirds >= 0 else "🛑 СТОП")
-        # ОДИТ-27: имената на прибраните ТП живееха в махнатата лекция отдолу.
-        # По-ясно е да са в заглавието — «прибрани TP1, TP2» вместо «2 ТП».
-        _got = ", ".join(k2.upper() for k2 in ("tp1", "tp2", "tp3") if hit.get(k2))
-        head += f" — стопът беше на ВХОДА · прибрани {_got or n_hit}"
-    else:
-        head = heads.get(kind, kind)
-    opened_txt = f" <i>(сделка от {_sofia(tr['opened'])} София)</i>" if tr.get("opened") else ""   # Г7
-    L = [f"{head} · {metal} {d}{opened_txt}", "─────────────────",
-         f"{via_txt}{gap_txt}",
-         f"💵 Вход <code>{_fmt(e, dec)}</code> → <code>{_fmt(price_hit, dec)}</code> = "
-         f"<b>{dol:+.2f}$/oz</b>" + (" <i>(само последната 1/3)</i>" if n_hit else "")]
+    """ОДИТ-29 · КОЯ цел · КОЛКО пари · КАКВО правиш. По един ред всяко."""
+    метал = "ЗЛАТО" if tr.get("sym", "XAUUSD") == "XAUUSD" else "СРЕБРО"
+    посока = "покупка" if tr["direction"] == "long" else "продажба"
+    e = tr["entry"]; lv = tr["levels"]; hit = tr.get("hit", {})
+    знак = 1 if tr["direction"] == "long" else -1
+    дол = (price_hit - e) * знак
+    if abs(дол) < 0.005:
+        дол = 0.0
+    стълба, взети = _ladder_pnl(kind, hit, lv, e, знак, дол)
+    час = _sofia(when) if via in ("бар", "спот") else _sofia()
+    гап = " · с гап" if gap else ""
+    глави = {"tp1": ("✅", "ЦЕЛ 1"), "tp2": ("✅", "ЦЕЛ 2"), "tp3": ("🏆", "ВСИЧКО ПРИБРАНО"),
+             "sl": ("🛑", "СТОП"), "flip": ("⏸", "ЗАТВОРЕНА · посоката се обърна"),
+             "time": ("⏸", "ЗАТВОРЕНА · по време")}
+    ико, дума = глави.get(kind, ("📌", kind))
+    if kind == "sl" and взети > 0:
+        ико, дума = ("✅", "НУЛА") if стълба >= 0 else ("🛑", "СТОП")
+        дума += " · стопът беше на входа"
+    L = [f"{ико} {дума} · {метал} {посока} · {час}",
+         f"💵 <code>{_fmt(e, dec)}</code> → <code>{_fmt(price_hit, dec)}</code> · "
+         f"<b>{дол:+.2f}$</b>/унция{гап}"]
     if kind == "tp1":
-        L.append(f"→ Премести стопа на <code>{_fmt(e, dec)}</code> (входа) — безрискова сделка.")
-        L.append(f"Остават: ТП2 <code>{_fmt(lv['tp2'], dec)}</code> · ТП3 <code>{_fmt(lv['tp3'], dec)}</code>")
+        L.append(f"🛑 премести стопа на <code>{_fmt(e, dec)}</code> · оттук нататък без риск")
+        L.append(f"🎯 остават 2️⃣ <code>{_fmt(lv['tp2'], dec)}</code> · "
+                 f"3️⃣ <code>{_fmt(lv['tp3'], dec)}</code>")
     elif kind == "tp2":
-        L.append(f"→ 2/3 прибрани. Остава: ТП3 <code>{_fmt(lv['tp3'], dec)}</code> (стопът стои на входа).")
-    elif kind in ("tp3", "sl", "flip", "time"):
-        # двете сметки (Ф9.6-предварително): цяла позиция + съветът 1/3
-        L.append(f"<b>СМЕТКА по стълбата 1/3: {thirds:+.2f}$/oz</b>"
-                 + (f" · цяла позиция {dol:+.2f}$/oz" if not n_hit else ""))
-        # ОДИТ-27: обяснението падна — заглавието вече казва «стопът беше на ВХОДА».
-    if spot:
-        L.append(f"Спот сега: <code>{_fmt(spot['mid'], dec)}</code>")
+        L.append(f"🎯 остава 3️⃣ <code>{_fmt(lv['tp3'], dec)}</code> · 2/3 са прибрани")
+    else:
+        L.append(f"💰 сделката донесе <b>{стълба:+.2f}$</b>/унция общо")
+        L.append("👁 затворена · чакам нов сигнал")
     if next_line:
-        L.append(f"<b>НОВО ВЛИЗАНЕ:</b> {next_line}")
+        L.append(f"♻️ ново влизане: {next_line}")
     return "\n".join(L)
-
 
 def _shadow_exit_msg(kind, tr, price_hit, when, via, gap, spot=None, dec=2):
-    """What-if изход за СЯНКА-сделка (хипотетична — от «не влизай» карта):
-    «сетъпът, който казах да НЕ пипаш, щеше да стигне дотук»."""
-    d = tr["direction"].upper(); e = tr["entry"]
-    sym = tr.get("sym", "XAUUSD"); metal = "ЗЛАТО" if sym == "XAUUSD" else "СРЕБРО"
-    lv = tr["levels"]; hit = tr.get("hit", {}); sign = 1 if tr["direction"] == "long" else -1
-    dol = (price_hit - e) * sign
-    if abs(dol) < 0.005:
-        dol = 0.0
-    thirds, n_hit = _ladder_pnl(kind, hit, lv, e, sign, dol)     # ОДИТ-6/Н1
-    when_txt = _sofia(when) if via in ("бар", "спот") else "по-късно"
-    heads = {"tp1": "✅ СЯНКА · ТП1 щеше да удари", "tp2": "✅✅ СЯНКА · ТП2 щеше да удари",
-             "tp3": "🏆 СЯНКА · ТП3 — щеше да е пълен тейк", "sl": "🛑 СЯНКА · стопът щеше да удари",
-             "time": "⏰ СЯНКА · времеви изход", "flip": "🔄 СЯНКА · посоката се обърна"}
-    # Н1-б: «стоп» след взети ТП не е загуба — стопът стои на ВХОДА, сметката е плюс.
-    # Старият текст лепеше 🛑 и «+0.00$» върху изход, който по стълбата носи +6.50$.
-    if kind == "sl" and n_hit > 0:
-        head = ("✅ СЯНКА · безрисков изход" if thirds >= 0 else "🛑 СЯНКА · стоп")
-        _sgot = ", ".join(k2.upper() for k2 in ("tp1", "tp2", "tp3") if hit.get(k2))
-        head += f" (стопът беше на входа · прибрани {_sgot or n_hit})"
-    else:
-        head = heads.get(kind, kind)
-    op = f" <i>(сетъп от {_sofia(tr['opened'])} София)</i>" if tr.get("opened") else ""
-    L = [f"{head} · {metal} {d}", "─────────────────",
-         f"Щеше да стигне дотук ({when_txt} София).{op}",
-         f"Вход <code>{_fmt(e, dec)}</code> → <code>{_fmt(price_hit, dec)}</code> = <b>{dol:+.2f}$/oz</b> <i>(само този крак)</i>"]
-    # Н1: САМАТА СМЕТКА — реалният изход я имаше, сянката не. Сега е един и същ код.
-    if kind in ("tp3", "sl", "flip", "time") or n_hit:
-        got = ", ".join(k2.upper() for k2 in ("tp1", "tp2") if hit.get(k2) and k2 != kind)
-        note = f" <i>(вкл. вече прибраните {got})</i>" if got else ""
-        L.append(f"<b>СМЕТКА по стълбата 1/3: {thirds:+.2f}$/oz</b>{note}")
-    if kind == "tp1":
-        L.append(f"Ако беше влязъл: стоп на входа · остават ТП2 <code>{_fmt(lv['tp2'], dec)}</code> · ТП3 <code>{_fmt(lv['tp3'], dec)}</code>")
-    elif kind == "tp2":
-        L.append(f"Ако беше влязъл: 2/3 от позицията прибрани · остава последната 1/3 до ТП3 <code>{_fmt(lv['tp3'], dec)}</code>")
-    if spot:
-        L.append(f"Спот сега: <code>{_fmt(spot['mid'], dec)}</code>")
-    return "\n".join(L)
-
+    """ОДИТ-29 · «онова, което ти казах да не пипаш, стигна дотук». Три реда."""
+    метал = "ЗЛАТО" if tr.get("sym", "XAUUSD") == "XAUUSD" else "СРЕБРО"
+    посока = "покупка" if tr["direction"] == "long" else "продажба"
+    e = tr["entry"]; lv = tr["levels"]; hit = tr.get("hit", {})
+    знак = 1 if tr["direction"] == "long" else -1
+    дол = (price_hit - e) * знак
+    if abs(дол) < 0.005:
+        дол = 0.0
+    стълба, взети = _ladder_pnl(kind, hit, lv, e, знак, дол)
+    час = _sofia(when) if via in ("бар", "спот") else _sofia()
+    какво = {"tp1": "щеше да хване ЦЕЛ 1", "tp2": "щеше да хване ЦЕЛ 2",
+             "tp3": "щеше да мине докрай", "sl": "щеше да удари стоп",
+             "flip": "посоката се обърна", "time": "щеше да излезе по време"}.get(kind, kind)
+    if kind == "sl" and взети > 0:
+        какво = "щеше да излезе на нула"
+    return "\n".join([
+        f"👁 НАУМ · {какво} · {метал} {посока} · {час}",
+        f"💵 <code>{_fmt(e, dec)}</code> → <code>{_fmt(price_hit, dec)}</code> · "
+        f"<b>{стълба:+.2f}$</b>/унция",
+        "📌 не съм влизал · само да знаеш"])
 
 def _shadow_cycle(shadow_file, bars, basis, price_user, now_utc, spot,
                   open_dir, open_entry, open_lv, real_open, date, tier, sym, dec):
@@ -1094,22 +994,14 @@ def _shadow_cycle(shadow_file, bars, basis, price_user, now_utc, spot,
 
 
 def _ma_alert_msg(direction, ma_name, price, mb, macro):
-    dcol = "🟢" if direction == "long" else "🔴"
-    verb = "ОТСКОК от" if direction == "long" else "ОТХВЪРЛЯНЕ от"
-    lv = _levels(round(price, 2), direction)
-    L = [f"{dcol} <b>ИНФО-АЛАРМА · {verb} {ma_name.upper()}</b> (злато)",
-         "─────────────────",
-         f"Цена <code>{_fmt(price)}</code> докосна {ma_name.upper()} и се {'отблъсна' if direction=='long' else 'отхвърли'}.",
-         # ОДИТ-2 (потвърдено адверсарно): нетото от бектеста (+4.64$/oz) НЕ се
-         # възпроизвежда със стълбата на бота. Чиста аритметика при цитирания процент:
-         # 0.628×7.5 − 0.372×20 = −2.73$/oz. Пометени 90 изходни модела (ТП 3→20,
-         # СТОП 7.5→30, 5→60 дни) — НИТО ЕДИН положителен. Процентът СЕ възпроизвежда
-         # (±1.5пп), нетото НЕ. Затова показваме само процента + честната сметка.
-         f"Исторически: <b>{mb['win']}%</b> стигат ТП1 (n={mb['n']})",
-         f"Ориентир при вход: ТП1 <code>{_fmt(lv['tp1'])}</code> · СТОП <code>{_fmt(lv['sl'])}</code>",
-         "<i>⚠ с тази геометрия сметката е отрицателна ≈−2.7$/oz</i>"]
-    return "\n".join(L)
-
+    """ОДИТ-28/29 · знак за ниво, НЕ сделка. Нивата паднаха — картата даваше
+    вход, по който сама казваше да не влизаш."""
+    ико = "🟢" if direction == "long" else "🔴"
+    накъде = "нагоре" if direction == "long" else "надолу"
+    return "\n".join([
+        f"📌 НИВО · цената се обърна {накъде} от {ma_name.upper()} · {_sofia()}",
+        f"{ико} злато <code>{_fmt(price)}</code>",
+        "👁 само знак · не влизам, сметката е на минус"])
 
 def _weekly(path, date=None, notes=None):
     try:
@@ -1173,137 +1065,118 @@ def _event_shield(ctx, now_utc):
 
 
 def _digest_msg(out, date, trade, s_trade, spot_g, spot_s, guard, weekly_part=False):
-    """Ф5+Ф8.4: вечерна равносметка (и жизнен пулс). Петък → +седмичен раздел."""
-    def _rows(fname, pred):
-        f = out / fname
+    """ОДИТ-29 · какво стана с парите днес. Пет реда."""
+    def _редове(файл, условие):
+        f = out / файл
         if not f.exists():
             return []
-        rows = []
+        r = []
         for ln in f.read_text(encoding="utf-8").splitlines():
             try:
-                r = json.loads(ln)
-                if pred(r):
-                    rows.append(r)
+                j = json.loads(ln)
+                if условие(j):
+                    r.append(j)
             except Exception:
                 pass
-        return rows
-    today_runs = _rows("live_journal.jsonl", lambda r: r.get("date") == date)
-    sent_today = _rows("sent_log.jsonl", lambda r: str(r.get("utc", ""))[:10] == date)
-    kinds = {}
-    for r in sent_today:
-        k = r.get("tag", "?").split(":")[0]
-        kinds[k] = kinds.get(k, 0) + 1
-    L = [f"🌙 <b>ВЕЧЕРНА РАВНОСМЕТКА · {date}</b>", "─────────────────",
-         f"Ботът е ЖИВ: {len(today_runs)} пускания днес · пратени {len(sent_today)} съобщения"
-         + (f" ({', '.join(f'{k}×{v}' for k, v in kinds.items())})" if kinds else "")]
-    for nm, tr, sp, dec in (("Злато", trade, spot_g, 2), ("Сребро", s_trade, spot_s, 3)):
+        return r
+    рънове = _редове("live_journal.jsonl", lambda r: r.get("date") == date)
+    пратени = _редове("sent_log.jsonl", lambda r: str(r.get("utc", ""))[:10] == date)
+    L = [f"🌙 Коста, как мина денят · {_sofia()}"]
+    for нм, tr, sp, dec in (("🥇", trade, spot_g, 2), ("🥈", s_trade, spot_s, 3)):
         if tr:
-            pl = ((sp["mid"] - tr["entry"]) if tr["direction"] == "long" else (tr["entry"] - sp["mid"])) if sp else None
-            hits = ", ".join(k.upper() for k in ("tp1", "tp2") if tr.get("hit", {}).get(k)) or "още нищо"
-            L.append(f"{nm}: {tr['direction'].upper()} от <code>{tr['entry']:,.{dec}f}</code> · ударени: {hits}"
-                     + (f" · в момента {pl:+.2f}$/oz" if pl is not None else ""))
+            прибр = [n for n, k in (("1️⃣", "tp1"), ("2️⃣", "tp2"), ("3️⃣", "tp3"))
+                     if tr.get("hit", {}).get(k)]
+            пл = ((sp["mid"] - tr["entry"]) if tr["direction"] == "long"
+                  else (tr["entry"] - sp["mid"])) if sp else None
+            L.append(f"{нм} държим от <code>{tr['entry']:,.{dec}f}</code>"
+                     + (f" · {' '.join(прибр)} ✅" if прибр else "")
+                     + (f" · <b>{пл:+.2f}$</b>" if пл is not None else ""))
         else:
-            L.append(f"{nm}: няма отворена сделка")
-    # Д1: злато+сребро в ЕДНА посока = корелиран двоен риск (~3.5-4%, не 2%+2%)
+            L.append(f"{нм} няма сделка")
     if trade and s_trade and trade["direction"] == s_trade["direction"]:
-        L.append(f"⚠️ <b>Двете сделки са {trade['direction'].upper()}</b> — злато и сребро вървят заедно "
-                 f"(corr ~0.8) → реалният риск е ~2× един залог, не два независими. Малък размер.")
-    stops = guard.get("long", 0) + guard.get("short", 0) + guard.get("s_long", 0) + guard.get("s_short", 0)
-    if stops:
-        L.append(f"Стопове днес: {stops} (пазачът пази при 2 в посока)")
-    if weekly_part:
-        week_runs = _rows("sent_log.jsonl", lambda r: True)[-500:]
-        wk = {}
-        for r in week_runs:
-            d = str(r.get("utc", ""))[:10]
-            if d and (pd.Timestamp(date) - pd.Timestamp(d)).days < 5:
-                k = r.get("tag", "?").split(":")[0]; wk[k] = wk.get(k, 0) + 1
-        L += ["─────────────────", "📅 <b>СЕДМИЦАТА:</b> " + (", ".join(f"{k}×{v}" for k, v in wk.items()) or "тиха")]
-    nxt = "понеделник" if weekly_part else "утре"      # Г8: петък → понеделник (събота няма карта)
-    L.append(f"<i>Следваща дневна карта: {nxt} сутрин · {VERSION}</i>")   # Г6: без фалшивия точен час
+        L.append("⚠️ и двете в една посока · рискът е един голям, не два малки")
+    стопове = sum(guard.get(k, 0) for k in ("long", "short", "s_long", "s_short"))
+    if стопове:
+        L.append(f"🛑 стопът ме изхвърли {стопове}×")
+    L.append(f"✅ буден цял ден · {len(рънове)} проверки · {len(пратени)} съобщения")
+    L.append("👁 " + ("в понеделник пак съм тук" if weekly_part else "утре пак съм тук"))
     return "\n".join(L)
 
-
-def _status_msg(board, new_dir, trade, s_trade, spot_g, spot_s, basis_g, basis_s, guard, shield, date, macro):
-    """Ф9.8: статус-карта при поискване (ръчно пускане със status=yes)."""
-    L = [f"ℹ️ <b>СТАТУС · {date} · {_sofia()} София</b>", "─────────────────",
-         f"Посока: {new_dir or 'няма'} · съгласие: " + "/".join(f"{d}:{t}" for _, d, _, t, _ in board[:1])
-         + f" · макро {sum(macro.values())}/3" + (" · US-ЩИТ активен" if shield else "")]
-    for nm, tr, sp, dec in (("🥇", trade, spot_g, 2), ("🥈", s_trade, spot_s, 3)):
+def _status_msg(board, new_dir, trade, s_trade, spot_g, spot_s, basis_g, basis_s,
+                guard, shield, date, macro):
+    """ОДИТ-29 · снимка на момента, четири реда."""
+    L = [f"📌 КЪДЕ СМЕ · {_sofia()}"]
+    for нм, tr, sp, dec in (("🥇", trade, spot_g, 2), ("🥈", s_trade, spot_s, 3)):
         if tr:
-            lv = tr["levels"]; hit = tr.get("hit", {})
-            def hm(k): return "✅" if hit.get(k) else f"<code>{lv[k]:,.{dec}f}</code>"
-            pl = ((sp["mid"] - tr["entry"]) if tr["direction"] == "long" else (tr["entry"] - sp["mid"])) if sp else None
-            L.append(f"{nm} {tr['direction'].upper()} от <code>{tr['entry']:,.{dec}f}</code> · ТП1 {hm('tp1')} ТП2 {hm('tp2')} ТП3 {hm('tp3')} СТОП <code>{lv['sl']:,.{dec}f}</code>"
-                     + (f" · сега {pl:+.2f}$/oz" if pl is not None else ""))
+            прибр = [n for n, k in (("1️⃣", "tp1"), ("2️⃣", "tp2"), ("3️⃣", "tp3"))
+                     if tr.get("hit", {}).get(k)]
+            пл = ((sp["mid"] - tr["entry"]) if tr["direction"] == "long"
+                  else (tr["entry"] - sp["mid"])) if sp else None
+            L.append(f"{нм} {'покупка' if tr['direction'] == 'long' else 'продажба'} от "
+                     f"<code>{tr['entry']:,.{dec}f}</code>"
+                     + (f" · {' '.join(прибр)} ✅" if прибр else "")
+                     + f" · 🛑 <code>{tr['levels']['sl']:,.{dec}f}</code>"
+                     + (f" · <b>{пл:+.2f}$</b>" if пл is not None else ""))
         else:
-            L.append(f"{nm} няма отворена сделка")
+            L.append(f"{нм} няма сделка")
     if spot_g:
-        L.append(f"Спот злато <code>{spot_g['mid']:,.2f}</code> (базис {basis_g:+.2f})"
+        L.append(f"💵 злато <code>{spot_g['mid']:,.2f}</code>"
                  + (f" · сребро <code>{spot_s['mid']:,.3f}</code>" if spot_s else ""))
+    L.append("👁 само снимка · нищо не се прави")
     return "\n".join(L)
-
 
 def _pulse_msg(part, board, best, new_dir, advice_txt, adv_ok, trade, s_trade,
                spot_g, spot_s, macro, shield, weekend):
-    """Пулс 3× на ден (09/14 София + вечерна равносметка в 21): честно «какво гледам,
-    как се движи, какво чакам» — информативно, не сигнал. Доказва, че ботът е буден."""
-    hdr = {"09": "☀️ <b>УТРИНЕН ПУЛС</b>", "14": "🌤️ <b>ОБЕДЕН ПУЛС</b>",
-           "22": "🌙 <b>ВЕЧЕРЕН ПУЛС</b>"}.get(part, "📡 <b>ПУЛС</b>")
-    L = [f"{hdr} · {_sofia()} София", "─────────────────"]
+    """ОДИТ-29 · 3× на ден: жив съм, това гледам, това чакам."""
+    ико, кога = {"09": ("☀️", "добро утро"), "14": ("🌤️", "докъде сме"),
+                 "22": ("🌙", "как мина денят")}.get(part, ("📌", "какво гледам"))
+    L = [f"{ико} Коста, {кога} · {_sofia()}"]
     if weekend:
-        L += ["Пазарът е затворен (уикенд) — дежуря, но сделки не търся.",
-              "Златото отваря неделя вечер."]
+        L.append("😴 борсата спи · отваря неделя вечер")
         return "\n".join(L)
-    mac = sum(macro.values())
-    # какво гледам: най-силният клас + макро в неговата посока
-    if new_dir:
-        mdir = (3 - mac) if new_dir == "short" else mac
-        dword = "ЛОНГ (нагоре)" if new_dir == "long" else "ШОРТ (надолу)"
-        # ОДИТ-6/T4-01: същата отметка като на сигналната карта — ✓ само при ПЪЛНО подреждане
-        pm = "✓ подредено" if mdir == 3 else (f"⚠ {3 - mdir} против" if mdir else "⚠ нищо не подкрепя")
-        L.append(f"<b>Гледам:</b> най-силен клас <b>{best[4]} {best[2]}/8</b> · накланя се към <b>{dword}</b> · макро {mdir}/3 {pm}")
-    else:
-        L.append(f"<b>Гледам:</b> няма ясен клас сега (таймфреймовете са смесени) · макро {mac}/3")
-    # как се движи: спот
     if spot_g:
-        L.append(f"<b>Цена:</b> злато <code>{spot_g['mid']:,.2f}</code>"
-                 + (f" · сребро <code>{spot_s['mid']:,.3f}</code>" if spot_s else ""))
+        L.append(f"🥇 <code>{spot_g['mid']:,.2f}</code>"
+                 + (f" · 🥈 <code>{spot_s['mid']:,.3f}</code>" if spot_s else ""))
     else:
-        L.append("<b>Цена:</b> живият спот е недостъпен този момент (ползвам бара)")
-    # отворени сделки
-    any_tr = False
-    for nm, tr, sp, dec in (("🥇 Злато", trade, spot_g, 2), ("🥈 Сребро", s_trade, spot_s, 3)):
+        L.append("⚠️ живата цена мълчи · карам по бара")
+    if new_dir:
+        съгл = sum(1 for b in board if b[1] == new_dir and b[3] != "weak") if board else 0
+        L.append(f"{'🟢' if new_dir == 'long' else '🔴'} очертава се "
+                 f"{'нагоре' if new_dir == 'long' else 'надолу'} · {съгл}/7 мащаба")
+    else:
+        L.append("📌 посоката е разбъркана")
+    има = False
+    for нм, tr, sp, dec in (("🥇", trade, spot_g, 2), ("🥈", s_trade, spot_s, 3)):
         if tr:
-            any_tr = True
-            hit = tr.get("hit", {})
-            hits = ", ".join(k.upper() for k in ("tp1", "tp2", "tp3") if hit.get(k)) or "още нищо"
-            pl = ((sp["mid"] - tr["entry"]) if tr["direction"] == "long" else (tr["entry"] - sp["mid"])) if sp else None
-            L.append(f"{nm}: следя <b>{tr['direction'].upper()}</b> от <code>{tr['entry']:,.{dec}f}</code> · ударени: {hits}"
-                     + (f" · сега {pl:+.2f}$/oz" if pl is not None else ""))
-    if not any_tr:
-        L.append("<b>Сделки:</b> няма отворена — дебна за пресен клас/обръщане.")
-    # какво чакам (честно)
+            има = True
+            прибр = [n for n, k in (("1️⃣", "tp1"), ("2️⃣", "tp2"), ("3️⃣", "tp3"))
+                     if tr.get("hit", {}).get(k)]
+            пл = ((sp["mid"] - tr["entry"]) if tr["direction"] == "long"
+                  else (tr["entry"] - sp["mid"])) if sp else None
+            L.append(f"{нм} държим от <code>{tr['entry']:,.{dec}f}</code>"
+                     + (f" · {' '.join(прибр)} ✅" if прибр else "")
+                     + (f" · <b>{пл:+.2f}$</b>" if пл is not None else ""))
     if shield and new_dir == "short":
-        wait = f"US-щит ({_shield_sofia_label()}) — изчаквам края му преди шорт."
-    elif any_tr:
-        wait = "следя сделката до ТП/СТОП — <b>карта при ВСЕКИ удар</b>."
+        L.append("👁 чакам американските данни")
+    elif има:
+        L.append("👁 следя до целите · ти не пипай")
     elif new_dir and adv_ok:
-        wait = "класът е за вход — картата идва при потвърждение."
+        L.append("👁 чакам потвърждение · пращам вход")
     elif new_dir:
-        wait = "сетъпът се държи, но не е пресен — чакам ново подреждане."
+        L.append("👁 не влизам · не е пресен")
     else:
-        wait = "чакам пазарът да оформи ясна посока."
-    L.append(f"<b>Чакам:</b> {wait}")
+        L.append("👁 нищо сега")
     return "\n".join(L)
 
+def _cq_zone(score):
+    """CQS скор → зона (по бандите на CyberQuant)."""
+    if score < 40: return "Натрупване 🟢"
+    if score < 60: return "Неутрална ⚪"
+    if score < 75: return "Внимание 🟡"
+    if score < 90: return "Опасност 🟠"
+    return "Балон 🔴"
 
-# ---------- CyberQuant / КИБЕР КВАНТ (BTC-цикъл + макро-календар) — референция + макро-щит ----------
-# Живата страница на собственика: https://kiber-kvant.vercel.app
-# Сверено 04.08.2026: страницата показва индекс 28,1 и клъстери 37/9/23/48, а tRPC API-то
-# връща score 28.14 и clusterScores {1:36.01, 2:10.27, 3:22.69, 4:48.63} → ЕДНА И СЪЩА
-# система. Затова НЕ дърпаме HTML — четем API-то (по-стабилно), но вече и в ДЪЛБОЧИНА:
-# четирите клъстера + историята на зоната, които преди се хвърляха.
+
 KV_URL = "https://kiber-kvant.vercel.app"
 CQ_CLUSTERS = {"1": "валуация", "2": "моментум", "3": "настроения", "4": "on-chain"}
 # Историята на зоната от терминала (2013→днес, 4962 дни). Показва се като БАЗОВА ЧЕСТОТА,
@@ -1438,37 +1311,23 @@ def _cq_next_event(cq, now_utc):
 
 
 def _cq_msg(cq, now_utc, fng_live=None):
-    """Дневна референция-карта от КИБЕР КВАНТ (BTC-цикъл + настроения + следващо събитие).
-    v5.9b: + четирите клъстера, + базовата честота на зоната, + жив страх-и-алчност."""
-    zone = str(cq.get("zone", ""))
-    L = [f"🌐 <b>КИБЕР КВАНТ · дневна референция</b> · {_sofia()} София", "─────────────────",
-         f"<b>Индекс на цикъла:</b> {cq['score']} от 100 · {zone}"]
-    hist = CQ_ZONE_HIST.get(zone.split()[0].lower() if zone else "")
-    if hist:
-        L.append(f"<i>Зоната {hist[0]} · {hist[1]} — базова честота, не прогноза.</i>")
-    cls = _cq_clusters_line(cq)
-    if cls:
-        L.append(f"<b>Клъстери:</b> {cls}")
-        L.append("<i>Тежести: валуация 35% · моментум 25% · настроения 25% · on-chain 15%.</i>")
-    L.append("<i>BTC-цикъл — за пазарен контекст, НЕ сигнал за злато/сребро.</i>")
-    fgc, fgs = cq.get("fg_crypto"), cq.get("fg_stock")
-    if fgc is not None or fgs is not None:
-        ln = f"<b>Страх и Алчност:</b> крипто {fgc} · акции {fgs}"
-        # свежата стойност се показва САМО ако наистина се разминава със снимката
-        if fng_live and fgc is not None and abs(int(fng_live["value"]) - int(fgc)) >= 2:
-            ln += f" · <i>крипто сега: {fng_live['value']} ({fng_live['cls']})</i>"
-        elif fng_live and fgc is None:
-            ln = f"<b>Страх и Алчност:</b> крипто {fng_live['value']} ({fng_live['cls']}) · акции {fgs}"
-        L.append(ln)
-    nxt = _cq_next_event(cq, now_utc)
-    if nxt:
-        L.append(f"📅 <b>Следващо голямо макро</b> (влияе на златото): {nxt}")
-        L.append("<i>Около него ботът НЕ отваря нов вход (висока волатилност).</i>")
-    L.append(f'🔗 <a href="{KV_URL}">Терминалът на цикъла</a>')
+    """ОДИТ-28/29 · от 12 реда за биткойн до три реда за онова, което мени
+    поведението на бота: следващото голямо макро събитие."""
+    съб = _cq_next_event(cq, now_utc)
+    L = []
+    if съб:
+        L.append(f"📅 ИДВА · {съб}")
+        L.append("⚠️ около такива новини цената скача на празно")
+        L.append("👁 не отварям нов вход в този прозорец")
+    else:
+        L.append(f"📌 ПАЗАРЕН ФОН · {_sofia()}")
+        L.append("✅ няма голямо макро събитие пред нас")
+    зона = str(cq.get("zone", "")).strip()
+    точки = cq.get("score")
+    if зона and точки is not None:
+        L.append(f"🌡 крипто настроение: {зона} ({точки:.0f}/100) · само за фон")
     return "\n".join(L)
 
-
-# ---------- следене v5: спот-леджър, барове през базиса + жив спот ----------
 def track_trade(trade, bars, basis, now_price, now_utc, spot=None):
     """bars = фючърсни 5м (пълният път, ~10 мин назад), превеждани в спот
     чрез базиса. spot = живата цена (моментално, Ф7.1). Гап → реална цена.
@@ -1786,19 +1645,18 @@ def _weekend_slot(now_utc):
 
 
 def _weekend_msg(slot, date):
-    """Детерминиран избор по датата — една и съща картичка не се повтаря през ден."""
+    """ОДИТ-29 · картичка за уикенда. Три реда, без обяснения."""
     pool = WEEKEND_MSGS[slot]
     try:
         idx = int(str(date).replace("-", "")) % len(pool)
     except Exception:
         idx = 0
-    ico = {"сутрин": "☕", "следобед": "🌤", "вечер": "🌙"}[slot]
-    return (f"{ico} <b>УИКЕНД · {slot.upper()}</b>\n"
-            f"─────────────────\n"
-            f"{pool[idx]}\n\n"
-            f"<i>Борсата за злато е затворена (петък 17:00 до неделя 18:00 нюйоркско). "
-            f"Ботът е буден и здрав — просто няма какво да следи.</i>")
-
+    ико = {"сутрин": "☀️", "следобед": "🌤️", "вечер": "🌙"}[slot]
+    кога = {"сутрин": "добро утро", "следобед": "приятен следобед",
+            "вечер": "лека вечер"}[slot]
+    return (f"{ико} Коста, {кога} · {_sofia()}\n"
+            f"📌 {pool[idx]}\n"
+            f"😴 борсата спи до неделя вечер")
 
 def _weekend_cycle(out, now_utc, send):
     """Уикенд: НИКАКВИ данни, никакви сигнали, чист изход. Само по една картичка на слот.
