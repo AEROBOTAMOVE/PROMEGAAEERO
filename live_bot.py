@@ -30,7 +30,7 @@ warnings.filterwarnings("ignore")
 import numpy as np
 import pandas as pd
 
-VERSION = "v8.6"
+VERSION = "v8.7"
 PIP = 0.10
 SL_PIPS = 200; SL_D = SL_PIPS * PIP                       # стоп: 200п = $20/oz
 TPS = [("ТП1", 75, 7.5), ("ТП2", 120, 12.0), ("ТП3", 200, 20.0)]
@@ -848,6 +848,29 @@ def _fast(fast):
     return f" · бърз пазар ±${fast:.0f}/10мин, само лимитна" if fast else ""
 
 
+def _reentry_ban(meta, direction, streak_n, why=None, set_it=False):
+    """О4 · забраната за ре-влизане ПЕРСИСТИРА, докато същият пресен стрийк е жив.
+
+    Дотук `_reentry_verdict` пазеше САМО рънa на затварянето — следващият рън,
+    пет минути по-късно, минаваше покрай нея и отваряше точно шорта, за който
+    същото правило казва, че губи −2.75$/сделка (мерено на 19.7 години).
+
+    Ключът носи ПОСОКАТА и СТРИЙКА. Смени ли се стрийкът (макрото се преподреди
+    или изтече), забраната пада САМА — не се трие на ръка и не увисва.
+    """
+    ключ = "reentry_ban"
+    ст = meta.get(ключ) or {}
+    if set_it and why:
+        meta[ключ] = {"dir": direction, "streak": int(streak_n), "why": why}
+        return True, why
+    if (ст.get("dir") == direction and int(ст.get("streak", -1)) == int(streak_n)
+            and 1 <= int(streak_n) <= 3):
+        return True, ст.get("why") or "ре-влизането е спряно за този сигнал"
+    if ст and (ст.get("dir") != direction or int(ст.get("streak", -1)) != int(streak_n)):
+        meta.pop(ключ, None)          # стрийкът се смени → забраната пада сама
+    return False, ""
+
+
 def _reentry_verdict(direction, streak_n, shield, guard_n):
     """(може_ли, защо) за ре-влизане след приключена сделка — F18 правилата."""
     # ОДИТ-35 · единственият текст, който не бях пипал днес — още носеше
@@ -870,7 +893,7 @@ def _fmt(p, dec=2):
 def _sig_msg(direction, score, agree_n, tier_name, spot, bar_price, bar_ts, lv, entry,
              advice_txt, macro, streak_n, regime, stats, balance, risk_pct, weekly=None,
              reentry=False, open_trade=None, sym="XAUUSD", dec=2, extra_ctx=None, adv_ok=True,
-             shadow_on=None, zone=None):
+             shadow_on=None, zone=None, other_trade=None):
     """ОДИТ-29 · един ред, едно нещо, едно емоджи отпред.
     Дотук картата беше добър български и лоша карта: изречения с подчинени
     и точка в средата. На телефон се чете РЕД, не абзац."""
@@ -941,6 +964,13 @@ def _sig_msg(direction, score, agree_n, tier_name, spot, bar_price, bar_ts, lv, 
         L.append(f"💰 {лот_окр:.2f} лот · риск ≈${риск:.0f}"
                  + ("" if _zw >= 0.999 else " (намален)") + " · по 1/3 на цел")
     L.append(f"📌 {защо}")
+    # О3 · златото и среброто вървят заедно (корелация ~0.8). Две сделки в
+    # една посока не са два независими залога, а един двоен. Дотук това се
+    # казваше само във вечерната равносметка — часове след решението.
+    if other_trade and other_trade.get("direction") == direction:
+        _друг = "среброто" if sym == "XAUUSD" else "златото"
+        L.append(f"⚠️ вече държиш {_друг} в същата посока · рискът е един голям, "
+                 f"не два малки")
     if reentry:
         L.append("♻️ ре-влизане · предишната приключи")
     return "\n".join(L)
@@ -1860,15 +1890,40 @@ def main():
 
     import time
     print(f"AERO {VERSION} · дърпам дневни данни...")
+    # 🔴 О1 · ЗЛАТОТО е твърдо — без него няма нищо. МАКРОТО е в try.
+    # Дотук едно гръмнало дърпане на GDX убиваше ЦЕЛИЯ рън ПРЕДИ track_trade:
+    # отворена сделка не получаваше изход, докато Yahoo се оправи. Следенето
+    # иска само 5м + спот + базис — няма причина да виси зад индекса на миньорите.
     gold_d = _yf("GC=F", "3y", "1d"); time.sleep(1.2)
-    gdx_d = _yf("GDX", "2y", "1d"); time.sleep(1.2)
-    dxy_d = _yf("DX-Y.NYB", "2y", "1d"); time.sleep(1.2); rr = _rates()
+    gdx_d = dxy_d = rr = None
+    _макро_мъртво = []
+    for _име, _взем in (("миньори (GDX)", lambda: _yf("GDX", "2y", "1d")),
+                        ("долар (DXY)", lambda: _yf("DX-Y.NYB", "2y", "1d")),
+                        ("лихви (FRED)", _rates)):
+        try:
+            _р = _взем()
+            if _име.startswith("миньори"):
+                gdx_d = _р
+            elif _име.startswith("долар"):
+                dxy_d = _р
+            else:
+                rr = _р
+        except Exception as _e:
+            _макро_мъртво.append(_име)
+            print(f"  ⚠ {_име} не се дърпа ({type(_e).__name__}) — новите входове спират, "
+                  f"следенето продължава")
+        time.sleep(1.2)
     for d in (gold_d, gdx_d, dxy_d):
-        d.index = d.index.normalize()
+        if d is not None:
+            d.index = d.index.normalize()
     # Ф9.1 · ЗАМРАЗЕНИ РЕФЕРЕНЦИИ (F19-Т1: 39% от стъпките сменяха клас!):
     # средните/макрото се смятат до ВЧЕРАШНИЯ завършен ден — както в backtest-а.
     today_n = pd.Timestamp(datetime.now(timezone.utc).date())
     def _hist(df):
+        # О1: при мъртво макро `df` е None — не бива да гърми тук, защото
+        # точно този ред стои ПРЕДИ следенето на отворената сделка.
+        if df is None:
+            return None
         return df.iloc[:-1] if len(df) > 1 and df.index[-1] >= today_n else df
     gold_h, gdx_h, dxy_h = _hist(gold_d), _hist(gdx_d), _hist(dxy_d)
     # ОДИТ-16: спад от 20-дневния връх ПО ЗАТВАРЯНИЯ, само от ЗАВЪРШЕНИ дни (gold_h, не
@@ -1888,13 +1943,24 @@ def main():
     if not enough_history:
         notes.append(f"недостатъчна история ({len(gold_h)} дневни бара < 200) — сигналът е ненадежден, въздържане")
     macro_health = {}
-    macro = _macro(gold_h, gdx_h, dxy_h, rr, health=macro_health); refs = _refs(gold_h)
+    # О1: мъртво макро → празно макро и нулев стрийк (кофа «mixed») → гейтът
+    # ОТКАЗВА нови входове. Безопасната посока: не виждам ли, не отварям.
+    if _макро_мъртво:
+        macro = {k: False for k in MACRO_LBL}
+        macro_health["мъртви"] = list(_макро_мъртво)
+        refs = _refs(gold_h)
+    else:
+        macro = _macro(gold_h, gdx_h, dxy_h, rr, health=macro_health); refs = _refs(gold_h)
     # ОДИТ-5: мъртъв фийд НЕ бива да минава за «максимално мечи макро» — казваме го на глас
+    if _макро_мъртво:
+        notes.append("🔴 О1: " + ", ".join(_макро_мъртво) + " не се дърпат — НОВИ ВХОДОВЕ "
+                     "СПРЕНИ, но следенето на отворената сделка и изходите вървят")
     if macro_health.get("мъртви"):
         notes.append("🔴 МЪРТВО МАКРО-КРАЧЕ: " + ", ".join(macro_health["мъртви"])
                      + " — класът е занижен до СИЛЕН (мъртъв фийд не е убеждение)")
     regime = _regime(gold_h, gold_today=gold_d)
-    regime["streaks"] = _streaks(gold_h, gdx_h, dxy_h, rr)
+    regime["streaks"] = ({"long": 0, "short": 0} if _макро_мъртво
+                         else _streaks(gold_h, gdx_h, dxy_h, rr))
 
     # Ф7.2 · ОПТИМИЗАЦИЯ: 2 интрадей пакета вместо 6. Всички ТФ се смятат от
     # 1м (7д) + 5м (60д) поток — _scores ползва само ПОСЛЕДНИЯ бар на всеки ТФ,
@@ -2141,7 +2207,17 @@ def main():
     closed_kinds = [k for _, _, k, _ in exit_msgs if k in ("tp3", "sl", "time", "flip")]
     reentry = False
     if closed_kinds and actionable and trade is None:
-        ok_re, why_re = _reentry_verdict(new_dir, regime["streaks"].get(new_dir, 0), shield, guard.get(new_dir, 0))
+        # О4 · първо питаме ПЕРСИСТИРАЩАТА забрана: щитът вече не важи само за
+        # рънa на затварянето. Дотук следващият рън, пет минути по-късно, я
+        # заобикаляше и отваряше точно шорта, който правилото отказва.
+        _стр_re = regime["streaks"].get(new_dir, 0)
+        _забранен, _защо_бан = _reentry_ban(meta, new_dir, _стр_re)
+        if _забранен:
+            ok_re, why_re = False, _защо_бан
+        else:
+            ok_re, why_re = _reentry_verdict(new_dir, _стр_re, shield, guard.get(new_dir, 0))
+            if not ok_re:
+                _reentry_ban(meta, new_dir, _стр_re, why=why_re, set_it=True)
         if ok_re and cool_ok:
             should_sig = True; reentry = True
         else:
@@ -2351,7 +2427,7 @@ def main():
                 s_dir, s_score, 1, s_tn, spot_s, s_bar, s5.index[-1], s_lv_user,
                 s_entry_user, s_advice, macro, s_streak, regime, stats, args.balance, args.risk,
                 weekly=None, reentry=s_reentry, open_trade=s_open, sym="XAGUSD", dec=3,
-                adv_ok=s_adv_ok, shadow_on=sh_s_now)))
+                adv_ok=s_adv_ok, shadow_on=sh_s_now, other_trade=trade)))
             if s_open is None and s_adv_ok:               # НАХОДКА 1: следи сделка само при съвет ДА
                 # Б1: НЕ пишем сребърна сделка/състояние тук — чак след потвърдено пращане (7в)
                 silver_trade_new = {"direction": s_dir, "entry": round(s_entry_user, 3), "opened": now_utc,
@@ -2419,7 +2495,8 @@ def main():
                                             args.balance, args.risk, weekly=weekly, reentry=reentry,
                                             open_trade=open_tr, extra_ctx=" · ".join(extra) if extra else None,
                                             adv_ok=_adv_ok, shadow_on=sh_now,
-                                            zone=_zones(frames.get("1час"), new_dir))))
+                                            zone=_zones(frames.get("1час"), new_dir),
+                                            other_trade=s_trade)))
         # Б1: НЕ пишем сделка/състояние ТУК — чак СЛЕД потвърдено пращане.
         # НАХОДКА 1: следим сделка САМО ако съветът е ДА (_adv_ok). При «НЕ/ИЗЧАКАЙ»
         # картата е информативна — не отваряме сделка, за която сме казали да не влизаш.
