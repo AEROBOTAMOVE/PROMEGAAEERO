@@ -1,0 +1,859 @@
+//@version=5
+// ═══ РАБОТИ ЗАЕДНО С «AERO PRO v9.2 · Пазарна карта BG» ═══
+// ВСИЧКИ слоеве са ВКЛЮЧЕНИ — нищо не е отрязано. Двата индикатора се допълват
+// визуално, не чрез гасене: този тук смята зоните по своя логика (v8) и рисува
+// с ПО-ДЕБЕЛИ граници; съвпаднат ли двата на едно ниво — това е потвърждение.
+// ═══════════════════════════════════════════════════════════════════════════
+// AERO PRO v8 · ЧЕКЛИСТ ЗА ГОТОВНОСТ · ЗОНИ САМО СЛЕД СВИП · СВЕЖЕСТ · ДНЕВЕН FVG · ПИПОВЕ
+// Зона се чертае САМО ако преди импулса е обрана ликвидност (истинският сетъп).
+// Всяка зона брои колко пъти е тествана: СВЕЖА → 1 тест → 2 теста → изчезва.
+// FVG вече и от ДНЕВНАТА графика. Всички разстояния и в ПИПОВЕ.
+// ЗАДЪЛЖИТЕЛНО: десен бутон върху ценовата скала → Scale price chart only.
+// ═══════════════════════════════════════════════════════════════════════════
+// 🔴 max_bars_back=500 — БЕЗ него ЦЕЛИЯТ индикатор гърми и графиката остава ПРАЗНА.
+// f_tcount() брои докосванията на тренд линията с ПРОМЕНЛИВ отстъп high[i]/low[i] до 400
+// бара назад. Pine оразмерява историческия буфер по това, което ВИЖДА в първите барове —
+// не знае, че по-късно ще му трябват 400 — и заделя колкото е видял (109). После:
+//   "Error on bar 9291: The requested historical offset (110) is beyond the
+//    historical buffer's limit (109). at f_tcount():395"
+// и нищо не се рисува. Явното max_bars_back заделя буфера предварително.
+indicator("AERO PRO v8.5 · зони и ликвидност", overlay=true, max_bars_back=500, max_boxes_count=500, max_lines_count=400, max_labels_count=450)
+
+g0    = "0 · ВИДИМОСТ (пази мащаба)"
+bMode = input.string("Автоматично (по ATR)", "Колко далеч да чертае", options=["Автоматично (по ATR)", "Ръчно (% от цената)"], group=g0)
+bMult = input.float(9.0, "  ATR множител", minval=2, maxval=60, step=0.5, group=g0)
+bPct  = input.float(0.6, "  Ръчно: % от цената", minval=0.05, maxval=10, step=0.05, group=g0)
+scalpVisual8 = input.string("Пълна карта", "Визуален режим 1m/5m", options=["Скалп 1m/5m", "Пълна карта"], group=g0, tooltip="Скалп 1m/5m показва само близките активни обозначения около цената. Не променя сигналите.")
+pipSz = input.float(0.10, "Размер на 1 пип", minval=0.00001, step=0.01, group=g0, tooltip="Злато = 0.10 · EURUSD = 0.0001")
+
+g1   = "1 · ТАЙМФРЕЙМИ на зоните (дебелината = тежестта)"
+t1On = input.bool(true, "Таймфрейм 1 · тънка", inline="t1", group=g1)
+tf1  = input.timeframe("15", "", inline="t1", group=g1)
+t2On = input.bool(true, "Таймфрейм 2 · средна", inline="t2", group=g1)
+tf2  = input.timeframe("60", "", inline="t2", group=g1)
+t3On = input.bool(true, "Таймфрейм 3 · дебела", inline="t3", group=g1)
+tf3  = input.timeframe("240", "", inline="t3", group=g1)
+
+g2   = "2 · ЗОНИ (order blocks)"
+uOB  = input.bool(true,  "Показвай зоните", group=g2)
+obSw = input.bool(true,  "САМО след обрана ликвидност (истинският сетъп)", group=g2, tooltip="Зона се чертае само ако преди импулса цената е взела дъното/върха на последните N бара")
+obLB = input.int(5,      "  Свипът срещу колко бара", minval=2, maxval=15, group=g2)
+obK  = input.float(1.2,  "Сила на импулса (× ATR)", minval=0.4, step=0.1, group=g2)
+obN  = input.int(2,      "Зони на таймфрейм", minval=1, maxval=8, group=g2)
+obKill = input.int(3,    "Изтрий зоната след N теста", minval=1, maxval=6, group=g2)
+
+g3   = "3 · ЦЕНОВИ ГАП (FVG)"
+uFV  = input.bool(true, "Показвай непопълнените", group=g3)
+uFVD = input.bool(true, "И от ДНЕВНАТА графика (най-тежките)", group=g3)
+fvN  = input.int(2,     "Ценови гапове на таймфрейм", minval=1, maxval=6, group=g3)
+
+g4  = "4 · ЛИКВИДНОСТ + СВИПОВЕ"
+uLQ = input.bool(true,  "Показвай равни върхове и равни дъна (ликвидност)", group=g4)
+uSW = input.bool(true,  "Маркер при обиране на стоповете", group=g4)
+lqP = input.int(5,      "Ширина на пивота (бара)", minval=2, maxval=25, group=g4)
+lqT = input.float(0.06, "Толеранс (% от цената)", minval=0.01, step=0.01, group=g4)
+lqN = input.int(3,      "Колко да пази (от вид)", minval=1, maxval=8, group=g4)
+
+g5  = "5 · ТРЕНД ЛИНИИ"
+uTL = input.bool(true, "Чертай тренд линии", group=g5)
+tlP = input.int(8,     "Ширина на пивота", minval=3, maxval=40, group=g5)
+tlT = input.float(0.15, "Допир = до N × ATR от линията", minval=0.02, maxval=2, step=0.01, group=g5)
+
+g6  = "6 · СТРУКТУРА (BOS / CHoCH)"
+uST = input.bool(true, "Показвай счупванията", group=g6)
+stP = input.int(6,     "Ширина на суинга", minval=2, maxval=30, group=g6)
+
+g7  = "7 · ПРЕМИУМ / ДИСКАУНТ"
+uPZ = input.bool(true, "Показвай 50% на диапазона", group=g7)
+pzP = input.int(20,    "Диапазон от последните N барове", minval=5, maxval=120, group=g7)
+
+g8  = "8 · КЛЮЧОВИ НИВА"
+uPD = input.bool(true, "Предишен ден: макс / мин / затваряне", group=g8)
+uPW = input.bool(true, "Предишна седмица: макс / мин", group=g8)
+uAZ = input.bool(true, "Азиатски диапазон (днес)", group=g8)
+uMA = input.bool(true, "Дневни SMA 20 / 50 / 200 (както бота)", group=g8)
+
+g9  = "9 · СЕСИИ (софийско време)"
+uSS = input.bool(true, "Оцвети сесиите", group=g9)
+uSh = input.bool(true, "ЩИТ ЗА НОВИНА 15:25-16:15 (ботът не влиза)", group=g9)
+
+gA   = "10 · AERO НИВА"
+cmpL = input.bool(false, "Компактни надписи — кратък знак вместо цяло изречение", group=gA,
+     tooltip="Пълният текст се показва в балонче при посочване с мишката.")
+gapL = input.int(8, "  Минимално разстояние между надписи (свещи)", minval=0, maxval=60, group=gA,
+     tooltip="0 = без пазач (както беше). Пропуска се само НАДПИСЪТ, не самото събитие.")
+uL   = input.bool(true, "ТП1/ТП2/ТП3/СТОП (ДНЕВНА геометрия — не за скалп)", group=gA)
+dirM = input.string("Автоматично", "Посока", options=["Автоматично", "ШОРТ", "ЛОНГ"], group=gA)
+
+gB   = "11 · ПАНЕЛИ"
+uNow = input.bool(true,  "Панел СЕГА", group=gB)
+uT   = input.bool(false, "Табло с всички нива", group=gB)
+uLeg = input.bool(false, "Легенда — включи веднъж, после изключи", group=gB)
+
+// ═══ ЦВЕТОВЕ — ТЪМНА ПАЛИТРА ═══
+// Старите бяха светлите фабрични на TradingView (#089981 / #F23645) и се рисуваха с
+// 89-96% прозрачност → на бяла графика зоните и FVG-тата бяха практически невидими.
+// Тук са тъмни, наситени тонове; прозрачностите долу са свалени на 72-85%, така че
+// правоъгълниците се виждат ясно, но свещите пак се четат през тях.
+C_UP  = #0B6B45      // BUY зони / подкрепа — винаги зелено
+C_DN  = #9C2323      // SELL зони / съпротива — винаги червено
+C_LQ  = #D98200      // ликвидност EQH/EQL — винаги оранжево
+C_SW  = #FF6D00      // обрана ликвидност / свип — ярко оранжево
+C_FVG = #6A32A8      // FVG / гап — винаги лилаво
+C_KEY = #31445B      // ключови нива — синьо-сиво
+C_TL  = #1F5E9C      // тренд линии — синьо
+C_TP  = #00A86B      // TP / цели — ярко зелено
+C_SL  = #D63B3B      // STOP / риск — ярко червено
+C_MID = #F2C94C      // 50% / среда — жълто
+C_T1  = #00695C      // TF тежест 1 — ползва се само като резервен таг
+C_T2  = #16357A      // TF тежест 2 — ползва се само като резервен таг
+C_T3  = #5B1E7A      // TF тежест 3 — ползва се само като резервен таг
+C_TD  = #A12BC2      // дневен FVG — отделно лилаво/магента
+C_PNL = #0B0F16      // фон на панела
+C_STR = #A84900      // структура BOS/CHoCH — кафяво/тухлено
+C_TXT = #FFFFFF      // текст върху тъмните фонове
+// Прозрачности на един ред — да се сменят от ЕДНО място, не разпръснати из кода
+TR_ZONE = 76         // пълнеж на зоните (беше 89-92)
+TR_ZBRD = 0          // рамка на зоната — плътна
+TR_FVG  = 80         // пълнеж на FVG (беше 93)
+TR_FBRD = 15         // рамка на FVG (беше 45)
+TR_PD   = 88         // премиум/дискаунт фон (беше 96)
+
+f_tfname(t) => t == "5" ? "5м" : t == "15" ? "15м" : t == "30" ? "30м" : t == "60" ? "1ч" : t == "240" ? "4ч" : t == "D" ? "1ден" : t
+
+atrC = ta.atr(14)
+chartSec = timeframe.in_seconds()
+isFastChart = scalpVisual8 == "Скалп 1m/5m" and timeframe.isintraday and chartSec <= 300
+recentVisual8 = not isFastChart or bar_index >= last_bar_index - 12
+visualGap8 = isFastChart ? math.max(gapL, 45) : gapL
+atrSafe = nz(atrC, close * 0.003)
+band = bMode == "Автоматично (по ATR)" ? (isFastChart ? math.min(bMult, 4.5) : bMult) * atrSafe : close * bPct / 100.0
+f_near(v) => not na(v) and math.abs(v - close) <= band
+f_rcol(v) => na(v) ? C_KEY : v > close ? C_DN : C_UP
+f_pip(d) => str.tostring(math.round(math.abs(d) / pipSz)) + "п"
+
+[o1, h1, l1, c1, a1, k1] = request.security(syminfo.tickerid, tf1, [open[1], high[1], low[1], close[1], ta.atr(14)[1], time], lookahead=barmerge.lookahead_on)
+[o2, h2, l2, c2, a2, k2] = request.security(syminfo.tickerid, tf2, [open[1], high[1], low[1], close[1], ta.atr(14)[1], time], lookahead=barmerge.lookahead_on)
+[o3, h3, l3, c3, a3, k3] = request.security(syminfo.tickerid, tf3, [open[1], high[1], low[1], close[1], ta.atr(14)[1], time], lookahead=barmerge.lookahead_on)
+[o4, h4, l4, c4, a4, k4] = request.security(syminfo.tickerid, "D", [open[1], high[1], low[1], close[1], ta.atr(14)[1], time], lookahead=barmerge.lookahead_on)
+
+// 8 бара история на таймфрейм (нужни за проверката на свипа)
+var float[] A1 = array.new_float(32, na)
+var float[] A2 = array.new_float(32, na)
+var float[] A3 = array.new_float(32, na)
+var float[] A4 = array.new_float(32, na)
+
+f_push(a, o, h, l, c) =>
+    for i = 0 to 27
+        array.set(a, i, array.get(a, i + 4))
+    array.set(a, 28, o)
+    array.set(a, 29, h)
+    array.set(a, 30, l)
+    array.set(a, 31, c)
+
+// back: 0 = най-новият завършен бар · 7 = най-старият · f: 0=o 1=h 2=l 3=c
+f_at(a, back, f) => array.get(a, (7 - back) * 4 + f)
+
+f_minlow(a, fr, en) =>
+    m = 1e12
+    for b = fr to en
+        v = f_at(a, b, 2)
+        if not na(v) and v < m
+            m := v
+    m
+
+f_maxhigh(a, fr, en) =>
+    m = -1e12
+    for b = fr to en
+        v = f_at(a, b, 1)
+        if not na(v) and v > m
+            m := v
+    m
+
+n1 = ta.change(k1) != 0 and not na(c1)
+n2 = ta.change(k2) != 0 and not na(c2)
+n3 = ta.change(k3) != 0 and not na(c3)
+n4 = ta.change(k4) != 0 and not na(c4)
+if n1
+    f_push(A1, o1, h1, l1, c1)
+if n2
+    f_push(A2, o2, h2, l2, c2)
+if n3
+    f_push(A3, o3, h3, l3, c3)
+if n4
+    f_push(A4, o4, h4, l4, c4)
+
+// ═══ 1 · ЗОНИ — само след обрана ликвидност, с брояч на тестовете ═══
+var box[]    zB = array.new_box()
+var label[]  zL = array.new_label()
+var float[]  zM = array.new_float()
+var float[]  zT = array.new_float()
+var float[]  zBt = array.new_float()
+var int[]    zN = array.new_int()
+var bool[]   zI = array.new_bool()
+var string[] zX = array.new_string()
+var int[]    zTm = array.new_int()   // v8.3: време на раждане — за историческия отпечатък
+zHist   = input.bool(true,  "Оставяй отпечатък на умрелите зони", group=g2, tooltip="Зоната умира при допир до СРЕДАТА си (класическото 50% влизане) или след N теста — тоест зоната, която е РАБОТИЛА, се триеше като тази, която се е ПРОВАЛИЛА. Сега остава блед, закован правоъгълник от раждането до смъртта.")
+zHistTr = input.int(92, "  Прозрачност на отпечатъка", minval=80, maxval=100, group=g2)
+
+f_zone(top, bot, bull, tfn, col, cap, w) =>
+    mid = (top + bot) / 2
+    // v8.3: f_near() стоеше при СЪЗДАВАНЕТО. Зона, родена далеч от цената, изобщо не се
+    // раждаше — не се «криеше». После цената идваше на нея, а inZone (255) оставаше false →
+    // okL3 (643) мъртъв → чеклистът не можеше да стигне 5/5. Слоят видимост вече е на 251-254.
+    if top > bot
+        bg = color.new(bull ? C_UP : C_DN, TR_ZONE - w * 4)   // по-дебела рамка = по-плътен пълнеж
+        bd = color.new(bull ? C_UP : C_DN, TR_ZBRD)
+        base = (bull ? "▲ ЗОНА " : "▼ ЗОНА ") + tfn + " " + str.tostring(mid, "#.##")
+        array.push(zB, box.new(bar_index - 2, top, bar_index + (isFastChart ? 12 : 26), bot, border_color=bd, border_width=w, bgcolor=bg, extend=extend.right))
+        array.push(zL, label.new(bar_index + (isFastChart ? 7 : 26), mid, base + " · СВЕЖА", style=label.style_label_left, color=bull ? C_UP : C_DN, textcolor=color.white, size=size.tiny))
+        array.push(zM, mid)
+        array.push(zT, top)
+        array.push(zBt, bot)
+        array.push(zN, 0)
+        array.push(zI, false)
+        array.push(zX, base)
+        array.push(zTm, time)
+        while array.size(zB) > cap
+            box.delete(array.shift(zB))
+            label.delete(array.shift(zL))
+            array.shift(zM)
+            array.shift(zT)
+            array.shift(zBt)
+            array.shift(zN)
+            array.shift(zI)
+            array.shift(zX)
+            array.shift(zTm)
+
+f_ob(arr, atr, isNew, tfn, col, cap, w) =>
+    if uOB and isNew and not na(atr) and not na(f_at(arr, 2, 3))
+        cc = f_at(arr, 0, 3)
+        oo = f_at(arr, 0, 0)
+        pc = f_at(arr, 1, 3)
+        po = f_at(arr, 1, 0)
+        ph = f_at(arr, 1, 1)
+        pl = f_at(arr, 1, 2)
+        imp = math.abs(cc - oo) > obK * atr
+        // СВИП: барът, от който тръгва импулсът, е взел дъното/върха на предходните барове
+        swBull = not obSw or (not na(pl) and pl < f_minlow(arr, 2, math.min(obLB + 1, 7)))
+        swBear = not obSw or (not na(ph) and ph > f_maxhigh(arr, 2, math.min(obLB + 1, 7)))
+        if imp and cc > oo and pc < po and swBull
+            f_zone(math.max(ph, po), math.min(pl, pc), true, tfn, col, cap, w)
+        if imp and cc < oo and pc > po and swBear
+            f_zone(math.max(ph, pc), math.min(pl, po), false, tfn, col, cap, w)
+
+zcap = obN * 6   // v8.3: раждат се повече, защото f_near вече не спира създаването
+f_ob(A1, a1, n1 and t1On, f_tfname(tf1), C_T1, zcap, 1)
+f_ob(A2, a2, n2 and t2On, f_tfname(tf2), C_T2, zcap, 2)
+f_ob(A3, a3, n3 and t3On, f_tfname(tf3), C_T3, zcap, 4)
+
+// СВЕЖЕСТ + ИЗЯДЕНА ЗОНА → ИЗЧЕЗВА
+inZone = false
+if array.size(zM) > 0
+    for i = array.size(zM) - 1 to 0
+        tp = array.get(zT, i)
+        bt = array.get(zBt, i)
+        m  = array.get(zM, i)
+        zObj = array.get(zB, i)
+        zLab = array.get(zL, i)
+        zoneVisible = f_near(m)
+        box.set_top(zObj, zoneVisible ? tp : na)
+        box.set_bottom(zObj, zoneVisible ? bt : na)
+        label.set_y(zLab, zoneVisible ? m : na)
+        nowIn = low <= tp and high >= bt
+        if nowIn
+            inZone := true
+        if nowIn and not array.get(zI, i)
+            array.set(zN, i, array.get(zN, i) + 1)
+            nn = array.get(zN, i)
+            label.set_text(array.get(zL, i), array.get(zX, i) + (nn == 0 ? " · СВЕЖА" : " · " + str.tostring(nn) + " тест"))
+            box.set_bgcolor(array.get(zB, i), color.new(color.gray, 94))
+        array.set(zI, i, nowIn)
+        dead = (low <= m and high >= m) or array.get(zN, i) >= obKill
+        if dead
+            // v8.3 · ИСТОРИЧЕСКИ ОТПЕЧАТЪК. По ВРЕМЕ (xloc.bar_time), защото раждането може
+            // да е далеч назад, а max_bars_back тук е само 500.
+            if zHist
+                bool zAte8 = low <= m and high >= m
+                bool zBul8 = str.startswith(array.get(zX, i), "▲")
+                color zc8 = zAte8 ? (zBul8 ? C_UP : C_DN) : color.gray
+                box.new(array.get(zTm, i), tp, time, bt, xloc=xloc.bar_time,
+                     border_color=color.new(zc8, zAte8 ? 35 : 55), border_width=1,
+                     border_style=zAte8 ? line.style_solid : line.style_dotted,
+                     bgcolor=color.new(zc8, zAte8 ? zHistTr : 100),
+                     text=zAte8 ? "ИЗЯДЕНА 50%" : "ИЗЧЕРПАНА " + str.tostring(array.get(zN, i)) + " теста",
+                     text_size=size.tiny, text_color=color.new(zc8, 40),
+                     text_halign=text.align_left, text_valign=text.align_center)
+            box.delete(array.get(zB, i))
+            label.delete(array.get(zL, i))
+            array.remove(zB, i)
+            array.remove(zL, i)
+            array.remove(zM, i)
+            array.remove(zT, i)
+            array.remove(zBt, i)
+            array.remove(zN, i)
+            array.remove(zI, i)
+            array.remove(zX, i)
+            array.remove(zTm, i)
+
+// ═══ 2 · ИМБАЛАНС (FVG) — вкл. ДНЕВЕН ═══
+var box[]   fB = array.new_box()
+var float[] fT = array.new_float()
+var float[] fBt = array.new_float()
+var bool[]  fU = array.new_bool()
+
+f_fvg(arr, isNew, tfn, cap, wid) =>
+    if uFV and isNew and not na(f_at(arr, 2, 1))
+        hA = f_at(arr, 2, 1)
+        lA = f_at(arr, 2, 2)
+        h0 = f_at(arr, 0, 1)
+        l0 = f_at(arr, 0, 2)
+        bull = l0 > hA
+        bear = h0 < lA
+        if bull or bear
+            tp = bull ? l0 : lA
+            bt = bull ? hA : h0
+            if tp > bt   // v8.3: видимостта се пази на 325-327, не при раждането
+                fvgCol = tfn == "1ден" ? C_TD : C_FVG
+                array.push(fB, box.new(bar_index - 1, tp, bar_index + (isFastChart ? 12 : 26), bt, border_color=color.new(fvgCol, TR_FBRD), border_width=wid, bgcolor=color.new(fvgCol, TR_FVG), extend=extend.right, text="ГАП " + tfn + (bull ? " ▲" : " ▼"), text_size=size.tiny, text_color=color.new(fvgCol, 0), text_halign=text.align_left))
+                array.push(fT, tp)
+                array.push(fBt, bt)
+                array.push(fU, bull)
+                while array.size(fB) > cap
+                    box.delete(array.shift(fB))
+                    array.shift(fT)
+                    array.shift(fBt)
+                    array.shift(fU)
+
+fcap = fvN * 8   // v8.3: същата причина
+f_fvg(A1, n1 and t1On, f_tfname(tf1), fcap, 1)
+f_fvg(A2, n2 and t2On, f_tfname(tf2), fcap, 1)
+f_fvg(A3, n3 and t3On, f_tfname(tf3), fcap, 2)
+f_fvg(A4, n4 and uFVD, "1ден", fcap, 3)
+
+if array.size(fB) > 0
+    for i = array.size(fB) - 1 to 0
+        tp = array.get(fT, i)
+        bt = array.get(fBt, i)
+        fObj = array.get(fB, i)
+        filled = array.get(fU, i) ? low <= bt : high >= tp
+        if filled
+            box.delete(fObj)
+            array.remove(fB, i)
+            array.remove(fT, i)
+            array.remove(fBt, i)
+            array.remove(fU, i)
+        else
+            fvgVisible = f_near((tp + bt) / 2)
+            box.set_top(fObj, fvgVisible ? tp : na)
+            box.set_bottom(fObj, fvgVisible ? bt : na)
+
+// ═══ 3 · ЛИКВИДНОСТ + СВИП МАРКЕР ═══
+var line[]  qN = array.new_line()
+var label[] qB = array.new_label()
+var float[] qY = array.new_float()
+var bool[]  qH = array.new_bool()
+pvH = ta.pivothigh(high, lqP, lqP)
+pvL = ta.pivotlow(low, lqP, lqP)
+var float lastPH = na
+var float lastPL = na
+// v8.4: процентът от цената не мащабира с рамката — на 1 минута хващаше почти всеки пивот,
+// на 4 часа не хващаше нищо. Взима се по-голямото от процента и четвърт ATR.
+tolA = math.max(close * lqT / 100.0, nz(atrC, close * 0.003) * 0.25)
+
+f_liq(y, txt, col, isHigh) =>
+    if not na(y)   // v8.3: видимостта се пази при рисуването, не при раждането
+        string qTxt = isFastChart ? (isHigh ? "РАВНИ ВЪРХОВЕ" : "РАВНИ ДЪНА") : txt
+        array.push(qN, line.new(bar_index - 60, y, bar_index + (isFastChart ? 8 : 22), y, color=color.new(col, 15), width=1, style=line.style_dashed))
+        array.push(qB, label.new(bar_index + (isFastChart ? 8 : 22), y, qTxt + " " + str.tostring(y, "#.##"), style=label.style_label_left, color=col, textcolor=color.white, size=size.tiny))
+        array.push(qY, y)
+        array.push(qH, isHigh)
+        // v8.3: таванът беше ОБЩ — array.shift маха най-стария изобщо. В тренд едната страна
+        // изтласкваше другата → нямаше какво да се обере отдолу → лонг в възходящ тренд беше сляп.
+        int capS8 = isFastChart ? math.min(lqN, 2) : lqN
+        int cntS8 = 0
+        for jj = array.size(qN) - 1 to 0
+            if array.get(qH, jj) == isHigh
+                cntS8 += 1
+                if cntS8 > capS8
+                    line.delete(array.get(qN, jj))
+                    label.delete(array.get(qB, jj))
+                    array.remove(qN, jj)
+                    array.remove(qB, jj)
+                    array.remove(qY, jj)
+                    array.remove(qH, jj)
+
+// v8.4 · ПАМЕТ ЗА ПОВЕЧЕ ОТ ЕДИН ВРЪХ
+// lastPH пазеше САМО последния пивот и се презаписваше при всеки следващ → сравняваха се
+// само две СЪСЕДНИ върхчета. Двойно дъно с междинен пивот помежду беше НЕВИДИМО.
+// Сега помним последните lqMem8 пивота от всяка страна и сравняваме новия с ВСИЧКИ.
+lqMem8 = input.int(10, "Колко върха и дъна назад да помни", minval=2, maxval=30, group=g4, tooltip="Досега помнеше САМО последния. Затова двойно дъно с междинен пивот помежду беше невидимо.")
+var float[] pvHi8 = array.new_float()
+var float[] pvLo8 = array.new_float()
+f_eqc8(arr, price, tol) =>
+    int n = 0
+    if array.size(arr) > 0
+        for j = 0 to array.size(arr) - 1
+            if math.abs(array.get(arr, j) - price) <= tol
+                n += 1
+    n
+f_liq_drop8(price, tol, isHigh) =>
+    if array.size(qY) > 0
+        for j = array.size(qY) - 1 to 0
+            if array.get(qH, j) == isHigh and math.abs(array.get(qY, j) - price) <= tol
+                line.delete(array.get(qN, j))
+                label.delete(array.get(qB, j))
+                array.remove(qN, j)
+                array.remove(qB, j)
+                array.remove(qY, j)
+                array.remove(qH, j)
+if uLQ and not na(pvH)
+    int eqH8 = f_eqc8(pvHi8, pvH, tolA)
+    if eqH8 >= 1
+        f_liq_drop8(pvH, tolA, true)
+        f_liq(pvH, "РАВНИ ВЪРХОВЕ · " + str.tostring(math.min(eqH8 + 1, 5)) + " допира · тук стоят стопове", C_LQ, true)
+    array.push(pvHi8, pvH)
+    while array.size(pvHi8) > lqMem8
+        array.shift(pvHi8)
+    lastPH := pvH
+if uLQ and not na(pvL)
+    int eqL8 = f_eqc8(pvLo8, pvL, tolA)
+    if eqL8 >= 1
+        f_liq_drop8(pvL, tolA, false)
+        f_liq(pvL, "РАВНИ ДЪНА · " + str.tostring(math.min(eqL8 + 1, 5)) + " допира · тук стоят стопове", C_LQ, false)
+    array.push(pvLo8, pvL)
+    while array.size(pvLo8) > lqMem8
+        array.shift(pvLo8)
+    lastPL := pvL
+
+swUp = false
+swDn = false
+if uSW and array.size(qY) > 0
+    for i = array.size(qY) - 1 to 0
+        y = array.get(qY, i)
+        qVisible = f_near(y)
+        qLine = array.get(qN, i)
+        qLabel = array.get(qB, i)
+        line.set_y1(qLine, qVisible ? y : na)
+        line.set_y2(qLine, qVisible ? y : na)
+        line.set_x2(qLine, bar_index + (isFastChart ? 8 : 22))
+        label.set_y(qLabel, qVisible ? y : na)
+        label.set_x(qLabel, bar_index + (isFastChart ? 8 : 22))
+        if array.get(qH, i) and high > y and close < y
+            swUp := true
+        if not array.get(qH, i) and low < y and close > y
+            swDn := true
+var int evUpO = na
+var int evDnO = na
+if swUp and recentVisual8 and (na(evUpO) or bar_index - evUpO >= visualGap8)
+    evUpO := bar_index
+    label.new(bar_index, high, cmpL ? "⚡↑" : "⚡ ОБРАНИ СТОПОВЕ ГОРЕ", tooltip="ОБРАНИ СТОПОВЕ ГОРЕ", style=label.style_label_down, color=color.new(C_SW, 0), textcolor=color.white, size=size.tiny)
+if swDn and recentVisual8 and (na(evDnO) or bar_index - evDnO >= visualGap8)
+    evDnO := bar_index
+    label.new(bar_index, low, cmpL ? "⚡↓" : "⚡ ОБРАНИ СТОПОВЕ ДОЛУ", tooltip="ОБРАНИ СТОПОВЕ ДОЛУ", style=label.style_label_up, color=color.new(C_SW, 0), textcolor=color.white, size=size.tiny)
+
+// ═══ 4 · СТРУКТУРА: BOS / CHoCH ═══
+stH = ta.pivothigh(high, stP, stP)
+stL = ta.pivotlow(low, stP, stP)
+var float swH = na
+var float swL = na
+var int   trn = 0
+if not na(stH)
+    swH := stH
+if not na(stL)
+    swL := stL
+
+var int evBosUp8 = na
+var int evBosDn8 = na
+bosU = uST and not na(swH) and close > swH
+bosD = uST and not na(swL) and close < swL
+if bosU
+    txtU = trn == -1 ? "CHoCH ↑ обръщане" : "BOS ↑ продължение"
+    if recentVisual8 and (na(evBosUp8) or bar_index - evBosUp8 >= visualGap8)
+        evBosUp8 := bar_index
+        line.new(bar_index - stP, swH, bar_index, swH, color=color.new(C_STR, 20), width=1, style=line.style_dotted)
+        label.new(bar_index, swH, txtU, style=label.style_label_down, color=color.new(C_STR, 10), textcolor=color.white, size=size.tiny)
+    trn := 1
+    swH := na
+if bosD
+    txtD = trn == 1 ? "CHoCH ↓ обръщане" : "BOS ↓ продължение"
+    if recentVisual8 and (na(evBosDn8) or bar_index - evBosDn8 >= visualGap8)
+        evBosDn8 := bar_index
+        line.new(bar_index - stP, swL, bar_index, swL, color=color.new(C_STR, 20), width=1, style=line.style_dotted)
+        label.new(bar_index, swL, txtD, style=label.style_label_up, color=color.new(C_STR, 10), textcolor=color.white, size=size.tiny)
+    trn := -1
+    swL := na
+
+// ═══ 5 · ПРЕМИУМ / ДИСКАУНТ ═══
+rgH = ta.highest(high, pzP)
+rgL = ta.lowest(low, pzP)
+eq  = (rgH + rgL) / 2
+zone = close > eq ? "ПРЕМИУМ — скъпо, търси ШОРТ" : "ДИСКАУНТ — евтино, търси ЛОНГ"
+var line  eqLn = na
+var label eqLb = na
+var box   pBox = na
+var box   dBox = na
+if uPZ and barstate.islast
+    line.delete(eqLn)
+    label.delete(eqLb)
+    box.delete(pBox)
+    box.delete(dBox)
+    eqLn := line.new(bar_index - pzP, eq, bar_index + 20, eq, color=color.new(C_MID, 10), width=2, style=line.style_solid)
+    eqLb := label.new(bar_index + 20, eq, "50% " + str.tostring(eq, "#.##") + " · " + (close > eq ? "ПРЕМИУМ ▲" : "ДИСКАУНТ ▼"), style=label.style_label_left, color=color.new(#F9A825, 5), textcolor=color.white, size=size.tiny)
+    pBox := box.new(bar_index - pzP, rgH, bar_index + 20, eq, border_color=color.new(C_DN, 55), bgcolor=color.new(C_DN, TR_PD), extend=extend.right)
+    dBox := box.new(bar_index - pzP, eq, bar_index + 20, rgL, border_color=color.new(C_UP, 55), bgcolor=color.new(C_UP, TR_PD), extend=extend.right)
+
+// ═══ 6 · ТРЕНД ЛИНИИ с брой докосвания ═══
+tpH = ta.pivothigh(high, tlP, tlP)
+tpL = ta.pivotlow(low, tlP, tlP)
+var float hA1 = na
+var float hA2 = na
+var int   hX1 = na
+var int   hX2 = na
+var float lA1 = na
+var float lA2 = na
+var int   lX1 = na
+var int   lX2 = na
+// v8.1 · успоредно ВРЕМЕ за тренд линиите — рисуването по стар бар-индекс
+// гърми на ниска рамка (max_bars_back=500 ≈ под 2 дни на 5м). Сметките остават на барове.
+var int   hT1 = na
+var int   hT2 = na
+var int   lT1 = na
+var int   lT2 = na
+if not na(tpH)
+    hA2 := hA1
+    hX2 := hX1
+    hT2 := hT1
+    hA1 := tpH
+    hX1 := bar_index - tlP
+    hT1 := time[tlP]
+if not na(tpL)
+    lA2 := lA1
+    lX2 := lX1
+    lT2 := lT1
+    lA1 := tpL
+    lX1 := bar_index - tlP
+    lT1 := time[tlP]
+
+tolL = nz(atrC, close * 0.002) * tlT
+
+f_tcount(y1, x1, y2, x2) =>
+    cnt = 0
+    if not na(y1) and not na(y2) and x1 > x2
+        sl = (y1 - y2) / (x1 - x2)
+        back = math.min(bar_index - x2, 400)
+        for i = 0 to back
+            yy = y1 + sl * (bar_index - i - x1)
+            if math.abs(high[i] - yy) <= tolL or math.abs(low[i] - yy) <= tolL
+                cnt += 1
+    cnt
+
+var line  tlHl = na
+var line  tlLl = na
+var label tlHb = na
+var label tlLb = na
+if uTL and barstate.islast
+    line.delete(tlHl)
+    line.delete(tlLl)
+    label.delete(tlHb)
+    label.delete(tlLb)
+    if not na(hA2) and not na(hA1) and hX1 > hX2 and not na(hT1) and not na(hT2)
+        slH = (hA1 - hA2) / (hX1 - hX2)
+        prH = hA1 + slH * (bar_index - hX1)
+        visH = f_near(prH)
+        cH = f_tcount(hA1, hX1, hA2, hX2)
+        brokeH = close > prH + tolL
+        tlHl := line.new(hT2, visH ? hA2 : na, hT1, visH ? hA1 : na, xloc=xloc.bar_time, extend=extend.right, color=color.new(brokeH ? C_KEY : C_TL, 20), width=brokeH ? 1 : 2, style=brokeH ? line.style_dotted : line.style_solid)
+        tlHb := label.new(bar_index + (isFastChart ? 5 : 8), visH ? prH : na, (brokeH ? "ТРЕНД ↓ СЧУПЕНА" : "ТРЕНД ↓") + " · " + str.tostring(cH) + " допира", style=label.style_label_left, color=color.new(brokeH ? C_KEY : C_TL, 10), textcolor=color.white, size=size.tiny)
+    if not na(lA2) and not na(lA1) and lX1 > lX2 and not na(lT1) and not na(lT2)
+        slL = (lA1 - lA2) / (lX1 - lX2)
+        prL = lA1 + slL * (bar_index - lX1)
+        visL = f_near(prL)
+        cL = f_tcount(lA1, lX1, lA2, lX2)
+        brokeL = close < prL - tolL
+        tlLl := line.new(lT2, visL ? lA2 : na, lT1, visL ? lA1 : na, xloc=xloc.bar_time, extend=extend.right, color=color.new(brokeL ? C_KEY : C_TL, 20), width=brokeL ? 1 : 2, style=brokeL ? line.style_dotted : line.style_solid)
+        tlLb := label.new(bar_index + (isFastChart ? 5 : 8), visL ? prL : na, (brokeL ? "ТРЕНД ↑ СЧУПЕНА" : "ТРЕНД ↑") + " · " + str.tostring(cL) + " допира", style=label.style_label_left, color=color.new(brokeL ? C_KEY : C_TL, 10), textcolor=color.white, size=size.tiny)
+
+// ═══ 7 · КЛЮЧОВИ НИВА ═══
+[pdH, pdL, pdC, s20, s50, s200] = request.security(syminfo.tickerid, "D", [high[1], low[1], close[1], ta.sma(close, 20)[1], ta.sma(close, 50)[1], ta.sma(close, 200)[1]], lookahead=barmerge.lookahead_on)
+[pwH, pwL] = request.security(syminfo.tickerid, "W", [high[1], low[1]], lookahead=barmerge.lookahead_on)
+
+inAZ = not na(time(timeframe.period, "0300-1100:1234567", "Europe/Sofia"))
+var float azH = na
+var float azL = na
+if inAZ and not inAZ[1]
+    azH := high
+    azL := low
+else if inAZ
+    azH := math.max(nz(azH, high), high)
+    azL := math.min(nz(azL, low), low)
+
+f_res(cur, cand) => na(cand) or cand <= close ? cur : (na(cur) or cand < cur ? cand : cur)
+f_sup(cur, cand) => na(cand) or cand >= close ? cur : (na(cur) or cand > cur ? cand : cur)
+
+float RES = na
+RES := f_res(RES, pdH)
+RES := f_res(RES, pdL)
+RES := f_res(RES, pdC)
+RES := f_res(RES, pwH)
+RES := f_res(RES, pwL)
+RES := f_res(RES, azH)
+RES := f_res(RES, azL)
+RES := f_res(RES, s20)
+RES := f_res(RES, s50)
+RES := f_res(RES, s200)
+
+float SUP = na
+SUP := f_sup(SUP, pdH)
+SUP := f_sup(SUP, pdL)
+SUP := f_sup(SUP, pdC)
+SUP := f_sup(SUP, pwH)
+SUP := f_sup(SUP, pwL)
+SUP := f_sup(SUP, azH)
+SUP := f_sup(SUP, azL)
+SUP := f_sup(SUP, s20)
+SUP := f_sup(SUP, s50)
+SUP := f_sup(SUP, s200)
+
+f_lname(v) => na(v) ? "—" : v == pdH ? "вчера макс" : v == pdL ? "вчера мин" : v == pdC ? "вчера затв" : v == pwH ? "седм.макс" : v == pwL ? "седм.мин" : v == azH ? "Азия макс" : v == azL ? "Азия мин" : v == s20 ? "SMA20" : v == s50 ? "SMA50" : v == s200 ? "SMA200" : "ниво"
+
+isSh = dirM == "ШОРТ" ? true : dirM == "ЛОНГ" ? false : (na(s50) ? false : close < s50)
+sg   = isSh ? -1.0 : 1.0
+tp1  = close + sg * 7.5
+tp2  = close + sg * 12.0
+tp3  = close + sg * 20.0
+slv  = close - sg * 20.0
+
+var line[]  kN = array.new_line()
+var label[] kB = array.new_label()
+
+f_key(y, txt, col, sty, back) =>
+    if f_near(y)
+        array.push(kN, line.new(bar_index - back, y, bar_index + (isFastChart ? 10 : 16), y, color=col, width=1, style=sty))
+        array.push(kB, label.new(bar_index + (isFastChart ? 10 : 16), y, txt, style=label.style_label_left, color=col, textcolor=color.white, size=size.tiny))
+
+// v8.1a · същото като f_key, но БЕЗ филтъра f_near.
+// Защо: band = bMult(9.0) × ATR(14). ЦЕЛ3 и СТОП са на 20$ от цената, значи се
+// чертаеха само при ATR(14) ≥ 20/9 = 2.22. На 5м злато това почти не се случва →
+// стопът и третата цел «липсваха». Ползва се САМО от AERO стълбата (uL).
+f_key_always(y, txt, col, sty, back) =>
+    if not na(y)
+        array.push(kN, line.new(bar_index - back, y, bar_index + (isFastChart ? 10 : 16), y, color=col, width=1, style=sty))
+        array.push(kB, label.new(bar_index + (isFastChart ? 10 : 16), y, txt, style=label.style_label_left, color=col, textcolor=color.white, size=size.tiny))
+
+f_lvl(y, name, sty, back) =>
+    if f_near(y)
+        f_key(y, (y > close ? "⊤ " : "⊥ ") + name + " " + str.tostring(y, "#.##") + " · " + f_pip(y - close), color.new(f_rcol(y), 8), sty, back)
+
+if barstate.islast
+    while array.size(kN) > 0
+        line.delete(array.pop(kN))
+    while array.size(kB) > 0
+        label.delete(array.pop(kB))
+    if uPD
+        f_lvl(pdH, "вчера макс", line.style_solid,  90)
+        f_lvl(pdL, "вчера мин",  line.style_solid,  90)
+        f_lvl(pdC, "вчера затв", line.style_dotted, 90)
+    if uPW
+        f_lvl(pwH, "седм.макс", line.style_solid, 130)
+        f_lvl(pwL, "седм.мин",  line.style_solid, 130)
+    if uAZ
+        f_lvl(azH, "Азия макс", line.style_dashed, 70)
+        f_lvl(azL, "Азия мин",  line.style_dashed, 70)
+    if uMA
+        f_lvl(s20,  "SMA20",  line.style_dotted, 60)
+        f_lvl(s50,  "SMA50",  line.style_dotted, 60)
+        f_lvl(s200, "SMA200", line.style_dotted, 60)
+    if uL and not isFastChart
+        f_key_always(close, (isSh ? "ВХОД ШОРТ " : "ВХОД ЛОНГ ") + str.tostring(close, "#.##"), color.new(C_PNL, 10), line.style_solid, 40)
+        f_key_always(tp1, "ЦЕЛ1 " + str.tostring(tp1, "#.##") + " · " + f_pip(tp1 - close), color.new(C_TP, 5),  line.style_dashed, 40)
+        f_key_always(tp2, "ЦЕЛ2 " + str.tostring(tp2, "#.##") + " · " + f_pip(tp2 - close), color.new(C_TP, 35), line.style_dashed, 40)
+        f_key_always(tp3, "ЦЕЛ3 " + str.tostring(tp3, "#.##") + " · " + f_pip(tp3 - close), color.new(C_TP, 55), line.style_dashed, 40)
+        f_key_always(slv, "СТОП " + str.tostring(slv, "#.##") + " · " + f_pip(slv - close), color.new(C_SL, 5),  line.style_dotted, 40)
+
+// ═══ СЕСИИ ═══
+itr = timeframe.isintraday
+sA  = uSS and itr and not na(time(timeframe.period, "0300-1100:1234567", "Europe/Sofia"))
+sL  = uSS and itr and not na(time(timeframe.period, "1000-1830:1234567", "Europe/Sofia"))
+sN  = uSS and itr and not na(time(timeframe.period, "1530-2200:1234567", "Europe/Sofia"))
+sS  = uSh and itr and not na(time(timeframe.period, "1525-1615:1234567", "Europe/Sofia"))
+bgcolor(sA ? color.new(#42A5F5, 95) : na, title="Азия 03:00-11:00")
+bgcolor(sL ? color.new(#FDD835, 95) : na, title="Лондон 10:00-18:30")
+bgcolor(sN ? color.new(#66BB6A, 95) : na, title="Ню Йорк 15:30-22:00")
+bgcolor(sS ? color.new(#EF5350, 85) : na, title="ЩИТ ЗА НОВИНА 15:25-16:15")
+plotchar(sA and not sA[1], "Азия отваря",    "Аз", location.bottom, #42A5F5, size=size.tiny)
+plotchar(sL and not sL[1], "Лондон отваря",  "Лон", location.bottom, #F9A825, size=size.tiny)
+plotchar(sN and not sN[1], "Ню Йорк отваря", "Ню", location.bottom, #66BB6A, size=size.tiny)
+plotchar(sS and not sS[1], "ЩИТ ЗА НОВИНА",         "!", location.top,    #EF5350, size=size.tiny)
+
+// ═══ ПАНЕЛ СЕГА ═══
+dR = na(RES) ? na : RES - close
+dS = na(SUP) ? na : close - SUP
+pos = na(RES) or na(SUP) ? "—" : dR < dS / 2 ? "ДО СЪПРОТИВА — внимавай с лонг" : dS < dR / 2 ? "ДО ПОДКРЕПА — внимавай с шорт" : "В СРЕДАТА — чакай ръб"
+trd = trn == 1 ? "НАГОРЕ (последно BOS ↑)" : trn == -1 ? "НАДОЛУ (последно BOS ↓)" : (na(s50) ? "—" : close > s50 ? "НАГОРЕ (над SMA50)" : "НАДОЛУ (под SMA50)")
+
+// СКАЛП ПЛАН — цел и стоп по РЕАЛНИ нива, не по фиксирани пипове
+lTg = RES
+lSt = na(SUP) ? na : SUP - nz(atrC, 0) * 0.3
+lRR = na(lTg) or na(lSt) or close - lSt <= 0 ? na : (lTg - close) / (close - lSt)
+sTg = SUP
+sSt = na(RES) ? na : RES + nz(atrC, 0) * 0.3
+sRR = na(sTg) or na(sSt) or sSt - close <= 0 ? na : (close - sTg) / (sSt - close)
+lTx = na(lTg) or na(lSt) ? "—" : "v8· цел " + str.tostring(lTg, "#.##") + " " + f_pip(lTg - close) + " · стоп " + str.tostring(lSt, "#.##") + " " + f_pip(close - lSt) + " · R:R " + (na(lRR) ? "—" : str.tostring(lRR, "#.#"))
+sTx = na(sTg) or na(sSt) ? "—" : "v8· цел " + str.tostring(sTg, "#.##") + " " + f_pip(close - sTg) + " · стоп " + str.tostring(sSt, "#.##") + " " + f_pip(sSt - close) + " · R:R " + (na(sRR) ? "—" : str.tostring(sRR, "#.#"))
+
+// ГОТОВНОСТ НА СЕТЪПА — чеклист, НЕ сигнал. Показва кои условия са налице.
+swRecDn = nz(ta.barssince(swDn), 999) <= 10
+swRecUp = nz(ta.barssince(swUp), 999) <= 10
+okL1 = swRecDn
+okL2 = not na(eq) and close < eq
+okL3 = inZone
+okL4 = trn == 1
+okL5 = not na(lRR) and lRR >= 1.5
+nL = (okL1 ? 1 : 0) + (okL2 ? 1 : 0) + (okL3 ? 1 : 0) + (okL4 ? 1 : 0) + (okL5 ? 1 : 0)
+tL = str.tostring(nL) + "/5  свип" + (okL1 ? "+" : "-") + " дискаунт" + (okL2 ? "+" : "-") + " зона" + (okL3 ? "+" : "-") + " BOS" + (okL4 ? "+" : "-") + " R:R" + (okL5 ? "+" : "-")
+okS1 = swRecUp
+okS2 = not na(eq) and close > eq
+okS3 = inZone
+okS4 = trn == -1
+okS5 = not na(sRR) and sRR >= 1.5
+nS = (okS1 ? 1 : 0) + (okS2 ? 1 : 0) + (okS3 ? 1 : 0) + (okS4 ? 1 : 0) + (okS5 ? 1 : 0)
+tS = str.tostring(nS) + "/5  свип" + (okS1 ? "+" : "-") + " премиум" + (okS2 ? "+" : "-") + " зона" + (okS3 ? "+" : "-") + " BOS" + (okS4 ? "+" : "-") + " R:R" + (okS5 ? "+" : "-")
+
+// ═══ ПРИСЪДА — един ред, който казва КАКВО ДА ПРАВИШ ═══
+// Не измисля нищо ново: чете сметките отгоре (готовност, R:R, щит) и ги превежда на човешки.
+// Правилата са ЯВНИ, за да знаеш точно защо пише каквото пише:
+//   щит активен            → НЕ ВЛИЗАЙ (новина; ботът също не влиза в този прозорец)
+//   готовност ≥4 и R:R ≥1.5 → ВЛИЗАЙ в тази посока, с нивата от реда СКАЛП
+//   готовност =3            → БЛИЗО е, чака се още едно условие — казва се кое липсва
+//   иначе                   → ЧАКАЙ
+// Ако И ДВЕТЕ посоки са готови (рядко, при свит диапазон) → ЧАКАЙ, защото е двусмислено.
+lReady = nL >= 4 and not na(lRR) and lRR >= 1.5
+sReady = nS >= 4 and not na(sRR) and sRR >= 1.5
+missL  = (okL1 ? "" : "свип ") + (okL2 ? "" : "дискаунт ") + (okL3 ? "" : "зона ") + (okL4 ? "" : "BOS↑ ") + (okL5 ? "" : "R:R ")
+missS  = (okS1 ? "" : "свип ") + (okS2 ? "" : "премиум ") + (okS3 ? "" : "зона ") + (okS4 ? "" : "BOS↓ ") + (okS5 ? "" : "R:R ")
+verdict = sS ? "🚫 НЕ ВЛИЗАЙ — ЩИТ ЗА НОВИНА (новина)" :
+   lReady and sReady ? "⏸ ЧАКАЙ — двете посоки светят, диапазонът е свит" :
+   lReady ? "🟢 ЛОНГ СЕГА · " + lTx :
+   sReady ? "🔴 ШОРТ СЕГА · " + sTx :
+   nL == 3 ? "🟡 БЛИЗО ЛОНГ — липсва: " + missL :
+   nS == 3 ? "🟡 БЛИЗО ШОРТ — липсва: " + missS :
+   "⏸ ЧАКАЙ — няма ръб (лонг " + str.tostring(nL) + "/5 · шорт " + str.tostring(nS) + "/5)"
+// v8.3 · ИСТОРИЯ НА ГОТОВНОСТТА · plotshape е СЕРИЯ, не рисунков обект → няма таван от 450.
+plotshape(lReady and not lReady[1], title="История · v8 ЛОНГ готов", style=shape.triangleup, location=location.belowbar, color=C_UP, size=size.tiny)
+plotshape(sReady and not sReady[1], title="История · v8 ШОРТ готов", style=shape.triangledown, location=location.abovebar, color=C_DN, size=size.tiny)
+vCol = sS ? C_DN : lReady ? C_UP : sReady ? C_DN : (nL == 3 or nS == 3) ? #B38600 : C_KEY
+// Ред 2: какво да правиш КОГАТО цената стигне нивото — не какво е нивото
+plan = na(RES) or na(SUP) ? "—" :
+   dR < dS / 2 ? "цената е ДО СЪПРОТИВА " + str.tostring(RES, "#.##") + " → там чакай ОТБИВ за шорт; ако я ПРОБИЕ и се задържи — лонг след ретест" :
+   dS < dR / 2 ? "цената е ДО ПОДКРЕПА " + str.tostring(SUP, "#.##") + " → там чакай ОТБИВ за лонг; ако я ПРОБИЕ и се задържи — шорт след ретест" :
+   "цената е В СРЕДАТА (" + str.tostring(SUP, "#.##") + " ↔ " + str.tostring(RES, "#.##") + ") → тук не се влиза, чакай да стигне край"
+
+var table nw = table.new(isFastChart ? position.bottom_right : position.bottom_left, 2, 13, border_width=1, frame_width=1, frame_color=color.new(C_KEY, 20))
+if uNow and barstate.islast
+    table.clear(nw, 0, 0, 1, 12)
+    if isFastChart
+        fastState8 = sS ? "ЩИТ ЗА НОВИНА" : lReady ? "ЛОНГ" : sReady ? "ШОРТ" : "ЧАКАЙ"
+        fastLevels8 = (na(RES) ? "R —" : "R " + str.tostring(RES, "#.##")) + " · " + (na(SUP) ? "S —" : "S " + str.tostring(SUP, "#.##"))
+        table.cell(nw, 0, 0, "АЕРО в8", text_color=C_TXT, bgcolor=color.new(vCol, 0), text_size=size.tiny)
+        table.cell(nw, 1, 0, fastState8, text_color=C_TXT, bgcolor=color.new(vCol, 0), text_size=size.tiny)
+        table.cell(nw, 0, 1, "Съпротива / Подкрепа", text_color=C_KEY, bgcolor=color.new(C_PNL, 8), text_size=size.tiny)
+        table.cell(nw, 1, 1, fastLevels8, text_color=C_TXT, bgcolor=color.new(C_PNL, 8), text_size=size.tiny)
+        table.cell(nw, 0, 2, "ГОТОВНОСТ", text_color=C_KEY, bgcolor=color.new(C_PNL, 8), text_size=size.tiny)
+        table.cell(nw, 1, 2, "Лонг " + str.tostring(nL) + "/5 · Шорт " + str.tostring(nS) + "/5", text_color=C_TXT, bgcolor=color.new(C_PNL, 8), text_size=size.tiny)
+        table.cell(nw, 0, 3, "СТРУКТУРА", text_color=C_STR, bgcolor=color.new(C_PNL, 8), text_size=size.tiny)
+        table.cell(nw, 1, 3, trd, text_color=C_TXT, bgcolor=color.new(C_PNL, 8), text_size=size.tiny)
+    else
+        table.cell(nw, 0, 0, "КАКВО ДА ПРАВИШ", text_color=C_TXT, bgcolor=color.new(vCol, 0), text_size=size.small)
+        table.cell(nw, 1, 0, verdict, text_color=C_TXT, bgcolor=color.new(vCol, 0), text_size=size.small)
+        table.cell(nw, 0, 11, "ПЛАН НА НИВОТО", text_color=#B38600, bgcolor=color.new(C_PNL, 8), text_size=size.tiny)
+        table.cell(nw, 1, 11, plan, text_color=C_TXT, bgcolor=color.new(C_PNL, 8), text_size=size.tiny)
+        table.cell(nw, 0, 12, "цена сега", text_color=C_TXT, bgcolor=color.new(C_T2, 0), text_size=size.tiny)
+        table.cell(nw, 1, 12, str.tostring(close, "#.##"), text_color=C_TXT, bgcolor=color.new(C_T2, 0), text_size=size.tiny)
+        table.cell(nw, 0, 1, "⊤ съпротива", text_color=C_DN, bgcolor=color.new(C_PNL, 8), text_size=size.tiny)
+        table.cell(nw, 1, 1, na(RES) ? "—" : str.tostring(RES, "#.##") + "  " + f_pip(dR) + " (+" + str.tostring(dR, "#.#") + "$)  " + f_lname(RES), text_color=color.white, bgcolor=color.new(C_PNL, 8), text_size=size.tiny)
+        table.cell(nw, 0, 2, "⊥ подкрепа", text_color=C_UP, bgcolor=color.new(C_PNL, 8), text_size=size.tiny)
+        table.cell(nw, 1, 2, na(SUP) ? "—" : str.tostring(SUP, "#.##") + "  " + f_pip(dS) + " (-" + str.tostring(dS, "#.#") + "$)  " + f_lname(SUP), text_color=color.white, bgcolor=color.new(C_PNL, 8), text_size=size.tiny)
+        table.cell(nw, 0, 3, "къде си", text_color=C_KEY, bgcolor=color.new(C_PNL, 8), text_size=size.tiny)
+        table.cell(nw, 1, 3, pos, text_color=color.white, bgcolor=color.new(C_PNL, 8), text_size=size.tiny)
+        table.cell(nw, 0, 4, "спрямо 50%", text_color=C_MID, bgcolor=color.new(C_PNL, 8), text_size=size.tiny)
+        table.cell(nw, 1, 4, zone, text_color=close > eq ? C_DN : C_UP, bgcolor=color.new(C_PNL, 8), text_size=size.tiny)
+        table.cell(nw, 0, 5, "структура", text_color=C_STR, bgcolor=color.new(C_PNL, 8), text_size=size.tiny)
+        table.cell(nw, 1, 5, trd, text_color=trn == 1 ? C_UP : trn == -1 ? C_DN : color.new(color.white, 20), bgcolor=color.new(C_PNL, 8), text_size=size.tiny)
+        table.cell(nw, 0, 6, "ЩИТ ЗА НОВИНА", text_color=C_KEY, bgcolor=color.new(C_PNL, 8), text_size=size.tiny)
+        table.cell(nw, 1, 6, sS ? "АКТИВЕН — не влизай" : "чисто", text_color=sS ? C_DN : C_UP, bgcolor=color.new(C_PNL, 8), text_size=size.tiny)
+        table.cell(nw, 0, 7, "СКАЛП ЛОНГ", text_color=C_UP, bgcolor=color.new(C_PNL, 8), text_size=size.tiny)
+        table.cell(nw, 1, 7, lTx, text_color=na(lRR) or lRR < 1 ? color.new(color.white, 45) : C_UP, bgcolor=color.new(C_PNL, 8), text_size=size.tiny)
+        table.cell(nw, 0, 8, "СКАЛП ШОРТ", text_color=C_DN, bgcolor=color.new(C_PNL, 8), text_size=size.tiny)
+        table.cell(nw, 1, 8, sTx, text_color=na(sRR) or sRR < 1 ? color.new(color.white, 45) : C_DN, bgcolor=color.new(C_PNL, 8), text_size=size.tiny)
+        table.cell(nw, 0, 9, "ГОТОВНОСТ ЛОНГ", text_color=C_UP, bgcolor=color.new(C_PNL, 8), text_size=size.tiny)
+        table.cell(nw, 1, 9, tL, text_color=nL >= 4 ? C_UP : color.new(color.white, 45), bgcolor=color.new(C_PNL, 8), text_size=size.tiny)
+        table.cell(nw, 0, 10, "ГОТОВНОСТ ШОРТ", text_color=C_DN, bgcolor=color.new(C_PNL, 8), text_size=size.tiny)
+        table.cell(nw, 1, 10, tS, text_color=nS >= 4 ? C_DN : color.new(color.white, 45), bgcolor=color.new(C_PNL, 8), text_size=size.tiny)
+else if barstate.islast
+    table.clear(nw, 0, 0, 1, 12)
+
+// ═══ ТАБЛО (по избор) ═══
+var table tb = table.new(position.top_right, 3, 13, border_width=1, frame_width=1, frame_color=color.new(C_KEY, 40))
+f_row(r, k, v) =>
+    table.cell(tb, 0, r, k, text_color=C_KEY, text_size=size.tiny, bgcolor=color.new(C_PNL, 8))
+    table.cell(tb, 1, r, na(v) ? "—" : str.tostring(v, "#.##"), text_color=color.white, text_size=size.tiny, bgcolor=color.new(C_PNL, 8))
+    table.cell(tb, 2, r, na(v) ? "—" : (v > close ? "⊤ " : "⊥ ") + f_pip(v - close), text_color=f_rcol(v), text_size=size.tiny, bgcolor=color.new(C_PNL, 8))
+
+if uT and barstate.islast
+    table.cell(tb, 0, 0, "НИВО", text_color=color.white, bgcolor=color.new(#2962FF, 0), text_size=size.tiny)
+    table.cell(tb, 1, 0, "цена", text_color=color.white, bgcolor=color.new(#2962FF, 0), text_size=size.tiny)
+    table.cell(tb, 2, 0, "пипове", text_color=color.white, bgcolor=color.new(#2962FF, 0), text_size=size.tiny)
+    f_row(1,  "ЦЕНАТА",       close)
+    f_row(2,  "50% диапазон", eq)
+    f_row(3,  "вчера макс",   pdH)
+    f_row(4,  "вчера мин",    pdL)
+    f_row(5,  "вчера затв",   pdC)
+    f_row(6,  "седм.макс",    pwH)
+    f_row(7,  "седм.мин",     pwL)
+    f_row(8,  "Азия макс",    azH)
+    f_row(9,  "Азия мин",     azL)
+    f_row(10, "SMA50",        s50)
+    f_row(11, "SMA200",       s200)
+    table.cell(tb, 0, 12, "ЦЕЛ1 / СТОП", text_color=color.white, bgcolor=color.new(C_PNL, 8), text_size=size.tiny)
+    table.cell(tb, 1, 12, str.tostring(tp1, "#.##"), text_color=C_UP, bgcolor=color.new(C_PNL, 8), text_size=size.tiny)
+    table.cell(tb, 2, 12, str.tostring(slv, "#.##"), text_color=C_DN, bgcolor=color.new(C_PNL, 8), text_size=size.tiny)
+
+// ═══ ЛЕГЕНДА (по избор) ═══
+var table lg = table.new(position.bottom_right, 2, 12, border_width=1, frame_width=1, frame_color=color.new(C_KEY, 40))
+f_leg(r, k, kc, v) =>
+    table.cell(lg, 0, r, k, text_color=kc, text_size=size.tiny, bgcolor=color.new(C_PNL, 8))
+    table.cell(lg, 1, r, v, text_color=color.new(color.white, 15), text_size=size.tiny, bgcolor=color.new(C_PNL, 8))
+
+if uLeg and barstate.islast
+    table.cell(lg, 0, 0, "ЛЕГЕНДА", text_color=color.white, bgcolor=color.new(#2962FF, 0), text_size=size.tiny)
+    table.cell(lg, 1, 0, "какво да очакваш", text_color=color.white, bgcolor=color.new(#2962FF, 0), text_size=size.tiny)
+    f_leg(1,  "BUY зона", C_UP, "подкрепа / търси реакция нагоре")
+    f_leg(2,  "SELL зона", C_DN, "съпротива / търси реакция надолу")
+    f_leg(3,  "FVG / гап", C_FVG, "ценови дисбаланс — винаги лилаво")
+    f_leg(4,  "Дневен FVG", C_TD, "най-тежкият дневен дисбаланс")
+    f_leg(5,  "Равни върхове / дъна", C_LQ, "ликвидност — там са натрупани стопове")
+    f_leg(6,  "Свип", C_SW, "обрана ликвидност — ярко оранжево")
+    f_leg(7,  "BOS / CHoCH", C_STR, "структура — отделен тухлен цвят")
+    f_leg(8,  "Тренд линия", C_TL, "тренд/допири — синьо")
+    f_leg(9,  "TP / цел", C_TP, "печалба / цели — ярко зелено")
+    f_leg(10, "STOP / риск", C_SL, "риск / стоп — ярко червено")
+    f_leg(11, "50% линия", C_MID, "среда / премиум-дискаунт — жълто")
+
+// ═══ АЛАРМИ ═══
+tRes = not na(RES) and high >= RES and close < RES
+// v8.3: f_res (ред 524) приема кандидат само ако е СТРОГО НАД close → RES > close винаги →
+// «close > RES» беше невъзможно и алармата не можеше да звънне НИКОГА. Същото за bSup.
+// Лек: сравнявай срещу нивото от ПРЕДИШНАТА свещ, когато то още е било над цената.
+bRes = not na(RES[1]) and close > RES[1] and close[1] <= RES[1]
+tSup = not na(SUP) and low <= SUP and close > SUP
+bSup = not na(SUP[1]) and close < SUP[1] and close[1] >= SUP[1]
+alertcondition(tRes, "Докосна СЪПРОТИВА", "Цената докосна най-близката съпротива и се върна под нея")
+alertcondition(bRes, "ПРОБИ съпротивата", "Цената затвори НАД най-близката съпротива - сила")
+alertcondition(tSup, "Докосна ПОДКРЕПА",  "Цената докосна най-близката подкрепа и се върна над нея")
+alertcondition(bSup, "ПРОБИ подкрепата",  "Цената затвори ПОД най-близката подкрепа - слабост")
+alertcondition(inZone and not inZone[1], "ВЛЕЗЕ В ЗОНА", "Цената влезе в зона след обрана ликвидност")
+alertcondition(swUp, "ОБРАНИ СТОПОВЕ ГОРЕ", "Цената взе стоповете над нивото и се върна под него")
+alertcondition(swDn, "ОБРАНИ СТОПОВЕ ДОЛУ", "Цената взе стоповете под нивото и се върна над него")
+alertcondition(bosU, "BOS / CHoCH нагоре", "Счупване на структурата нагоре")
+alertcondition(bosD, "BOS / CHoCH надолу", "Счупване на структурата надолу")

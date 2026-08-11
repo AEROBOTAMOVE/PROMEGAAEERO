@@ -1,0 +1,1800 @@
+//@version=6
+// ═══════════════════════════════════════════════════════════════════════════
+// AERO PRO v9.1 · ПЪЛНА БЪЛГАРСКА ВЕРСИЯ
+// Ясен интерфейс · автоматични TF профили · зони за евентуална покупка/продажба
+// ликвидност · FVG · BOS/CHoCH/MSS · японски свещи · setup state · аларми
+// ВАЖНО: Индикаторът е помощник за анализ, а не гаранция за печалба.
+// ═══════════════════════════════════════════════════════════════════════════
+indicator("AERO PRO v9.7 · Пазарна карта BG", overlay = true, max_bars_back = 1200,
+     max_boxes_count = 500, max_lines_count = 500, max_labels_count = 500,
+     dynamic_requests = true)
+
+// ═══════════════════════════════════════════════════════════════════════════
+// 0 · ОСНОВЕН РЕЖИМ
+// ═══════════════════════════════════════════════════════════════════════════
+g0 = "0 · ОСНОВЕН РЕЖИМ"
+uiMode = input.string("Лесен", "Изглед", options = ["Лесен", "Стандартен", "Експертен"], group = g0,
+     tooltip = "Лесен: само най-важното. Стандартен: добавя ликвидност, FVG и структура. Експертен: показва всички помощни елементи.")
+tradeMode = input.string("Автоматично", "Стил на търговия", options = ["Автоматично", "Скалпинг", "Интрадей", "Суинг", "Ръчно"], group = g0,
+     tooltip = "Автоматично избира йерархия според отворената графика. Ръчно използва трите таймфрейма по-долу.")
+scalpVisual9 = input.string("Пълна карта", "Визуален режим 1m/5m", options = ["Скалп 1m/5m", "Пълна карта"], group = g0,
+     tooltip = "Скалп 1m/5m показва само близките активни обозначения около цената. Не променя сигналите.")
+confirmOnClose = input.bool(true, "Потвърждавай входовете само при затворена свещ", group = g0)
+pipSize = input.float(0.10, "Размер на 1 пип", minval = 0.00001, step = 0.01, group = g0,
+     tooltip = "Пример: XAUUSD често се използва 0.10; EURUSD 0.0001. Провери спецификацията на брокера.")
+minRR = input.float(1.5, "Минимално риск/печалба", minval = 0.5, maxval = 10.0, step = 0.1, group = g0)
+
+// ═══════════════════════════════════════════════════════════════════════════
+// 1 · ТАЙМФРЕЙМ ЙЕРАРХИЯ
+// ═══════════════════════════════════════════════════════════════════════════
+g1 = "1 · ТАЙМФРЕЙМ ЙЕРАРХИЯ"
+manualTf1 = input.timeframe("15", "Ръчно TF 1 · вход/кратка структура", group = g1)
+manualTf2 = input.timeframe("60", "Ръчно TF 2 · основна структура", group = g1)
+manualTf3 = input.timeframe("240", "Ръчно TF 3 · силни зони/контекст", group = g1)
+showTfOnLabels = input.bool(true, "Показвай таймфрейма върху зоните", group = g1)
+
+// ═══════════════════════════════════════════════════════════════════════════
+// 2 · ЗОНИ ЗА ПОКУПКА / ПРОДАЖБА
+// ═══════════════════════════════════════════════════════════════════════════
+g2 = "2 · ЗОНИ ЗА ПОКУПКА / ПРОДАЖБА"
+showZones = input.bool(true, "Показвай подкрепящи и съпротивителни зони", group = g2)
+showOpportunityZones = input.bool(true, "Маркирай силните зони за евентуална покупка/продажба", group = g2)
+zoneOnlyAfterSweep = input.bool(true, "Създавай зона само след обрана ликвидност", group = g2)
+zoneSweepLookback = input.int(5, "Колко предишни свещи трябва да бъдат обрани", minval = 2, maxval = 8, group = g2)
+zoneImpulseATR = input.float(1.2, "Минимална сила на импулса (ATR)", minval = 0.4, maxval = 5.0, step = 0.1, group = g2)
+maxZonesPerTf = input.int(4, "Максимум зони на таймфрейм", minval = 1, maxval = 10, group = g2)
+zoneDeleteTests = input.int(3, "Премахни зоната след N отделни теста", minval = 1, maxval = 6, group = g2)
+opportunityMinScore = input.int(4, "Минимална сила за надпис „СИЛНА ЗОНА“", minval = 3, maxval = 7, group = g2)
+
+// ═══════════════════════════════════════════════════════════════════════════
+// 3 · ЛИКВИДНОСТ
+// ═══════════════════════════════════════════════════════════════════════════
+g3 = "3 · ЛИКВИДНОСТ И ОБИРАНЕ НА СТОПОВЕ"
+showLiquidity = input.bool(true, "Показвай ликвидност над върхове / под дъна", group = g3)
+showSweepMarkers = input.bool(true, "Маркер при обиране на ликвидност", group = g3)
+liquidityPivot = input.int(5, "Колко свещи оформят важен връх/дъно", minval = 2, maxval = 25, group = g3)
+liquidityTolerancePct = input.float(0.06, "Допустима разлика между равните върхове/дъна (%)", minval = 0.01, maxval = 1.0, step = 0.01, group = g3)
+maxLiquidityEachSide = input.int(5, "Максимум активни нива от вид", minval = 1, maxval = 12, group = g3)
+sweepFreshBars = input.int(12, "Колко свещи свипът остава актуален", minval = 2, maxval = 100, group = g3)
+
+// ═══════════════════════════════════════════════════════════════════════════
+// 4 · FVG / ЦЕНОВИ ДИСБАЛАНС
+// ═══════════════════════════════════════════════════════════════════════════
+g4 = "4 · ЦЕНОВИ ДИСБАЛАНС (FVG)"
+showFvg = input.bool(true, "Показвай незапълнените ценови дисбаланси", group = g4)
+showDailyFvg = input.bool(true, "Показвай и дневните дисбаланси", group = g4)
+maxFvgPerTf = input.int(4, "Максимум FVG на таймфрейм", minval = 1, maxval = 10, group = g4)
+
+// ═══════════════════════════════════════════════════════════════════════════
+// 5 · СТРУКТУРА
+// ═══════════════════════════════════════════════════════════════════════════
+g5 = "5 · ПАЗАРНА СТРУКТУРА"
+showStructure = input.bool(true, "Показвай пробиви и промени на структурата", group = g5)
+structurePivot = input.int(6, "Колко свещи оформят структурен връх/дъно", minval = 2, maxval = 30, group = g5)
+showRetest = input.bool(true, "Показвай успешен/неуспешен ретест", group = g5)
+
+// ═══════════════════════════════════════════════════════════════════════════
+// 6 · ЯПОНСКИ СВЕЩИ
+// ═══════════════════════════════════════════════════════════════════════════
+g6 = "6 · ЯПОНСКИ СВЕЩИ И ЦЕНОВА РЕАКЦИЯ"
+showCandles = input.bool(true, "Разпознавай важните японски свещи", group = g6)
+candleOnlyAtContext = input.bool(true, "Показвай ги само в зона или до ключово ниво", group = g6)
+showCandleEnglish = input.bool(false, "Показвай и професионалното английско име", group = g6)
+maxCandleMarkers = input.int(70, "Максимум свещни маркери", minval = 20, maxval = 150, group = g6)
+
+// ═══════════════════════════════════════════════════════════════════════════
+// 7 · КЛЮЧОВИ НИВА И ДИАПАЗОН
+// ═══════════════════════════════════════════════════════════════════════════
+g7 = "7 · КЛЮЧОВИ НИВА И ДИАПАЗОН"
+showPrevDay = input.bool(true, "Предишен ден: максимум / минимум / затваряне", group = g7)
+showPrevWeek = input.bool(true, "Предишна седмица: максимум / минимум", group = g7)
+showAsia = input.bool(true, "Азиатски диапазон за деня", group = g7)
+showDailyMA = input.bool(false, "Дневни SMA 20 / 50 / 200", group = g7)
+showPremiumDiscount = input.bool(true, "Показвай 50% на текущия диапазон", group = g7)
+rangeBars = input.int(30, "Диапазон от последните N свещи", minval = 10, maxval = 200, group = g7)
+
+// ═══════════════════════════════════════════════════════════════════════════
+// 8 · СЕСИИ И ЗАЩИТА
+// ═══════════════════════════════════════════════════════════════════════════
+g8 = "8 · СЕСИИ И ЗАЩИТА"
+showSessions = input.bool(true, "Оцветявай основните сесии", group = g8)
+showUsShield = input.bool(true, "US волатилен прозорец 15:25–16:15", group = g8,
+     tooltip = "Това е времеви филтър, не доказателство, че конкретния ден има новина.")
+
+// ═══════════════════════════════════════════════════════════════════════════
+// 9 · ТРЕНД ЛИНИИ
+// ═══════════════════════════════════════════════════════════════════════════
+g9 = "9 · ТРЕНД ЛИНИИ (ЕКСПЕРТЕН РЕЖИМ)"
+showTrendLines = input.bool(false, "Показвай автоматични тренд линии", group = g9)
+trendPivot = input.int(8, "Ширина на пивота", minval = 3, maxval = 40, group = g9)
+trendTouchATR = input.float(0.15, "Допир до линията (ATR)", minval = 0.02, maxval = 2.0, step = 0.01, group = g9)
+trendTouchGap = input.int(4, "Минимум свещи между отделни допири", minval = 1, maxval = 20, group = g9)
+
+// ═══════════════════════════════════════════════════════════════════════════
+// 10 · ПАНЕЛИ
+// ═══════════════════════════════════════════════════════════════════════════
+g10 = "10 · ПАНЕЛИ"
+compactLabels = input.bool(false, "Компактни надписи — кратък знак вместо цяло изречение", group = g10,
+     tooltip = "Пълният текст НЕ се губи: показва се в балонче, като посочиш надписа с мишката.")
+labelGapBars  = input.int(8, "  Минимално разстояние между надписи (свещи)", minval = 0, maxval = 60, group = g10,
+     tooltip = "0 = без пазач (както беше). Пропуска се само НАДПИСЪТ; събитието се брои нормално.")
+showTradeLevels = input.bool(true, "Чертай ВХОД / СТОП / ЦЕЛ като линии на графиката", group = g10,
+     tooltip = "Индикаторът вече пресмяташе тези нива, но ги показваше само като текст. Сега се чертаят и се виждат.")
+tradeLevelsWide = input.bool(true, "Оцвети зоната на риска и на печалбата", group = g10)
+tlLadder   = input.bool(true, "Стълба ТП1 / ТП2 / ТП3 + замразен вход", group = g10,
+     tooltip = "ДОБАВКА. Не пипа линиите ВХОД/СТОП/ЦЕЛ по-долу — рисува ОТДЕЛНО геометрията на бота.")
+tlLadderBox = input.bool(true, "  Оцвети трите стъпала на печалбата", group = g10)
+tlFreeze   = input.bool(true, "  Замразявай входа при потвърден сигнал", group = g10,
+     tooltip = "ВКЛ: при потвърждение входът се ЗАКЛЮЧВА на цената от онзи момент. ИЗК: върви с цената (линийка) и историята ПРЕРИСУВА.")
+tlDirMode  = input.string("Автоматично", "  Посока на стълбата", options = ["Автоматично", "ЛОНГ", "ШОРТ"], group = g10,
+     tooltip = "Ръчният избор БИЕ замразения план (както dirM в v8.1).")
+tlTp1Usd   = input.float(7.5,  "  ТП1 · движение на цената", minval = 0.1, step = 0.1, group = g10)
+tlTp2Usd   = input.float(12.0, "  ТП2 · движение на цената", minval = 0.1, step = 0.1, group = g10)
+tlTp3Usd   = input.float(20.0, "  ТП3 · движение на цената", minval = 0.1, step = 0.1, group = g10)
+tlSlUsd    = input.float(20.0, "  СТОП · движение на цената", minval = 0.1, step = 0.1, group = g10)
+tlStopMode = input.string("По зоната (структурен)", "  Кой стоп да чертае", options = ["По зоната (структурен)", "Фиксиран по бота"], group = g10)
+tlAgeBars  = input.int(60, "  Планът се обявява за СТАР след N свещи", minval = 5, maxval = 500, group = g10)
+tlRightBars = input.int(26, "  Дължина на стълбата надясно (свещи)", minval = 8, maxval = 120, group = g10,
+     tooltip = "26 нарочно: блокът «СДЕЛКАТА НА ГРАФИКАТА» по-долу свършва на 45 и слага надписи на 47 — те НЕ се пипат. Стълбата спира по-рано, за да няма застъпени надписи. v8.1 пише на +16.")
+showMainPanel = input.bool(true, "Основен български панел", group = g10)
+showLevelsPanel = input.bool(false, "Подробно табло с всички нива", group = g10)
+showLegend = input.bool(false, "Легенда на термините", group = g10)
+
+// ═══════════════════════════════════════════════════════════════════════════
+// ЦВЕТОВЕ
+// ═══════════════════════════════════════════════════════════════════════════
+C_BUY = #0B6B45          // BUY зони / подкрепа
+C_SELL = #9C2323         // SELL зони / съпротива
+C_BUY_BRIGHT = #00A86B   // потвърден лонг / силна BUY зона
+C_SELL_BRIGHT = #D63B3B  // потвърден шорт / силна SELL зона
+C_LIQ = #D98200          // ликвидност EQH/EQL
+C_SWEEP = #FF6D00        // обрана ликвидност / свип
+C_FVG = #6A32A8          // FVG / гап
+C_DAILY_FVG = #C026D3    // дневен FVG
+C_KEY = #31445B          // ключови нива
+C_INFO = #1F5E9C         // информационни нива / план
+C_WARN = #B18400         // чакане / предупреждение
+C_PANEL = #0B0F16        // панел
+C_TEXT = #FFFFFF         // текст
+C_MUTED = #7B8796        // неактивно / старо
+C_STRUCTURE = #A84900    // BOS / CHoCH / MSS
+C_TREND = #5C6BC0        // тренд линии
+C_RETEST = #00897B       // ретест / реакция
+C_TP = #00A86B           // TP / цели
+C_SL = #D63B3B           // STOP / риск
+C_ENTRY = #F2C94C        // вход / замразен план
+C_MID = #F2C94C          // 50% / среда
+
+TR_ZONE = 68            // пълнеж на зоните — по-тъмно (беше 80)
+TR_ZONE_STRONG = 55     // силна зона — най-тъмна, това е точката за решение (беше 70)
+TR_FVG = 72             // имбаланс FVG — по-тъмно (беше 84)
+TR_RANGE = 92
+
+// ═══════════════════════════════════════════════════════════════════════════
+// ПОМОЩНИ ФУНКЦИИ
+// ═══════════════════════════════════════════════════════════════════════════
+f_price(v) => na(v) ? "—" : str.tostring(v, format.mintick)
+f_pips(d) => na(d) ? "—" : str.tostring(math.round(math.abs(d) / pipSize)) + " пипа"
+f_clamp(v, lo, hi) => math.max(lo, math.min(hi, v))
+f_near_price(v, distance) => not na(v) and math.abs(v - close) <= distance
+f_tf_name(tf) =>
+    tf == "1" ? "1 мин" : tf == "3" ? "3 мин" : tf == "5" ? "5 мин" : tf == "15" ? "15 мин" :
+     tf == "30" ? "30 мин" : tf == "45" ? "45 мин" : tf == "60" ? "1 час" : tf == "120" ? "2 часа" :
+     tf == "240" ? "4 часа" : tf == "D" or tf == "1D" ? "1 ден" : tf == "W" or tf == "1W" ? "1 седмица" :
+     tf == "1M" ? "1 месец" : tf
+f_bool(v) => v ? "ДА" : "НЕ"
+f_rr_txt(v) => na(v) ? "—" : str.tostring(v, "#.##")   // v9.5: без този пазач панелът пише буквално «NaN»
+f_strength_name(score) => score >= 6 ? "МНОГО СИЛНА" : score >= 4 ? "СИЛНА" : score >= 3 ? "СРЕДНА" : "НАБЛЮДЕНИЕ"
+f_strength_color(score, bull) => score >= 4 ? (bull ? C_BUY_BRIGHT : C_SELL_BRIGHT) : (bull ? C_BUY : C_SELL)
+f_zone_state(tests, mitigated) => tests == 0 ? "СВЕЖА · 0 ТЕСТА" : mitigated ? "ТЕСТВАНА ДО 50% · " + str.tostring(tests) + " ТЕСТ" : "ТЕСТВАНА " + str.tostring(tests) + " ПЪТ"
+f_bar_confirmed() => not confirmOnClose or barstate.isconfirmed
+
+atr = ta.atr(14)
+chartSec = timeframe.in_seconds()
+isFastChart = scalpVisual9 == "Скалп 1m/5m" and timeframe.isintraday and chartSec <= 300
+recentVisual9 = not isFastChart or bar_index >= last_bar_index - 12
+visualGapBars = isFastChart ? math.max(labelGapBars, 45) : labelGapBars
+visibleBand = atr * (isFastChart ? (uiMode == "Лесен" ? 4.0 : uiMode == "Стандартен" ? 6.0 : 9.0) : (uiMode == "Лесен" ? 7.0 : uiMode == "Стандартен" ? 11.0 : 18.0))
+// v9.2 · една свещ в милисекунди — за рисунки по ВРЕМЕ вместо по бар
+int TF_MS = timeframe.in_seconds() * 1000
+
+// ═══════════════════════════════════════════════════════════════════════════
+// АВТОМАТИЧНА ЙЕРАРХИЯ НА ТАЙМФРЕЙМИТЕ
+// Не избира по-нисък TF от графиката при автоматичните профили.
+// ═══════════════════════════════════════════════════════════════════════════
+string autoTf1 = chartSec <= 60 ? "1" : chartSec <= 300 ? "5" : chartSec <= 900 ? "15" : chartSec <= 3600 ? "60" : chartSec <= 14400 ? "240" : chartSec <= 86400 ? "D" : chartSec <= 604800 ? "W" : "1M"
+string autoTf2 = chartSec <= 60 ? "5" : chartSec <= 300 ? "15" : chartSec <= 900 ? "60" : chartSec <= 3600 ? "240" : chartSec <= 14400 ? "D" : chartSec <= 86400 ? "W" : "1M"
+string autoTf3 = chartSec <= 60 ? "15" : chartSec <= 300 ? "60" : chartSec <= 900 ? "240" : chartSec <= 3600 ? "D" : chartSec <= 14400 ? "W" : "1M"
+
+string scalpTf1 = chartSec <= 60 ? "1" : chartSec <= 300 ? "5" : chartSec <= 900 ? "15" : "60"
+string scalpTf2 = chartSec <= 60 ? "5" : chartSec <= 300 ? "15" : chartSec <= 900 ? "60" : "240"
+string scalpTf3 = chartSec <= 60 ? "15" : chartSec <= 300 ? "60" : chartSec <= 900 ? "240" : "D"
+
+string intraTf1 = chartSec <= 300 ? "5" : chartSec <= 900 ? "15" : chartSec <= 3600 ? "60" : "240"
+string intraTf2 = chartSec <= 300 ? "15" : chartSec <= 900 ? "60" : chartSec <= 3600 ? "240" : "D"
+string intraTf3 = chartSec <= 300 ? "60" : chartSec <= 900 ? "240" : chartSec <= 3600 ? "D" : "W"
+
+string swingTf1 = chartSec <= 900 ? "15" : chartSec <= 3600 ? "60" : chartSec <= 14400 ? "240" : chartSec <= 86400 ? "D" : chartSec <= 604800 ? "W" : "1M"
+string swingTf2 = chartSec <= 900 ? "60" : chartSec <= 3600 ? "240" : chartSec <= 14400 ? "D" : chartSec <= 86400 ? "W" : "1M"
+string swingTf3 = chartSec <= 900 ? "240" : chartSec <= 3600 ? "D" : chartSec <= 14400 ? "W" : "1M"
+
+string tf1 = tradeMode == "Ръчно" ? manualTf1 : tradeMode == "Скалпинг" ? scalpTf1 : tradeMode == "Интрадей" ? intraTf1 : tradeMode == "Суинг" ? swingTf1 : autoTf1
+string tf2 = tradeMode == "Ръчно" ? manualTf2 : tradeMode == "Скалпинг" ? scalpTf2 : tradeMode == "Интрадей" ? intraTf2 : tradeMode == "Суинг" ? swingTf2 : autoTf2
+string tf3 = tradeMode == "Ръчно" ? manualTf3 : tradeMode == "Скалпинг" ? scalpTf3 : tradeMode == "Интрадей" ? intraTf3 : tradeMode == "Суинг" ? swingTf3 : autoTf3
+
+bool tf1LowerWarning = timeframe.in_seconds(tf1) < chartSec
+bool tf2LowerWarning = timeframe.in_seconds(tf2) < chartSec
+bool tf3LowerWarning = timeframe.in_seconds(tf3) < chartSec
+bool wrongTf = tf1LowerWarning or tf2LowerWarning or tf3LowerWarning
+string resolvedMode = tradeMode == "Автоматично" ? (chartSec <= 300 ? "Автоматично · скалпинг" : chartSec <= 3600 ? "Автоматично · интрадей" : "Автоматично · суинг") : tradeMode
+
+// ═══════════════════════════════════════════════════════════════════════════
+// МУЛТИТАЙМФРЕЙМ ДАННИ · само завършени свещи
+// ═══════════════════════════════════════════════════════════════════════════
+[o1, h1, l1, c1, a1, k1] = request.security(syminfo.tickerid, tf1, [open[1], high[1], low[1], close[1], ta.atr(14)[1], time], lookahead = barmerge.lookahead_on)
+[o2, h2, l2, c2, a2, k2] = request.security(syminfo.tickerid, tf2, [open[1], high[1], low[1], close[1], ta.atr(14)[1], time], lookahead = barmerge.lookahead_on)
+[o3, h3, l3, c3, a3, k3] = request.security(syminfo.tickerid, tf3, [open[1], high[1], low[1], close[1], ta.atr(14)[1], time], lookahead = barmerge.lookahead_on)
+[oD, hD, lD, cD, aD, kD] = request.security(syminfo.tickerid, "D", [open[1], high[1], low[1], close[1], ta.atr(14)[1], time], lookahead = barmerge.lookahead_on)
+
+var float[] hist1 = array.new_float(40, na)
+var float[] hist2 = array.new_float(40, na)
+var float[] hist3 = array.new_float(40, na)
+var float[] histD = array.new_float(40, na)
+
+f_push_bar(arr, o, h, l, c) =>
+    for i = 0 to 35
+        array.set(arr, i, array.get(arr, i + 4))
+    array.set(arr, 36, o)
+    array.set(arr, 37, h)
+    array.set(arr, 38, l)
+    array.set(arr, 39, c)
+
+// back: 0 = най-новата завършена свещ; field: 0 O, 1 H, 2 L, 3 C
+f_hist(arr, back, field) => array.get(arr, (9 - back) * 4 + field)
+f_hist_min_low(arr, first, last) =>
+    float result = 1e12
+    for b = first to last
+        float v = f_hist(arr, b, 2)
+        if not na(v)
+            result := math.min(result, v)
+    result
+f_hist_max_high(arr, first, last) =>
+    float result = -1e12
+    for b = first to last
+        float v = f_hist(arr, b, 1)
+        if not na(v)
+            result := math.max(result, v)
+    result
+
+bool new1 = ta.change(k1) != 0 and not na(c1)
+bool new2 = ta.change(k2) != 0 and not na(c2)
+bool new3 = ta.change(k3) != 0 and not na(c3)
+bool newD = ta.change(kD) != 0 and not na(cD)
+if new1
+    f_push_bar(hist1, o1, h1, l1, c1)
+if new2
+    f_push_bar(hist2, o2, h2, l2, c2)
+if new3
+    f_push_bar(hist3, o3, h3, l3, c3)
+if newD
+    f_push_bar(histD, oD, hD, lD, cD)
+
+// ═══════════════════════════════════════════════════════════════════════════
+// КЛЮЧОВИ НИВА
+// ═══════════════════════════════════════════════════════════════════════════
+[pdHigh, pdLow, pdClose, sma20D, sma50D, sma200D] = request.security(syminfo.tickerid, "D",
+     [high[1], low[1], close[1], ta.sma(close, 20)[1], ta.sma(close, 50)[1], ta.sma(close, 200)[1]], lookahead = barmerge.lookahead_on)
+[pwHigh, pwLow] = request.security(syminfo.tickerid, "W", [high[1], low[1]], lookahead = barmerge.lookahead_on)
+
+bool inAsia = not na(time(timeframe.period, "0300-1100:1234567", "Europe/Sofia"))
+var float asiaHigh = na
+var float asiaLow = na
+if inAsia and not inAsia[1]
+    asiaHigh := high
+    asiaLow := low
+else if inAsia
+    asiaHigh := math.max(nz(asiaHigh, high), high)
+    asiaLow := math.min(nz(asiaLow, low), low)
+
+f_nearest_res(current, candidate) => na(candidate) or candidate <= close ? current : na(current) or candidate < current ? candidate : current
+f_nearest_sup(current, candidate) => na(candidate) or candidate >= close ? current : na(current) or candidate > current ? candidate : current
+
+float nearestResistance = na
+if showPrevDay
+    nearestResistance := f_nearest_res(nearestResistance, pdHigh)
+    nearestResistance := f_nearest_res(nearestResistance, pdLow)
+    nearestResistance := f_nearest_res(nearestResistance, pdClose)
+if showPrevWeek
+    nearestResistance := f_nearest_res(nearestResistance, pwHigh)
+    nearestResistance := f_nearest_res(nearestResistance, pwLow)
+if showAsia
+    nearestResistance := f_nearest_res(nearestResistance, asiaHigh)
+    nearestResistance := f_nearest_res(nearestResistance, asiaLow)
+if showDailyMA
+    nearestResistance := f_nearest_res(nearestResistance, sma20D)
+    nearestResistance := f_nearest_res(nearestResistance, sma50D)
+    nearestResistance := f_nearest_res(nearestResistance, sma200D)
+
+float nearestSupport = na
+if showPrevDay
+    nearestSupport := f_nearest_sup(nearestSupport, pdHigh)
+    nearestSupport := f_nearest_sup(nearestSupport, pdLow)
+    nearestSupport := f_nearest_sup(nearestSupport, pdClose)
+if showPrevWeek
+    nearestSupport := f_nearest_sup(nearestSupport, pwHigh)
+    nearestSupport := f_nearest_sup(nearestSupport, pwLow)
+if showAsia
+    nearestSupport := f_nearest_sup(nearestSupport, asiaHigh)
+    nearestSupport := f_nearest_sup(nearestSupport, asiaLow)
+if showDailyMA
+    nearestSupport := f_nearest_sup(nearestSupport, sma20D)
+    nearestSupport := f_nearest_sup(nearestSupport, sma50D)
+    nearestSupport := f_nearest_sup(nearestSupport, sma200D)
+
+f_level_name(v) =>
+    na(v) ? "—" : v == pdHigh ? "вчерашен максимум" : v == pdLow ? "вчерашен минимум" : v == pdClose ? "вчерашно затваряне" :
+     v == pwHigh ? "седмичен максимум" : v == pwLow ? "седмичен минимум" : v == asiaHigh ? "максимум на Азия" :
+     v == asiaLow ? "минимум на Азия" : v == sma20D ? "дневна SMA 20" : v == sma50D ? "дневна SMA 50" :
+     v == sma200D ? "дневна SMA 200" : "ключово ниво"
+
+float rangeHigh = ta.highest(high, rangeBars)
+float rangeLow = ta.lowest(low, rangeBars)
+float rangeMid = (rangeHigh + rangeLow) / 2.0
+bool inDiscount = close < rangeMid
+bool inPremium = close > rangeMid
+
+// ═══════════════════════════════════════════════════════════════════════════
+// ПАЗАРНА СТРУКТУРА · пазим точния pivot bar
+// ═══════════════════════════════════════════════════════════════════════════
+float structPivotHigh = ta.pivothigh(high, structurePivot, structurePivot)
+float structPivotLow = ta.pivotlow(low, structurePivot, structurePivot)
+var float lastSwingHigh = na
+var float lastSwingLow = na
+var int lastSwingHighBar = na
+var int lastSwingLowBar = na
+// v9.2 · успоредно време — САМО за рисуване; сметките остават на бар-индекси
+var int lastSwingHighTime = na
+var int lastSwingLowTime = na
+var int structureDirection = 0
+var int lastBullBreakBar = na
+var int lastBearBreakBar = na
+var float brokenHighLevel = na
+var float brokenLowLevel = na
+var bool waitingBullRetest = false
+var bool waitingBearRetest = false
+var string lastStructureText = "Няма потвърден пробив"
+
+if not na(structPivotHigh)
+    lastSwingHigh := structPivotHigh
+    lastSwingHighBar := bar_index - structurePivot
+    lastSwingHighTime := time[structurePivot]
+if not na(structPivotLow)
+    lastSwingLow := structPivotLow
+    lastSwingLowBar := bar_index - structurePivot
+    lastSwingLowTime := time[structurePivot]
+
+bool structureUp = showStructure and f_bar_confirmed() and not na(lastSwingHigh) and close > lastSwingHigh
+bool structureDown = showStructure and f_bar_confirmed() and not na(lastSwingLow) and close < lastSwingLow
+bool bullishChoch = structureUp and structureDirection == -1
+bool bearishChoch = structureDown and structureDirection == 1
+
+// ── ЧЕТИМОСТ · памет за последния надпис от всяка страна на свещта ──────────
+// Pine не позволява функция да пипа глобална променлива, затова пазачът стои
+// вписан на всяко място. `evAbove` = последен надпис НАД свещите, `evBelow` = ПОД.
+var int evAbove = na
+var int evBelow = na
+
+if structureUp
+    string txt = bullishChoch ? "ПЪРВИ ЗНАК ЗА ОБРЪЩАНЕ НАГОРЕ (CHoCH)" : "ПРОБИВ НА СТРУКТУРАТА НАГОРЕ (BOS)"
+    line.new(lastSwingHighTime, lastSwingHigh, time, lastSwingHigh, xloc = xloc.bar_time, color = color.new(bullishChoch ? C_STRUCTURE : C_BUY, 10), width = 2, style = line.style_dotted)
+    if recentVisual9 and (na(evAbove) or bar_index - evAbove >= visualGapBars)
+        evAbove := bar_index
+        label.new(bar_index, lastSwingHigh, compactLabels ? (bullishChoch ? "ОБРЪЩАНЕ ↑" : "ПРОБИВ ↑") : txt, tooltip = txt, style = label.style_label_down, color = bullishChoch ? C_STRUCTURE : C_BUY, textcolor = C_TEXT, size = isFastChart ? size.tiny : uiMode == "Лесен" ? size.small : size.tiny)
+    brokenHighLevel := lastSwingHigh
+    waitingBullRetest := true
+    waitingBearRetest := false
+    structureDirection := 1
+    lastBullBreakBar := bar_index
+    lastStructureText := txt
+    lastSwingHigh := na
+    lastSwingHighBar := na
+    lastSwingHighTime := na
+if structureDown
+    string txt = bearishChoch ? "ПЪРВИ ЗНАК ЗА ОБРЪЩАНЕ НАДОЛУ (CHoCH)" : "ПРОБИВ НА СТРУКТУРАТА НАДОЛУ (BOS)"
+    line.new(lastSwingLowTime, lastSwingLow, time, lastSwingLow, xloc = xloc.bar_time, color = color.new(bearishChoch ? C_STRUCTURE : C_SELL, 10), width = 2, style = line.style_dotted)
+    if recentVisual9 and (na(evBelow) or bar_index - evBelow >= visualGapBars)
+        evBelow := bar_index
+        label.new(bar_index, lastSwingLow, compactLabels ? (bearishChoch ? "ОБРЪЩАНЕ ↓" : "ПРОБИВ ↓") : txt, tooltip = txt, style = label.style_label_up, color = bearishChoch ? C_STRUCTURE : C_SELL, textcolor = C_TEXT, size = isFastChart ? size.tiny : uiMode == "Лесен" ? size.small : size.tiny)
+    brokenLowLevel := lastSwingLow
+    waitingBearRetest := true
+    waitingBullRetest := false
+    structureDirection := -1
+    lastBearBreakBar := bar_index
+    lastStructureText := txt
+    lastSwingLow := na
+    lastSwingLowBar := na
+    lastSwingLowTime := na
+
+bool bullRetestHeld = showRetest and waitingBullRetest and f_bar_confirmed() and low <= brokenHighLevel and close > brokenHighLevel
+bool bearRetestHeld = showRetest and waitingBearRetest and f_bar_confirmed() and high >= brokenLowLevel and close < brokenLowLevel
+bool bullRetestFailed = showRetest and waitingBullRetest and f_bar_confirmed() and close < brokenHighLevel - atr * 0.15
+bool bearRetestFailed = showRetest and waitingBearRetest and f_bar_confirmed() and close > brokenLowLevel + atr * 0.15
+if bullRetestHeld
+    if recentVisual9 and (na(evBelow) or bar_index - evBelow >= visualGapBars)
+        evBelow := bar_index
+        label.new(bar_index, low, compactLabels ? "РЕТЕСТЪТ ДЪРЖИ ↑" : "РЕТЕСТЪТ ЗАДЪРЖА НАГОРЕ", tooltip = "РЕТЕСТЪТ ЗАДЪРЖА НАГОРЕ", style = label.style_label_up, color = C_RETEST, textcolor = C_TEXT, size = size.tiny)
+    waitingBullRetest := false
+if bearRetestHeld
+    if recentVisual9 and (na(evAbove) or bar_index - evAbove >= visualGapBars)
+        evAbove := bar_index
+        label.new(bar_index, high, compactLabels ? "РЕТЕСТЪТ ДЪРЖИ ↓" : "РЕТЕСТЪТ ЗАДЪРЖА НАДОЛУ", tooltip = "РЕТЕСТЪТ ЗАДЪРЖА НАДОЛУ", style = label.style_label_down, color = C_RETEST, textcolor = C_TEXT, size = size.tiny)
+    waitingBearRetest := false
+if bullRetestFailed
+    if recentVisual9 and (na(evAbove) or bar_index - evAbove >= visualGapBars)
+        evAbove := bar_index
+        label.new(bar_index, high, compactLabels ? "РЕТЕСТЪТ ПАДНА ↑" : "НЕУСПЕШЕН ВЪЗХОДЯЩ РЕТЕСТ", tooltip = "НЕУСПЕШЕН ВЪЗХОДЯЩ РЕТЕСТ", style = label.style_label_down, color = C_WARN, textcolor = C_TEXT, size = size.tiny)
+    waitingBullRetest := false
+if bearRetestFailed
+    if recentVisual9 and (na(evBelow) or bar_index - evBelow >= visualGapBars)
+        evBelow := bar_index
+        label.new(bar_index, low, compactLabels ? "РЕТЕСТЪТ ПАДНА ↓" : "НЕУСПЕШЕН НИЗХОДЯЩ РЕТЕСТ", tooltip = "НЕУСПЕШЕН НИЗХОДЯЩ РЕТЕСТ", style = label.style_label_up, color = C_WARN, textcolor = C_TEXT, size = size.tiny)
+    waitingBearRetest := false
+
+// ═══════════════════════════════════════════════════════════════════════════
+// ЛИКВИДНОСТ · ниво се използва само веднъж
+// ═══════════════════════════════════════════════════════════════════════════
+var line[] liqLines = array.new_line()
+var label[] liqLabels = array.new_label()
+var float[] liqPrices = array.new_float()
+var bool[] liqIsHigh = array.new_bool()
+var bool[] liqUsed = array.new_bool()
+var int[] liqStrength = array.new_int()
+
+float liqPivotHigh = ta.pivothigh(high, liquidityPivot, liquidityPivot)
+float liqPivotLow = ta.pivotlow(low, liquidityPivot, liquidityPivot)
+var float previousLiqHigh = na
+var float previousLiqLow = na
+liqAtrMin = input.float(0.25, "Най-малък допуск (умножено по ATR)", minval = 0.0, maxval = 2.0, step = 0.05, group = g3, tooltip = "Процентът от цената не мащабира с рамката: на 1 минута хващаше почти всеки пивот, на 4 часа не хващаше нищо. Взима се по-голямото от двете.")
+float liquidityTolerance = math.max(close * liquidityTolerancePct / 100.0, atr * liqAtrMin)
+var int lastSweepAboveBar = na
+var int lastSweepBelowBar = na
+var float lastSweepAbovePrice = na
+var float lastSweepBelowPrice = na
+
+f_add_liquidity(price, isHigh, strength) =>
+    if showLiquidity
+        string txt = isFastChart ? (isHigh ? "ЛИКВИДНОСТ ГОРЕ" : "ЛИКВИДНОСТ ДОЛУ") : isHigh ? "ЛИКВИДНОСТ НАД РАВНИ ВЪРХОВЕ" : "ЛИКВИДНОСТ ПОД РАВНИ ДЪНА"
+        color col = C_LIQ
+        int liqRightBars = isFastChart ? 12 : 35
+        int liqLabelBars = isFastChart ? 7 : 12
+        line ln = line.new(bar_index - liquidityPivot * 2, price, bar_index + liqRightBars, price, extend = extend.right, color = color.new(col, 10), width = strength >= 4 ? 3 : strength >= 3 ? 2 : 1, style = line.style_dashed)
+        label lb = label.new(bar_index + liqLabelBars, price, txt + " · " + str.tostring(strength) + " допира · " + f_price(price), style = label.style_label_left, color = col, textcolor = C_TEXT, size = size.tiny)
+        array.push(liqLines, ln)
+        array.push(liqLabels, lb)
+        array.push(liqPrices, price)
+        array.push(liqIsHigh, isHigh)
+        array.push(liqUsed, false)
+        array.push(liqStrength, strength)
+        // v9.5: таванът беше ОБЩ — array.shift маха най-стария ИЗОБЩО, независимо от страната.
+        // В възходящ тренд се раждат предимно EQH и те изтласкваха всички EQL → нямаше какво
+        // да се обере отдолу → recentSweepBelow никога → лонг във възходящ тренд БЕШЕ НЕВЪЗМОЖЕН.
+        // Сега таванът е ПО СТРАНА, точно както казва името на входа («от вид»).
+        int capSide9 = isFastChart ? math.min(maxLiquidityEachSide, 2) : maxLiquidityEachSide
+        int cntSide9 = 0
+        for j = array.size(liqPrices) - 1 to 0
+            if array.get(liqIsHigh, j) == isHigh
+                cntSide9 += 1
+                if cntSide9 > capSide9
+                    line.delete(array.get(liqLines, j))
+                    label.delete(array.get(liqLabels, j))
+                    array.remove(liqLines, j)
+                    array.remove(liqLabels, j)
+                    array.remove(liqPrices, j)
+                    array.remove(liqIsHigh, j)
+                    array.remove(liqUsed, j)
+                    array.remove(liqStrength, j)
+
+// v9.6 · ПАМЕТ ЗА ПОВЕЧЕ ОТ ЕДИН ВРЪХ
+// Досега previousLiqHigh пазеше САМО последния пивот и се презаписваше при всеки следващ,
+// значи се сравняваха единствено две СЪСЕДНИ върхчета. Класическото двойно дъно почти винаги
+// има междинен пивот помежду си → беше НЕВИДИМО. Оттам тръгваше цяла верига: няма ниво →
+// няма какво да се обере → recentSweepBelow никога → longContext никога → нула сигнала.
+// Сега помним последните liqMemory пивота от всяка страна и сравняваме новия с ВСИЧКИ.
+liqMemory = input.int(10, "Колко върха и дъна назад да помни", minval = 2, maxval = 30, group = g3, tooltip = "Досега помнеше САМО последния. Затова двойно дъно с междинен пивот помежду беше невидимо.")
+var float[] pvtHi9 = array.new_float()
+var float[] pvtLo9 = array.new_float()
+f_eq_count9(arr, price, tol) =>
+    int n = 0
+    if array.size(arr) > 0
+        for j = 0 to array.size(arr) - 1
+            if math.abs(array.get(arr, j) - price) <= tol
+                n += 1
+    n
+f_liq_drop_near9(price, tol, isHigh) =>
+    if array.size(liqPrices) > 0
+        for j = array.size(liqPrices) - 1 to 0
+            if array.get(liqIsHigh, j) == isHigh and math.abs(array.get(liqPrices, j) - price) <= tol
+                line.delete(array.get(liqLines, j))
+                label.delete(array.get(liqLabels, j))
+                array.remove(liqLines, j)
+                array.remove(liqLabels, j)
+                array.remove(liqPrices, j)
+                array.remove(liqIsHigh, j)
+                array.remove(liqUsed, j)
+                array.remove(liqStrength, j)
+if showLiquidity and not na(liqPivotHigh)
+    int eqHigh9 = f_eq_count9(pvtHi9, liqPivotHigh, liquidityTolerance)
+    if eqHigh9 >= 1
+        f_liq_drop_near9(liqPivotHigh, liquidityTolerance, true)
+        f_add_liquidity(liqPivotHigh, true, math.min(eqHigh9 + 1, 5))
+    array.push(pvtHi9, liqPivotHigh)
+    while array.size(pvtHi9) > liqMemory
+        array.shift(pvtHi9)
+    previousLiqHigh := liqPivotHigh
+if showLiquidity and not na(liqPivotLow)
+    int eqLow9 = f_eq_count9(pvtLo9, liqPivotLow, liquidityTolerance)
+    if eqLow9 >= 1
+        f_liq_drop_near9(liqPivotLow, liquidityTolerance, false)
+        f_add_liquidity(liqPivotLow, false, math.min(eqLow9 + 1, 5))
+    array.push(pvtLo9, liqPivotLow)
+    while array.size(pvtLo9) > liqMemory
+        array.shift(pvtLo9)
+    previousLiqLow := liqPivotLow
+
+bool sweepAbove = false
+bool sweepBelow = false
+if array.size(liqPrices) > 0
+    for i = array.size(liqPrices) - 1 to 0
+        float level = array.get(liqPrices, i)
+        bool isHighLevel = array.get(liqIsHigh, i)
+        bool used = array.get(liqUsed, i)
+        line liqLine = array.get(liqLines, i)
+        label liqLabel = array.get(liqLabels, i)
+        bool liqVisible = not isFastChart or (not used and f_near_price(level, visibleBand))
+        line.set_y1(liqLine, liqVisible ? level : na)
+        line.set_y2(liqLine, liqVisible ? level : na)
+        line.set_x2(liqLine, bar_index + (isFastChart ? 12 : 35))
+        label.set_y(liqLabel, liqVisible ? level : na)
+        label.set_x(liqLabel, bar_index + (isFastChart ? 7 : 12))
+        if isFastChart and not used
+            label.set_text(liqLabel, (isHighLevel ? "ЛИКВИДНОСТ ГОРЕ " : "ЛИКВИДНОСТ ДОЛУ ") + f_price(level))
+        if not used and f_bar_confirmed()
+            bool sweptHigh = isHighLevel and high > level and close < level
+            bool sweptLow = not isHighLevel and low < level and close > level
+            if sweptHigh or sweptLow
+                array.set(liqUsed, i, true)
+                line.set_color(array.get(liqLines, i), color.new(C_MUTED, 20))
+                line.set_style(array.get(liqLines, i), line.style_dotted)
+                label.set_color(array.get(liqLabels, i), C_MUTED)
+                label.set_text(array.get(liqLabels, i), sweptHigh ? "ОБРАНА ЛИКВИДНОСТ НАД ВЪРХОВЕТЕ ✓" : "ОБРАНА ЛИКВИДНОСТ ПОД ДЪНАТА ✓")
+                if sweptHigh
+                    sweepAbove := true
+                    lastSweepAboveBar := bar_index
+                    lastSweepAbovePrice := high
+                if sweptLow
+                    sweepBelow := true
+                    lastSweepBelowBar := bar_index
+                    lastSweepBelowPrice := low
+
+if showSweepMarkers and sweepAbove
+    if recentVisual9 and (na(evAbove) or bar_index - evAbove >= visualGapBars)
+        evAbove := bar_index
+        label.new(bar_index, high, compactLabels ? "ОБРАНИ СТОПОВЕ ГОРЕ" : "ОБРАНИ СА СТОПОВЕТЕ НАД ВЪРХОВЕТЕ", tooltip = "ОБРАНИ СА СТОПОВЕТЕ НАД ВЪРХОВЕТЕ", style = label.style_label_down, color = C_SWEEP, textcolor = C_TEXT, size = isFastChart ? size.tiny : size.small)
+if showSweepMarkers and sweepBelow
+    if recentVisual9 and (na(evBelow) or bar_index - evBelow >= visualGapBars)
+        evBelow := bar_index
+        label.new(bar_index, low, compactLabels ? "ОБРАНИ СТОПОВЕ ДОЛУ" : "ОБРАНИ СА СТОПОВЕТЕ ПОД ДЪНАТА", tooltip = "ОБРАНИ СА СТОПОВЕТЕ ПОД ДЪНАТА", style = label.style_label_up, color = C_SWEEP, textcolor = C_TEXT, size = isFastChart ? size.tiny : size.small)
+
+bool recentSweepAbove = not na(lastSweepAboveBar) and bar_index - lastSweepAboveBar <= sweepFreshBars
+bool recentSweepBelow = not na(lastSweepBelowBar) and bar_index - lastSweepBelowBar <= sweepFreshBars
+
+// Ако CHoCH идва след правилния свип, го превеждаме като MSS в панела.
+bool bullishMss = bullishChoch and recentSweepBelow
+bool bearishMss = bearishChoch and recentSweepAbove
+if bullishMss
+    lastStructureText := "ПРОМЯНА НА ПАЗАРНАТА СТРУКТУРА НАГОРЕ (MSS)"
+if bearishMss
+    lastStructureText := "ПРОМЯНА НА ПАЗАРНАТА СТРУКТУРА НАДОЛУ (MSS)"
+
+// ═══════════════════════════════════════════════════════════════════════════
+// FVG · запазва се, дори когато е далеч; рисува се само когато е близо
+// ═══════════════════════════════════════════════════════════════════════════
+var box[] fvgBoxes = array.new_box()
+var label[] fvgLabels = array.new_label()
+var float[] fvgTop = array.new_float()
+var float[] fvgBottom = array.new_float()
+var bool[] fvgBull = array.new_bool()
+var string[] fvgTf = array.new_string()
+var int[] fvgWeight = array.new_int()
+
+f_add_fvg(top, bottom, bull, tfName, weight) =>
+    if top > bottom
+        array.push(fvgBoxes, box(na))
+        array.push(fvgLabels, label(na))
+        array.push(fvgTop, top)
+        array.push(fvgBottom, bottom)
+        array.push(fvgBull, bull)
+        array.push(fvgTf, tfName)
+        array.push(fvgWeight, weight)
+        int cap = maxFvgPerTf * 4
+        while array.size(fvgTop) > cap
+            box oldBox = array.shift(fvgBoxes)
+            label oldLabel = array.shift(fvgLabels)
+            if not na(oldBox)
+                box.delete(oldBox)
+            if not na(oldLabel)
+                label.delete(oldLabel)
+            array.shift(fvgTop)
+            array.shift(fvgBottom)
+            array.shift(fvgBull)
+            array.shift(fvgTf)
+            array.shift(fvgWeight)
+
+f_detect_fvg(arr, isNew, tfName, weight) =>
+    if showFvg and isNew and not na(f_hist(arr, 2, 1))
+        float oldHigh = f_hist(arr, 2, 1)
+        float oldLow = f_hist(arr, 2, 2)
+        float newHigh = f_hist(arr, 0, 1)
+        float newLow = f_hist(arr, 0, 2)
+        bool bull = newLow > oldHigh
+        bool bear = newHigh < oldLow
+        if bull
+            f_add_fvg(newLow, oldHigh, true, tfName, weight)
+        if bear
+            f_add_fvg(oldLow, newHigh, false, tfName, weight)
+
+f_detect_fvg(hist1, new1, f_tf_name(tf1), 1)
+f_detect_fvg(hist2, new2, f_tf_name(tf2), 2)
+f_detect_fvg(hist3, new3, f_tf_name(tf3), 3)
+if showDailyFvg
+    f_detect_fvg(histD, newD, "1 ден", 4)
+
+if array.size(fvgTop) > 0
+    for i = array.size(fvgTop) - 1 to 0
+        float top = array.get(fvgTop, i)
+        float bottom = array.get(fvgBottom, i)
+        bool bull = array.get(fvgBull, i)
+        int weight = array.get(fvgWeight, i)
+        string tfName = array.get(fvgTf, i)
+        bool filled = bull ? low <= bottom : high >= top
+        box bx = array.get(fvgBoxes, i)
+        label lb = array.get(fvgLabels, i)
+        if filled
+            if not na(bx)
+                box.delete(bx)
+            if not na(lb)
+                label.delete(lb)
+            array.remove(fvgBoxes, i)
+            array.remove(fvgLabels, i)
+            array.remove(fvgTop, i)
+            array.remove(fvgBottom, i)
+            array.remove(fvgBull, i)
+            array.remove(fvgTf, i)
+            array.remove(fvgWeight, i)
+        else
+            float middle = (top + bottom) / 2.0
+            bool shouldShow = f_near_price(middle, visibleBand) and (uiMode != "Лесен" or weight >= 2)
+            color baseColor = weight >= 4 ? C_DAILY_FVG : C_FVG
+            string fvgLabelText = isFastChart ? "ГАП · " + tfName : "НЕЗАПЪЛНЕН ЦЕНОВИ ДИСБАЛАНС · " + tfName
+            if shouldShow and na(bx)
+                bx := box.new(bar_index - 2, top, bar_index + (isFastChart ? 12 : 25), bottom, extend = extend.right,
+                     border_color = color.new(baseColor, 15), border_width = weight >= 4 ? 3 : weight >= 3 ? 2 : 1,
+                     bgcolor = color.new(baseColor, TR_FVG))
+                lb := label.new(bar_index + (isFastChart ? 7 : 18), middle, fvgLabelText,
+                     style = label.style_label_left, color = baseColor, textcolor = C_TEXT, size = size.tiny)
+                array.set(fvgBoxes, i, bx)
+                array.set(fvgLabels, i, lb)
+            if not shouldShow and not na(bx)
+                box.delete(bx)
+                label.delete(lb)
+                array.set(fvgBoxes, i, box(na))
+                array.set(fvgLabels, i, label(na))
+            if shouldShow and not na(bx)
+                box.set_right(bx, bar_index + (isFastChart ? 12 : 25))
+                label.set_xy(lb, bar_index + (isFastChart ? 7 : 18), middle)
+                label.set_text(lb, fvgLabelText)
+
+f_fvg_overlap(top, bottom, bull) =>
+    bool found = false
+    if array.size(fvgTop) > 0
+        for j = 0 to array.size(fvgTop) - 1
+            bool sameDirection = array.get(fvgBull, j) == bull
+            bool overlap = math.min(top, array.get(fvgTop, j)) >= math.max(bottom, array.get(fvgBottom, j))
+            if sameDirection and overlap
+                found := true
+    found
+
+// ═══════════════════════════════════════════════════════════════════════════
+// ЗОНИ · отделни bullish/bearish състояния · истинска свежест
+// ═══════════════════════════════════════════════════════════════════════════
+var box[] zoneBoxes = array.new_box()
+var label[] zoneLabels = array.new_label()
+var float[] zoneTop = array.new_float()
+var float[] zoneBottom = array.new_float()
+var bool[] zoneBull = array.new_bool()
+var string[] zoneTf = array.new_string()
+var int[] zoneWeight = array.new_int()
+var float[] zoneImpulse = array.new_float()
+var int[] zoneTests = array.new_int()
+var bool[] zoneWasInside = array.new_bool()
+var bool[] zoneMitigated = array.new_bool()
+var int[] zoneCreatedTime = array.new_int()   // v9.2: ВРЕМЕ, не бар-индекс
+
+f_add_zone(top, bottom, bull, tfName, weight, impulseRatio) =>
+    if top > bottom
+        array.push(zoneBoxes, box(na))
+        array.push(zoneLabels, label(na))
+        array.push(zoneTop, top)
+        array.push(zoneBottom, bottom)
+        array.push(zoneBull, bull)
+        array.push(zoneTf, tfName)
+        array.push(zoneWeight, weight)
+        array.push(zoneImpulse, impulseRatio)
+        array.push(zoneTests, 0)
+        array.push(zoneWasInside, false)
+        array.push(zoneMitigated, false)
+        array.push(zoneCreatedTime, time)
+        int cap = maxZonesPerTf * 3
+        while array.size(zoneTop) > cap
+            box oldBox = array.shift(zoneBoxes)
+            label oldLabel = array.shift(zoneLabels)
+            if not na(oldBox)
+                box.delete(oldBox)
+            if not na(oldLabel)
+                label.delete(oldLabel)
+            array.shift(zoneTop)
+            array.shift(zoneBottom)
+            array.shift(zoneBull)
+            array.shift(zoneTf)
+            array.shift(zoneWeight)
+            array.shift(zoneImpulse)
+            array.shift(zoneTests)
+            array.shift(zoneWasInside)
+            array.shift(zoneMitigated)
+            array.shift(zoneCreatedTime)
+
+f_detect_zone(arr, tfAtr, isNew, tfName, weight) =>
+    if showZones and isNew and not na(tfAtr) and not na(f_hist(arr, 2, 3))
+        float impulseClose = f_hist(arr, 0, 3)
+        float impulseOpen = f_hist(arr, 0, 0)
+        float baseClose = f_hist(arr, 1, 3)
+        float baseOpen = f_hist(arr, 1, 0)
+        float baseHigh = f_hist(arr, 1, 1)
+        float baseLow = f_hist(arr, 1, 2)
+        float ratio = math.abs(impulseClose - impulseOpen) / tfAtr
+        bool impulseStrong = ratio >= zoneImpulseATR
+        int lastBack = math.min(zoneSweepLookback + 1, 9)
+        bool sweptForBull = not zoneOnlyAfterSweep or baseLow < f_hist_min_low(arr, 2, lastBack)
+        bool sweptForBear = not zoneOnlyAfterSweep or baseHigh > f_hist_max_high(arr, 2, lastBack)
+        bool bullSetup = impulseStrong and impulseClose > impulseOpen and baseClose < baseOpen and sweptForBull
+        bool bearSetup = impulseStrong and impulseClose < impulseOpen and baseClose > baseOpen and sweptForBear
+        if bullSetup
+            f_add_zone(math.max(baseHigh, baseOpen), math.min(baseLow, baseClose), true, tfName, weight, ratio)
+        if bearSetup
+            f_add_zone(math.max(baseHigh, baseClose), math.min(baseLow, baseOpen), false, tfName, weight, ratio)
+
+f_detect_zone(hist1, a1, new1, f_tf_name(tf1), 1)
+f_detect_zone(hist2, a2, new2, f_tf_name(tf2), 2)
+f_detect_zone(hist3, a3, new3, f_tf_name(tf3), 3)
+
+// ▼▼▼ HZ START ═══════════════════════════════════════════════════════════════
+// ИСТОРИЧЕСКИ ОТПЕЧАТЪК НА ЗОНИТЕ · v9.5
+// ЗАЩО: живата зона се маха от 11 масива при ПРОБИВ или при 3 теста (виж «invalid /
+// exhausted» по-долу). Тоест зоната, която е РАБОТИЛА, се трие по същата причина като
+// тази, която се е ПРОВАЛИЛА → скролваш назад и историята е празна.
+// ТУК: отделни обекти, отделни масиви, собствен таван. НЕ пипа нито един ред от живата
+// зона. Всичко по ВРЕМЕ (xloc.bar_time) → раждането може да е с хиляди свещи назад без
+// «too far from the current bar index». Нула [N] референции → max_bars_back не се натоварва.
+// ═══════════════════════════════════════════════════════════════════════════
+g2h = "2б · ИСТОРИЧЕСКИ ОТПЕЧАТЪК НА ЗОНИТЕ"
+hzShow = input.bool(true, "Оставяй блед отпечатък на зоните в историята", group = g2h, tooltip = "Живата зона НЕ се променя. Това е ОТДЕЛЕН правоъгълник, закован от раждането на зоната. НЕ се трие при отдалечаване на цената и НЕ се трие, когато живата зона умре.")
+hzKeep = input.int(60, "  Колко исторически зони да пазя", minval = 5, maxval = 300, group = g2h, tooltip = "Таванът е max_boxes_count (ред 8) = 500. Живите заемат до 80. Минеш ли тавана, TradingView трие НАЙ-СТАРИТЕ кутии БЕЗ съобщение — тоест точно историята.")
+hzFillTr = input.int(93, "  Прозрачност на пълнежа (80-100)", minval = 80, maxval = 100, group = g2h, tooltip = "Живите зони са на 68 и 55. 93 е около четири пъти по-блед — вижда се, но не смачква свещите.")
+hzMaxBars = input.int(500, "  Отпечатък без нито един допир се маркира НЕИЗПОЛЗВАН след N свещи", minval = 20, maxval = 5000, group = g2h)
+hzBroken = input.bool(true, "  Показвай и пробитите зони (сив пунктир, без пълнеж)", group = g2h)
+hzMinW = input.int(1, "  Показвай само зони с тежест >=", minval = 1, maxval = 3, group = g2h, tooltip = "1 = и трите таймфрейма. 3 = само най-високият — най-чистата графика.")
+
+var box[] hzBox = array.new_box()
+var float[] hzTopA = array.new_float()
+var float[] hzBotA = array.new_float()
+var bool[] hzBullA = array.new_bool()
+var string[] hzTfA = array.new_string()
+var int[] hzBar0 = array.new_int()
+var int[] hzState = array.new_int()   // 0 недокосната · 1 изядена и удържа · 2 пробита · 3 неизползвана
+var bool[] hzLock = array.new_bool()  // десният ръб е закован
+var bool[] hzDone = array.new_bool()  // съдбата е решена
+
+// ── РАЖДАНЕ · хващаме зоните, родени на ТАЗИ свещ, без да пипаме f_add_zone ──
+if hzShow and array.size(zoneCreatedTime) > 0
+    for i = 0 to array.size(zoneCreatedTime) - 1
+        if array.get(zoneCreatedTime, i) == time and array.get(zoneWeight, i) >= hzMinW
+            float zt = array.get(zoneTop, i)
+            float zb = array.get(zoneBottom, i)
+            bool zbl = array.get(zoneBull, i)
+            color c0 = zbl ? C_BUY_BRIGHT : C_SELL_BRIGHT
+            box nb = box.new(time, zt, time, zb, xloc = xloc.bar_time, border_color = color.new(c0, 60), border_width = 1, border_style = line.style_dashed, bgcolor = color.new(c0, math.min(hzFillTr + 3, 100)), text = uiMode == "Лесен" ? "" : (zbl ? "ЗОНА ↑ " : "ЗОНА ↓ ") + array.get(zoneTf, i), text_color = color.new(c0, 45), text_size = size.tiny, text_halign = text.align_left, text_valign = text.align_center, text_wrap = text.wrap_auto)
+            array.push(hzBox, nb)
+            array.push(hzTopA, zt)
+            array.push(hzBotA, zb)
+            array.push(hzBullA, zbl)
+            array.push(hzTfA, array.get(zoneTf, i))
+            array.push(hzBar0, bar_index)
+            array.push(hzState, 0)
+            array.push(hzLock, false)
+            array.push(hzDone, false)
+            while array.size(hzBox) > hzKeep
+                box hzOld = array.shift(hzBox)
+                if not na(hzOld)
+                    box.delete(hzOld)
+                array.shift(hzTopA)
+                array.shift(hzBotA)
+                array.shift(hzBullA)
+                array.shift(hzTfA)
+                array.shift(hzBar0)
+                array.shift(hzState)
+                array.shift(hzLock)
+                array.shift(hzDone)
+
+// ── ЖИВОТ И СЪДБА · назад по масива, за да е безопасно array.remove ──
+if hzShow and array.size(hzBox) > 0
+    for i = array.size(hzBox) - 1 to 0
+        if not array.get(hzDone, i) and bar_index > array.get(hzBar0, i)
+            box hzB = array.get(hzBox, i)
+            float hzT = array.get(hzTopA, i)
+            float hzBt = array.get(hzBotA, i)
+            bool hzBl = array.get(hzBullA, i)
+            int st = array.get(hzState, i)
+            float hgt = math.max(hzT - hzBt, syminfo.mintick)
+            bool ins = low <= hzT and high >= hzBt
+            float pen = hzBl ? (hzT - low) / hgt : (high - hzBt) / hgt
+            bool eaten = ins and pen >= 0.5
+            bool broken = f_bar_confirmed() and (hzBl ? close < hzBt : close > hzT)
+            bool stale = bar_index - array.get(hzBar0, i) >= hzMaxBars
+            int ns = st
+            if eaten and ns == 0
+                ns := 1
+            if broken
+                ns := 2
+            if stale and ns == 0
+                ns := 3
+            bool wide = bar_index - array.get(hzBar0, i) >= 3
+            bool lockNow = ns == 2 or ns == 3
+            if not array.get(hzLock, i)
+                box.set_right(hzB, time)
+                if lockNow and wide
+                    array.set(hzLock, i, true)
+            if ns == 2 and not hzBroken
+                box.delete(hzB)
+                array.remove(hzBox, i)
+                array.remove(hzTopA, i)
+                array.remove(hzBotA, i)
+                array.remove(hzBullA, i)
+                array.remove(hzTfA, i)
+                array.remove(hzBar0, i)
+                array.remove(hzState, i)
+                array.remove(hzLock, i)
+                array.remove(hzDone, i)
+            else
+                if ns != st
+                    array.set(hzState, i, ns)
+                    color cs = ns >= 2 ? C_MUTED : hzBl ? C_BUY_BRIGHT : C_SELL_BRIGHT
+                    box.set_border_color(hzB, color.new(cs, ns == 1 ? 30 : ns == 2 ? 45 : 65))
+                    box.set_border_style(hzB, ns == 1 ? line.style_solid : ns == 2 ? line.style_dotted : line.style_dashed)
+                    box.set_bgcolor(hzB, color.new(cs, ns == 1 ? hzFillTr : 100))
+                    box.set_text_color(hzB, color.new(cs, ns >= 2 ? 40 : 30))
+                    if uiMode != "Лесен"
+                        box.set_text(hzB, (ns == 1 ? "ИЗЯДЕНА · УДЪРЖА · " : ns == 2 ? "ПРОБИТА · " : "НЕИЗПОЛЗВАНА · ") + array.get(hzTfA, i))
+                if (ns == 2 or ns == 3) and wide
+                    array.set(hzDone, i, true)
+// ▲▲▲ HZ END ═══════════════════════════════════════════════════════════════
+
+f_key_confluence(top, bottom) =>
+    float tol = atr * 0.25
+    int count = 0
+    count += showPrevDay and not na(pdHigh) and pdHigh >= bottom - tol and pdHigh <= top + tol ? 1 : 0
+    count += showPrevDay and not na(pdLow) and pdLow >= bottom - tol and pdLow <= top + tol ? 1 : 0
+    count += showPrevWeek and not na(pwHigh) and pwHigh >= bottom - tol and pwHigh <= top + tol ? 1 : 0
+    count += showPrevWeek and not na(pwLow) and pwLow >= bottom - tol and pwLow <= top + tol ? 1 : 0
+    count += showAsia and not na(asiaHigh) and asiaHigh >= bottom - tol and asiaHigh <= top + tol ? 1 : 0
+    count += showAsia and not na(asiaLow) and asiaLow >= bottom - tol and asiaLow <= top + tol ? 1 : 0
+    count
+
+bool inBuyZone = false
+bool inSellZone = false
+float activeBuyTop = na
+float activeBuyBottom = na
+float activeSellTop = na
+float activeSellBottom = na
+int activeBuyScore = 0
+int activeSellScore = 0
+string activeBuyTf = "—"
+string activeSellTf = "—"
+int activeBuyTests = 0
+int activeSellTests = 0
+bool activeBuyMitigated = false
+bool activeSellMitigated = false
+float nearestBuyDistance = na
+float nearestSellDistance = na
+string nearestBuyText = "Няма близка зона"
+string nearestSellText = "Няма близка зона"
+
+if array.size(zoneTop) > 0
+    for i = array.size(zoneTop) - 1 to 0
+        float top = array.get(zoneTop, i)
+        float bottom = array.get(zoneBottom, i)
+        bool bull = array.get(zoneBull, i)
+        int weight = array.get(zoneWeight, i)
+        float impulseRatio = array.get(zoneImpulse, i)
+        int tests = array.get(zoneTests, i)
+        bool wasInside = array.get(zoneWasInside, i)
+        bool mitigated = array.get(zoneMitigated, i)
+        string tfName = array.get(zoneTf, i)
+        float height = math.max(top - bottom, syminfo.mintick)
+        bool nowInside = low <= top and high >= bottom
+        float penetration = bull ? f_clamp((top - low) / height, 0.0, 1.5) : f_clamp((high - bottom) / height, 0.0, 1.5)
+        if nowInside and not wasInside
+            tests += 1
+            array.set(zoneTests, i, tests)
+        if nowInside and penetration >= 0.5
+            mitigated := true
+            array.set(zoneMitigated, i, true)
+        array.set(zoneWasInside, i, nowInside)
+        bool invalid = f_bar_confirmed() and (bull ? close < bottom : close > top)
+        bool exhausted = tests >= zoneDeleteTests
+        box bx = array.get(zoneBoxes, i)
+        label lb = array.get(zoneLabels, i)
+        if invalid or exhausted
+            if not na(bx)
+                box.delete(bx)
+            if not na(lb)
+                label.delete(lb)
+            array.remove(zoneBoxes, i)
+            array.remove(zoneLabels, i)
+            array.remove(zoneTop, i)
+            array.remove(zoneBottom, i)
+            array.remove(zoneBull, i)
+            array.remove(zoneTf, i)
+            array.remove(zoneWeight, i)
+            array.remove(zoneImpulse, i)
+            array.remove(zoneTests, i)
+            array.remove(zoneWasInside, i)
+            array.remove(zoneMitigated, i)
+            array.remove(zoneCreatedTime, i)
+        else
+            bool hasFvg = f_fvg_overlap(top, bottom, bull)
+            int keyCount = f_key_confluence(top, bottom)
+            bool correctHalf = bull ? inDiscount : inPremium
+            bool directionAligned = bull ? structureDirection == 1 : structureDirection == -1
+            bool sweepAligned = bull ? recentSweepBelow : recentSweepAbove
+            int score = 2
+            score += weight >= 2 ? 1 : 0
+            score += impulseRatio >= zoneImpulseATR + 0.3 ? 1 : 0
+            score += tests == 0 ? 1 : 0
+            score += hasFvg ? 1 : 0
+            score += keyCount > 0 ? 1 : 0
+            score += correctHalf ? 1 : 0
+            score += directionAligned ? 1 : 0
+            score += sweepAligned ? 1 : 0
+            score := math.min(score, 7)
+            float middle = (top + bottom) / 2.0
+            float distance = close > top ? close - top : close < bottom ? bottom - close : 0.0
+            bool shouldShow = showZones and f_near_price(middle, visibleBand) and (uiMode != "Лесен" or weight >= 2 or score >= opportunityMinScore)
+            color zoneColor = f_strength_color(score, bull)
+            int transparency = score >= opportunityMinScore ? TR_ZONE_STRONG : TR_ZONE
+            string typeText = bull ? "ЗОНА ЗА ЕВЕНТУАЛНА ПОКУПКА" : "ЗОНА ЗА ЕВЕНТУАЛНА ПРОДАЖБА"
+            string normalText = bull ? "ПОДКРЕПЯЩА ЗОНА" : "ЗОНА НА СЪПРОТИВА"
+            string title = showOpportunityZones and score >= opportunityMinScore ? typeText : normalText
+            string tfText = showTfOnLabels ? " · " + tfName : ""
+            string stateText = f_zone_state(tests, mitigated)
+            string labelText = isFastChart ? (bull ? "ЗОНА ЗА ПОКУПКА · " : "ЗОНА ЗА ПРОДАЖБА · ") + tfName + " · " + f_strength_name(score) :
+                 uiMode == "Лесен" ? title + tfText + "\n" + f_strength_name(score) + " · " + stateText :
+                 title + tfText + "\n" + f_strength_name(score) + " · СИЛА " + str.tostring(score) + "/7 · " + stateText +
+                 "\n" + f_price(bottom) + " – " + f_price(top)
+            if shouldShow and na(bx)
+                bx := box.new(array.get(zoneCreatedTime, i), top, time + (isFastChart ? 14 : 30) * TF_MS, bottom,
+                     xloc = xloc.bar_time, extend = extend.right,
+                     border_color = color.new(zoneColor, 0), border_width = weight >= 3 ? 4 : weight == 2 ? 2 : 1,
+                     bgcolor = color.new(zoneColor, transparency))
+                lb := label.new(time + (isFastChart ? 8 : 20) * TF_MS, middle, labelText, xloc = xloc.bar_time,
+                     style = label.style_label_left, color = zoneColor, textcolor = C_TEXT,
+                     size = isFastChart ? size.tiny : uiMode == "Лесен" ? size.small : size.tiny)
+                array.set(zoneBoxes, i, bx)
+                array.set(zoneLabels, i, lb)
+            if not shouldShow and not na(bx)
+                box.delete(bx)
+                label.delete(lb)
+                array.set(zoneBoxes, i, box(na))
+                array.set(zoneLabels, i, label(na))
+            if shouldShow and not na(bx)
+                box.set_right(bx, time + (isFastChart ? 14 : 30) * TF_MS)
+                box.set_bgcolor(bx, color.new(zoneColor, transparency))
+                box.set_border_color(bx, zoneColor)
+                label.set_xy(lb, time + (isFastChart ? 8 : 20) * TF_MS, middle)
+                label.set_text(lb, labelText)
+                label.set_color(lb, zoneColor)
+            if bull
+                if nowInside and (not inBuyZone or score > activeBuyScore)
+                    inBuyZone := true
+                    activeBuyTop := top
+                    activeBuyBottom := bottom
+                    activeBuyScore := score
+                    activeBuyTf := tfName
+                    activeBuyTests := tests
+                    activeBuyMitigated := mitigated
+                if na(nearestBuyDistance) or distance < nearestBuyDistance
+                    nearestBuyDistance := distance
+                    nearestBuyText := f_strength_name(score) + " зона · " + tfName + " · " + f_price(bottom) + "–" + f_price(top)
+            else
+                if nowInside and (not inSellZone or score > activeSellScore)
+                    inSellZone := true
+                    activeSellTop := top
+                    activeSellBottom := bottom
+                    activeSellScore := score
+                    activeSellTf := tfName
+                    activeSellTests := tests
+                    activeSellMitigated := mitigated
+                if na(nearestSellDistance) or distance < nearestSellDistance
+                    nearestSellDistance := distance
+                    nearestSellText := f_strength_name(score) + " зона · " + tfName + " · " + f_price(bottom) + "–" + f_price(top)
+
+// ═══════════════════════════════════════════════════════════════════════════
+// ЯПОНСКИ СВЕЩИ · само потвърдени и контекстуални
+// ═══════════════════════════════════════════════════════════════════════════
+float candleRange = math.max(high - low, syminfo.mintick)
+float candleBody = math.abs(close - open)
+float prevBody = math.abs(close[1] - open[1])
+float upperWick = high - math.max(open, close)
+float lowerWick = math.min(open, close) - low
+bool bullCandle = close > open
+bool bearCandle = close < open
+bool bullEngulf = bullCandle and close[1] < open[1] and open <= close[1] and close >= open[1] and candleBody >= prevBody * 0.8
+bool bearEngulf = bearCandle and close[1] > open[1] and open >= close[1] and close <= open[1] and candleBody >= prevBody * 0.8
+bool bullPin = lowerWick >= candleBody * 2.0 and upperWick <= candleBody * 1.2 and close >= low + candleRange * 0.55
+bool bearPin = upperWick >= candleBody * 2.0 and lowerWick <= candleBody * 1.2 and close <= low + candleRange * 0.45
+bool doji = candleBody <= candleRange * 0.12
+bool insideBar = high < high[1] and low > low[1]
+bool bullImpulse = bullCandle and candleBody >= atr * 1.2 and close >= low + candleRange * 0.75
+bool bearImpulse = bearCandle and candleBody >= atr * 1.2 and close <= low + candleRange * 0.25
+bool morningStar = close[2] < open[2] and math.abs(close[1] - open[1]) <= math.abs(close[2] - open[2]) * 0.45 and bullCandle and close > (open[2] + close[2]) / 2.0
+bool eveningStar = close[2] > open[2] and math.abs(close[1] - open[1]) <= math.abs(close[2] - open[2]) * 0.45 and bearCandle and close < (open[2] + close[2]) / 2.0
+
+bool nearSupport = not na(nearestSupport) and math.abs(low - nearestSupport) <= atr * 0.35
+bool nearResistance = not na(nearestResistance) and math.abs(high - nearestResistance) <= atr * 0.35
+bool bullishCandleContext = inBuyZone or nearSupport or recentSweepBelow
+bool bearishCandleContext = inSellZone or nearResistance or recentSweepAbove
+bool neutralCandleContext = inBuyZone or inSellZone or nearSupport or nearResistance
+
+string candleText = "Няма важно свещно потвърждение"
+int candleDirection = 0
+if f_bar_confirmed()
+    if bullEngulf and (not candleOnlyAtContext or bullishCandleContext)
+        candleText := "СИЛНО ПОГЛЪЩАНЕ НАГОРЕ" + (showCandleEnglish ? " · Bullish Engulfing" : "")
+        candleDirection := 1
+    else if bearEngulf and (not candleOnlyAtContext or bearishCandleContext)
+        candleText := "СИЛНО ПОГЛЪЩАНЕ НАДОЛУ" + (showCandleEnglish ? " · Bearish Engulfing" : "")
+        candleDirection := -1
+    else if morningStar and (not candleOnlyAtContext or bullishCandleContext)
+        candleText := "ТРИСВЕЩНО ОБРЪЩАНЕ НАГОРЕ" + (showCandleEnglish ? " · Morning Star" : "")
+        candleDirection := 1
+    else if eveningStar and (not candleOnlyAtContext or bearishCandleContext)
+        candleText := "ТРИСВЕЩНО ОБРЪЩАНЕ НАДОЛУ" + (showCandleEnglish ? " · Evening Star" : "")
+        candleDirection := -1
+    else if bullPin and (not candleOnlyAtContext or bullishCandleContext)
+        candleText := "СИЛЕН ОТКАЗ ОТ ПО-НИСКА ЦЕНА" + (showCandleEnglish ? " · Bullish Pin Bar" : "")
+        candleDirection := 1
+    else if bearPin and (not candleOnlyAtContext or bearishCandleContext)
+        candleText := "СИЛЕН ОТКАЗ ОТ ПО-ВИСОКА ЦЕНА" + (showCandleEnglish ? " · Bearish Pin Bar" : "")
+        candleDirection := -1
+    else if bullImpulse and (not candleOnlyAtContext or bullishCandleContext)
+        candleText := "СИЛНО ИМПУЛСНО ДВИЖЕНИЕ НАГОРЕ"
+        candleDirection := 1
+    else if bearImpulse and (not candleOnlyAtContext or bearishCandleContext)
+        candleText := "СИЛНО ИМПУЛСНО ДВИЖЕНИЕ НАДОЛУ"
+        candleDirection := -1
+    else if doji and (not candleOnlyAtContext or neutralCandleContext)
+        candleText := "НЕРЕШИТЕЛНОСТ · ИЗЧАКАЙ ПОТВЪРЖДЕНИЕ" + (showCandleEnglish ? " · Doji" : "")
+        candleDirection := 0
+    else if insideBar and (not candleOnlyAtContext or neutralCandleContext)
+        candleText := "СВИВАНЕ НА ЦЕНАТА · ЧАКА СЕ ПРОБИВ" + (showCandleEnglish ? " · Inside Bar" : "")
+        candleDirection := 0
+
+var label[] candleLabels = array.new_label()
+bool importantCandle = candleText != "Няма важно свещно потвърждение"
+// v9.5: свещните маркери минават през СЪЩИЯ пазач като останалите надписи.
+// Коментарът на ред 382 твърдеше, че пазачът стои «на всяко място» — тук го нямаше.
+bool candleBelow9 = candleDirection == 1
+bool candleGapOk9 = candleBelow9 ? (na(evBelow) or bar_index - evBelow >= visualGapBars) : (na(evAbove) or bar_index - evAbove >= visualGapBars)
+if showCandles and importantCandle and recentVisual9 and candleGapOk9
+    if candleBelow9
+        evBelow := bar_index
+    else
+        evAbove := bar_index
+    color candleColor = candleDirection == 1 ? C_BUY : candleDirection == -1 ? C_SELL : C_WARN
+    string candleShort = candleDirection == 1 ? "▲" : candleDirection == -1 ? "▼" : "◆"
+    label marker = label.new(bar_index, candleDirection == 1 ? low : high,
+         compactLabels ? candleShort : candleText, tooltip = candleText,
+         style = candleDirection == 1 ? label.style_label_up : label.style_label_down,
+         color = candleColor, textcolor = C_TEXT, size = isFastChart ? size.tiny : uiMode == "Лесен" ? size.small : size.tiny)
+    array.push(candleLabels, marker)
+    while array.size(candleLabels) > (isFastChart ? math.min(maxCandleMarkers, 3) : maxCandleMarkers)
+        label.delete(array.shift(candleLabels))
+
+bool bullishCandleConfirmation = candleDirection == 1
+bool bearishCandleConfirmation = candleDirection == -1
+
+// ═══════════════════════════════════════════════════════════════════════════
+// ТРЕНД ЛИНИИ · броим отделни клъстери на допир
+// ═══════════════════════════════════════════════════════════════════════════
+float trendHighPivot = ta.pivothigh(high, trendPivot, trendPivot)
+float trendLowPivot = ta.pivotlow(low, trendPivot, trendPivot)
+var float trendH1 = na
+var float trendH2 = na
+var int trendHX1 = na
+var int trendHX2 = na
+var float trendL1 = na
+var float trendL2 = na
+var int trendLX1 = na
+var int trendLX2 = na
+// v9.2 · успоредно време — САМО за рисуване; наклонът пак се смята по бар-индекси
+var int trendHT1 = na
+var int trendHT2 = na
+var int trendLT1 = na
+var int trendLT2 = na
+if not na(trendHighPivot)
+    trendH2 := trendH1
+    trendHX2 := trendHX1
+    trendHT2 := trendHT1
+    trendH1 := trendHighPivot
+    trendHX1 := bar_index - trendPivot
+    trendHT1 := time[trendPivot]
+if not na(trendLowPivot)
+    trendL2 := trendL1
+    trendLX2 := trendLX1
+    trendLT2 := trendLT1
+    trendL1 := trendLowPivot
+    trendLX1 := bar_index - trendPivot
+    trendLT1 := time[trendPivot]
+
+float trendTolerance = atr * trendTouchATR
+f_touch_clusters(y1, x1, y2, x2) =>
+    int count = 0
+    int lastTouchOffset = 10000
+    if not na(y1) and not na(y2) and x1 > x2
+        float slope = (y1 - y2) / (x1 - x2)
+        int back = math.min(bar_index - x2, 500)
+        for i = 0 to back
+            float linePrice = y1 + slope * (bar_index - i - x1)
+            bool touching = math.abs(high[i] - linePrice) <= trendTolerance or math.abs(low[i] - linePrice) <= trendTolerance
+            if touching and math.abs(i - lastTouchOffset) >= trendTouchGap
+                count += 1
+                lastTouchOffset := i
+    count
+
+var line trendHighLine = na
+var line trendLowLine = na
+var label trendHighLabel = na
+var label trendLowLabel = na
+if showTrendLines and uiMode == "Експертен" and barstate.islast
+    line.delete(trendHighLine)
+    line.delete(trendLowLine)
+    label.delete(trendHighLabel)
+    label.delete(trendLowLabel)
+    if not na(trendH2) and not na(trendH1) and trendHX1 > trendHX2 and not na(trendHT1) and not na(trendHT2)
+        float slopeH = (trendH1 - trendH2) / (trendHX1 - trendHX2)
+        float projectedH = trendH1 + slopeH * (bar_index - trendHX1)
+        int touchesH = f_touch_clusters(trendH1, trendHX1, trendH2, trendHX2)
+        bool brokenH = close > projectedH + trendTolerance
+        trendHighLine := line.new(trendHT2, trendH2, trendHT1, trendH1, xloc = xloc.bar_time, extend = extend.right,
+             color = brokenH ? C_MUTED : C_SELL, width = brokenH ? 1 : 2, style = brokenH ? line.style_dotted : line.style_solid)
+        trendHighLabel := label.new(bar_index + 8, projectedH, (brokenH ? "НИЗХОДЯЩАТА ТРЕНД ЛИНИЯ Е ПРОБИТА" : "НИЗХОДЯЩА ТРЕНД ЛИНИЯ") + " · " + str.tostring(touchesH) + " отделни допира",
+             style = label.style_label_left, color = brokenH ? C_MUTED : C_SELL, textcolor = C_TEXT, size = size.tiny)
+    if not na(trendL2) and not na(trendL1) and trendLX1 > trendLX2 and not na(trendLT1) and not na(trendLT2)
+        float slopeL = (trendL1 - trendL2) / (trendLX1 - trendLX2)
+        float projectedL = trendL1 + slopeL * (bar_index - trendLX1)
+        int touchesL = f_touch_clusters(trendL1, trendLX1, trendL2, trendLX2)
+        bool brokenL = close < projectedL - trendTolerance
+        trendLowLine := line.new(trendLT2, trendL2, trendLT1, trendL1, xloc = xloc.bar_time, extend = extend.right,
+             color = brokenL ? C_MUTED : C_BUY, width = brokenL ? 1 : 2, style = brokenL ? line.style_dotted : line.style_solid)
+        trendLowLabel := label.new(bar_index + 8, projectedL, (brokenL ? "ВЪЗХОДЯЩАТА ТРЕНД ЛИНИЯ Е ПРОБИТА" : "ВЪЗХОДЯЩА ТРЕНД ЛИНИЯ") + " · " + str.tostring(touchesL) + " отделни допира",
+             style = label.style_label_left, color = brokenL ? C_MUTED : C_BUY, textcolor = C_TEXT, size = size.tiny)
+
+// ═══════════════════════════════════════════════════════════════════════════
+// СЕСИИ
+// ═══════════════════════════════════════════════════════════════════════════
+bool intraday = timeframe.isintraday
+bool asiaSession = showSessions and intraday and not na(time(timeframe.period, "0300-1100:1234567", "Europe/Sofia"))
+bool londonSession = showSessions and intraday and not na(time(timeframe.period, "1000-1830:1234567", "Europe/Sofia"))
+bool newYorkSession = showSessions and intraday and not na(time(timeframe.period, "1530-2200:1234567", "Europe/Sofia"))
+bool usShield = showUsShield and intraday and not na(time(timeframe.period, "0825-0915:23456", "America/New_York"))   // v9.5: беше на софийско време → при разминаване на лятното време ЕС/САЩ прозорецът се местеше и изпускаше 08:30 ET
+bgcolor(asiaSession ? color.new(#3A7BD5, 96) : na, title = "Азиатска сесия")
+bgcolor(londonSession ? color.new(#E9B949, 96) : na, title = "Лондонска сесия")
+bgcolor(newYorkSession ? color.new(#46A758, 96) : na, title = "Нюйоркска сесия")
+bgcolor(usShield ? color.new(C_SELL, 87) : na, title = "US волатилен прозорец")
+
+// ═══════════════════════════════════════════════════════════════════════════
+// КЛЮЧОВИ ЛИНИИ · ясно разграничени от зоните
+// ═══════════════════════════════════════════════════════════════════════════
+var line[] keyLines = array.new_line()
+var label[] keyLabels = array.new_label()
+f_clear_key_objects() =>
+    while array.size(keyLines) > 0
+        line.delete(array.pop(keyLines))
+    while array.size(keyLabels) > 0
+        label.delete(array.pop(keyLabels))
+f_draw_level(price, levelName, col, lineStyle, back) =>
+    if not na(price) and f_near_price(price, visibleBand)
+        line ln = line.new(bar_index - back, price, bar_index + 18, price, color = color.new(col, 5), width = 1, style = lineStyle)
+        string side = price > close ? "СЪПРОТИВА" : "ПОДКРЕПА"
+        label lb = label.new(bar_index + 18, price, side + " · " + levelName + " · " + f_price(price) + " · " + f_pips(price - close),
+             style = label.style_label_left, color = col, textcolor = C_TEXT, size = size.tiny)
+        array.push(keyLines, ln)
+        array.push(keyLabels, lb)
+
+if barstate.islast
+    f_clear_key_objects()
+    if showPrevDay
+        f_draw_level(pdHigh, "вчерашен максимум", C_SELL, line.style_solid, 90)
+        f_draw_level(pdLow, "вчерашен минимум", C_BUY, line.style_solid, 90)
+        if uiMode != "Лесен"
+            f_draw_level(pdClose, "вчерашно затваряне", C_KEY, line.style_dotted, 90)
+    if showPrevWeek
+        f_draw_level(pwHigh, "седмичен максимум", C_SELL, line.style_solid, 140)
+        f_draw_level(pwLow, "седмичен минимум", C_BUY, line.style_solid, 140)
+    if showAsia and intraday
+        f_draw_level(asiaHigh, "максимум на Азия", C_LIQ, line.style_dashed, 70)
+        f_draw_level(asiaLow, "минимум на Азия", C_LIQ, line.style_dashed, 70)
+    if showDailyMA and uiMode == "Експертен"
+        f_draw_level(sma20D, "дневна SMA 20", C_INFO, line.style_dotted, 80)
+        f_draw_level(sma50D, "дневна SMA 50", C_INFO, line.style_dotted, 80)
+        f_draw_level(sma200D, "дневна SMA 200", C_INFO, line.style_dotted, 80)
+
+// Ясен ориентир до текущата цена.
+var label currentPriceLabel = na
+if barstate.islast
+    label.delete(currentPriceLabel)
+    string upText = na(nearestResistance) ? "няма близка съпротива" : "съпротива след " + f_pips(nearestResistance - close)
+    string downText = na(nearestSupport) ? "няма близка подкрепа" : "подкрепа след " + f_pips(close - nearestSupport)
+    currentPriceLabel := label.new(bar_index + 3, close, "ЦЕНА СЕГА · " + f_price(close) + "\n↑ " + upText + " · ↓ " + downText,
+         style = label.style_label_left, color = C_INFO, textcolor = C_TEXT, size = isFastChart ? size.tiny : uiMode == "Лесен" ? size.small : size.tiny)
+
+// Премиум/дискаунт: контекст, а не автоматична команда за вход.
+var line rangeMidLine = na
+var label rangeMidLabel = na
+var box premiumBox = na
+var box discountBox = na
+if showPremiumDiscount and barstate.islast
+    line.delete(rangeMidLine)
+    label.delete(rangeMidLabel)
+    box.delete(premiumBox)
+    box.delete(discountBox)
+    rangeMidLine := line.new(bar_index - rangeBars, rangeMid, bar_index + 20, rangeMid, color = C_MID, width = 2)
+    rangeMidLabel := label.new(bar_index + 20, rangeMid,
+         "СРЕДА НА ДИАПАЗОНА · " + (inPremium ? "ГОРНА / ПО-СКЪПА ПОЛОВИНА" : "ДОЛНА / ПО-ЕВТИНА ПОЛОВИНА"),
+         style = label.style_label_left, color = C_WARN, textcolor = C_TEXT, size = size.tiny)
+    if uiMode != "Лесен"
+        premiumBox := box.new(bar_index - rangeBars, rangeHigh, bar_index + 20, rangeMid, extend = extend.right, border_color = color.new(C_SELL, 75), bgcolor = color.new(C_SELL, TR_RANGE))
+        discountBox := box.new(bar_index - rangeBars, rangeMid, bar_index + 20, rangeLow, extend = extend.right, border_color = color.new(C_BUY, 75), bgcolor = color.new(C_BUY, TR_RANGE))
+
+// ═══════════════════════════════════════════════════════════════════════════
+// SETUP ENGINE · един доминиращ сценарий
+// ═══════════════════════════════════════════════════════════════════════════
+bool recentBullBreak = not na(lastBullBreakBar) and bar_index - lastBullBreakBar <= sweepFreshBars
+bool recentBearBreak = not na(lastBearBreakBar) and bar_index - lastBearBreakBar <= sweepFreshBars
+
+float longStopBase = inBuyZone ? activeBuyBottom : nearestSupport
+float shortStopBase = inSellZone ? activeSellTop : nearestResistance
+// v9.5: lastSweepBelowPrice НЯМА давност — свип отпреди часове разтягаше стопа на 60$ и
+// убиваше лонга за целия ден. Сега свипът важи само докато е свеж (същият прозорец като
+// recentSweep*), плюс проверка за здрав разум в двете посоки.
+maxStopAtr = input.float(2.5, "Максимален структурен стоп (ATR)", minval = 0.5, maxval = 10.0, step = 0.1, group = g0, tooltip = "По-широк стоп → сетъпът се ОТХВЪРЛЯ, а не се реже. Рязан стоп променя геометрията, върху която е сметнат печалба/риск.")
+minStopAtr = input.float(0.25, "Минимален стоп (ATR)", minval = 0.05, maxval = 2.0, step = 0.05, group = g0, tooltip = "Пази срещу микро-риск: стоп на 0.6 пипа дава печалба/риск 50 и мигновено «потвърждение», което спредът изяжда.")
+float sweepLowRef9 = recentSweepBelow ? lastSweepBelowPrice : na
+float sweepHighRef9 = recentSweepAbove ? lastSweepAbovePrice : na
+float longStopRaw9 = na(longStopBase) ? na : math.min(longStopBase, nz(sweepLowRef9, longStopBase)) - atr * 0.15
+float shortStopRaw9 = na(shortStopBase) ? na : math.max(shortStopBase, nz(sweepHighRef9, shortStopBase)) + atr * 0.15
+bool longStopSane9 = not na(longStopRaw9) and close - longStopRaw9 <= atr * maxStopAtr and close - longStopRaw9 >= atr * minStopAtr
+bool shortStopSane9 = not na(shortStopRaw9) and shortStopRaw9 - close <= atr * maxStopAtr and shortStopRaw9 - close >= atr * minStopAtr
+float longStop = longStopSane9 ? longStopRaw9 : na
+float shortStop = shortStopSane9 ? shortStopRaw9 : na
+// v9.5: при пробив към нови върхове НЯМА ниво отгоре → longTarget = na → longRR = na →
+// longHardReady false → ЛОНГ НЕ МОЖЕ ДА СЕ ПОТВЪРДИ. Индикаторът млъкваше точно в най-
+// силния тренд, докато собственият му тригер (recentBullBreak) е ПРОБИВ. Лек: измерена
+// цел САМО когато няма НИТО ЕДНО ниво отгоре И структурата вече е пробила в същата посока.
+openTargetOk = input.bool(true, "Позволи ОТВОРЕНА цел при пробив в чисто поле", group = g0, tooltip = "Само когато няма нито едно ниво отгоре/отдолу И структурата вече е пробила. Планът я маркира като ОТВОРЕНА ЦЕЛ.")
+tgtAtrMult = input.float(2.0, "  Измерена цел (ATR)", minval = 0.5, maxval = 10.0, step = 0.1, group = g0)
+float longRisk9 = na(longStop) ? na : close - longStop
+float shortRisk9 = na(shortStop) ? na : shortStop - close
+float longOpen9 = openTargetOk and na(nearestResistance) and structureDirection == 1 and recentBullBreak and not na(longRisk9) ? close + math.max(atr * tgtAtrMult, longRisk9 * minRR) : na
+float shortOpen9 = openTargetOk and na(nearestSupport) and structureDirection == -1 and recentBearBreak and not na(shortRisk9) ? close - math.max(atr * tgtAtrMult, shortRisk9 * minRR) : na
+float longTarget = na(nearestResistance) ? longOpen9 : nearestResistance
+float shortTarget = na(nearestSupport) ? shortOpen9 : nearestSupport
+bool longTgtOpen9 = na(nearestResistance) and not na(longOpen9)
+bool shortTgtOpen9 = na(nearestSupport) and not na(shortOpen9)
+float longRR = na(longStop) or na(longTarget) or close <= longStop or longTarget <= close ? na : (longTarget - close) / (close - longStop)
+float shortRR = na(shortStop) or na(shortTarget) or close >= shortStop or shortTarget >= close ? na : (close - shortTarget) / (shortStop - close)
+
+bool longContext = inBuyZone and recentSweepBelow
+bool shortContext = inSellZone and recentSweepAbove
+bool longTrigger = recentBullBreak or bullRetestHeld or bullishCandleConfirmation
+bool shortTrigger = recentBearBreak or bearRetestHeld or bearishCandleConfirmation
+bool longHardReady = longContext and structureDirection == 1 and not na(longRR) and longRR >= minRR
+bool shortHardReady = shortContext and structureDirection == -1 and not na(shortRR) and shortRR >= minRR
+bool longConfirmed = f_bar_confirmed() and longHardReady and longTrigger and not usShield and not wrongTf
+bool shortConfirmed = f_bar_confirmed() and shortHardReady and shortTrigger and not usShield and not wrongTf
+// v9.5: беше longConfirmed and shortConfirmed — тъждествено FALSE, защото едното иска
+// structureDirection == 1, другото == -1, а това е ЕДИН скалар. Мъртъв клон.
+// Състоянието, което авторът е искал, съществува — но в КОНТЕКСТА, не в потвърждението.
+bool longEligible9 = longContext and longTrigger and not na(longRR) and longRR >= minRR
+bool shortEligible9 = shortContext and shortTrigger and not na(shortRR) and shortRR >= minRR
+bool conflicting = f_bar_confirmed() and not usShield and not wrongTf and longEligible9 and shortEligible9
+
+string setupState = "ИЗЧАКАЙ · НЯМА ЗАВЪРШЕН СЕТЪП"
+string setupDirection = "НЕУТРАЛНО"
+string setupTriggerText = "Чакай цената да стигне силна зона"
+string blockerText = "Няма активен сетъп"
+color setupColor = C_KEY
+
+// v9.5: showZones/showLiquidity/showStructure стоят в ЛОГИКАТА (редове 707, 463, 375),
+// не само при рисуването. Изключиш ли ги, сигналите спират МЪЛЧАЛИВО. Сега се казва.
+bool engineOff = not showZones or not showLiquidity or not showStructure
+if engineOff
+    setupState := "ДВИГАТЕЛЯТ Е ЧАСТИЧНО ИЗКЛЮЧЕН ОТ НАСТРОЙКИТЕ"
+    setupDirection := "БЛОКИРАНО"
+    setupTriggerText := "Включи пак: " + (not showZones ? "зони · " : "") + (not showLiquidity ? "ликвидност · " : "") + (not showStructure ? "структура" : "")
+    blockerText := "Изключена е отметка, която е ЛОГИКА, а не рисунка"
+    setupColor := C_SELL
+else if wrongTf
+    setupState := "ГРЕШНА ЙЕРАРХИЯ НА ТАЙМФРЕЙМИТЕ"
+    setupDirection := "БЛОКИРАНО"
+    setupTriggerText := "Избери TF, който не е по-нисък от отворената графика"
+    blockerText := "Поне един избран TF е по-нисък от графиката"
+    setupColor := C_SELL
+else if usShield
+    setupState := "НЕ ВЛИЗАЙ · US ВОЛАТИЛЕН ПРОЗОРЕЦ"
+    setupDirection := "БЛОКИРАНО"
+    setupTriggerText := "Изчакай прозорецът да приключи"
+    blockerText := "Активна времева защита"
+    setupColor := C_SELL
+else if conflicting
+    setupState := "ИЗЧАКАЙ · ДВЕТЕ ПОСОКИ СА АКТИВНИ"
+    setupDirection := "НЕЯСЕН ПАЗАР"
+    setupTriggerText := "Чакай едната структура да бъде обезсилена"
+    blockerText := "Противоречив контекст"
+    setupColor := C_WARN
+else if longConfirmed
+    setupState := "ПОТВЪРДЕНА ЕВЕНТУАЛНА ПОКУПКА"
+    setupDirection := "ПОКУПКА / ЛОНГ"
+    setupTriggerText := "Зона + обрана ликвидност + възходяща структура"
+    blockerText := "Няма основен блокиращ фактор"
+    setupColor := C_BUY_BRIGHT
+else if shortConfirmed
+    setupState := "ПОТВЪРДЕНА ЕВЕНТУАЛНА ПРОДАЖБА"
+    setupDirection := "ПРОДАЖБА / ШОРТ"
+    setupTriggerText := "Зона + обрана ликвидност + низходяща структура"
+    blockerText := "Няма основен блокиращ фактор"
+    setupColor := C_SELL_BRIGHT
+else if longContext
+    setupState := "ПОДГОТВЯ СЕ ЕВЕНТУАЛНА ПОКУПКА"
+    setupDirection := "НАБЛЮДАВАЙ ЛОНГ"
+    setupTriggerText := structureDirection != 1 ? "Чака се пробив на структурата нагоре" : na(longRR) or longRR < minRR ? "Риск/печалба е недостатъчно" : "Чака се силна възходяща реакция"
+    blockerText := structureDirection != 1 ? "Няма възходящо структурно потвърждение" : na(longRR) or longRR < minRR ? "Ниско риск/печалба" : "Липсва финален тригер"
+    setupColor := C_WARN
+else if shortContext
+    setupState := "ПОДГОТВЯ СЕ ЕВЕНТУАЛНА ПРОДАЖБА"
+    setupDirection := "НАБЛЮДАВАЙ ШОРТ"
+    setupTriggerText := structureDirection != -1 ? "Чака се пробив на структурата надолу" : na(shortRR) or shortRR < minRR ? "Риск/печалба е недостатъчно" : "Чака се силна низходяща реакция"
+    blockerText := structureDirection != -1 ? "Няма низходящо структурно потвърждение" : na(shortRR) or shortRR < minRR ? "Ниско риск/печалба" : "Липсва финален тригер"
+    setupColor := C_WARN
+else if not na(nearestBuyDistance) and nearestBuyDistance <= atr * 1.5 and (na(nearestSellDistance) or nearestBuyDistance < nearestSellDistance)
+    setupState := "НАБЛЮДАВАЙ ЗОНА ЗА ЕВЕНТУАЛНА ПОКУПКА"
+    setupDirection := "ВЪЗМОЖЕН ЛОНГ КОНТЕКСТ"
+    setupTriggerText := "Изчакай влизане в зоната и обиране под дъната"
+    blockerText := "Цената още не е в зоната"
+    setupColor := C_INFO
+else if not na(nearestSellDistance) and nearestSellDistance <= atr * 1.5
+    setupState := "НАБЛЮДАВАЙ ЗОНА ЗА ЕВЕНТУАЛНА ПРОДАЖБА"
+    setupDirection := "ВЪЗМОЖЕН ШОРТ КОНТЕКСТ"
+    setupTriggerText := "Изчакай влизане в зоната и обиране над върховете"
+    blockerText := "Цената още не е в зоната"
+    setupColor := C_INFO
+
+bool newLongSignal = longConfirmed and not longConfirmed[1]
+bool newShortSignal = shortConfirmed and not shortConfirmed[1]
+if newLongSignal
+    label.new(bar_index, low, "ПОТВЪРДЕНА ЕВЕНТУАЛНА ПОКУПКА\nВход: " + f_price(close) + " · Стоп: " + f_price(longStop) + " · Цел: " + f_price(longTarget) + " · печалба/риск " + f_rr_txt(longRR),
+         style = label.style_label_up, color = C_BUY_BRIGHT, textcolor = C_TEXT, size = size.normal)
+if newShortSignal
+    label.new(bar_index, high, "ПОТВЪРДЕНА ЕВЕНТУАЛНА ПРОДАЖБА\nВход: " + f_price(close) + " · Стоп: " + f_price(shortStop) + " · Цел: " + f_price(shortTarget) + " · печалба/риск " + f_rr_txt(shortRR),
+         style = label.style_label_down, color = C_SELL_BRIGHT, textcolor = C_TEXT, size = size.normal)
+
+// ── ИСТОРИЯ НА СЕТЪПИТЕ · v9.5 · plotshape НЯМА таван от 500 ──────────────
+// label.new на двата реда по-горе не се трие никъде, НО дели тавана от 500 надписа с
+// BOS/ретест/свип. При ~2 надписа на 8 свещи бюджетът стига ~1490 свещи — един ден на 1м.
+// plotshape е СЕРИЯ, не рисунков обект: живее на всяка заредена свещ и не се изяжда.
+// Числата отиват в Data Window, за да не пипат ценовата скала.
+plotshape(newLongSignal, title = "История · потвърдена покупка", style = shape.triangleup, location = location.belowbar, color = C_BUY_BRIGHT, size = size.tiny, text = "ЛОНГ", textcolor = C_BUY_BRIGHT)
+plotshape(newShortSignal, title = "История · потвърдена продажба", style = shape.triangledown, location = location.abovebar, color = C_SELL_BRIGHT, size = size.tiny, text = "ШОРТ", textcolor = C_SELL_BRIGHT)
+plot(newLongSignal ? close : na, "История · ЛОНГ вход", color = C_ENTRY, display = display.data_window)
+plot(newLongSignal ? longStop : na, "История · ЛОНГ стоп", color = C_SL, display = display.data_window)
+plot(newLongSignal ? longTarget : na, "История · ЛОНГ цел", color = C_TP, display = display.data_window)
+plot(newLongSignal ? longRR : na, "История · ЛОНГ печалба/риск", color = C_INFO, display = display.data_window)
+plot(newShortSignal ? close : na, "История · ШОРТ вход", color = C_ENTRY, display = display.data_window)
+plot(newShortSignal ? shortStop : na, "История · ШОРТ стоп", color = C_SL, display = display.data_window)
+plot(newShortSignal ? shortTarget : na, "История · ШОРТ цел", color = C_TP, display = display.data_window)
+plot(newShortSignal ? shortRR : na, "История · ШОРТ печалба/риск", color = C_INFO, display = display.data_window)
+
+// ═══════════════════════════════════════════════════════════════════════════
+// ЗАМРАЗЕН ПЛАН · ДОБАВКА v9.3a
+// Блокът по-долу («СДЕЛКАТА НА ГРАФИКАТА») остава НЕПИПНАТ. Тук само се смята
+// къде е бил входът в МОМЕНТА на потвърждението, за да не се плъзга с цената.
+// ═══════════════════════════════════════════════════════════════════════════
+var float frzEntry = na
+var float frzStop  = na
+var int   frzTime  = na
+var int   frzBar   = na
+var int   frzDir   = 0
+var bool  frzOn    = false
+var bool  frzHit1  = false
+var bool  frzHit2  = false
+var bool  frzHit3  = false
+var bool  frzHitSl = false
+
+bool frzArmL = newLongSignal  and tlDirMode != "ШОРТ"
+bool frzArmS = newShortSignal and tlDirMode != "ЛОНГ"
+if tlFreeze and (frzArmL or frzArmS)
+    frzDir   := frzArmL ? 1 : -1
+    frzEntry := close
+    float frzStruct = frzArmL ? longStop : shortStop
+    frzStop  := tlStopMode == "По зоната (структурен)" and not na(frzStruct) ? frzStruct : close - frzDir * tlSlUsd
+    frzTime  := time
+    frzBar   := bar_index
+    frzOn    := true
+    frzHit1  := false
+    frzHit2  := false
+    frzHit3  := false
+    frzHitSl := false
+
+int   tlManDir   = tlDirMode == "ЛОНГ" ? 1 : tlDirMode == "ШОРТ" ? -1 : 0
+bool  tlUseFrz   = frzOn and (tlManDir == 0 or tlManDir == frzDir)
+int   tlDrwDir   = tlManDir != 0 ? tlManDir : frzOn ? frzDir : (longConfirmed or longContext) ? 1 : (shortConfirmed or shortContext) ? -1 : inBuyZone ? 1 : inSellZone ? -1 : structureDirection != 0 ? structureDirection : inDiscount ? 1 : -1
+bool  tlDrwLong  = tlDrwDir == 1
+float tlDrwEntry = tlUseFrz ? frzEntry : close
+float tlStructSt = tlDrwLong ? longStop : shortStop
+float tlDrwStop  = tlUseFrz ? frzStop : tlStopMode == "По зоната (структурен)" and not na(tlStructSt) ? tlStructSt : tlDrwEntry - tlDrwDir * tlSlUsd
+float tlP1v = tlDrwEntry + tlDrwDir * tlTp1Usd
+float tlP2v = tlDrwEntry + tlDrwDir * tlTp2Usd
+float tlP3v = tlDrwEntry + tlDrwDir * tlTp3Usd
+
+if tlUseFrz and not na(frzBar) and bar_index > frzBar
+    frzHit1  := frzHit1  or (frzDir == 1 ? high >= tlP1v : low  <= tlP1v)
+    frzHit2  := frzHit2  or (frzDir == 1 ? high >= tlP2v : low  <= tlP2v)
+    frzHit3  := frzHit3  or (frzDir == 1 ? high >= tlP3v : low  <= tlP3v)
+    frzHitSl := frzHitSl or (na(tlDrwStop) ? false : (frzDir == 1 ? low <= tlDrwStop : high >= tlDrwStop))
+    // v9.5: планът се ПЕНСИОНИРА. Без това frzOn остава true завинаги и стълбата чертае
+    // стар ЛОНГ, докато блокът «СДЕЛКАТА НА ГРАФИКАТА» чертае ШОРТ — две жълти линии «ВХОД».
+    if frzHitSl or frzHit3 or bar_index - frzBar > tlAgeBars
+        frzOn := false
+
+int    frzAge  = tlUseFrz and not na(frzBar) ? bar_index - frzBar : 0
+bool   frzDead = tlUseFrz and (frzHitSl or frzHit3 or frzAge > tlAgeBars)
+string frzState = not tlUseFrz ? "ЧЕРНОВА · още няма потвърден сигнал · движи се с цената" : frzHitSl ? "ПРИКЛЮЧЕН · стопът беше докоснат" : frzHit3 ? "ПРИКЛЮЧЕН · ТП3 беше взет" : frzAge > tlAgeBars ? "СТАР ПЛАН · " + str.tostring(frzAge) + " свещи от входа" : frzHit2 ? "ЖИВ · ТП2 взет · " + str.tostring(frzAge) + " свещи" : frzHit1 ? "ЖИВ · ТП1 взет · " + str.tostring(frzAge) + " свещи" : "ЖИВ · " + str.tostring(frzAge) + " свещи от входа"
+
+f_tl_from(a, b) =>
+    float d = na(a) or na(b) ? na : math.abs(b - a)
+    na(d) ? "—" : str.tostring(d, "#.##") + "$ · " + str.tostring(math.round(d / pipSize)) + " пипа"
+f_tl_left(target, dir) =>
+    float d = na(target) ? na : (dir == 1 ? target - close : close - target)
+    na(d) ? "—" : d <= 0 ? "ВЗЕТ ✓" : "остават " + str.tostring(d, "#.##") + "$ · " + str.tostring(math.round(d / pipSize)) + " пипа"
+
+// ═══════════════════════════════════════════════════════════════════════════
+// СДЕЛКАТА НА ГРАФИКАТА · вход / стоп / цел като ВИДИМИ линии
+// Нивата се смятаха и досега (longStop/longTarget/longRR по-горе), но живееха само
+// в текста на панела. Тук се ЧЕРТАЯТ. Всичко е по ВРЕМЕ (xloc.bar_time), защото
+// адресиране по бар-индекс гърми на ниска рамка, щом изостане от max_bars_back.
+// Обектите се трият и пречертават на всеки последен бар → постоянен разход.
+// ═══════════════════════════════════════════════════════════════════════════
+var line  tlEntry  = na
+var line  tlStop   = na
+var line  tlTarget = na
+var label tlEntryL = na
+var label tlStopL  = na
+var label tlTgtL   = na
+var box   tlRisk1  = na
+var box   tlRisk2  = na
+var box   tlRew1   = na
+var box   tlRew2   = na
+
+if barstate.islast
+    line.delete(tlEntry)
+    line.delete(tlStop)
+    line.delete(tlTarget)
+    label.delete(tlEntryL)
+    label.delete(tlStopL)
+    label.delete(tlTgtL)
+    box.delete(tlRisk1)
+    box.delete(tlRisk2)
+    box.delete(tlRew1)
+    box.delete(tlRew2)
+
+    bool tlLong  = longConfirmed or longContext
+    bool tlShort = (shortConfirmed or shortContext) and not tlLong
+    float tlSt = tlLong ? longStop   : tlShort ? shortStop   : na
+    float tlTg = tlLong ? longTarget : tlShort ? shortTarget : na
+    float tlRR = tlLong ? longRR     : tlShort ? shortRR     : na
+
+    if showTradeLevels and not (isFastChart and tlLadder) and (tlLong or tlShort) and not na(tlSt) and not na(tlTg)
+        float en = close
+        color cDir  = C_ENTRY
+        bool  ready = tlLong ? longConfirmed : shortConfirmed
+        int   t0 = time
+        int   t1 = time + 45 * TF_MS
+        int   tL = time + 47 * TF_MS
+        float dSt = math.abs(en - tlSt)
+        float dTg = math.abs(tlTg - en)
+        string pipSt = str.tostring(dSt / pipSize, "#") + " пипа"
+        string pipTg = str.tostring(dTg / pipSize, "#") + " пипа"
+        string rrTxt = na(tlRR) ? "—" : str.tostring(tlRR, "#.##")
+        string head  = (ready ? "✅ " : "👀 ") + (tlLong ? "ЛОНГ" : "ШОРТ") +
+                       (ready ? " · ПОТВЪРДЕН" : " · В НАБЛЮДЕНИЕ")
+
+        // зоните: две наслоени кутии → «светещ» ръб, по-плътен към нивото
+        if tradeLevelsWide
+            tlRisk1 := box.new(t0, en, t1, tlSt, xloc = xloc.bar_time,
+                 border_color = color.new(C_SL, 35), border_width = 2,
+                 bgcolor = color.new(C_SL, 88))
+            tlRisk2 := box.new(t0, en, t1, en + (tlSt - en) * 0.35, xloc = xloc.bar_time,
+                 border_color = color.new(C_SL, 100), bgcolor = color.new(C_SL, 80))
+            tlRew1  := box.new(t0, en, t1, tlTg, xloc = xloc.bar_time,
+                 border_color = color.new(C_TP, 35), border_width = 2,
+                 bgcolor = color.new(C_TP, 88))
+            tlRew2  := box.new(t0, en, t1, en + (tlTg - en) * 0.35, xloc = xloc.bar_time,
+                 border_color = color.new(C_TP, 100), bgcolor = color.new(C_TP, 80))
+
+        tlEntry  := line.new(t0, en, t1, en, xloc = xloc.bar_time, color = cDir,
+             width = 3, style = line.style_solid)
+        tlStop   := line.new(t0, tlSt, t1, tlSt, xloc = xloc.bar_time, color = C_SL,
+             width = 2, style = ready ? line.style_solid : line.style_dashed)
+        tlTarget := line.new(t0, tlTg, t1, tlTg, xloc = xloc.bar_time, color = C_TP,
+             width = 2, style = ready ? line.style_solid : line.style_dashed)
+
+        tlEntryL := label.new(tL, en, head + "\nВХОД " + f_price(en) + "  ·  печалба/риск " + rrTxt,
+             xloc = xloc.bar_time, style = label.style_label_left, color = cDir,
+             textcolor = C_TEXT, size = isFastChart ? size.small : uiMode == "Лесен" ? size.normal : size.small)
+        tlStopL  := label.new(tL, tlSt, "🛑 СТОП " + f_price(tlSt) + "\n−" +
+             str.tostring(dSt, "#.##") + "$  ·  " + pipSt,
+             xloc = xloc.bar_time, style = label.style_label_left, color = C_SL,
+             textcolor = C_TEXT, size = isFastChart ? size.tiny : size.small)
+        tlTgtL   := label.new(tL, tlTg, "🎯 ЦЕЛ " + f_price(tlTg) + "\n+" +
+             str.tostring(dTg, "#.##") + "$  ·  " + pipTg,
+             xloc = xloc.bar_time, style = label.style_label_left, color = C_TP,
+             textcolor = C_TEXT, size = isFastChart ? size.tiny : size.small)
+
+// ═══════════════════════════════════════════════════════════════════════════
+// СТЪЛБА ТП1 / ТП2 / ТП3 · ДОБАВКА v9.3a
+// Отделни обекти от блока по-горе. Различават се от v8.1 нарочно: ПУНКТИР,
+// емоджи 🥇🥈🥉 и по-далечен десен отстъп, за да не се застъпват надписите.
+// Всичко е по ВРЕМЕ (xloc.bar_time) — t0 може да е часове назад.
+// ═══════════════════════════════════════════════════════════════════════════
+var line  tlLdEn  = na
+var line  tlLdSt  = na
+var line  tlLd1   = na
+var line  tlLd2   = na
+var line  tlLd3   = na
+var label tlLdEnL = na
+var label tlLdStL = na
+var label tlLd1L  = na
+var label tlLd2L  = na
+var label tlLd3L  = na
+var box   tlLdRk  = na
+var box   tlLdB1  = na
+var box   tlLdB2  = na
+var box   tlLdB3  = na
+
+if barstate.islast
+    line.delete(tlLdEn)
+    line.delete(tlLdSt)
+    line.delete(tlLd1)
+    line.delete(tlLd2)
+    line.delete(tlLd3)
+    label.delete(tlLdEnL)
+    label.delete(tlLdStL)
+    label.delete(tlLd1L)
+    label.delete(tlLd2L)
+    label.delete(tlLd3L)
+    box.delete(tlLdRk)
+    box.delete(tlLdB1)
+    box.delete(tlLdB2)
+    box.delete(tlLdB3)
+
+    if tlLadder
+        color cLd  = frzDead ? C_MUTED : C_ENTRY
+        color cRw  = frzDead ? C_MUTED : C_TP
+        color cRk  = frzDead ? C_MUTED : C_SL
+        int   t0   = tlUseFrz and not na(frzTime) ? frzTime : time
+        int   drawRight = isFastChart ? math.min(tlRightBars, 18) : tlRightBars
+        int   t1   = time + drawRight * TF_MS
+        int   tA   = time + (drawRight + 2) * TF_MS
+        int   tB   = time + (drawRight + 5) * TF_MS
+        int   tC   = time + (drawRight + 8) * TF_MS
+        string hd  = (frzDead ? "⚪ " : tlUseFrz ? "✅ " : "👀 ") + (tlDrwLong ? "ЛОНГ" : "ШОРТ") + " · " + frzState
+
+        if tlLadderBox and not na(tlDrwStop)
+            tlLdRk := box.new(t0, tlDrwEntry, t1, tlDrwStop, xloc = xloc.bar_time,
+                 border_color = color.new(cRk, 40), border_width = 2, bgcolor = color.new(cRk, 90))
+        if tlLadderBox
+            tlLdB1 := box.new(t0, tlDrwEntry, t1, tlP1v, xloc = xloc.bar_time,
+                 border_color = color.new(cRw, 45), border_width = 1, bgcolor = color.new(cRw, 85))
+            tlLdB2 := box.new(t0, tlP1v, t1, tlP2v, xloc = xloc.bar_time,
+                 border_color = color.new(cRw, 60), border_width = 1, bgcolor = color.new(cRw, 90))
+            tlLdB3 := box.new(t0, tlP2v, t1, tlP3v, xloc = xloc.bar_time,
+                 border_color = color.new(cRw, 70), border_width = 1, bgcolor = color.new(cRw, 93))
+
+        tlLdEn  := line.new(t0, tlDrwEntry, t1, tlDrwEntry, xloc = xloc.bar_time, color = cLd,
+             width = 3, style = tlUseFrz ? line.style_solid : line.style_dotted)
+        tlLdEnL := label.new(tA, tlDrwEntry, hd + "\nВХОД " + f_price(tlDrwEntry),
+             xloc = xloc.bar_time, style = label.style_label_left, color = cLd,
+             textcolor = C_TEXT, size = isFastChart ? size.small : uiMode == "Лесен" ? size.normal : size.small)
+
+        if not na(tlDrwStop)
+            tlLdSt  := line.new(t0, tlDrwStop, t1, tlDrwStop, xloc = xloc.bar_time, color = cRk,
+                 width = 2, style = line.style_dotted)
+            tlLdStL := label.new(tA, tlDrwStop, "🛑 СТОП " + f_price(tlDrwStop) + "\nриск " + f_tl_from(tlDrwEntry, tlDrwStop) + "\n" + (frzHitSl ? "ДОКОСНАТ ✗" : "до стопа " + f_tl_from(close, tlDrwStop)),
+                 xloc = xloc.bar_time, style = label.style_label_left, color = cRk,
+                 textcolor = C_TEXT, size = isFastChart ? size.tiny : size.small)
+
+        tlLd1 := line.new(t0, tlP1v, t1, tlP1v, xloc = xloc.bar_time, color = cRw, width = 2, style = line.style_dotted)
+        tlLd2 := line.new(t0, tlP2v, t1, tlP2v, xloc = xloc.bar_time, color = color.new(cRw, 25), width = 1, style = line.style_dotted)
+        tlLd3 := line.new(t0, tlP3v, t1, tlP3v, xloc = xloc.bar_time, color = color.new(cRw, 45), width = 1, style = line.style_dotted)
+        tlLd1L := label.new(tA, tlP1v, "🥇 ТП1 " + f_price(tlP1v) + "\nот входа " + f_tl_from(tlDrwEntry, tlP1v) + "\n" + (frzHit1 ? "ВЗЕТ ✓" : f_tl_left(tlP1v, tlDrwDir)),
+             xloc = xloc.bar_time, style = label.style_label_left, color = cRw, textcolor = C_TEXT, size = isFastChart ? size.tiny : size.small)
+        tlLd2L := label.new(tB, tlP2v, "🥈 ТП2 " + f_price(tlP2v) + "\nот входа " + f_tl_from(tlDrwEntry, tlP2v) + "\n" + (frzHit2 ? "ВЗЕТ ✓" : f_tl_left(tlP2v, tlDrwDir)),
+             xloc = xloc.bar_time, style = label.style_label_left, color = color.new(cRw, 20), textcolor = C_TEXT, size = size.tiny)
+        tlLd3L := label.new(tC, tlP3v, "🥉 ТП3 " + f_price(tlP3v) + "\nот входа " + f_tl_from(tlDrwEntry, tlP3v) + "\n" + (frzHit3 ? "ВЗЕТ ✓" : f_tl_left(tlP3v, tlDrwDir)),
+             xloc = xloc.bar_time, style = label.style_label_left, color = color.new(cRw, 40), textcolor = C_TEXT, size = size.tiny)
+
+// ═══════════════════════════════════════════════════════════════════════════
+// ОСНОВЕН ПАНЕЛ НА БЪЛГАРСКИ
+// ═══════════════════════════════════════════════════════════════════════════
+var table mainPanel = table.new(position.bottom_left, 2, 18, border_width = 1, frame_width = 1, frame_color = color.new(C_KEY, 20))
+f_panel_row(row, key, value, keyColor, valueColor) =>
+    table.cell(mainPanel, 0, row, key, text_color = keyColor, bgcolor = color.new(C_PANEL, 4), text_size = size.tiny)
+    table.cell(mainPanel, 1, row, value, text_color = valueColor, bgcolor = color.new(C_PANEL, 4), text_size = row == 0 ? size.small : size.tiny)
+
+string locationText = inBuyZone ? "В ЗОНА ЗА ЕВЕНТУАЛНА ПОКУПКА" : inSellZone ? "В ЗОНА ЗА ЕВЕНТУАЛНА ПРОДАЖБА" :
+     not na(nearestResistance) and nearestResistance - close < close - nz(nearestSupport, close - atr * 100) ? "ПО-БЛИЗО ДО СЪПРОТИВА" :
+     not na(nearestSupport) ? "ПО-БЛИЗО ДО ПОДКРЕПА" : "В СРЕДАТА НА ДИАПАЗОНА"
+string activeZoneText = inBuyZone ? f_strength_name(activeBuyScore) + " ПОКУПКА · " + activeBuyTf + " · " + f_zone_state(activeBuyTests, activeBuyMitigated) :
+     inSellZone ? f_strength_name(activeSellScore) + " ПРОДАЖБА · " + activeSellTf + " · " + f_zone_state(activeSellTests, activeSellMitigated) :
+     "Купуваща: " + nearestBuyText + " | Продаваща: " + nearestSellText
+string liquidityText = recentSweepBelow ? "ОБРАНА ПОД ДЪНАТА · подкрепя покупка" : recentSweepAbove ? "ОБРАНА НАД ВЪРХОВЕТЕ · подкрепя продажба" : "Няма актуално обиране"
+string structureText = structureDirection == 1 ? "НАГОРЕ · " + lastStructureText : structureDirection == -1 ? "НАДОЛУ · " + lastStructureText : "НЕУТРАЛНА · " + lastStructureText
+string profileText = resolvedMode + " · " + f_tf_name(tf1) + " → " + f_tf_name(tf2) + " → " + f_tf_name(tf3)
+string rangeText = inPremium ? "ГОРНА / ПО-СКЪПА ПОЛОВИНА" : "ДОЛНА / ПО-ЕВТИНА ПОЛОВИНА"
+string planText = (longConfirmed ? "Вход " + f_price(close) + " | Стоп " + f_price(longStop) + " | Цел " + f_price(longTarget) + " | печалба/риск " + f_rr_txt(longRR) :
+     shortConfirmed ? "Вход " + f_price(close) + " | Стоп " + f_price(shortStop) + " | Цел " + f_price(shortTarget) + " | печалба/риск " + f_rr_txt(shortRR) :
+     longContext ? "План лонг: стоп " + f_price(longStop) + " | цел " + f_price(longTarget) + " | печалба/риск " + f_rr_txt(longRR) :
+     shortContext ? "План шорт: стоп " + f_price(shortStop) + " | цел " + f_price(shortTarget) + " | печалба/риск " + f_rr_txt(shortRR) : "Още няма готов план") + ((longTgtOpen9 and (longConfirmed or longContext)) or (shortTgtOpen9 and (shortConfirmed or shortContext)) ? " · ⚠ ОТВОРЕНА ЦЕЛ (няма ниво отпред — целта е измерена)" : "")
+string refreshText = barstate.isrealtime ? "ОБНОВЯВА СЕ АВТОМАТИЧНО · текуща свещ" : "ИСТОРИЧЕСКИ ДАННИ · последна налична свещ"
+string fastLocationText = inBuyZone ? "В ЗОНА ЗА ПОКУПКА" : inSellZone ? "В ЗОНА ЗА ПРОДАЖБА" : "МЕЖДУ НИВАТА"
+string fastZoneText = inBuyZone ? "ПОКУПКА · " + activeBuyTf : inSellZone ? "ПРОДАЖБА · " + activeSellTf : "НЯМА АКТИВНА ЗОНА"
+string fastLiquidityText = recentSweepBelow ? "СВИП ДОЛУ" : recentSweepAbove ? "СВИП ГОРЕ" : "НЯМА СВИП"
+string fastCandleText = candleDirection == 1 ? "БИЧЕ ПОТВЪРЖДЕНИЕ" : candleDirection == -1 ? "МЕЧЕ ПОТВЪРЖДЕНИЕ" : "НЯМА ПОТВЪРЖДЕНИЕ"
+string fastWaitText = longContext ? "ЛОНГ · ЧАКАЙ ТРИГЕР" : shortContext ? "ШОРТ · ЧАКАЙ ТРИГЕР" : "НЯМА ГОТОВ СЕТЪП"
+string fastPlanText = longConfirmed ? "ЛОНГ · С " + f_price(longStop) + " · Ц " + f_price(longTarget) : shortConfirmed ? "ШОРТ · С " + f_price(shortStop) + " · Ц " + f_price(shortTarget) : "ЧАКАЙ ПОТВЪРЖДЕНИЕ"
+string fastLadderText = (tlDrwLong ? "Л " : "Ш ") + f_price(tlDrwEntry) + " · 1 " + f_price(tlP1v) + " · 2 " + f_price(tlP2v) + " · 3 " + f_price(tlP3v) + " · С " + f_price(tlDrwStop)
+string fastNearestText = "R " + f_price(nearestResistance) + " · S " + f_price(nearestSupport)
+
+if showMainPanel and barstate.islast
+    table.clear(mainPanel, 0, 0, 1, 17)
+    if isFastChart
+        f_panel_row(0, "AERO", setupState, C_TEXT, C_TEXT)
+        table.cell_set_bgcolor(mainPanel, 0, 0, setupColor)
+        table.cell_set_bgcolor(mainPanel, 1, 0, setupColor)
+        f_panel_row(1, "ПОСОКА", setupDirection, C_TEXT, setupColor)
+        f_panel_row(2, "TF", resolvedMode + " · " + f_tf_name(tf1) + "/" + f_tf_name(tf2) + "/" + f_tf_name(tf3), C_INFO, C_TEXT)
+        f_panel_row(3, "КОНТЕКСТ", fastLocationText + " · " + fastZoneText, C_MID, C_TEXT)
+        f_panel_row(4, "СВИП / СВЕЩ", fastLiquidityText + " · " + fastCandleText, C_LIQ, C_TEXT)
+        f_panel_row(5, "ПЛАН", fastPlanText, C_INFO, C_TEXT)
+        if tlLadder
+            f_panel_row(6, "СТЪЛБА", fastLadderText, C_INFO, frzDead ? C_MUTED : tlDrwLong ? C_BUY : C_SELL)
+        f_panel_row(7, "НИВА", fastNearestText, C_KEY, C_TEXT)
+    else
+        f_panel_row(0, "AERO СЪСТОЯНИЕ", setupState, C_TEXT, C_TEXT)
+        table.cell_set_bgcolor(mainPanel, 0, 0, setupColor)
+        table.cell_set_bgcolor(mainPanel, 1, 0, setupColor)
+        f_panel_row(1, "ПОСОКА", setupDirection, C_TEXT, setupColor)
+        f_panel_row(2, "РЕЖИМ / TF", isFastChart ? resolvedMode + " · " + f_tf_name(tf1) + "/" + f_tf_name(tf2) + "/" + f_tf_name(tf3) : profileText, C_INFO, C_TEXT)
+        f_panel_row(3, "КЪДЕ Е ЦЕНАТА", isFastChart ? fastLocationText : locationText, C_MID, C_TEXT)
+        f_panel_row(4, "АКТИВНА ЗОНА", isFastChart ? fastZoneText : activeZoneText, inBuyZone ? C_BUY : inSellZone ? C_SELL : C_INFO, C_TEXT)
+        f_panel_row(5, "ЛИКВИДНОСТ", isFastChart ? fastLiquidityText : liquidityText, C_LIQ, recentSweepBelow ? C_BUY : recentSweepAbove ? C_SELL : C_MUTED)
+        f_panel_row(6, "ЯПОНСКА СВЕЩ", isFastChart ? fastCandleText : candleText, candleDirection == 1 ? C_BUY : candleDirection == -1 ? C_SELL : C_WARN, C_TEXT)
+        if uiMode == "Лесен"
+            f_panel_row(7, "КАКВО ЧАКАМЕ", isFastChart ? fastWaitText : setupTriggerText, C_WARN, C_TEXT)
+            f_panel_row(8, "ПЛАН", isFastChart ? fastPlanText : planText, C_INFO, C_TEXT)
+            f_panel_row(9, "ЦЕНА / ОБНОВЯВАНЕ", f_price(close) + " · автоматично", C_TEXT, C_MUTED)
+            if tlLadder
+                f_panel_row(10, "СТЪЛБА ТП", isFastChart ? fastLadderText : (tlDrwLong ? "ЛОНГ" : "ШОРТ") + " от " + f_price(tlDrwEntry) + " · ТП1 " + f_price(tlP1v) + (frzHit1 ? " ✓" : "") + " · ТП2 " + f_price(tlP2v) + (frzHit2 ? " ✓" : "") + " · ТП3 " + f_price(tlP3v) + (frzHit3 ? " ✓" : "") + " · СТОП " + f_price(tlDrwStop) + " · " + frzState, C_INFO, frzDead ? C_MUTED : tlDrwLong ? C_BUY : C_SELL)
+        else
+            f_panel_row(7, "СТРУКТУРА", structureText, C_STRUCTURE, structureDirection == 1 ? C_BUY : structureDirection == -1 ? C_SELL : C_MUTED)
+            f_panel_row(8, "СПРЯМО 50%", rangeText, C_MID, inDiscount ? C_BUY : C_SELL)
+            f_panel_row(9, "НАЙ-БЛИЗКА СЪПРОТИВА", f_price(nearestResistance) + " · " + f_pips(nearestResistance - close) + " · " + f_level_name(nearestResistance), C_SELL, C_TEXT)
+            f_panel_row(10, "НАЙ-БЛИЗКА ПОДКРЕПА", f_price(nearestSupport) + " · " + f_pips(close - nearestSupport) + " · " + f_level_name(nearestSupport), C_BUY, C_TEXT)
+            f_panel_row(11, "КАКВО ЧАКАМЕ", setupTriggerText, C_WARN, C_TEXT)
+            f_panel_row(12, "КАКВО ПРЕЧИ", blockerText, C_SELL, C_TEXT)
+            f_panel_row(13, "ПЛАН", planText, C_INFO, C_TEXT)
+            f_panel_row(14, "ЦЕНА СЕГА", f_price(close), C_TEXT, C_TEXT)
+            f_panel_row(15, "ОБНОВЯВАНЕ", refreshText, C_MUTED, C_MUTED)
+            if tlLadder
+                f_panel_row(16, "СТЪЛБА ТП", (tlDrwLong ? "ЛОНГ" : "ШОРТ") + " от " + f_price(tlDrwEntry) + " · ТП1 " + f_price(tlP1v) + (frzHit1 ? " ✓" : "") + " · ТП2 " + f_price(tlP2v) + (frzHit2 ? " ✓" : "") + " · ТП3 " + f_price(tlP3v) + (frzHit3 ? " ✓" : "") + " · СТОП " + f_price(tlDrwStop), C_INFO, frzDead ? C_MUTED : tlDrwLong ? C_BUY : C_SELL)
+                f_panel_row(17, "СЪСТОЯНИЕ НА ПЛАНА", frzState, C_INFO, frzDead ? C_MUTED : C_TEXT)
+else if barstate.islast
+    table.clear(mainPanel, 0, 0, 1, 17)
+
+// ═══════════════════════════════════════════════════════════════════════════
+// ПОДРОБНО ТАБЛО С НИВА
+// ═══════════════════════════════════════════════════════════════════════════
+var table levelsPanel = table.new(position.top_right, 3, 13, border_width = 1, frame_width = 1, frame_color = color.new(C_KEY, 35))
+f_levels_row(row, name, value) =>
+    table.cell(levelsPanel, 0, row, name, text_color = C_TEXT, bgcolor = color.new(C_PANEL, 5), text_size = size.tiny)
+    table.cell(levelsPanel, 1, row, f_price(value), text_color = C_TEXT, bgcolor = color.new(C_PANEL, 5), text_size = size.tiny)
+    table.cell(levelsPanel, 2, row, na(value) ? "—" : f_pips(value - close), text_color = na(value) ? C_MUTED : value > close ? C_SELL : C_BUY, bgcolor = color.new(C_PANEL, 5), text_size = size.tiny)
+if showLevelsPanel and barstate.islast
+    table.cell(levelsPanel, 0, 0, "НИВО", text_color = C_TEXT, bgcolor = C_INFO, text_size = size.tiny)
+    table.cell(levelsPanel, 1, 0, "ЦЕНА", text_color = C_TEXT, bgcolor = C_INFO, text_size = size.tiny)
+    table.cell(levelsPanel, 2, 0, "РАЗСТОЯНИЕ", text_color = C_TEXT, bgcolor = C_INFO, text_size = size.tiny)
+    f_levels_row(1, "Цена сега", close)
+    f_levels_row(2, "50% диапазон", rangeMid)
+    f_levels_row(3, "Вчера максимум", pdHigh)
+    f_levels_row(4, "Вчера минимум", pdLow)
+    f_levels_row(5, "Вчера затваряне", pdClose)
+    f_levels_row(6, "Седмица максимум", pwHigh)
+    f_levels_row(7, "Седмица минимум", pwLow)
+    f_levels_row(8, "Азия максимум", asiaHigh)
+    f_levels_row(9, "Азия минимум", asiaLow)
+    f_levels_row(10, "Дневна SMA 50", sma50D)
+    f_levels_row(11, "Дневна SMA 200", sma200D)
+    table.cell(levelsPanel, 0, 12, "Активен план", text_color = C_TEXT, bgcolor = C_KEY, text_size = size.tiny)
+    table.cell(levelsPanel, 1, 12, longConfirmed ? "ЛОНГ" : shortConfirmed ? "ШОРТ" : "НЯМА", text_color = longConfirmed ? C_BUY : shortConfirmed ? C_SELL : C_MUTED, bgcolor = C_KEY, text_size = size.tiny)
+    table.cell(levelsPanel, 2, 12, longConfirmed ? "печалба/риск " + f_rr_txt(longRR) : shortConfirmed ? "печалба/риск " + f_rr_txt(shortRR) : "—", text_color = C_TEXT, bgcolor = C_KEY, text_size = size.tiny)
+else if barstate.islast
+    table.clear(levelsPanel, 0, 0, 2, 12)
+
+// ═══════════════════════════════════════════════════════════════════════════
+// ЛЕГЕНДА НА БЪЛГАРСКИ
+// ═══════════════════════════════════════════════════════════════════════════
+var table legendPanel = table.new(position.bottom_right, 2, 13, border_width = 1, frame_width = 1, frame_color = color.new(C_KEY, 35))
+f_legend_row(row, term, explanation, col) =>
+    table.cell(legendPanel, 0, row, term, text_color = col, bgcolor = color.new(C_PANEL, 5), text_size = size.tiny)
+    table.cell(legendPanel, 1, row, explanation, text_color = C_TEXT, bgcolor = color.new(C_PANEL, 5), text_size = size.tiny)
+if showLegend and barstate.islast
+    table.cell(legendPanel, 0, 0, "ТЕРМИН", text_color = C_TEXT, bgcolor = C_INFO, text_size = size.tiny)
+    table.cell(legendPanel, 1, 0, "КАКВО ОЗНАЧАВА", text_color = C_TEXT, bgcolor = C_INFO, text_size = size.tiny)
+    f_legend_row(1, "Зона за покупка", "Област на подкрепа; чака се реакция и потвърждение", C_BUY)
+    f_legend_row(2, "Зона за продажба", "Област на съпротива; чака се реакция и потвърждение", C_SELL)
+    f_legend_row(3, "Свежа зона", "Не е тествана; обикновено е по-значима", C_BUY_BRIGHT)
+    f_legend_row(4, "Ликвидност", "Вероятно струпване на стопове над върхове или под дъна", C_LIQ)
+    f_legend_row(5, "Обрана ликвидност", "Цената премина нивото и се върна обратно", C_SWEEP)
+    f_legend_row(6, "ГАП (FVG)", "Незапълнен ценови дисбаланс", C_FVG)
+    f_legend_row(7, "BOS", "Пробив в посоката: НАГОРЕ зелен, НАДОЛУ червен", C_BUY)
+    f_legend_row(8, "CHoCH", "Първи знак за промяна на структурата", C_STRUCTURE)
+    f_legend_row(9, "MSS", "Промяна след свип и структурен пробив", C_STRUCTURE)
+    f_legend_row(10, "Ретест", "Връщане към пробитото ниво и проверка дали държи", C_RETEST)
+    f_legend_row(11, "Горна половина", "По-скъпа част от текущия диапазон; не е самостоятелен шорт сигнал", C_SELL)
+    f_legend_row(12, "Долна половина", "По-евтина част от текущия диапазон; не е самостоятелен лонг сигнал", C_BUY)
+else if barstate.islast
+    table.clear(legendPanel, 0, 0, 1, 12)
+
+// ═══════════════════════════════════════════════════════════════════════════
+// АЛАРМИ
+// ═══════════════════════════════════════════════════════════════════════════
+alertcondition(newLongSignal, "AERO · Потвърдена евентуална покупка", "AERO PRO: потвърдена е евентуална покупка след зона, ликвидност и структура.")
+alertcondition(newShortSignal, "AERO · Потвърдена евентуална продажба", "AERO PRO: потвърдена е евентуална продажба след зона, ликвидност и структура.")
+alertcondition(longContext and not longContext[1], "AERO · Подготвя се покупка", "AERO PRO: цената е в зона за покупка след обрана ликвидност. Чака се потвърждение.")
+alertcondition(shortContext and not shortContext[1], "AERO · Подготвя се продажба", "AERO PRO: цената е в зона за продажба след обрана ликвидност. Чака се потвърждение.")
+alertcondition(sweepAbove, "AERO · Обрана ликвидност над върховете", "Цената обра ликвидността над равни върхове и затвори обратно под нивото.")
+alertcondition(sweepBelow, "AERO · Обрана ликвидност под дъната", "Цената обра ликвидността под равни дъна и затвори обратно над нивото.")
+alertcondition(structureUp, "AERO · Структура нагоре", "Потвърден е пробив или промяна на структурата нагоре.")
+alertcondition(structureDown, "AERO · Структура надолу", "Потвърден е пробив или промяна на структурата надолу.")
+alertcondition(bullRetestHeld, "AERO · Успешен ретест нагоре", "Пробитото ниво беше ретестнато и задържа нагоре.")
+alertcondition(bearRetestHeld, "AERO · Успешен ретест надолу", "Пробитото ниво беше ретестнато и задържа надолу.")
+alertcondition(usShield and not usShield[1], "AERO · US волатилен прозорец", "Активен е US волатилният прозорец. Индикаторът блокира нов вход.")
