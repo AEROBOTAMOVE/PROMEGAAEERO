@@ -30,7 +30,7 @@ warnings.filterwarnings("ignore")
 import numpy as np
 import pandas as pd
 
-VERSION = "v7.0a"
+VERSION = "v7.2"
 PIP = 0.10
 SL_PIPS = 200; SL_D = SL_PIPS * PIP                       # стоп: 200п = $20/oz
 TPS = [("ТП1", 75, 7.5), ("ТП2", 120, 12.0), ("ТП3", 200, 20.0)]
@@ -307,6 +307,24 @@ def _resolve(ls, ss, macro):
     return ("wait", max(ls, ss), "weak", "ЧАКАЙ")
 
 
+def _спряна_msg(direction, best, price_user, причина, обяснение, now_utc, board):
+    """ОДИТ-26: ботът ВИЖДА сетъп, но правило му спира картата.
+    Дотук това беше ред в дневника, който собственикът никога не вижда.
+    Сега излиза карта: какво видях и защо не го предлагам.
+    БЕЗ нива за вход — за да не се чете като покана. Решението не се променя:
+    сделка не се отваря, стоп-пазачът и бордът не се пипат."""
+    ico = "🔴" if direction == "short" else "🟢"
+    dn = "ШОРТ (продажба)" if direction == "short" else "ЛОНГ (покупка)"
+    agree = sum(1 for b in board if b[1] == direction and b[3] != "weak") if board else 0
+    L = [f"⏸ {ico} <b>ВИЖДАМ {dn}</b> · но не го предлагам · {_sofia(now_utc)} София",
+         "─────────────────",
+         f"Клас {best[4] if best and len(best) > 4 else '—'} · {agree}/7 рамки · "
+         f"цена <code>{_fmt(price_user, 2)}</code>",
+         "",
+         f"<b>Защо не:</b> {причина}"]
+    return "\n".join(L)
+
+
 def _standing_msg(direction, best, age_h, spot, bar_price, price_user, board, macro, health, now_utc):
     """ОДИТ-5 → ОДИТ-20: «сетъпът още стои». Дотук картата ОТКАЗВАШЕ нива и обясняваше
     три реда защо. Мерката е вярна (късните входове губят), но начинът беше грешен:
@@ -321,17 +339,11 @@ def _standing_msg(direction, best, age_h, spot, bar_price, price_user, board, ma
          f"Посоката се държи вече <b>{age_h:.0f} часа</b> · {agree}/7 рамки · клас {best[4]}",
          f"Цена сега: <code>{_fmt(price_user, 2)}</code>",
          "",
-         "<b>Нивата, ако решиш да го гледаш:</b>",
+         "<b>Нива:</b>",
          f"1️⃣ {_fmt(lv['tp1'], 2)}   2️⃣ {_fmt(lv['tp2'], 2)}   3️⃣ {_fmt(lv['tp3'], 2)}",
-         f"🛑 стоп {_fmt(lv['sl'], 2)}",
-         "",
-         f"<i>Мерено: вход в първите 12 часа на сетъпа носи +0.23$/сделка, "
-         f"след това −1.59$. Този е на {age_h:.0f}-ия час — затова е за гледане, "
-         f"не покана.</i>"]
+         f"🛑 стоп {_fmt(lv['sl'], 2)}"]
     if health and health.get("мъртви"):
-        L.append(f"\n<i>Едно макро-краче мълчи ({', '.join(health['мъртви'])}) — класът е "
-                 f"занижен нарочно.</i>")
-    L += ["─────────────────", "информативно"]
+        L.append(f"⚠ мълчи: {', '.join(health['мъртви'])} · класът е занижен")
     return "\n".join(L)
 
 
@@ -857,21 +869,18 @@ def _sig_msg(direction, score, agree_n, tier_name, spot, bar_price, bar_ts, lv, 
               f"2️⃣ ТП2: <code>{_fmt(lv['tp2'], dec)}</code>",
               f"3️⃣ ТП3: <code>{_fmt(lv['tp3'], dec)}</code>",
               f"🛑 СТОП: <code>{_fmt(lv['sl'], dec)}</code>"]
-        if adv_ok:                                          # инструкцията само когато съветът е ДА
-            L.append("→ Сложи нивата при брокера ВЕДНАГА · раздели на 3 (по 1/3 на всяко ТП, стопът е общ).")
+        if adv_ok:
+            pass                                            # ОДИТ-27: «сложи ги при брокера» е едно и също всеки път
         else:                                               # СЯНКА: следим хипотетично, ще кажем ако проработи
             # ОДИТ-6/T2-01: старият текст обещаваше «ТОЗИ сетъп», а сянката НАРОЧНО държи
             # ПЪРВИЯ от серията (пре-отваря само при обърната посока) — в 20 от 29 карти
             # обещанието беше невярно. Поведението е желано; лъжеше ТЕКСТЪТ.
             if shadow_on and abs(float(shadow_on.get("entry", entry)) - entry) >= 0.01:
                 so = shadow_on
-                st = f" <i>(от {_sofia(so['opened'])} София)</i>" if so.get("opened") else ""
-                L.append(f"<i>ℹ️ Сянката следи ПЪРВИЯ сетъп от тази серия — вход "
-                         f"<code>{_fmt(float(so['entry']), dec)}</code>{st}, НЕ този. Така се вижда дали "
-                         "старата зона проработва със закъснение. Ще ти пратя при удар.</i>")
+                st = f" ({_sofia(so['opened'])})" if so.get("opened") else ""
+                L.append(f"<i>👁 сянка: следя от <code>{_fmt(float(so['entry']), dec)}</code>{st}</i>")
             else:
-                L.append("<i>ℹ️ Следя този сетъп хипотетично — ще ти пратя ако удари ТП по-късно "
-                         "(старите зони често работят със закъснение в дните).</i>")
+                L.append("<i>👁 сянка: следя този хипотетично</i>")
     mac = sum(1 for v in macro.values() if v)
     # Г10 + стегнато: бройката се показва В ПОСОКАТА на сделката (за шорт мечо = 3-mac),
     # та «3/3 ✓» винаги да значи «подкрепя» — край на оксиморона «0/3 (подкрепя)»
@@ -886,10 +895,8 @@ def _sig_msg(direction, score, agree_n, tier_name, spot, bar_price, bar_ts, lv, 
     _agree = sum(1 for k in _dec if (macro[k] if direction == "long" else not macro[k]))
     mmark = ("✓ подредено" if _agree == len(_dec) and _dec else
              (f"⚠ {len(_dec) - _agree} против" if _dec else "⚠"))
-    _mn = macro.get("миньори")
-    _mtxt = "" if _mn is None else (" · миньори " + (("подкрепят" if (_mn if direction == "long" else not _mn) else "против")) + " <i>(само контекст)</i>")
-    ctx = (f"<i>📊 клас {tier_name} {score}/8 · решаващи: долар+лихви "
-           f"{_agree}/{len(_dec) or 2} {mmark}{_mtxt}")
+    ctx = (f"<i>📊 {tier_name} {score}/8 · долар+лихви "
+           f"{_agree}/{len(_dec) or 2} {mmark}")
     # В1/В4: УЛТРА само за ЗЛАТО (среброто няма такъв клас) и само с n≥MIN_N
     if sym == "XAUUSD" and regime and regime.get("vol_rank") is not None and 1 <= streak_n <= 3 and regime["vol_rank"] < 0.40:
         u = stats.get("fresh", {}).get(direction, {}).get("ultra", {})
@@ -922,31 +929,26 @@ def _sig_msg(direction, score, agree_n, tier_name, spot, bar_price, bar_ts, lv, 
     # ОДИТ-6/Н5+T2-03: «макс −$X» обещаваше пълнеж ТОЧНО на нивото. Собственият тракер е
     # записал −23.88$ при стоп −20.00 (гап). Стопът не е гаранция за цена.
     mx = "макс ≈"
-    gp = " <i>(при гап може повече — стопът пази нивото, не цената)</i>"
+    gp = ""                                       # ОДИТ-27: гап-обяснението падна
     if sym == "XAUUSD":
         oz = risk_amt / SL_D                       # 1 oz губи $20 при 200п стоп · 1 лот = 100 oz
         lot = oz / 100.0
         if lot < 0.01:                             # под брокерския минимум → не лъжи с «0.0 лот»
             mn = 1.0 * SL_D                         # най-малката реална позиция = 0.01 лот = 1 oz
-            L.append(rp + f"💰 Риск ${balance:g}@{risk_pct:g}%: под мин. лот — най-малкото е <b>0.01 лот</b> "
-                     f"(1 oz), което рискува −${mn:.0f} = {_rp(mn):.1f}% от баланса")
+            L.append(rp + f"💰 под мин. лот: най-малкото е <b>0.01 лот</b> (1 oz) → "
+                     f"−${mn:.0f} = {_rp(mn):.1f}% от баланса")
         else:
-            _zp = ("" if _zw >= 0.999 else
-                   f" <i>(зона {_zc} → {_zw:.0%} от {risk_pct:g}% = {risk_pct*_zw:.2f}%)</i>")
-            L.append(rp + f"💰 Риск ${balance:g}@{risk_pct:g}%: <b>{lot:.2f} лот</b> ({oz:.1f} oz) → "
+            _zp = "" if _zw >= 0.999 else f" <i>(зона {_zc})</i>"
+            L.append(rp + f"💰 <b>{lot:.2f} лот</b> ({oz:.1f} oz) · по 1/3 на всяко ТП · "
                      f"{mx} −${risk_amt:.2f}" + _zp + gp)
     else:
         oz = risk_amt / S_SL                       # 1 лот сребро = 5000 oz · мин. 0.01 лот = 50 oz
         if oz < 50.0:                              # под мин. лот — реалният риск НАДХВЪРЛЯ целта
             mn = 50.0 * S_SL
-            L.append(rp + f"💰 Риск ${balance:g}@{risk_pct:g}%: под мин. лот — най-малкото е <b>0.01 лот</b> "
-                     f"(50 oz), което рискува −${mn:.2f} = {_rp(mn):.1f}% (над целта — намали или пропусни)")
+            L.append(rp + f"💰 под мин. лот: най-малкото е <b>0.01 лот</b> (50 oz) → "
+                     f"−${mn:.2f} = {_rp(mn):.1f}% <i>(над целта)</i>")
         else:
-            L.append(rp + f"💰 Риск ${balance:g}@{risk_pct:g}%: <b>{oz/5000.0:.2f} лот</b> ({oz:.0f} oz) → {mx} −${risk_amt:.2f}" + gp)
-    if direction == "short" and adv_ok:                 # при «НЕ» присъдата вече го каза — без дублаж
-        L.append("<i>Шорт е непотвърден исторически — малък размер.</i>")
-    L += ["─────────────────",
-          f"<i>бар {_sofia(str(bar_ts)) if bar_ts is not None else '?'} · {VERSION} · хартия · не е фин. съвет</i>"]
+            L.append(rp + f"💰 <b>{oz/5000.0:.2f} лот</b> ({oz:.0f} oz) · по 1/3 на всяко ТП · {mx} −${risk_amt:.2f}" + gp)
     return "\n".join(L)
 
 
@@ -981,7 +983,7 @@ def _exit_msg(kind, tr, price_hit, when, via, gap, spot=None, next_line="", dec=
     via_txt = {"бар": f"ударен в {_sofia(when)} София (по бара)",
                "спот": f"ударен СЕГА ({_sofia(when)} София, по живия спот)",
                "време": "времеви изход"}.get(via, via)
-    gap_txt = " · <b>изпълнено с гап</b> — реалната цена прескочи нивото" if gap else ""
+    gap_txt = " · <b>с гап</b>" if gap else ""
     heads = {"tp1": "✅ ТП1 ПОСТИГНАТ", "tp2": "✅✅ ТП2 ПОСТИГНАТ", "tp3": "🏆 ТП3 — ПЪЛЕН ТЕЙК",
              "sl": "🛑 СТОП", "flip": "🔄 ПОСОКАТА СЕ ОБЪРНА — затворено", "time": "⏰ ВРЕМЕВИ ИЗХОД"}
     # ОДИТ-7 (собственикът, 04.08): «СТОП Е УДАРЕН 1 ПЪТ ЗА ВСИЧКИ СИГНАЛИ ... а той
@@ -992,7 +994,10 @@ def _exit_msg(kind, tr, price_hit, when, via, gap, spot=None, next_line="", dec=
     # изход — НЕ. Сега двата пътя говорят еднакво.
     if kind == "sl" and n_hit > 0:
         head = ("✅ БЕЗРИСКОВ ИЗХОД" if thirds >= 0 else "🛑 СТОП")
-        head += f" — стопът беше на ВХОДА · {n_hit} ТП вече прибрани"
+        # ОДИТ-27: имената на прибраните ТП живееха в махнатата лекция отдолу.
+        # По-ясно е да са в заглавието — «прибрани TP1, TP2» вместо «2 ТП».
+        _got = ", ".join(k2.upper() for k2 in ("tp1", "tp2", "tp3") if hit.get(k2))
+        head += f" — стопът беше на ВХОДА · прибрани {_got or n_hit}"
     else:
         head = heads.get(kind, kind)
     opened_txt = f" <i>(сделка от {_sofia(tr['opened'])} София)</i>" if tr.get("opened") else ""   # Г7
@@ -1009,15 +1014,11 @@ def _exit_msg(kind, tr, price_hit, when, via, gap, spot=None, next_line="", dec=
         # двете сметки (Ф9.6-предварително): цяла позиция + съветът 1/3
         L.append(f"<b>СМЕТКА по стълбата 1/3: {thirds:+.2f}$/oz</b>"
                  + (f" · цяла позиция {dol:+.2f}$/oz" if not n_hit else ""))
-        if kind == "sl" and n_hit:
-            got = ", ".join(k2.upper() for k2 in ("tp1", "tp2") if hit.get(k2))
-            L.append(f"<i>Стопът НЕ е ударен на −${SL_D:.0f}. Той беше преместен на входа "
-                     f"след {got}, значи последната 1/3 излезе на нула, а прибраното остава.</i>")
+        # ОДИТ-27: обяснението падна — заглавието вече казва «стопът беше на ВХОДА».
     if spot:
         L.append(f"Спот сега: <code>{_fmt(spot['mid'], dec)}</code>")
     if next_line:
         L.append(f"<b>НОВО ВЛИЗАНЕ:</b> {next_line}")
-    L.append(f"<i>{VERSION} · хартия · не е съвет</i>")
     return "\n".join(L)
 
 
@@ -1039,13 +1040,14 @@ def _shadow_exit_msg(kind, tr, price_hit, when, via, gap, spot=None, dec=2):
     # Старият текст лепеше 🛑 и «+0.00$» върху изход, който по стълбата носи +6.50$.
     if kind == "sl" and n_hit > 0:
         head = ("✅ СЯНКА · безрисков изход" if thirds >= 0 else "🛑 СЯНКА · стоп")
-        head += f" (стопът беше на входа · {n_hit} ТП вече прибрани)"
+        _sgot = ", ".join(k2.upper() for k2 in ("tp1", "tp2", "tp3") if hit.get(k2))
+        head += f" (стопът беше на входа · прибрани {_sgot or n_hit})"
     else:
         head = heads.get(kind, kind)
     op = f" <i>(сетъп от {_sofia(tr['opened'])} София)</i>" if tr.get("opened") else ""
     L = [f"{head} · {metal} {d}", "─────────────────",
-         f"Сетъпът, за който казах <b>да НЕ влизаш</b>, щеше да стигне дотук ({when_txt} София).{op}",
-         f"Хипотетично: вход <code>{_fmt(e, dec)}</code> → <code>{_fmt(price_hit, dec)}</code> = <b>{dol:+.2f}$/oz</b> <i>(само този крак)</i>"]
+         f"Щеше да стигне дотук ({when_txt} София).{op}",
+         f"Вход <code>{_fmt(e, dec)}</code> → <code>{_fmt(price_hit, dec)}</code> = <b>{dol:+.2f}$/oz</b> <i>(само този крак)</i>"]
     # Н1: САМАТА СМЕТКА — реалният изход я имаше, сянката не. Сега е един и същ код.
     if kind in ("tp3", "sl", "flip", "time") or n_hit:
         got = ", ".join(k2.upper() for k2 in ("tp1", "tp2") if hit.get(k2) and k2 != kind)
@@ -1057,8 +1059,6 @@ def _shadow_exit_msg(kind, tr, price_hit, when, via, gap, spot=None, dec=2):
         L.append(f"Ако беше влязъл: 2/3 от позицията прибрани · остава последната 1/3 до ТП3 <code>{_fmt(lv['tp3'], dec)}</code>")
     if spot:
         L.append(f"Спот сега: <code>{_fmt(spot['mid'], dec)}</code>")
-    L.append("<i>ℹ️ Само за информация — НЕ е реална сделка (не влиза в статистиката/стоп-пазача). "
-             "Старите зони често работят със закъснение.</i>")
     return "\n".join(L)
 
 
@@ -1107,9 +1107,7 @@ def _ma_alert_msg(direction, ma_name, price, mb, macro):
          # (±1.5пп), нетото НЕ. Затова показваме само процента + честната сметка.
          f"Исторически: <b>{mb['win']}%</b> стигат ТП1 (n={mb['n']})",
          f"Ориентир при вход: ТП1 <code>{_fmt(lv['tp1'])}</code> · СТОП <code>{_fmt(lv['sl'])}</code>",
-         "<i>⚠️ С тази геометрия сметката е ОТРИЦАТЕЛНА (≈−2.7$/oz): процентът е висок, "
-         "но стопът е −20$ срещу +7.5$ на ТП1. Високият процент НЕ значи печалба.</i>",
-         "<i>ИНФОРМАТИВНА аларма — ботът НЕ я следи като сделка. Не е съвет.</i>"]
+         "<i>⚠ с тази геометрия сметката е отрицателна ≈−2.7$/oz</i>"]
     return "\n".join(L)
 
 
@@ -1243,7 +1241,6 @@ def _status_msg(board, new_dir, trade, s_trade, spot_g, spot_s, basis_g, basis_s
     if spot_g:
         L.append(f"Спот злато <code>{spot_g['mid']:,.2f}</code> (базис {basis_g:+.2f})"
                  + (f" · сребро <code>{spot_s['mid']:,.3f}</code>" if spot_s else ""))
-    L.append(f"<i>{VERSION} · хартия · не е съвет</i>")
     return "\n".join(L)
 
 
@@ -1255,9 +1252,8 @@ def _pulse_msg(part, board, best, new_dir, advice_txt, adv_ok, trade, s_trade,
            "22": "🌙 <b>ВЕЧЕРЕН ПУЛС</b>"}.get(part, "📡 <b>ПУЛС</b>")
     L = [f"{hdr} · {_sofia()} София", "─────────────────"]
     if weekend:
-        L += ["Пазарът е затворен (уикенд) — <b>дежуря, но сделки не търся</b>.",
-              "Златото отваря неделя вечер · ще се обадя щом има какво.",
-              f"<i>{VERSION} · информативно · не е съвет</i>"]
+        L += ["Пазарът е затворен (уикенд) — дежуря, но сделки не търся.",
+              "Златото отваря неделя вечер."]
         return "\n".join(L)
     mac = sum(macro.values())
     # какво гледам: най-силният клас + макро в неговата посока
@@ -1299,7 +1295,6 @@ def _pulse_msg(part, board, best, new_dir, advice_txt, adv_ok, trade, s_trade,
     else:
         wait = "чакам пазарът да оформи ясна посока."
     L.append(f"<b>Чакам:</b> {wait}")
-    L.append(f"<i>{VERSION} · информативно · не е съвет</i>")
     return "\n".join(L)
 
 
@@ -1470,7 +1465,6 @@ def _cq_msg(cq, now_utc, fng_live=None):
         L.append(f"📅 <b>Следващо голямо макро</b> (влияе на златото): {nxt}")
         L.append("<i>Около него ботът НЕ отваря нов вход (висока волатилност).</i>")
     L.append(f'🔗 <a href="{KV_URL}">Терминалът на цикъла</a>')
-    L.append(f"<i>{VERSION} · референция · не е съвет</i>")
     return "\n".join(L)
 
 
@@ -2128,6 +2122,8 @@ def main():
         notes.append(f"стоящ сетъп: {key_age_h:.1f}ч — информативна карта, НЕ вход "
                      f"(след {REOFFER_MAX_AGE_H}ч ръбът е изчерпан, мерено)")
 
+    # ОДИТ-26: коя спирачка е спряла картата (None = никоя)
+    _спрян = None
     # ре-влизане след приключена сделка — по F18 правилата
     closed_kinds = [k for _, _, k, _ in exit_msgs if k in ("tp3", "sl", "time", "flip")]
     reentry = False
@@ -2140,28 +2136,45 @@ def main():
             # НАХОДКА 2: сделката приключи (вкл. флип), но ре-влизането е ОТКАЗАНО (F18)
             # → НЕ пращай нова карта на насрещната посока (иначе журналът си противоречи).
             should_sig = False
+            _спрян = ("ре-влизане в пауза",
+                      why_re or "точно след приключена сделка ръбът е изяден — "
+                      "мерено на 19.7 години: късните ре-влизания дават −1.59$/сделка")
             notes.append(f"ре-влизане отказано: {why_re}" if why_re else "ре-влизане: пауза")
     # ОДИТ-1 №3: УИКЕНДЪТ Е ПЪРВИ. Преди US-щитът се проверяваше преди него и
     # 21 от 22 «отложени: US-щит» бяха всъщност събота/неделя (пазарът затворен) —
     # журналът и всеки одит брояха фалшиви «отложени» карти.
     if should_sig and weekend:
         should_sig = False
+        _спрян = ("борсата е затворена",
+                  "петък 17:00 до неделя 18:00 нюйоркско — няма цена, по която да се влезе")
         notes.append("уикенд — картите почиват до понеделник")
     # нов вход в US-щита за шорт → отлага се (картата ще дойде след прозореца)
     if should_sig and new_dir == "short" and shield and trade is None:
         should_sig = False
+        _спрян = (f"US-щит ({_shield_sofia_label()})",
+                  "американските данни излизат сега — шортът в този прозорец исторически "
+                  "губи. Картата ще дойде след него, ако сетъпът се задържи")
         notes.append(f"шорт карта отложена: US-щит ({_shield_sofia_label()})")
     if should_sig and new_dir and guard.get(new_dir, 0) >= 2 and trade is None:
         should_sig = False
+        _спрян = ("стоп-пазач · 2 стопа днес в тази посока",
+                  "третият опит в същия ден и същата посока исторически влошава деня — "
+                  "пазачът се вдига утре")
         notes.append("карта спряна: стоп-пазач (2 стопа днес)")
     if should_sig and cq_block and trade is None:        # макро-щит: голямо събитие → нов вход изчаква
         should_sig = False
+        _спрян = (f"макро събитие: {cq_ev}",
+                  "около такива новини спредът се разширява и стопът се взима от шума, "
+                  "не от посоката")
         notes.append(f"макро събитие ({cq_ev}) — нов вход изчаква (висока волатилност)")
     # F1 (🔴): ОТВОРЕНА сделка + НЕПРЕМИУМ насрещен борд (флипът на 1005 не пали) →
     # ЗАДРЪЖ старата, НЕ отваряй насрещна. Иначе живата позиция се презаписва ТИХО,
     # без изходно съобщение — потребителят никога не научава изхода ѝ.
     if should_sig and trade is not None and new_dir and trade["direction"] != new_dir:
         should_sig = False
+        _спрян = (f"има отворена {trade['direction']} сделка",
+                  "насрещният сигнал не е премиум — държа старата позиция. Иначе тя се "
+                  "презаписва тихо и никога не научаваш как е свършила")
         notes.append(f"насрещен непремиум {new_dir} при отворена {trade['direction']} — задържам старата, без нова карта")
 
     streak_n = regime["streaks"].get(new_dir, 0) if new_dir else 0
@@ -2177,7 +2190,21 @@ def main():
     if should_sig and not args.force and not _adv_ok and not tier_up \
        and not (mins_since is None or mins_since >= 45):
         should_sig = False
+        _спрян = ("бордът флика посока",
+                  "на хаотичен ден това трупа по 4 «не влизай» карти на час — чакам "
+                  "пълната 45-минутна пауза, за да не те заливам с шум")
         notes.append("информативна «НЕ» карта по flip-лентата — заглушена (не е реален вход)")
+
+    # ОДИТ-26: ботът е ВИДЯЛ сетъп, но правило му спря картата → КАЖИ ГО.
+    # Дотук това беше ред в дневника, който собственикът никога не вижда.
+    # Решението НЕ се променя: сделка не се отваря, нищо не се търгува.
+    if _спрян is not None and new_dir and actionable and not weekend:
+        try:
+            new_msgs.append(("спряна:" + new_dir,
+                             _спряна_msg(new_dir, best, price_user, _спрян[0], _спрян[1],
+                                         now_utc, board)))
+        except Exception as _e:
+            notes.append(f"картата «виждам, но не предлагам» се спъна ({type(_e).__name__})")
 
     sig_payload = None
     if should_sig and actionable:
