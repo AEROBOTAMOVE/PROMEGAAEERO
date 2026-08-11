@@ -30,7 +30,7 @@ warnings.filterwarnings("ignore")
 import numpy as np
 import pandas as pd
 
-VERSION = "v8.3"
+VERSION = "v8.4"
 PIP = 0.10
 SL_PIPS = 200; SL_D = SL_PIPS * PIP                       # стоп: 200п = $20/oz
 TPS = [("ТП1", 75, 7.5), ("ТП2", 120, 12.0), ("ТП3", 200, 20.0)]
@@ -2478,11 +2478,15 @@ def main():
                 _bagg["Volume"] = ("Volume", "sum")
             _bfr = {}
             if src is not None:
-                # ОДИТ-32 · 1м и 5м вече РАЖДАТ карти, не само 15м.
-                # 1м идва суров от източника (ресемплването му е излишно и
-                # губи барове); останалите се смъкват от него.
-                _bfr["1мин"] = src if "Volume" in src.columns else src
-                for _lbl, _rule in (("5м", "5min"), ("15м", "15min"),
+                # ОДИТ-32/34 · 1м и 5м вече РАЖДАТ карти, не само 15м.
+                # 🔴 ПЪРВАТА МИ ВЕРСИЯ ЛЕПНА ЕТИКЕТ «1мин» ВЪРХУ `src`, а `src`
+                # е ПЕТМИНУТНАТА серия (`src = m5 if m5 is not None else m1`).
+                # Тоест мозъкът щеше да съди 5-минутни барове като едноминутни,
+                # включително паузите между картите. Истинската минутна серия
+                # е `m1` и вече е готова в `frames["1мин"]`.
+                _bfr["1мин"] = frames.get("1мин")
+                _bfr["5м"] = frames.get("5м")
+                for _lbl, _rule in (("15м", "15min"),
                                     ("1час", "60min"), ("4час", "4h")):
                     try:
                         _bfr[_lbl] = src.resample(_rule).agg(**_bagg).dropna()
