@@ -34,7 +34,7 @@ import pandas as pd
 # v9.5–v9.8 — всеки ред в дневника твърдеше грешна версия, а дневникът е
 # единственият начин отвън да се види какво работи. П47 пада, ако VERSION не се
 # среща в темата на последния commit.
-VERSION = "v10.5"
+VERSION = "v10.6"
 PIP = 0.10
 SL_PIPS = 200; SL_D = SL_PIPS * PIP                       # стоп: 200п = $20/oz
 TPS = [("ТП1", 75, 7.5), ("ТП2", 120, 12.0), ("ТП3", 200, 20.0)]
@@ -1984,11 +1984,36 @@ def _outbox_flush(out_dir, new_msgs, statuses, dry=False):
     now_iso = datetime.now(timezone.utc).replace(tzinfo=None).isoformat(timespec="seconds")
     pending = []
     if ob_f.exists():
+        # 🔴 ОДИТ-50 · ДОТУК ТУК СТОЕШЕ `except Exception: pass` — повреден ред
+        # изчезваше БЕЗ СЛЕД. А редът може да е изходна карта («🛑 СТОПЪТ удари»),
+        # тоест пари вече на риск — класът, който целият останал код пази изрично.
+        # И записът с `"\n".join(...)` го прави вероятно: умре ли процесът по
+        # средата (Actions има таймаут 8 мин), последният ред остава отрязан.
+        _счуп = []
         for ln in ob_f.read_text(encoding="utf-8").splitlines():
+            if not ln.strip():
+                continue
             try:
                 pending.append(json.loads(ln))
             except Exception:
+                _счуп.append(ln)
+        if _счуп:
+            # нищо не се губи безвъзвратно — суровият текст отива настрана
+            try:
+                with (out_dir / "outbox_broken.jsonl").open("a", encoding="utf-8") as _bf:
+                    for _l in _счуп:
+                        _bf.write(json.dumps({"utc": now_iso, "raw": _l[:4000]},
+                                             ensure_ascii=False) + "\n")
+            except Exception:
                 pass
+            _пари = [l for l in _счуп
+                     if any(t in l for t in EXIT_TAGS) or "СТОПЪТ" in l or "ТП" in l]
+            if _пари:
+                statuses.append(f"🔴 {len(_пари)} ПОВРЕДЕНИ реда в пощата приличат на "
+                                f"ИЗХОДНА карта — виж outbox_broken.jsonl")
+            else:
+                statuses.append(f"⚠️ {len(_счуп)} повредени реда в пощата — "
+                                f"запазени в outbox_broken.jsonl")
     for t, m in new_msgs:
         pending.append({"tag": t, "text": m, "first_ts": now_iso, "attempts": 0})
     # НАХОДКА B: signal/s-signal = «намерение да отвориш сделка СЕГА». Пренесен от минал рън
