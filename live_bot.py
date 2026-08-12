@@ -34,7 +34,7 @@ import pandas as pd
 # v9.5–v9.8 — всеки ред в дневника твърдеше грешна версия, а дневникът е
 # единственият начин отвън да се види какво работи. П47 пада, ако VERSION не се
 # среща в темата на последния commit.
-VERSION = "v11.8"
+VERSION = "v11.9"
 PIP = 0.10
 SL_PIPS = 200; SL_D = SL_PIPS * PIP                       # стоп: 200п = $20/oz
 TPS = [("ТП1", 75, 7.5), ("ТП2", 120, 12.0), ("ТП3", 200, 20.0)]
@@ -3115,10 +3115,20 @@ def main():
         sh_open_e = sh_open_lv = None
         if sig_payload and should_sig and not _adv_ok and open_tr is None and new_dir:
             sh_open_e, sh_open_lv = sig_payload
-        new_msgs += _shadow_cycle(out / "shadow_trade.json", frames.get("5м"), basis_g, price_user,
-                                  now_utc, spot_g, new_dir, sh_open_e, sh_open_lv,
-                                  (trade is not None or pending_trade is not None),
-                                  date, best[3] if actionable else "", "XAUUSD", 2)
+        # 🔴 ОДИТ-63 · СЯНКА-ИЗХОДИТЕ ИЗЛИЗАХА СЛЕД СИГНАЛА. Мерено в живия
+        # sent_log: 6 от 7 минути, в които има и двете, показват сигнала ПЪРВИ —
+        # а коментарът над `new_msgs = []` обещава «редът = хронология: изходи →
+        # карта». Сянка-изходът е за МИНАЛОТО, сигналът е за СЕГА; обратният ред
+        # се чете като «купи… а, между другото, вчерашната щеше да удари ТП1».
+        # Реалните изходи (exit/s-exit) ВЕЧЕ са първи — проверено в кода.
+        _сянка = _shadow_cycle(out / "shadow_trade.json", frames.get("5м"), basis_g, price_user,
+                               now_utc, spot_g, new_dir, sh_open_e, sh_open_lv,
+                               (trade is not None or pending_trade is not None),
+                               date, best[3] if actionable else "", "XAUUSD", 2)
+        if _сянка:
+            _пред = [m for m in new_msgs if not str(m[0]).startswith(("signal", "s-signal"))]
+            _сиг = [m for m in new_msgs if str(m[0]).startswith(("signal", "s-signal"))]
+            new_msgs = _пред + _сянка + _сиг
     except Exception as _e:
         notes.append(f"сянка-злато пропусната: {type(_e).__name__}")
 
