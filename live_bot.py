@@ -92,6 +92,15 @@ CHART_BRAIN_ON = os.environ.get("CHART_BRAIN", "1") == "1"
 # рън, който не тръгва, не пада. Нормалният интервал е 5 мин; 45 е девет пъти
 # над него. СПАЛ_МИН=0 изключва картата.
 СПАЛ_МИН = int(os.environ.get("СПАЛ_МИН", "45"))
+# О8 · до колко часа резервната макро-стойност още върши работа. Отвъд това
+# стара цена е по-лоша от никаква — по-честно е да кажем «не виждам».
+СТАР_МАКРО_Ч = float(os.environ.get("СТАР_МАКРО_Ч", "36"))
+# О11 · колко месеца архив пазим. Мерено: 3352 KB за ЕДИН месец → ~40 MB/година
+# в git repo. АРХИВ_МЕСЕЦИ=0 изключва чистенето.
+АРХИВ_МЕСЕЦИ = int(os.environ.get("АРХИВ_МЕСЕЦИ", "3"))
+# О11 · таван на опашката. Мерено сега: 0 реда — празна е. Но при упорит мек
+# провал расте без край и никой не я гледа.
+ОПАШКА_ТАВАН = int(os.environ.get("ОПАШКА_ТАВАН", "200"))
 # ОДИТ-39 · от кой РАНГ нагоре мозъчната карта е ВХОД (с лот), а не наблюдение.
 # 3 = «ГОТОВ». 99 = никога — връща старото «само наблюдение».
 # 🔴 ОДИТ-46 · ОТ КОЯ СТЕПЕН НАГОРЕ КАРТАТА КАЗВА «👁 ГЛЕДАЙ».
@@ -2057,10 +2066,45 @@ def main():
                 dxy_d = _р
             else:
                 rr = _р
+            # О8: пазим ПОСЛЕДНАТА ДОБРА стойност, за да има на какво да паднем
+            try:
+                _рамка = (_р.tail(120) if hasattr(_р, "tail") else None)
+                if _рамка is not None and len(_рамка):
+                    if isinstance(_рамка, pd.Series):
+                        _рамка = _рамка.to_frame("rate")
+                    _бек = _load_state(out / "macro_backup.json", {}) or {}
+                    _бек[_име] = {"utc": now_utc, "csv": _рамка.to_json(orient="split")}
+                    (out / "macro_backup.json").write_text(
+                        json.dumps(_бек, ensure_ascii=False), encoding="utf-8")
+            except Exception:
+                pass
         except Exception as _e:
-            _макро_мъртво.append(_име)
-            print(f"  ⚠ {_име} не се дърпа ({type(_e).__name__}) — новите входове спират, "
-                  f"следенето продължава")
+            # О8 · РЕЗЕРВ. Един хълцук на Yahoo сваля цялото краче, а О1 при
+            # мъртво краче спира входовете — тоест едно мигване = час мълчание.
+            # Лихвите имат резерв (FRED пази); Yahoo нямаше.
+            _рез = (_load_state(out / "macro_backup.json", {}) or {}).get(_име)
+            _взет = False
+            if isinstance(_рез, dict) and _рез.get("utc"):
+                try:
+                    _въз = (pd.Timestamp(now_utc) - pd.Timestamp(_рез["utc"])).total_seconds() / 3600
+                    if _въз <= СТАР_МАКРО_Ч and _рез.get("csv"):
+                        _д = pd.read_json(io.StringIO(_рез["csv"]), orient="split")
+                        _д.index = pd.to_datetime(_д.index)
+                        if _име.startswith("миньори"):
+                            gdx_d = _д
+                        elif _име.startswith("долар"):
+                            dxy_d = _д
+                        else:
+                            rr = _д["rate"] if "rate" in _д else _д.iloc[:, 0]
+                        _взет = True
+                        notes.append(f"🟡 {_име} не се дърпа — карам на резерва "
+                                     f"отпреди {_въз:.0f}ч")
+                except Exception:
+                    pass
+            if not _взет:
+                _макро_мъртво.append(_име)
+                print(f"  ⚠ {_име} не се дърпа ({type(_e).__name__}) — новите входове спират, "
+                      f"следенето продължава")
         time.sleep(1.2)
     for d in (gold_d, gdx_d, dxy_d):
         if d is not None:
@@ -2164,6 +2208,22 @@ def main():
                     f.rename(arch / f"{fn.rsplit('.', 1)[0]}-{meta['month']}.jsonl")
                 except Exception:
                     pass
+    # О11 · АРХИВЪТ РАСТЕШЕ ВЕЧНО. Мерено: 3352 KB за един месец (юли) в git
+    # repo → ~40 MB/година. Пазим последните АРХИВ_МЕСЕЦИ месеца.
+    if АРХИВ_МЕСЕЦИ > 0:
+        try:
+            _арх = out / "archive"
+            if _арх.exists():
+                _по_месец = {}
+                for _f in _арх.glob("*-????-??.jsonl"):
+                    _по_месец.setdefault(_f.stem[-7:], []).append(_f)
+                for _м in sorted(_по_месец)[:-АРХИВ_МЕСЕЦИ]:
+                    for _f in _по_месец[_м]:
+                        _f.unlink()
+                    notes.append(f"🧹 архивът от {_м} е изчистен (пазим последните "
+                                 f"{АРХИВ_МЕСЕЦИ} месеца)")
+        except Exception as _e:
+            notes.append(f"чистенето на архива се спъна: {type(_e).__name__}")
     meta["month"] = mon
     weekend = _market_closed(now_utc)                    # A3: по UTC-час, не по деня
     # 🔴 ОДИТ-47 · КОЛКО ДЪЛГО СЪМ СПАЛ. Сглобява се ТУК, вкарва се СЛЕД
