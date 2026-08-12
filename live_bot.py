@@ -34,7 +34,7 @@ import pandas as pd
 # v9.5–v9.8 — всеки ред в дневника твърдеше грешна версия, а дневникът е
 # единственият начин отвън да се види какво работи. П47 пада, ако VERSION не се
 # среща в темата на последния commit.
-VERSION = "v10.3"
+VERSION = "v10.4"
 PIP = 0.10
 SL_PIPS = 200; SL_D = SL_PIPS * PIP                       # стоп: 200п = $20/oz
 TPS = [("ТП1", 75, 7.5), ("ТП2", 120, 12.0), ("ТП3", 200, 20.0)]
@@ -1452,6 +1452,32 @@ def _status_msg(board, new_dir, trade, s_trade, spot_g, spot_s, basis_g, basis_s
     L.append("👁 само снимка · нищо не се прави")
     return "\n".join(L)
 
+def _търговски_минути(от_utc, до_utc, крачка=15):
+    """🔴 ОДИТ-48 · КОЛКО ОТ ДУПКАТА Е БИЛА В ОТВОРЕН ПАЗАР.
+    Проверката ми в v9.7 гледаше само ДВАТА КРАЯ (`not weekend and not
+    _market_closed(_посл)`). Реалната уикенд дупка е петък 20:55 → неделя 22:01:
+    и двата края са в отворен пазар, а между тях лежи целият уикенд → картата
+    палеше и всеки понеделник щеше да идва «БОТЪТ СПА 49ч».
+    Тук се стъпва през дупката и се брои САМО отвореното време."""
+    try:
+        a = pd.Timestamp(от_utc); b = pd.Timestamp(до_utc)
+    except Exception:
+        return 0.0
+    if b <= a:
+        return 0.0
+    общо = (b - a).total_seconds() / 60.0
+    if общо > 60 * 24 * 14:          # абсурдна дупка (студен старт) → не гадаем
+        return 0.0
+    мин = 0.0
+    t = a
+    while t < b:
+        стъпка = min(крачка, (b - t).total_seconds() / 60.0)
+        if not _market_closed(t.isoformat()):
+            мин += стъпка
+        t += pd.Timedelta(minutes=крачка)
+    return мин
+
+
 def _спал_msg(мин, откога_utc, докога_utc):
     """ОДИТ-47 · ботът е спал по-дълго от прага. Казва го, вместо да се направи,
     че нищо не е било."""
@@ -1465,7 +1491,7 @@ def _спал_msg(мин, откога_utc, докога_utc):
     ])
 
 
-def _защо_мълчи(macro_raw, streaks, new_dir=None):
+def _защо_мълчи(macro_raw, streaks, new_dir=None, стат=None):
     """ОДИТ-45 · ЗАЩО МЕРЕНОТО ПРАВИЛО МЪЛЧИ — с числата, не с усещане.
 
     Мерено на 1965 живи ръна: гейтът е отказал 100% от тях с `cell: mixed`,
@@ -1492,12 +1518,24 @@ def _защо_мълчи(macro_raw, streaks, new_dir=None):
                  f"{стр} {'ден' if стр == 1 else 'дни'} подред")
     else:
         Л.append("⏸ двете се бият · мереното правило мълчи")
-        Л.append("📌 в такъв пазар дава −0.04$ на сделка (мерено, 40094 сделки)")
+        # 🔴 ОДИТ-48 · ЧИСЛОТО ИДВА ОТ КЛЕТКАТА, ПО КОЯТО СЪДИ ГЕЙТЪТ.
+        # Дотук пишеше зазидано «−0.04$ (40094 сделки)» — числото от _meta,
+        # което описва СЛЕТИТЕ кофи ПРЕДИ разделянето от 04.08. Гейтът обаче
+        # съди по `/fresh/long/mixed/net` = −0.47$. Число на карта, което не
+        # идва от клетката, по която се решава, е точно това, което този бот
+        # не бива да прави.
+        _кл = ((стат or {}).get("fresh", {}).get("long", {}).get("mixed", {})
+               if isinstance(стат, dict) else {})
+        _нет = _кл.get("net")
+        if _нет is not None:
+            Л.append(f"📌 в такъв пазар мереното дава {float(_нет):+.2f}$ на сделка")
+        else:
+            Л.append("📌 в такъв пазар мереното правило не носи нищо")
         Л.append(f"👁 чакам {'лихвите да тръгнат надолу' if д_добро else 'долара да тръгне надолу'}")
     return Л
 
 
-def _обрат_msg(старо, ново, macro_raw, streaks):
+def _обрат_msg(старо, ново, macro_raw, streaks, стат=None):
     """ОДИТ-45в · МАКРОТО СМЕНИ СЪСТОЯНИЕТО. Това е събитието, което той чака.
     Измерено: за 9 дни (1965 ръна) състоянието НЕ се е сменяло нито веднъж —
     значи картата не може да стане спам."""
@@ -1506,7 +1544,7 @@ def _обрат_msg(старо, ново, macro_raw, streaks):
     подредено = ново[0] == ново[1]
     ико = "🟢" if (подредено and ново[0]) else "🔴" if подредено else "⏸"
     L = [f"{ико} <b>МАКРОТО СЕ {'ПОДРЕДИ' if подредено else 'РАЗБЪРКА'}</b> · {_sofia()}"]
-    L += _защо_мълчи(macro_raw, streaks)
+    L += _защо_мълчи(macro_raw, streaks, стат=стат)
     if подредено:
         L.append("📌 това е пазарът, в който мереното правило работи")
     return "\n".join(L)
@@ -1525,7 +1563,8 @@ def _съгласни(board, посока):
 
 
 def _pulse_msg(part, board, best, new_dir, advice_txt, adv_ok, trade, s_trade,
-               spot_g, spot_s, macro, shield, weekend, macro_raw=None, streaks=None):
+               spot_g, spot_s, macro, shield, weekend, macro_raw=None, streaks=None,
+               stats=None):
     """ОДИТ-29 · 3× на ден: жив съм, това гледам, това чакам."""
     ико, кога = {"09": ("☀️", "добро утро"), "14": ("🌤️", "докъде сме"),
                  "22": ("🌙", "как мина денят")}.get(part, ("📌", "какво гледам"))
@@ -1542,7 +1581,7 @@ def _pulse_msg(part, board, best, new_dir, advice_txt, adv_ok, trade, s_trade,
     # Мерено на 1965 живи ръна: в 84.6% седемте рамки са БУКВАЛНО еднакви и
     # различни отчета никога не е имало повече от ДВА. «7 от 7» броеше седем
     # копия на едно измерване, защото всички се съдят срещу ЕДНИ дневни нива.
-    _обясн = _защо_мълчи(macro_raw, streaks, new_dir)
+    _обясн = _защо_мълчи(macro_raw, streaks, new_dir, стат=stats)
     _разбъркано = any(r.startswith("⏸") for r in _обясн)
     # ОДИТ-45б: при разбъркано макро НЕ обявяваме посока на дъската — два реда
     # по-долу пише, че няма да я ползваме. Един ред = едно нещо.
@@ -1952,6 +1991,9 @@ def _outbox_flush(out_dir, new_msgs, statuses, dry=False):
     pending = [m for i, m in enumerate(pending)
                if m["tag"] not in DEDUP or seen_last[m["tag"]] == i]
     remaining = []; sent_tags = set(); no_token = False
+    # 🔴 ОДИТ-48 · ТАВАНЪТ БЕШЕ ОБЯВЕН И НЕ СЕ ПОЛЗВАШЕ НИКЪДЕ (мое, v9.8), а
+    # тестът ми «го пазеше», защото проверяваше само декларацията. Сега реже.
+    _орязани = 0
     for msg in pending:
         msg.setdefault("first_ts", now_iso); msg["attempts"] = msg.get("attempts", 0) + 1
         # ОТРОВНО = само ТВЪРДИ провали (развален HTML, 4xx); мрежов срив НЕ брои →
@@ -2007,6 +2049,21 @@ def _outbox_flush(out_dir, new_msgs, statuses, dry=False):
             no_token = True
         else:
             remaining.append(msg)                         # мек провал → ретрай вечно (не брои за отровно)
+    # 🔴 ОДИТ-48 · ТАВАНЪТ РЕАЛНО РЕЖЕ. Дотук беше само ОБЯВЕН (мое, v9.8), а
+    # тестът ми «го пазеше», защото проверяваше единствено декларацията —
+    # константа, която нищо не прави, и тест, който я пази. Хванато от армията.
+    # ИЗХОДНИТЕ карти НИКОГА не се режат: те съобщават пари, вече на риск.
+    if ОПАШКА_ТАВАН > 0 and len(remaining) > ОПАШКА_ТАВАН:
+        _пази = [m for m in remaining
+                 if str(m.get("tag", "")).split(":")[0] in EXIT_TAGS]
+        _друго = [m for m in remaining
+                  if str(m.get("tag", "")).split(":")[0] not in EXIT_TAGS]
+        _място = max(0, ОПАШКА_ТАВАН - len(_пази))
+        _орязани = len(_друго) - _място
+        remaining = _пази + (_друго[-_място:] if _място else [])
+        if _орязани > 0:
+            statuses.append(f"🔴 опашката преля: {_орязани} НАЙ-СТАРИ карти "
+                            f"изхвърлени (таван {ОПАШКА_ТАВАН}); изходните са запазени")
     ob_f.write_text("\n".join(json.dumps(m, ensure_ascii=False) for m in remaining), encoding="utf-8")
     if no_token:
         statuses.append(f"🔴 ЛИПСВА TELEGRAM_TOKEN/CHAT_ID — {len(remaining)} карти чакат в пощата")
@@ -2321,8 +2378,11 @@ def main():
     try:
         _посл = meta.get("последен_рън")
         if _посл and СПАЛ_МИН > 0:
-            _дупка = (pd.Timestamp(now_utc) - pd.Timestamp(_посл)).total_seconds() / 60
-            if _дупка >= СПАЛ_МИН and not weekend and not _market_closed(_посл):
+            # 🔴 ОДИТ-48: мери се в ТЪРГОВСКИ минути. Дотук гледах само двата
+            # края на дупката и уикендът минаваше за «сън» — всеки понеделник
+            # щеше да идва «БОТЪТ СПА 49ч».
+            _дупка = _търговски_минути(_посл, now_utc)
+            if _дупка >= СПАЛ_МИН and not weekend:
                 _спал_карта = ("спал", _спал_msg(_дупка, _посл, now_utc))
                 notes.append(f"😴 дупка от {_дупка:.0f} мин ({_посл} → {now_utc})")
     except Exception as _e:
@@ -2924,7 +2984,7 @@ def main():
             if isinstance(_пред, list) and len(_пред) == 2 and _пред != _сост:
                 new_msgs.append(("обрат", _обрат_msg(
                     tuple(bool(q) for q in _пред), tuple(_сост),
-                    _мк, regime.get("streaks"))))
+                    _мк, regime.get("streaks"), stats)))
                 notes.append(f"🔔 макрото смени състоянието: {_пред} → {_сост}")
             meta["макро_сост"] = _сост
     except Exception as _e:
@@ -2939,7 +2999,8 @@ def main():
             new_msgs.append(("pulse", _pulse_msg(ph, board, best, new_dir, advice_txt, _adv_ok,
                                                  trade, s_tr_p, spot_g, spot_s, macro, shield, weekend,
                                                  macro_raw=macro_health,
-                                                 streaks=regime.get("streaks"))))
+                                                 streaks=regime.get("streaks"),
+                                                 stats=stats)))
             pulse_slot = ph
             break
 
