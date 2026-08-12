@@ -30,6 +30,10 @@ jobs:
           python-version: '3.12'
           cache: 'pip'
       - run: pip install -r requirements.txt
+      - name: версия                                    # О10: коя версия работи — да се вижда в лога
+        run: |
+          python -c "import re,io;print('AERO', re.search(r'VERSION = \"([^\"]+)\"', io.open('live_bot.py',encoding='utf-8').read()).group(1))"
+          git log --oneline -1
       - name: selftest gate                             # W1: счупен код НЕ праща сигнали
         timeout-minutes: 5
         run: python selftest.py
@@ -132,10 +136,18 @@ jobs:
           # Праща се САМО ако ботът мълчи достатъчно дълго, че да пропусне сделки:
           # 6 поредни падания × 5 минути = 30 минути тишина. Всяко пускане вече
           # опитва по 3 пъти вътрешно, значи това са 18 неуспешни опита.
-          FAILS=$(curl -s -H "Authorization: Bearer ${{ github.token }}" \
-            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/workflows/aero-bot.yml/runs?status=completed&per_page=6" \
-            | grep -o '"conclusion":"[a-z]*"' | head -6 | grep -c 'failure' || true)
-          if [ "${FAILS:-0}" -ge 5 ]; then
+          # О7 · СТРЕЛЯ САМО НА ПРЕХОДА, не при всеки рън.
+          # Дотук: щом веднъж се навъртят 5 падания, ВСЕКИ следващ рън също вижда
+          # 5-6 и алармата излиза на всеки 5 минути до края на епизода.
+          # Сега: 5+ от ПОСЛЕДНИТЕ 6 паднали И под 5 от ПРЕДХОДНИТЕ 6 → един
+          # сигнал на епизод, без да се пази състояние никъде.
+          CONCL=$(curl -s -H "Authorization: Bearer ${{ github.token }}" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/workflows/aero-bot.yml/runs?status=completed&per_page=12" \
+            | grep -o '"conclusion":"[a-z]*"')
+          FAILS=$(echo "$CONCL" | head -6 | grep -c 'failure' || true)
+          PREV=$(echo "$CONCL" | sed -n '7,12p' | grep -c 'failure' || true)
+          echo "падания: последни 6 = ${FAILS:-0} · предходни 6 = ${PREV:-0}"
+          if [ "${FAILS:-0}" -ge 5 ] && [ "${PREV:-0}" -lt 5 ]; then
             curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage" \
               -d chat_id="${TELEGRAM_CHAT_ID}" -d parse_mode=HTML \
               -d text="🔕 <b>Половин час съм тих</b>%0A<i>Не успявам да тръгна вече 30 минути — може да си пропуснал сигнали. Продължавам да опитвам на всеки 5 минути. Това е единственото техническо съобщение, което ще получиш.</i>" || true

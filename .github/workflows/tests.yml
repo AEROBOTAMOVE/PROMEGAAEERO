@@ -3,6 +3,10 @@ on:
   push:
     paths: ['live_bot.py', 'selftest.py', 'requirements.txt']
   workflow_dispatch:
+# О10 · няколко бързи качвания едно след друго вдигаха успоредни тестове.
+concurrency:
+  group: aero-tests-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   selftest:
     runs-on: ubuntu-latest
