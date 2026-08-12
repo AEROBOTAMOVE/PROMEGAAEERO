@@ -83,6 +83,9 @@ CHART_BRAIN_ON = os.environ.get("CHART_BRAIN", "1") == "1"
 # «medium» е прагът, който `actionable` така или иначе налага.
 # РЕОФЕР_КЛАС=strong връща старото поведение.
 РЕОФЕР_КЛАС = os.environ.get("РЕОФЕР_КЛАС", "medium")
+# 🔴 ОДИТ-45 · ПРИ РАВЕНСТВО НА ДЪСКАТА КОЯ РАМКА ГОВОРИ. Дотук — първата в
+# списъка, тоест «1мин», в 88.4% от ръновете. Сега — най-бавната от равните.
+РАВЕНСТВО_БЪРЗА = os.environ.get("РАВЕНСТВО_БЪРЗА", "0") == "1"
 # ОДИТ-39 · от кой РАНГ нагоре мозъчната карта е ВХОД (с лот), а не наблюдение.
 # 3 = «ГОТОВ». 99 = никога — връща старото «само наблюдение».
 МОЗЪК_РАНГ_ВХОД = int(os.environ.get("МОЗЪК_РАНГ_ВХОД", "3"))
@@ -355,10 +358,13 @@ def _спряна_msg(direction, best, price_user, причина, обясне�
     """ОДИТ-26/29 · виждам сетъп, спирачка го спира. Четири реда, без нива."""
     ико = "🟢" if direction == "long" else "🔴"
     посока = "покупка" if direction == "long" else "продажба"
-    съгл = sum(1 for b in board if b[1] == direction and b[3] != "weak") if board else 0
+    # ОДИТ-45г: «/7» беше невярно — рамките са копия (84.6% буквално еднакви
+    # на 1965 живи ръна). Броим РАЗЛИЧНИТЕ отчети; един отчет не се брои.
+    _за, _общо = _съгласни(board, direction)
     return "\n".join([
         f"⏸ ВИЖДАМ {посока.upper()} · но не я давам · {_sofia(now_utc)}",
-        f"{ико} {съгл}/7 мащаба натам · <code>{_fmt(price_user, 2)}</code>",
+        f"{ико}{f' {_за} от {_общо} отчета натам ·' if _общо > 1 else ''} "
+        f"<code>{_fmt(price_user, 2)}</code>",
         f"📌 {причина}",
         "👁 нищо сега · пиша щом падне спирачката"])
 
@@ -366,10 +372,11 @@ def _standing_msg(direction, best, age_h, spot, bar_price, price_user, board, ma
     """ОДИТ-29 · сетъпът стои, но не е пресен. Четири реда."""
     ико = "🟢" if direction == "long" else "🔴"
     посока = "покупка" if direction == "long" else "продажба"
-    съгл = sum(1 for b in board if b[1] == direction and b[3] != "weak")
+    _за, _общо = _съгласни(board, direction)   # ОДИТ-45г: виж близнак 1
     lv = _levels(round(price_user, 2), direction)
     L = [f"⏸ СТОИ · {посока} злато · {_sofia(now_utc)}",
-         f"{ико} {съгл}/7 мащаба натам · вече {age_h:.0f}ч",
+         f"{ико}{f' {_за} от {_общо} отчета натам ·' if _общо > 1 else ''} "
+         f"вече {age_h:.0f}ч",
          f"🎯 <code>{_fmt(price_user, 2)}</code> · 🛑 <code>{_fmt(lv['sl'], 2)}</code>",
          " · ".join(f"{n} <code>{_fmt(lv[k], 2)}</code>"
                     for n, k in (("1️⃣", "tp1"), ("2️⃣", "tp2"), ("3️⃣", "tp3")))]
@@ -1322,9 +1329,10 @@ def _status_msg(board, new_dir, trade, s_trade, spot_g, spot_s, basis_g, basis_s
     # «няма сделка · няма сделка · две цени». Той я пита НА РЪКА точно за да
     # разбере какво вижда ботът — а получаваше по-малко от автоматичния пулс.
     if new_dir:
-        _съгл = sum(1 for b in (board or []) if b[1] == new_dir and b[3] != "weak")
+        _за, _общо = _съгласни(board or [], new_dir)   # ОДИТ-45г: виж близнак 1
         L.append(f"{'🟢' if new_dir == 'long' else '🔴'} очертава се "
-                 f"{'нагоре' if new_dir == 'long' else 'надолу'} · {_съгл}/7 мащаба")
+                 f"{'нагоре' if new_dir == 'long' else 'надолу'}"
+                 + (f" · {_за} от {_общо} отчета" if _общо > 1 else ""))
     else:
         L.append("📌 посоката е разбъркана")
     if shield:
@@ -1348,8 +1356,67 @@ def _status_msg(board, new_dir, trade, s_trade, spot_g, spot_s, basis_g, basis_s
     L.append("👁 само снимка · нищо не се прави")
     return "\n".join(L)
 
+def _защо_мълчи(macro_raw, streaks, new_dir=None):
+    """ОДИТ-45 · ЗАЩО МЕРЕНОТО ПРАВИЛО МЪЛЧИ — с числата, не с усещане.
+
+    Мерено на 1965 живи ръна: гейтът е отказал 100% от тях с `cell: mixed`,
+    защото доларът пада (вдига златото), а лихвите растат (свалят го).
+    Дотук това го знаеше само дневникът. Собственикът виждаше мълчащ бот.
+
+    Връща списък от РЕДОВЕ (телеграф, един ред = едно нещо) или [] ако няма
+    какво да се обясни."""
+    if not isinstance(macro_raw, dict):
+        return []
+    д = macro_raw.get("долар"); л = macro_raw.get("лихви")
+    if д is None or л is None:
+        return ["⚠️ макро-фийдът мълчи · без вход, докато не се върне"]
+    # знаците: числата са ВЕЧЕ обърнати (`-(промяна)`), значи ПЛЮС = добро за златото
+    д_добро, л_добро = float(д) > 0, float(л) > 0
+    Л = []
+    Л.append(f"💵 доларът {'пада' if д_добро else 'расте'} {abs(float(д))*100:.1f}% · "
+             f"{'вдига' if д_добро else 'сваля'} златото")
+    Л.append(f"{'📉' if л_добро else '📈'} лихвите {'падат' if л_добро else 'растат'} "
+             f"{abs(float(л)):.2f} · {'вдигат' if л_добро else 'свалят'} златото")
+    if д_добро == л_добро:
+        стр = int((streaks or {}).get("long" if д_добро else "short", 0))
+        Л.append(f"✅ двете сочат {'НАГОРЕ' if д_добро else 'НАДОЛУ'} · "
+                 f"{стр} {'ден' if стр == 1 else 'дни'} подред")
+    else:
+        Л.append("⏸ двете се бият · мереното правило мълчи")
+        Л.append("📌 в такъв пазар дава −0.04$ на сделка (мерено, 40094 сделки)")
+        Л.append(f"👁 чакам {'лихвите да тръгнат надолу' if д_добро else 'долара да тръгне надолу'}")
+    return Л
+
+
+def _обрат_msg(старо, ново, macro_raw, streaks):
+    """ОДИТ-45в · МАКРОТО СМЕНИ СЪСТОЯНИЕТО. Това е събитието, което той чака.
+    Измерено: за 9 дни (1965 ръна) състоянието НЕ се е сменяло нито веднъж —
+    значи картата не може да стане спам."""
+    _, л_ново = ново
+    _, л_старо = старо
+    подредено = ново[0] == ново[1]
+    ико = "🟢" if (подредено and ново[0]) else "🔴" if подредено else "⏸"
+    L = [f"{ико} <b>МАКРОТО СЕ {'ПОДРЕДИ' if подредено else 'РАЗБЪРКА'}</b> · {_sofia()}"]
+    L += _защо_мълчи(macro_raw, streaks)
+    if подредено:
+        L.append("📌 това е пазарът, в който мереното правило работи")
+    return "\n".join(L)
+
+
+def _съгласни(board, посока):
+    """ОДИТ-45 · ЧЕСТНОТО ЧИСЛО. Дотук пулсът броеше рамки — а те са копия.
+    Мерено на 1965 ръна: в 84.6% седемте рамки са БУКВАЛНО еднакви и различни
+    отчета никога не е имало повече от два. «7 от 7 съгласни» броеше седем
+    копия на едно измерване. Сега броим РАЗЛИЧНИТЕ отчети."""
+    if not board or not посока:
+        return 0, 0
+    от = [b for b in board if b[3] != "weak"]
+    за = [b for b in от if b[1] == посока]
+    return len(set((b[1], b[2], b[3]) for b in за)), len(set((b[1], b[2], b[3]) for b in от))
+
+
 def _pulse_msg(part, board, best, new_dir, advice_txt, adv_ok, trade, s_trade,
-               spot_g, spot_s, macro, shield, weekend):
+               spot_g, spot_s, macro, shield, weekend, macro_raw=None, streaks=None):
     """ОДИТ-29 · 3× на ден: жив съм, това гледам, това чакам."""
     ико, кога = {"09": ("☀️", "добро утро"), "14": ("🌤️", "докъде сме"),
                  "22": ("🌙", "как мина денят")}.get(part, ("📌", "какво гледам"))
@@ -1362,12 +1429,25 @@ def _pulse_msg(part, board, best, new_dir, advice_txt, adv_ok, trade, s_trade,
                  + (f" · 🥈 <code>{spot_s['mid']:,.3f}</code>" if spot_s else ""))
     else:
         L.append("⚠️ живата цена мълчи · карам по бара")
-    if new_dir:
-        съгл = sum(1 for b in board if b[1] == new_dir and b[3] != "weak") if board else 0
+    # 🔴 ОДИТ-45 · ДОТУК ТУК ПИШЕШЕ «{n}/7 мащаба» — НЕВЯРНО ЧИСЛО.
+    # Мерено на 1965 живи ръна: в 84.6% седемте рамки са БУКВАЛНО еднакви и
+    # различни отчета никога не е имало повече от ДВА. «7 от 7» броеше седем
+    # копия на едно измерване, защото всички се съдят срещу ЕДНИ дневни нива.
+    _обясн = _защо_мълчи(macro_raw, streaks, new_dir)
+    _разбъркано = any(r.startswith("⏸") for r in _обясн)
+    # ОДИТ-45б: при разбъркано макро НЕ обявяваме посока на дъската — два реда
+    # по-долу пише, че няма да я ползваме. Един ред = едно нещо.
+    if new_dir and not _разбъркано:
+        _за, _общо = _съгласни(board, new_dir)
         L.append(f"{'🟢' if new_dir == 'long' else '🔴'} очертава се "
-                 f"{'нагоре' if new_dir == 'long' else 'надолу'} · {съгл}/7 мащаба")
-    else:
+                 f"{'нагоре' if new_dir == 'long' else 'надолу'}"
+                 + (f" · {_за} от {_общо} отчета" if _общо > 1 else ""))
+    elif not new_dir and not _разбъркано:
         L.append("📌 посоката е разбъркана")
+    # 🔴 ОДИТ-45 · И КАЗВА ЗАЩО МЪЛЧИ. Мерено: 93.2% от ръновете записваха само
+    # «тихо (без събития)» и нищо не стигаше до него. Мълчанието Е решение —
+    # трябва да се вижда, че е решение, а не повреда.
+    L += _обясн
     има = False
     for нм, tr, sp, dec in (("🥇", trade, spot_g, 2), ("🥈", s_trade, spot_s, 3)):
         if tr:
@@ -1388,7 +1468,10 @@ def _pulse_msg(part, board, best, new_dir, advice_txt, adv_ok, trade, s_trade,
     elif new_dir and adv_ok:
         L.append("👁 чакам потвърждение · пращам вход")
     elif new_dir:
-        L.append("👁 не влизам · не е пресен")
+        # ОДИТ-45б: ако обяснението горе вече е казало ЗАЩО не влизаме,
+        # този ред е трети път същото.
+        if not _разбъркано:
+            L.append("👁 не влизам · не е пресен")
     else:
         L.append("👁 нищо сега")
     return "\n".join(L)
@@ -2161,7 +2244,17 @@ def main():
         board.append((lbl,) + _demote_if_dead(_resolve(ls, ss, macro), macro_health))
     actionable = [b for b in board if b[1] != "wait" and b[3] != "weak"] if enough_history else []
     rank = {"premium": 3, "strong": 2, "medium": 1, "weak": 0}
-    best = max(board, key=lambda x: (rank[x[3]], x[2])) if actionable else board[0]
+    # 🔴 ОДИТ-45 · ДУМАТА Я ВЗИМАШЕ 1-МИНУТНИЯТ БАР В 88.4% ОТ РЪНОВЕТЕ.
+    # `max()` при пълно равенство връща ПЪРВИЯ, а първи в TFS е «1мин». Тоест
+    # най-шумната рамка представяше дъската, макар отчетът ѝ да е копие на
+    # дневния. Сега при равенство печели БАВНАТА рамка — тя е бектестваната.
+    # Мерено на 1923 ръна с активна дъска: 1мин 88.4%→0%, 1ден 10.9%→97.1%;
+    # класът се сменя в 0.0%, посоката в 1.1% (в полза на дневната).
+    # РАВЕНСТВО_БЪРЗА=1 връща старото поведение.
+    _бавност = {l: i for i, (l, *_) in enumerate(TFS)}
+    best = (max(board, key=lambda x: (rank[x[3]], x[2])) if РАВЕНСТВО_БЪРЗА
+            else max(board, key=lambda x: (rank[x[3]], x[2], _бавност.get(x[0], 0)))) \
+        if actionable else board[0]
     new_dir = best[1] if actionable else None
     agree_n = sum(1 for b in board if b[1] == new_dir and b[3] != "weak") if new_dir else 0
 
@@ -2617,6 +2710,24 @@ def main():
             notes.append(f"страх-алчност живо: {_fng['value']} ({_fng['cls']})")
         new_msgs.append(("cq-ref", _cq_msg(cq, now_utc, fng_live=_fng)))
 
+    # 🔴 ОДИТ-45в · МАКРОТО СМЕНИ СЪСТОЯНИЕТО — казваме ВЕДНАГА, не на следващия слот.
+    # Мерено: за 9 дни и 1965 ръна състоянието не се е сменяло нито веднъж, тъй
+    # че тази карта не може да стане спам. А точно нея той чака.
+    try:
+        _мк = macro_health or {}
+        _д, _л = _мк.get("долар"), _мк.get("лихви")
+        if _д is not None and _л is not None and not weekend:
+            _сост = [bool(float(_д) > 0), bool(float(_л) > 0)]
+            _пред = meta.get("макро_сост")
+            if isinstance(_пред, list) and len(_пред) == 2 and _пред != _сост:
+                new_msgs.append(("обрат", _обрат_msg(
+                    tuple(bool(q) for q in _пред), tuple(_сост),
+                    _мк, regime.get("streaks"))))
+                notes.append(f"🔔 макрото смени състоянието: {_пред} → {_сост}")
+            meta["макро_сост"] = _сост
+    except Exception as _e:
+        notes.append(f"обрат-картата гръмна: {type(_e).__name__}: {_e}")
+
     # ПУЛС 3× на ден (09 и 14 София; вечерта е равносметката в 21): «какво гледам/чакам».
     # Веднъж на слот (meta-пазач), само делник. Информативен — не отваря сделка.
     pulse_slot = None
@@ -2624,7 +2735,9 @@ def main():
         if sof_now.hour == hr and meta.get("pulse_" + ph) != date and not weekend:
             s_tr_p = _load_state(s_tr_f, None)
             new_msgs.append(("pulse", _pulse_msg(ph, board, best, new_dir, advice_txt, _adv_ok,
-                                                 trade, s_tr_p, spot_g, spot_s, macro, shield, weekend)))
+                                                 trade, s_tr_p, spot_g, spot_s, macro, shield, weekend,
+                                                 macro_raw=macro_health,
+                                                 streaks=regime.get("streaks"))))
             pulse_slot = ph
             break
 
