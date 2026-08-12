@@ -34,7 +34,7 @@ import pandas as pd
 # v9.5–v9.8 — всеки ред в дневника твърдеше грешна версия, а дневникът е
 # единственият начин отвън да се види какво работи. П47 пада, ако VERSION не се
 # среща в темата на последния commit.
-VERSION = "v10.1"
+VERSION = "v10.2"
 PIP = 0.10
 SL_PIPS = 200; SL_D = SL_PIPS * PIP                       # стоп: 200п = $20/oz
 TPS = [("ТП1", 75, 7.5), ("ТП2", 120, 12.0), ("ТП3", 200, 20.0)]
@@ -1115,7 +1115,7 @@ def _sig_msg(direction, score, agree_n, tier_name, spot, bar_price, bar_ts, lv, 
         L.append("♻️ ре-влизане · предишната приключи")
     return "\n".join(L)
 
-def _ladder_pnl(kind, hit, lv, entry, sign, dol):
+def _ladder_pnl(kind, hit, lv, entry, sign, dol, hit_px=None):
     """ОДИТ-6/Н1: сметката по стълбата 1/3 — ЕДИН източник за реалния И за сянка-изхода.
     Преди това само `_exit_msg` я имаше; `_shadow_exit_msg` показваше голото
     (изход − вход), тоест «+0.00$» на безрисков стоп след взети ТП1+ТП2, където
@@ -1125,7 +1125,10 @@ def _ladder_pnl(kind, hit, lv, entry, sign, dol):
     n_hit = 0
     for k2 in ("tp1", "tp2"):
         if hit.get(k2) and k2 != kind:
-            thirds += (lv[k2] - entry) * sign / 3.0
+            # 🔧 О12: реалното попълване, ако го знаем; иначе нивото (както досега).
+            # Сделка отпреди тази версия няма `hit_px` → смята се точно както преди.
+            _ц = (hit_px or {}).get(k2)
+            thirds += ((float(_ц) if _ц is not None else lv[k2]) - entry) * sign / 3.0
             n_hit += 1
     thirds += dol * (3 - n_hit) / 3.0
     if abs(thirds) < 0.005:                      # «0.00», не «-0.00»
@@ -1142,7 +1145,7 @@ def _exit_msg(kind, tr, price_hit, when, via, gap, spot=None, next_line="", dec=
     дол = (price_hit - e) * знак
     if abs(дол) < 0.005:
         дол = 0.0
-    стълба, взети = _ladder_pnl(kind, hit, lv, e, знак, дол)
+    стълба, взети = _ladder_pnl(kind, hit, lv, e, знак, дол, tr.get("hit_px"))
     час = _sofia(when) if via in ("бар", "спот") else _sofia()
     гап = " · с гап" if gap else ""
     глави = {"tp1": ("✅", "ЦЕЛ 1"), "tp2": ("✅", "ЦЕЛ 2"), "tp3": ("🏆", "ВСИЧКО ПРИБРАНО"),
@@ -1180,7 +1183,7 @@ def _shadow_exit_msg(kind, tr, price_hit, when, via, gap, spot=None, dec=2):
     дол = (price_hit - e) * знак
     if abs(дол) < 0.005:
         дол = 0.0
-    стълба, взети = _ladder_pnl(kind, hit, lv, e, знак, дол)
+    стълба, взети = _ladder_pnl(kind, hit, lv, e, знак, дол, tr.get("hit_px"))
     час = _sofia(when) if via in ("бар", "спот") else _sofia()
     какво = {"tp1": "щеше да хване ЦЕЛ 1", "tp2": "щеше да хване ЦЕЛ 2",
              "tp3": "щеше да мине докрай", "sl": "щеше да удари стоп",
@@ -1787,7 +1790,13 @@ def track_trade(trade, bars, basis, now_price, now_utc, spot=None):
                 if tp_hit:
                     gap = (op >= lv[k]) if d == "long" else (op <= lv[k])
                     px = round(op, 3) if gap else lv[k]
-                    trade["hit"][k] = True; events.append((k, px, str(ts), "бар", gap))
+                    # 🔧 О12 · ПАЗИМ И ЦЕНАТА НА ПОПЪЛВАНЕ, не само че е ударена.
+                    # При гап `px` е цената на ОТВАРЯНЕТО — по-добра от нивото.
+                    # Дотук се изхвърляше и стълбата смяташе по НИВОТО, тоест
+                    # подценяваше печалбата при всеки гап през цел.
+                    trade["hit"][k] = True
+                    trade.setdefault("hit_px", {})[k] = px
+                    events.append((k, px, str(ts), "бар", gap))
                     if k == "tp1":                        # картата обещава «стоп на входа» → ПРАВИМ го
                         lv["sl"] = trade["entry"]         # иначе изходната сметка лъже (безрисково ≠ −$20)
                         trade["be_since"] = str(ts)       # BE-стопът важи от СЛЕДВАЩ бар (не този)
@@ -2398,15 +2407,17 @@ def main():
         trade_obj = copy.deepcopy(trade)                   # Д3: снимка, която track_trade няма да мутира
         trade, events = track_trade(trade, frames.get("5м"), basis_g, price_user, now_utc, spot=spot_g)
         cum_hit = dict(trade_obj["hit"])                   # попадения от МИНАЛИ рънове
+        cum_px = dict(trade_obj.get("hit_px") or {})       # О12: и цените им
         for kind, px, when, via, gap in events:
             if kind in ("tp1", "tp2", "tp3"):              # това попадение стана ТОЗИ рън → трупай
                 cum_hit[kind] = True
+                cum_px[kind] = px                          # О12: реалният фил, гап-съобразен
             # F3: брой само РЕАЛЕН стоп; безрисковият (на входа, след ТП1) е печеливш изход
             if kind == "sl" and abs(px - trade_obj["entry"]) > 0.05:
                 guard[trade_obj["direction"]] = guard.get(trade_obj["direction"], 0) + 1
             # краен-случай: подай снимка на КУМУЛАТИВНИТЕ попадения ДО този изход (не застоялата
             # отпреди ръна) → 1/3 сметката е вярна и при ТП1+ТП2+СТОП в ЕДИН рън (catch-up burst).
-            obj = dict(trade_obj); obj["hit"] = dict(cum_hit)
+            obj = dict(trade_obj); obj["hit"] = dict(cum_hit); obj["hit_px"] = dict(cum_px)
             exit_msgs.append(("exit:" + kind, (kind, obj, px, when, via, gap), kind, trade_obj["direction"]))
 
     # === 2) СИГНАЛ на 7-те ТФ ===
