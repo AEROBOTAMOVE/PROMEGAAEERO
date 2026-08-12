@@ -18,6 +18,7 @@ concurrency:
   cancel-in-progress: false
 permissions:
   contents: read
+  actions: write            # ОДИТ-51: одитът връща жеста и буди бота
 jobs:
   audit:
     runs-on: ubuntu-latest
@@ -42,6 +43,34 @@ jobs:
           echo "::warning::първият опит не мина — чакам 30с"
           sleep 30
           python audit_bot.py --repo . --code . --send
+      # 🔴 ОДИТ-51 · ВЗАИМЕН БУДИЛНИК. Дотук ботът будеше одита, но не обратното —
+      # значи спре ли ботът, спира и единственото нещо, което би забелязало.
+      # Мерено на живо: дупка от 447 минути на 06.08, която НИКОЙ не видя.
+      # Прагът 25 мин е пет пъти нормалния интервал → не стреля на дребно закъснение.
+      - name: wake the bot
+        if: always()
+        continue-on-error: true          # будилникът НИКОГА не вали одита
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          LAST=$(curl -s -H "Authorization: Bearer $GH_TOKEN" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/workflows/aero-bot.yml/runs?per_page=1" \
+            | grep -o '"created_at": *"[^"]*"' | head -1 | sed 's/.*"\([^"]*\)"$/\1/')
+          if [ -z "$LAST" ]; then echo "няма история на бота — не будя"; exit 0; fi
+          AGE=$(( ( $(date -u +%s) - $(date -u -d "$LAST" +%s) ) / 60 ))
+          echo "последен рън на бота: $LAST (преди ${AGE} мин)"
+          # пазарът затворен ли е → мълчи (същият прозорец като в бота)
+          DOW=$(date -u +%u); HH=$(date -u +%H)
+          if [ "$DOW" = "6" ] || { [ "$DOW" = "5" ] && [ "$HH" -ge 21 ]; } \
+             || { [ "$DOW" = "7" ] && [ "$HH" -lt 21 ]; }; then
+            echo "пазарът е затворен — не будя"; exit 0
+          fi
+          if [ "$AGE" -lt 25 ]; then echo "бягал е преди ${AGE} мин — не го будя"; exit 0; fi
+          echo "🔔 ботът мълчи от ${AGE} мин — будя го"
+          curl -s -X POST -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/workflows/aero-bot.yml/dispatches" \
+            -d '{"ref":"main"}' -w "HTTP %{http_code}\n"
       - name: log failure                               # ОДИТ-21: БЕЗ съобщение в Телеграм
         if: failure()
         # Одит-роботът е ИНСТРУМЕНТ ЗА ПРОВЕРКА, не част от търговията. Падне ли,
