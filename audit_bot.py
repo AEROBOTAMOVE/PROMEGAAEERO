@@ -742,6 +742,125 @@ def check_honesty(code_dir: Path, data_dir: Path):
 
 
 # ─────────────────── ТАБЛО ───────────────────
+def check_mozak(live):
+    cat = "ЧЕСТНОСТ"
+    """ЗАДАЧА #21/#23 · РАБОТИ ЛИ ЛОГИКАТА ОТ ИНДИКАТОРА — мерено, не гадано.
+
+    Развръзките се сглобяват НАЗАД от два файла, които вече съществуват:
+    `brain_journal.jsonl` (всеки кандидат с нивата му) и `live_journal.jsonl`
+    (цената на всеки ~5 мин). Значи първите числа излизат веднага, не след
+    седмици — и се обновяват сами на всеки рън на робота.
+
+    Връща (червени, жълти, редове_за_отчет)."""
+    import datetime as _dt
+    R, Y, L = [], [], []
+    б = jall(live, "brain_journal.jsonl")
+    r = jall(live, "live_journal.jsonl")
+    if not б or not r:
+        return R, Y, ["🧠 мозък: няма достатъчно история"]
+    цени = sorted((x["run_utc"], float(x["spot"])) for x in r if x.get("spot"))
+    базис = sorted((x["run_utc"], float(x["basis"])) for x in r if x.get("basis") is not None)
+    if not цени or not базис:
+        return R, Y, ["🧠 мозък: няма ценова следа"]
+
+    def _т(s):
+        return _dt.datetime.fromisoformat(str(s).replace("Z", ""))
+
+    цени = [(_т(a), b) for a, b in цени]
+    базис = [(_т(a), b) for a, b in базис]
+
+    def _баз(t):
+        # 🔴 КАПАН 1: нивата в brain_journal са на ФЮЧЪРСНА скала (~+59.55$ над
+        # спота). Първата ми версия ги сравни направо и даде +686$ вместо
+        # реалните −35$. Ако записът си носи базиса (v9.6+), ползваме него.
+        б_ = min(базис, key=lambda q: abs((q[0] - t).total_seconds()))
+        return б_[1] if abs((б_[0] - t).total_seconds()) <= 900 else None
+
+    ЧАСОВЕ = 4.0
+    развр = []
+    for к in б:
+        try:
+            т0 = _т(к["utc"])
+            изм = к.get("базис")
+            изм = float(изм) if изм is not None else _баз(т0)
+            if изм is None:
+                continue
+            вх = float(к["вход"]) - изм
+            ст = float(к["стоп"]) - изм
+            це = float(к["цел"]) - изм
+        except Exception:
+            continue
+        лонг = str(к.get("посока", "")).upper() in ("LONG", "ЛОНГ")
+        сл = [(t, p) for t, p in цени if t > т0 and (t - т0).total_seconds() <= ЧАСОВЕ * 3600]
+        if not сл:
+            continue
+        изход = None
+        for t, p in сл:
+            у_ст = (p <= ст) if лонг else (p >= ст)
+            у_це = (p >= це) if лонг else (p <= це)
+            # 🔴 КАПАН 3: пробата е на 5 мин и не може да раздели стоп от цел в
+            # един интервал. НЕ го приписваме на печалба.
+            if у_ст and у_це:
+                изход = ("неясен", 0.0, (t - т0).total_seconds() / 60); break
+            if у_ст:
+                изход = ("стоп", -abs(вх - ст), (t - т0).total_seconds() / 60); break
+            if у_це:
+                изход = ("цел", +abs(це - вх), (t - т0).total_seconds() / 60); break
+        if изход is None:
+            if (сл[-1][0] - т0).total_seconds() < ЧАСОВЕ * 3600 * 0.8:
+                continue
+            п = (сл[-1][1] - вх) if лонг else (вх - сл[-1][1])
+            изход = ("изтекло", п, (сл[-1][0] - т0).total_seconds() / 60)
+        развр.append((к, изход))
+
+    ясни = [(к, d) for к, d in развр if d[0] != "неясен"]
+    if len(ясни) < 10:
+        A.ok(cat, "Ч9", "мозък: измерване",
+             f"само {len(ясни)} развръзки — рано за числа")
+        return R, Y, [f"мозък: {len(ясни)} развръзки"]
+
+    # 🔴 КАПАН 2: 80 от 88 записа са на <4ч от предишен от същата рамка+посока
+    # → гледат ЕДНО движение. Броим ги веднъж.
+    незав, зает = [], {}
+    for к, d in sorted(ясни, key=lambda x: x[0]["utc"]):
+        t = _т(к["utc"]); кл = (к.get("рамка"), к.get("посока"))
+        if t >= зает.get(кл, _dt.datetime.min):
+            незав.append((к, d))
+            зает[кл] = t + _dt.timedelta(minutes=d[2])
+
+    п = sum(d[1] for _, d in незав)
+    w = sum(1 for _, d in незав if d[1] > 0)
+    n = len(незав)
+    L.append(f"🧠 МОЗЪКЪТ · {n} независими развръзки (от {len(ясни)} общо)")
+    L.append(f"   {w}/{n} = {w/n*100:.0f}% печеливши · средно {п/n:+.2f}$ · общо {п:+.2f}$")
+    for с in ("✨ ИСКРА", "👀 НАБЛЮДЕНИЕ", "🔨 ОФОРМЯ СЕ", "✅ ГОТОВ",
+              "🔥 СИЛЕН", "⚡ МНОГО СИЛЕН", "💎 РЯДЪК"):
+        г = [(к, d) for к, d in незав if к.get("степен") == с]
+        if len(г) >= 3:
+            гп = sum(d[1] for _, d in г); гw = sum(1 for _, d in г if d[1] > 0)
+            L.append(f"   {с:16s} {len(г):3d} · {гw}/{len(г)} · {гп/len(г):+6.2f}$")
+    пр = [(к, d) for к, d in незав if к.get("праща")]
+    неп = [(к, d) for к, d in незав if not к.get("праща")]
+    if пр and неп:
+        сп = sum(d[1] for _, d in пр) / len(пр)
+        сн = sum(d[1] for _, d in неп) / len(неп)
+        L.append(f"   филтрите: пратени {сп:+.2f}$ ({len(пр)}) срещу непратени {сн:+.2f}$ ({len(неп)})")
+        if сп < сн:
+            Y.append(f"мозък: ПРАТЕНИТЕ карти се справят по-зле от непратените "
+                     f"({сп:+.2f}$ срещу {сн:+.2f}$ на {len(пр)}/{len(неп)}) — филтрите вредят")
+    # праговете важат само при достатъчно проби — иначе шумът вика вълк
+    _дет = f"{n} независими · {w}/{n} печеливши · средно {п/n:+.2f}$"
+    if n >= 60 and п / n < -1.0:
+        A.fail(cat, "Ч9", "мозък: измерване", _дет,
+              "логиката губи устойчиво, не е шум — вдигни МОЗЪК_РАНГ_ВХОД или спри съветите")
+    elif n >= 30 and п / n < 0:
+        A.warn(cat, "Ч9", "мозък: измерване", _дет,
+               "още отрицателно, но n е малко за присъда — продължавай да мериш")
+    else:
+        A.ok(cat, "Ч9", "мозък: измерване", _дет)
+    return R, Y, L
+
+
 def scoreboard(passes_info=""):
     print()
     print("═" * 74)
@@ -940,6 +1059,12 @@ def main():
                 check_integrity(live, code_dir, repo, skip_selftest=(pi > 0))   # selftest бавен → веднъж
             elif cat == "ЧЕСТНОСТ":
                 check_honesty(code_dir, data_dir)
+                if pi == 0:            # мери се от файлове — веднъж стига
+                    try:
+                        check_mozak(live)
+                    except Exception as _e:
+                        A.warn(cat, "Ч9", "мозък: измерване",
+                               f"{type(_e).__name__}: {_e}", "проверката се спъна")
             A.add = _sink
         if pi == 0:
             worst = {(r["code"], r["name"]): r for r in A.rows}
