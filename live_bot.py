@@ -34,7 +34,7 @@ import pandas as pd
 # v9.5–v9.8 — всеки ред в дневника твърдеше грешна версия, а дневникът е
 # единственият начин отвън да се види какво работи. П47 пада, ако VERSION не се
 # среща в темата на последния commit.
-VERSION = "v10.0"
+VERSION = "v10.1"
 PIP = 0.10
 SL_PIPS = 200; SL_D = SL_PIPS * PIP                       # стоп: 200п = $20/oz
 TPS = [("ТП1", 75, 7.5), ("ТП2", 120, 12.0), ("ТП3", 200, 20.0)]
@@ -44,7 +44,13 @@ TFS = [("1мин", "1m", "7d", None), ("5м", "5m", "60d", None), ("15м", "15m"
        ("4час", "60m", "730d", "4h"), ("1ден", None, None, None)]
 MACRO_LBL = ["миньори", "долар", "лихви"]
 BASIS_ALPHA = 0.25          # EMA тегло на базиса фючърс−спот
-ROLLOVER_JUMP = 8.0         # скок на базиса >$8 за нощ = роловър → ре-анкер
+# 🔧 О13 · ПРАГЪТ Е ЗА ЗЛАТО. $8 при злато (~$4400) е 0.18% от цената; същите
+# $8 при сребро (~$65) са 12% — детекторът за среброто беше практически мъртъв.
+# `cap` вече е per-инструмент (40.0/3.0); прагът беше пропуснат. Сребърният е
+# скалиран по същото отношение: 8 × (65/4400) ≈ 0.12, закръглено нагоре до 0.4
+# за да не пали на обикновен шум.
+ROLLOVER_JUMP = 8.0         # скок на базиса >$8 за нощ = роловър → ре-анкер (ЗЛАТО)
+ROLLOVER_JUMP_S = float(os.environ.get("ROLLOVER_JUMP_S", "0.4"))   # СРЕБРО
 SHIELD_ET = (8 * 60 + 25, 9 * 60 + 15)   # US-щит: 8:25–9:15 Ню Йорк (САМО short)
 
 # ── 🧠 МОЗЪКЪТ НА ГРАФИКАТА · ОДИТ-24 ────────────────────────────────────
@@ -500,6 +506,10 @@ def _levels_silver(entry, direction):
 # ---------- спот в реално време + санити (Ф8.3) ----------
 SPOT_MAX_AGE = 90        # A1: котировка по-стара от 90 сек не е «реално време»
 CLOCK_SKEW = 60          # T1: сървърният ts може да води с ~1с спрямо рънъра → толеранс
+# 🔧 О15 · КОЛКО «БЪДЕЩЕ» СЕ ПРИЕМА ЗА ПРЯСНО. Дотук всичко до -60с се клампваше
+# до age=0, тоест платформа с часовник +60с И ЗАСТОЯЛА цена минаваше за съвсем
+# прясна. Истинското скю е ~1с; 2с е достатъчно и не крие застой.
+СКЮ_ДОПУСК = float(os.environ.get("СКЮ_ДОПУСК", "2"))
 def _spot(instr="XAU/USD", market_closed=False):
     """Swissquote публичен фийд, без ключ; за злато има РЕЗЕРВНА ВЕРИГА (PAXG: Binance → Coinbase → Kraken).
     A1: избира цена САМО от ПРЯСНА платформа; прозорец 90 сек. Връща bid/ask/mid/src/age_sec.
@@ -515,7 +525,12 @@ def _spot(instr="XAU/USD", market_closed=False):
             age = (now_ms - plat.get("ts", 0)) / 1000.0
             if age < -CLOCK_SKEW or age > SPOT_MAX_AGE:  # от «бъдещето» (боклук ts) ИЛИ застояла
                 continue
-            age = max(age, 0.0)                          # T1: часово скю → третирай като «сега»
+            # 🔧 О15: -60с..-2с вече НЕ минава за «сега» — това е часовник, който
+            # води, и може да крие застояла цена. Пропускаме тази платформа;
+            # другите в същия отговор пак се разглеждат.
+            if age < -СКЮ_ДОПУСК:
+                continue
+            age = max(age, 0.0)                          # T1: истинско скю (~1с) → «сега»
             for p in plat.get("spreadProfilePrices", []):
                 if p["bid"] < p["ask"] and (best is None or (p["ask"] - p["bid"]) < (best[1] - best[0])):
                     best = (p["bid"], p["ask"]); best_age = age
@@ -640,7 +655,8 @@ def _cme_pause(now_utc):
         return False
 
 
-def _basis_update(state, key, raw_spot, bar_close, notes, cap=40.0, now_utc=None):
+def _basis_update(state, key, raw_spot, bar_close, notes, cap=40.0, now_utc=None,
+                  скок=None):        # О13: прагът за роловър е per-инструмент
     """EMA на базиса. ПОЛЗВА СУРОВИЯ спот (преди санитито) — иначе роловърът
     (скок +$25-30) реже спота, базисът замръзва и детекторът не се задейства = deadlock.
     Скок >$8 = роловър → ре-анкер, НО само ако е под cap (глич) И не сме в CME паузата (A5)."""
@@ -662,7 +678,7 @@ def _basis_update(state, key, raw_spot, bar_close, notes, cap=40.0, now_utc=None
         else:                                       # първи сампъл е глич → не го анкервай
             notes.append(f"студен старт: базис {now_b:+.1f} извън диапазон — изчаквам")
             return 0.0
-    elif abs(now_b - old) > ROLLOVER_JUMP:
+    elif abs(now_b - old) > (скок if скок is not None else ROLLOVER_JUMP):
         moved = prev_bar is not None and abs(bar_close - prev_bar) >= 0.5 * abs(now_b - old)
         if _cme_pause(now_utc):                     # A5: нощна пауза → игнорирай скока, пази базиса
             notes.append(f"скок на базиса ({now_b:+.1f}) в CME паузата — игнориран, пазя {old:+.2f}")
@@ -2651,7 +2667,8 @@ def main():
         jump_s = abs(raw_s["mid"] - meta["last_spot_s"]) if (raw_s and meta.get("last_spot_s")) else None
         if raw_s:
             meta["last_spot_s"] = raw_s["mid"]
-        basis_s = _basis_update(meta, "basis_s", raw_s, s_bar, notes, cap=3.0, now_utc=now_utc)
+        basis_s = _basis_update(meta, "basis_s", raw_s, s_bar, notes, cap=3.0, now_utc=now_utc,
+                                скок=ROLLOVER_JUMP_S)   # О13: сребърен мащаб
         spot_s = _spot_sane(raw_s, s_bar - basis_s, 0.30, bar_rng=rng_s, spot_jump=jump_s)
         s_price_user = spot_s["mid"] if spot_s else round(s_bar - basis_s, 3)
         s_refs = _refs(sdd)

@@ -276,7 +276,11 @@ def check_delay_engine(live: Path, bars5, A_):
     sent_exits = []
     for r in J:
         for s in r.get("status", []):
-            m = re.match(r"exit:(\w+)=SENT", s)
+            # 🔧 О17 · ДОТУК ТОЗИ РЕГЕКС ХВАЩАШЕ САМО ЗЛАТНИТЕ ИЗХОДИ.
+            # Сребърните тагове са `s-exit:...`, а `re.match` иска съвпадение от
+            # НАЧАЛОТО на низа → нула сребърни изхода в целия одит. Тоест
+            # закъснението на среброто не се е мерило НИТО ВЕДНЪЖ.
+            m = re.match(r"(?:s-)?exit:(\w+)=SENT", s)
             if m:
                 sent_exits.append((r["run_utc"], m.group(1)))
     if not sent_exits:
