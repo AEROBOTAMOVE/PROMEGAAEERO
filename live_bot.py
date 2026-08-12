@@ -22,7 +22,7 @@ live_bot.py — AERO METALS BOT v5.0 «ТОЧНОСТ ПРЕДИ ВСИЧКО» 
 финансов съвет. Токен: env TELEGRAM_TOKEN + TELEGRAM_CHAT_ID.
 """
 from __future__ import annotations
-import argparse, copy, io, json, os, urllib.parse, urllib.request, warnings
+import argparse, copy, io, json, os, sys, urllib.parse, urllib.request, warnings
 import hashlib as _hashlib_e
 from datetime import datetime, timezone
 from pathlib import Path
@@ -34,7 +34,7 @@ import pandas as pd
 # v9.5–v9.8 — всеки ред в дневника твърдеше грешна версия, а дневникът е
 # единственият начин отвън да се види какво работи. П47 пада, ако VERSION не се
 # среща в темата на последния commit.
-VERSION = "v10.7"
+VERSION = "v10.8"
 PIP = 0.10
 SL_PIPS = 200; SL_D = SL_PIPS * PIP                       # стоп: 200п = $20/oz
 TPS = [("ТП1", 75, 7.5), ("ТП2", 120, 12.0), ("ТП3", 200, 20.0)]
@@ -3341,18 +3341,36 @@ if __name__ == "__main__":
             # ОДИТ-2 №4: ескейпвай текста на грешката — иначе съобщение с < > & чупи
             # HTML парсването на Телеграм и САМАТА аларма умира тихо (двойно заглушаване).
             import html as _html
+            from datetime import datetime as _dt52, timezone as _tz52
+            _сега = _dt52.now(_tz52.utc).replace(tzinfo=None).isoformat(timespec="seconds")
             _err = _html.escape(f"{type(e).__name__}: {str(e)[:250]}")
             # ОДИТ-17: ЗАГЛУШАВАНЕ. Ботът се буди на 5 минути; трайна грешка пращаше
             # по 12 еднакви съобщения на час. Една и съща грешка — най-много веднъж
             # на 3 часа. РАЗЛИЧНА грешка минава веднага (нова информация).
             _sig = _hashlib_e.sha1(f"{type(e).__name__}:{str(e)[:120]}".encode()).hexdigest()[:12]
-            _ef = Path(args.out) / "err_seen.json"
+            # 🔴 ОДИТ-52 · ТУК ПИШЕШЕ `Path(args.out)`. `args` се създава ВЪТРЕ в
+            # `main()` и няма `global args` — значи ЦЕЛИЯТ този блок падаше на
+            # NameError при всяко сриване и се глътваше от `except: pass` долу.
+            # `err_seen.json` НИКОГА не се е записвал; одит-роботът е чакал файл,
+            # който не идва, и е светел зелено върху нищо. А логът на Actions е
+            # недостъпен отвън — тоест всяко сриване беше невидимо.
+            # Сега пътят се чете от sys.argv, без да зависи от локалните на main().
+            _изх = "live"
+            try:
+                _av = sys.argv
+                if "--out" in _av and _av.index("--out") + 1 < len(_av):
+                    _изх = _av[_av.index("--out") + 1]
+            except Exception:
+                pass
+            _ef = Path(_изх) / "err_seen.json"
             _seen = _load_state(_ef, {})
             _prev = _seen.get(_sig)
             _fresh = True
             if _prev:
                 try:
-                    _fresh = (pd.Timestamp(now_utc) - pd.Timestamp(_prev)).total_seconds() > 3 * 3600
+                    # ОДИТ-52: `now_utc` също е локален на main() — смятаме го тук.
+                    _пв = _prev.get("utc") if isinstance(_prev, dict) else _prev
+                    _fresh = (pd.Timestamp(_сега) - pd.Timestamp(_пв)).total_seconds() > 3 * 3600
                 except Exception:
                     _fresh = True
             # ОДИТ-21: БЕЗ СЪОБЩЕНИЕ ЗА ТЕХНИЧЕСКА ГРЕШКА.
@@ -3361,7 +3379,10 @@ if __name__ == "__main__":
             # 3 пъти само по себе си; мълчи ли ботът и след 30 минути, workflow-ът
             # праща ЕДНО съобщение — то е достатъчно и е единственото техническо.
             # Грешката остава в лога и в err_seen.json, за да я вижда одит-роботът.
-            _seen[_sig] = str(now_utc)
+            # ОДИТ-52: пазим и КЪДЕ е гръмнало — при сриване подписът сам по себе
+            # си не стига, а логът на Actions е недостъпен отвън.
+            _seen[_sig] = {"utc": str(_сега), "грешка": _err[:200],
+                           "къде": traceback.format_exc().strip().splitlines()[-3:]}
             try:
                 _ef.write_text(json.dumps(_seen, ensure_ascii=False), encoding="utf-8")
             except Exception:
