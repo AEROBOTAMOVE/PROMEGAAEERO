@@ -34,7 +34,7 @@ import pandas as pd
 # v9.5–v9.8 — всеки ред в дневника твърдеше грешна версия, а дневникът е
 # единственият начин отвън да се види какво работи. П47 пада, ако VERSION не се
 # среща в темата на последния commit.
-VERSION = "v10.8"
+VERSION = "v10.9"
 PIP = 0.10
 SL_PIPS = 200; SL_D = SL_PIPS * PIP                       # стоп: 200п = $20/oz
 TPS = [("ТП1", 75, 7.5), ("ТП2", 120, 12.0), ("ТП3", 200, 20.0)]
@@ -246,6 +246,15 @@ def _macro(gold_d, gdx_d, dxy_d, rr, health=None):
         health["мъртви"] = [k for k in raw if health.get(k) is None]
     return {k: bool(v > 0) if not (v is None or (isinstance(v, float) and np.isnan(v))) else False
             for k, v in raw.items()}
+
+
+def _от_резерва(spot):
+    """🔴 ОДИТ-53 · КАЗВА ЛИ СЕ, ЧЕ ЦЕНАТА НЕ Е ОТ ЗЛАТНИЯ ФИЙД.
+    `spot_src` влизаше само в дневника; собственикът виждаше число и мислеше, че
+    е златният фийд. А PAXG търгува с ~$1-4 премия — самият код го знае и го
+    изключва от базис-EMA-то по същата причина. Число на карта, за което не се
+    казва откъде идва, е точно това, което този бот не бива да прави."""
+    return str((spot or {}).get("src") or "").startswith("paxg")
 
 
 def _sofia(iso_utc=None):
@@ -515,7 +524,7 @@ CLOCK_SKEW = 60          # T1: сървърният ts може да води с
 # до age=0, тоест платформа с часовник +60с И ЗАСТОЯЛА цена минаваше за съвсем
 # прясна. Истинското скю е ~1с; 2с е достатъчно и не крие застой.
 СКЮ_ДОПУСК = float(os.environ.get("СКЮ_ДОПУСК", "2"))
-def _spot(instr="XAU/USD", market_closed=False):
+def _spot(instr="XAU/USD", market_closed=False, cme_pause=False):
     """Swissquote публичен фийд, без ключ; за злато има РЕЗЕРВНА ВЕРИГА (PAXG: Binance → Coinbase → Kraken).
     A1: избира цена САМО от ПРЯСНА платформа; прозорец 90 сек. Връща bid/ask/mid/src/age_sec.
     T1: под-секундно часово разминаване (age малко под 0) НЕ бракува фийда."""
@@ -545,7 +554,13 @@ def _spot(instr="XAU/USD", market_closed=False):
                     "age_sec": round(best_age, 1)}
     except Exception:
         pass
-    if market_closed:                                     # T5: не ползвай крипто-прокси при затворен пазар
+    # 🔴 ОДИТ-53 · И В ДНЕВНАТА CME ПАУЗА. Дотук пазачът беше само уикендът, а
+    # CME Globex спира и всеки делник по един час (17:00 Ню Йорк). Тогава
+    # фючърсът е затворен, а PAXG е крипто и върви 24/7 — цена, която никой не
+    # арбитрира срещу затворен фючърс, показвана като злато.
+    # `_cme_pause` вече съществува и се ползва в `_basis_update` по СЪЩАТА
+    # причина; на спот-резервата просто не беше подаден.
+    if market_closed or cme_pause:                        # T5: без крипто-прокси при спрял фючърс
         return None
     if instr == "XAU/USD":
         # 🔴 ОДИТ-6 (29.07): РЕЗЕРВАТА БЕШЕ МЪРТВА. Мерено на реалния дневник: 267 от 1674
@@ -1053,7 +1068,9 @@ def _sig_msg(direction, score, agree_n, tier_name, spot, bar_price, bar_ts, lv, 
              " · ".join(f"{n} <code>{_fmt(ol[k], dec)}</code>{' ✅' if hit.get(k) else ''}"
                         for n, k in (("1️⃣", "tp1"), ("2️⃣", "tp2"), ("3️⃣", "tp3")))]
         if spot:
-            L.append(f"💵 сега <code>{_fmt(spot['mid'], dec)}</code>")
+            L.append(f"💵 сега <code>{_fmt(spot['mid'], dec)}</code>"
+                     + (" ⚠️ от крипто-резерва, не от златния фийд"
+                        if _от_резерва(spot) else ""))
         L.append("👁 дръж я · не отваряй нова")
         return "\n".join(L)
 
@@ -1591,7 +1608,9 @@ def _pulse_msg(part, board, best, new_dir, advice_txt, adv_ok, trade, s_trade,
         return "\n".join(L)
     if spot_g:
         L.append(f"🥇 <code>{spot_g['mid']:,.2f}</code>"
-                 + (f" · 🥈 <code>{spot_s['mid']:,.3f}</code>" if spot_s else ""))
+                 + (" ⚠️резерва" if _от_резерва(spot_g) else "")
+                 + (f" · 🥈 <code>{spot_s['mid']:,.3f}</code>"
+                    + (" ⚠️резерва" if _от_резерва(spot_s) else "") if spot_s else ""))
     else:
         L.append("⚠️ живата цена мълчи · карам по бара")
     # 🔴 ОДИТ-45 · ДОТУК ТУК ПИШЕШЕ «{n}/7 мащаба» — НЕВЯРНО ЧИСЛО.
@@ -2445,7 +2464,7 @@ def main():
     # спот + базис + санити (Ф8.3 / Ф9.2 / Ф9.7 / A1 / A4 / A5)
     # РЕД: суров спот → базис (детекцията на роловър иска суровия!) → санити срещу бар−базис
     rng_g = _bar_range(fine)                             # A4: диапазон за динамичния праг
-    raw_g = _spot("XAU/USD", market_closed=weekend)
+    raw_g = _spot("XAU/USD", market_closed=weekend, cme_pause=_cme_pause(now_utc))
     jump_g = abs(raw_g["mid"] - meta["last_spot_g"]) if (raw_g and meta.get("last_spot_g")) else None  # T3
     if raw_g:
         meta["last_spot_g"] = raw_g["mid"]
@@ -2776,7 +2795,7 @@ def main():
         sdd.index = sdd.index.normalize()
         s_bar = float(s5["Close"].iloc[-1])
         rng_s = _bar_range(s5)
-        raw_s = _spot("XAG/USD", market_closed=weekend)
+        raw_s = _spot("XAG/USD", market_closed=weekend, cme_pause=_cme_pause(now_utc))
         jump_s = abs(raw_s["mid"] - meta["last_spot_s"]) if (raw_s and meta.get("last_spot_s")) else None
         if raw_s:
             meta["last_spot_s"] = raw_s["mid"]

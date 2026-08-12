@@ -464,7 +464,19 @@ ck("О6 Binance остава първи (работи извън САЩ)", _spot
 ck("О6 санити диапазон за златото", "500 < b < 20000" in _spotsrc)
 ck("О6 провалът на един източник пробва следващия", "continue" in _spotsrc)
 ck("О6 пазачът на базиса лови по ПРЕФИКС", 'startswith("paxg")' in _src)
-ck("О6 затворен пазар пак не ползва крипто-прокси", "if market_closed:" in _spotsrc)
+# 🔴 ОДИТ-53 · РАЗШИРЕН. Пазачът беше САМО уикендът, а CME Globex спира и всеки
+# делник по един час (17:00 Ню Йорк). Тогава фючърсът е затворен, а PAXG е крипто
+# и върви 24/7 — цена, която никой не арбитрира, показвана като злато.
+ck("О6 затворен пазар пак не ползва крипто-прокси",
+   "if market_closed or cme_pause:" in _spotsrc)
+ck("О6 и ДНЕВНАТА CME пауза спира резервата", "cme_pause=False" in _spotsrc)
+ck("О6 ботът наистина подава паузата",
+   "cme_pause=_cme_pause(now_utc)" in _src)
+ck("О6 картата КАЗВА, когато цената е от резерва", "def _от_резерва" in _src)
+ck("О6 пулсът я маркира", chr(9888)+chr(65039)+"резерва" in _src)
+ck("О6 разпознаването работи",
+   lb._от_резерва({"src": "paxg-cb"}) and not lb._от_резерва({"src": "swq"})
+   and not lb._от_резерва(None))
 
 # ── ОДИТ-7 (29.07): ЧИСЛАТА, ПО КОИТО СЕ ГЕЙТВАТ ВХОДОВЕТЕ ──
 # Дефектът: _advice_entry решава ВЛИЗАМ/НЕ по backtest_stats.json, а златният блок `fresh`
@@ -915,7 +927,7 @@ def _run_main(spot=None, stats_path="backtest_stats.json", send_ok=True, extra_a
     lb._yf = lambda s, period="2y", interval="1d": D.get(s, _fx(900, "2026-07-20", "5min", 4000, 0.002)).copy()
     lb._rates = lambda: pd.Series(2.0 - _np.arange(600) * 0.0008,
                                   index=pd.date_range("2024-06-01", periods=600, freq="D"))
-    lb._spot = lambda instr="XAU/USD", market_closed=False: spot
+    lb._spot = lambda instr="XAU/USD", market_closed=False, cme_pause=False: spot
     lb._cq_fetch = lambda now: None
     lb._fng_live = lambda timeout=8: None
     lb._send_raw = (lambda t: (sent.append(t), "SENT (200)")[1]) if send_ok \
@@ -1992,7 +2004,7 @@ else:
         lb._rates = lambda: _pd22.Series(
             2.0 - _np22.arange(600) * 0.0008,
             index=_pd22.date_range("2024-06-01", periods=600, freq="D"))
-        lb._spot = lambda instr="XAU/USD", market_closed=False: _SP
+        lb._spot = lambda instr="XAU/USD", market_closed=False, cme_pause=False: _SP
         lb._cq_fetch = lambda now: None
         lb._fng_live = lambda timeout=8: None
         lb._send_raw = lambda t: (_sent.append(t), "SENT (200)")[1]
