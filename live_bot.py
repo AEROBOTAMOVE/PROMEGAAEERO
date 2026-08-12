@@ -34,7 +34,7 @@ import pandas as pd
 # v9.5–v9.8 — всеки ред в дневника твърдеше грешна версия, а дневникът е
 # единственият начин отвън да се види какво работи. П47 пада, ако VERSION не се
 # среща в темата на последния commit.
-VERSION = "v11.0"
+VERSION = "v11.1"
 PIP = 0.10
 SL_PIPS = 200; SL_D = SL_PIPS * PIP                       # стоп: 200п = $20/oz
 TPS = [("ТП1", 75, 7.5), ("ТП2", 120, 12.0), ("ТП3", 200, 20.0)]
@@ -604,7 +604,7 @@ def _bar_range(fine, n=5):
         return None
 
 
-def _spot_sane(spot, reference, base_diff, bar_rng=None, spot_jump=None):
+def _spot_sane(spot, reference, base_diff, bar_rng=None, spot_jump=None, следа=None):
     """Санити: спотът е близо до ОЧАКВАНОТО (бар−базис).
     A4: при новина цената скача $20-40 за секунди; фиксиран праг би отрязал живия спот.
     T3: барът ИЗОСТАВА → освен него ползвай и СКОКА на самия спот (spot_jump = |спот
@@ -619,7 +619,18 @@ def _spot_sane(spot, reference, base_diff, bar_rng=None, spot_jump=None):
         # САМОВАЛИДИРА отвъд това, което барът подкрепя (иначе $100 глич минава сам).
         jump_cap = 2.5 * bar_rng if bar_rng else base_diff * 2
         tol = max(tol, min(1.5 * spot_jump, jump_cap))
-    return spot if abs(reference - spot["mid"]) <= tol else None
+    # 🔴 ОДИТ-55 · КОГА И С КОЛКО Е ОТРЯЗАНО. Измерено: 267 от 2158 ръна (12.4%)
+    # губят живата цена ТУК, и нито едно не оставя следа защо. Без това число
+    # не може да се каже дали допускът е тесен — а прагът пази пари (един $100
+    # глич минаваше сам, виж F2), значи не се пипа по догадка. Първо мерим.
+    _разлика = abs(reference - spot["mid"])
+    if следа is not None:
+        следа.update({"разлика": round(float(_разлика), 3), "допуск": round(float(tol), 3),
+                      "база": round(float(base_diff), 3),
+                      "диапазон": (round(float(bar_rng), 3) if bar_rng else None),
+                      "скок": (round(float(spot_jump), 3) if spot_jump else None),
+                      "мина": bool(_разлика <= tol)})
+    return spot if _разлика <= tol else None
 
 
 def _entry_side(spot, direction):
@@ -2469,8 +2480,17 @@ def main():
     if raw_g:
         meta["last_spot_g"] = raw_g["mid"]
     basis_g = _basis_update(meta, "basis_g", raw_g, bar_price, notes, cap=40.0, now_utc=now_utc)
-    spot_g = _spot_sane(raw_g, bar_price - basis_g, 8.0, bar_rng=rng_g, spot_jump=jump_g)
+    _сан_g = {}
+    spot_g = _spot_sane(raw_g, bar_price - basis_g, 8.0, bar_rng=rng_g, spot_jump=jump_g,
+                        следа=_сан_g)
     spot_rejected_g = bool(raw_g is not None and spot_g is None)   # A2: суровият беше жив, санитито го отряза
+    if spot_rejected_g and _сан_g:
+        # ОДИТ-55: казваме КОЛКО е разминато и КАКЪВ е бил допускът — за да може
+        # после да се измери дали прагът е тесен, вместо да се гадае.
+        notes.append(f"🟡 живата цена отрязана: разминава с {_сан_g['разлика']:.2f}$ "
+                     f"при допуск {_сан_g['допуск']:.2f}$ "
+                     f"(база {_сан_g['база']:.0f} · диапазон {_сан_g['диапазон']} "
+                     f"· скок {_сан_g['скок']})")
     sd = s5 = spot_s = None; basis_s = meta.get("basis_s", 0.0)
     print(f"  спот: злато {spot_g['mid'] if spot_g else '— (санити/недостъпен)'} · базис {basis_g:+.2f}"
           + (f" · бар {bar_age_min:.0f}мин" if bar_age_min else ""))
@@ -3321,6 +3341,7 @@ def main():
                              "bar": round(bar_price, 2), "bar_ts": str(bar_ts), "bar_age_min": bar_age_min,
                              "spot": (spot_g or {}).get("mid"), "spot_age_sec": (raw_g or {}).get("age_sec"),
                              "spot_src": (spot_g or {}).get("src"), "spot_rejected": spot_rejected_g,
+                             "saniti": (_сан_g or None),   # ОДИТ-55: разлика/допуск за после
                              "spread": round(spot_g["ask"] - spot_g["bid"], 3) if spot_g else None,
                              "basis": basis_g, "tf_basis": meta.get("tf_basis_g"), "shield": shield, "stale_bar": stale_bar,
                              "track_mode": track_mode, "silver_ok": silver_ok,
