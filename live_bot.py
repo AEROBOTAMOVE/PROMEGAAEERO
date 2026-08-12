@@ -34,7 +34,7 @@ import pandas as pd
 # v9.5–v9.8 — всеки ред в дневника твърдеше грешна версия, а дневникът е
 # единственият начин отвън да се види какво работи. П47 пада, ако VERSION не се
 # среща в темата на последния commit.
-VERSION = "v11.6"
+VERSION = "v11.7"
 PIP = 0.10
 SL_PIPS = 200; SL_D = SL_PIPS * PIP                       # стоп: 200п = $20/oz
 TPS = [("ТП1", 75, 7.5), ("ТП2", 120, 12.0), ("ТП3", 200, 20.0)]
@@ -1220,6 +1220,24 @@ def _ladder_pnl(kind, hit, lv, entry, sign, dol, hit_px=None):
     return round(thirds, 2), n_hit
 
 
+def _отворена_стълба(tr, spot):
+    """🔴 ОДИТ-61 · КОЛКО ПРАВИ ОТВОРЕНАТА СДЕЛКА, ПО СТЪЛБАТА.
+    Трите карти (равносметка, «КЪДЕ СМЕ», пулс) показваха ГОЛАТА разлика за
+    цялата позиция — на същия ред, на който изброяват прибраните трети.
+    Изходната карта отдавна има вярната сметка (`_ladder_pnl`); тук просто
+    никога не е била пусната.
+    Връща (пари, брой_прибрани) или (None, 0) без жива цена."""
+    if not tr or not spot:
+        return None, 0
+    try:
+        зн = 1 if tr.get("direction") == "long" else -1
+        ост = (float(spot["mid"]) - float(tr["entry"])) * зн
+        return _ladder_pnl("отворена", tr.get("hit", {}) or {}, tr["levels"],
+                           float(tr["entry"]), зн, ост, tr.get("hit_px"))
+    except Exception:
+        return None, 0
+
+
 def _exit_msg(kind, tr, price_hit, when, via, gap, spot=None, next_line="", dec=2):
     """ОДИТ-29 · КОЯ цел · КОЛКО пари · КАКВО правиш. По един ред всяко."""
     метал = "ЗЛАТО" if tr.get("sym", "XAUUSD") == "XAUUSD" else "СРЕБРО"
@@ -1500,8 +1518,9 @@ def _digest_msg(out, date, trade, s_trade, spot_g, spot_s, guard, weekly_part=Fa
         if tr:
             прибр = [n for n, k in (("1️⃣", "tp1"), ("2️⃣", "tp2"), ("3️⃣", "tp3"))
                      if tr.get("hit", {}).get(k)]
-            пл = ((sp["mid"] - tr["entry"]) if tr["direction"] == "long"
-                  else (tr["entry"] - sp["mid"])) if sp else None
+            # 🔴 ОДИТ-61: ПО СТЪЛБАТА, не гола разлика. Редът над този изброява
+            # прибраните трети — беше противоречие на едно и също място.
+            пл, _ = _отворена_стълба(tr, sp)
             L.append(f"{нм} държим от <code>{tr['entry']:,.{dec}f}</code>"
                      + (f" · {' '.join(прибр)} ✅" if прибр else "")
                      + (f" · <b>{пл:+.2f}$</b>" if пл is not None else ""))
@@ -1536,8 +1555,9 @@ def _status_msg(board, new_dir, trade, s_trade, spot_g, spot_s, basis_g, basis_s
         if tr:
             прибр = [n for n, k in (("1️⃣", "tp1"), ("2️⃣", "tp2"), ("3️⃣", "tp3"))
                      if tr.get("hit", {}).get(k)]
-            пл = ((sp["mid"] - tr["entry"]) if tr["direction"] == "long"
-                  else (tr["entry"] - sp["mid"])) if sp else None
+            # 🔴 ОДИТ-61: ПО СТЪЛБАТА, не гола разлика. Редът над този изброява
+            # прибраните трети — беше противоречие на едно и също място.
+            пл, _ = _отворена_стълба(tr, sp)
             L.append(f"{нм} {'покупка' if tr['direction'] == 'long' else 'продажба'} от "
                      f"<code>{tr['entry']:,.{dec}f}</code>"
                      + (f" · {' '.join(прибр)} ✅" if прибр else "")
@@ -1703,8 +1723,9 @@ def _pulse_msg(part, board, best, new_dir, advice_txt, adv_ok, trade, s_trade,
             има = True
             прибр = [n for n, k in (("1️⃣", "tp1"), ("2️⃣", "tp2"), ("3️⃣", "tp3"))
                      if tr.get("hit", {}).get(k)]
-            пл = ((sp["mid"] - tr["entry"]) if tr["direction"] == "long"
-                  else (tr["entry"] - sp["mid"])) if sp else None
+            # 🔴 ОДИТ-61: ПО СТЪЛБАТА, не гола разлика. Редът над този изброява
+            # прибраните трети — беше противоречие на едно и също място.
+            пл, _ = _отворена_стълба(tr, sp)
             L.append(f"{нм} държим от <code>{tr['entry']:,.{dec}f}</code>"
                      + (f" · {' '.join(прибр)} ✅" if прибр else "")
                      + (f" · <b>{пл:+.2f}$</b>" if пл is not None else ""))
