@@ -1,4 +1,4 @@
-# AERO Metals Bot v12.6 🥇🥈
+# AERO Metals Bot v12.7 🥇🥈
 
 Автономен сигнален бот за **ЗЛАТО (XAUUSD)** и **СРЕБРО (XAGUSD)**, LONG + SHORT.
 Върви на GitHub Actions на всеки ~5 минути, докато пазарът е отворен (неделя вечер →
