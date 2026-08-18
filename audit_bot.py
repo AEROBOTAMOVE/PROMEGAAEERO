@@ -305,12 +305,25 @@ def check_delay_engine(live: Path, bars5, A_, J=None):
         A_.ok(cat, "В5", "точно закъснение", "няма пратени изходи за мерене")
         return
     delays = []
+    _пропуснати_сребро = []
     for run_utc, kind in sent_exits:
         tr = None
         for t in trades:
             if t["opened"] <= run_utc and (t.get("closed") is None or t["closed"] >= run_utc):
                 tr = t
         if tr is None or kind not in tr["levels"]:
+            continue
+        # 🔴 18.08 · ТРЕТИЯТ ПЪТ «ОДИТОРЪТ Е СЛЯП», И ТОЗИ Е НАЙ-ЛОШИЯТ.
+        # `reconstruct_trades` събира ЗЛАТНИ и СРЕБЪРНИ сделки в ЕДИН списък, а
+        # тук всичките се мерят срещу ЗЛАТНИ 5-минутни барове. Сребърно ниво е
+        # ~62$, златен бар е ~4400$ → условието `High >= 62` е ВИНАГИ ВЯРНО,
+        # значи «ударено» излиза на ПЪРВИЯ бар след отварянето.
+        # ИМЕННО ТОВА правеше червеното: и трите августовски проби са XAGUSD
+        # (вход 61.451 · 62.135 · 62.188), а «закъсненията» от 110/205/226 мин
+        # са просто разстоянието от отварянето до пращането.
+        # Среброто НЯМА свои барове тук → не се мери, вместо да се лъже.
+        if (tr.get("sym") or "XAUUSD") != "XAUUSD":
+            _пропуснати_сребро.append(kind)
             continue
         lvl = tr["levels"][kind]; d = tr["direction"]
         w = bars5[bars5.index > pd.Timestamp(tr["opened"])]
@@ -336,6 +349,13 @@ def check_delay_engine(live: Path, bars5, A_, J=None):
         delay = (pd.Timestamp(run_utc) - touch).total_seconds() / 60
         if 0 <= delay < 24 * 60:
             delays.append((delay, kind, str(touch), run_utc))
+    if _пропуснати_сребро:
+        A_.warn(cat, "В5с", "сребърното закъснение НЕ СЕ МЕРИ",
+                f"{len(_пропуснати_сребро)} сребърни изхода пропуснати "
+                f"({', '.join(sorted(set(_пропуснати_сребро)))})",
+                "одиторът има само ЗЛАТНИ барове. Досега сребърните сделки се мереха "
+                "срещу тях и даваха фалшиви часове — това беше цялото червено В5. "
+                "За истинско измерване трябват сребърни 5-минутни барове.")
     if not delays:
         A_.warn(cat, "В5", "точно закъснение", "не можах да съпоставя изходи с барове")
         return
