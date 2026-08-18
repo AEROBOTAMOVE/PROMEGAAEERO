@@ -263,9 +263,10 @@ def check_time(live: Path, code_dir: Path, bars):
     return J
 
 
-def check_delay_engine(live: Path, bars5, A_):
+def check_delay_engine(live: Path, bars5, A_, J=None):
     """В5 · Точното закъснение: за всеки пратен ТП/СТОП реконструира кога РЕАЛНО е ударен."""
     import pandas as pd
+    J = J or []
     cat = "ВРЕМЕ"
     J = jall(live, "live_journal.jsonl")
     # възстановяваме сделките от git историята на състоянието
@@ -314,7 +315,19 @@ def check_delay_engine(live: Path, bars5, A_):
     med = vals[len(vals) // 2]; mx = vals[-1]
     p90 = vals[int(len(vals) * 0.9)] if len(vals) > 3 else mx
     worst = max(delays, key=lambda x: x[0])
+    # 🔴 18.08 · РИТЪМЪТ НА БУДЕНЕ ДО ЗАКЪСНЕНИЕТО. Първо предположих, че тези
+    # закъснения идват от рядко будене, и щях да сваля червеното на жълто.
+    # ИЗМЕРЕНО — греша: на 05.08 и 07.08, дните с проби, ботът се е будел на
+    # медиана 5.0 мин. Значи причината е ДРУГА и червеното е ЗАСЛУЖЕНО.
+    # Числото остава на картата, за да не може някой (пак) да замаже находката
+    # с грешна хипотеза.
+    _п = sorted((pd.Timestamp(J[i + 1]["run_utc"][:19]) - pd.Timestamp(J[i]["run_utc"][:19])
+                 ).total_seconds() / 60 for i in range(len(J) - 1)) if len(J) > 2 else []
+    _п = [x for x in _п if 0 < x < 600]
+    _ритъм = _п[len(_п) // 2] if _п else None
     txt = f"n={len(vals)} · медиана {med:.0f} мин · p90 {p90:.0f} · най-лошо {mx:.0f} мин"
+    if _ритъм is not None:
+        txt += f" · будене {_ритъм:.0f} мин (значи НЕ е от рядко будене)"
     if med <= 7:
         A_.ok(cat, "В5", "закъснение удар→съобщение", txt + " (спот-засичането работи)")
     elif med <= 15:
@@ -1069,9 +1082,9 @@ def main():
                                                        "level": a[3], "detail": a[4] if len(a) > 4 else "",
                                                        "fix": a[5] if len(a) > 5 else ""})
             if cat == "ВРЕМЕ":
-                check_time(live, code_dir, bars5)
+                _J = check_time(live, code_dir, bars5)
                 if pi == 0:                                # В5 git-реконструкция е бавна → веднъж
-                    check_delay_engine(live, bars5, A)
+                    check_delay_engine(live, bars5, A, J=_J)
             elif cat == "ТОЧНОСТ":
                 check_accuracy(live, code_dir, lb, bars5)
             elif cat == "МЪРТВИ":
