@@ -34,7 +34,7 @@ import pandas as pd
 # v9.5–v9.8 — всеки ред в дневника твърдеше грешна версия, а дневникът е
 # единственият начин отвън да се види какво работи. П47 пада, ако VERSION не се
 # среща в темата на последния commit.
-VERSION = "v12.2"
+VERSION = "v12.3"
 PIP = 0.10
 SL_PIPS = 200; SL_D = SL_PIPS * PIP                       # стоп: 200п = $20/oz
 TPS = [("ТП1", 75, 7.5), ("ТП2", 120, 12.0), ("ТП3", 200, 20.0)]
@@ -159,7 +159,6 @@ CHART_BRAIN_ON = os.environ.get("CHART_BRAIN", "1") == "1"
 МОЗЪК_РАНГ_ВХОД = int(os.environ.get("МОЗЪК_РАНГ_ВХОД", "5"))
 # колко от риска взима мозъчен вход. Методът НЯМА бектест, затова е под
 # половината от мереното правило.
-МОЗЪК_РИСК_W = float(os.environ.get("МОЗЪК_РИСК_W", "0.4"))
 # 🔴 ОДИТ-42 · ПОД ЗА СЪОТНОШЕНИЕТО при мозъчен ВХОД. Единственият реален
 # мозъчен вход досега (11.08, 17:26) плащаше 0.8× риска до първата цел —
 # картата сама го признаваше и пак даваше вход. Развръзка шест минути
@@ -851,13 +850,6 @@ STANDING_H = 4         # ОДИТ-20: беше 8 → изпратени общо
                        # (реплей показа 4 от 9 дни с НУЛА златни карти само от тавана)
 REOFFER_LO = 8         # ...и само между тези часове СОФИЯ — вход в 02:20 е шум, не помощ
 REOFFER_HI = 22
-def _pct(seg, label):
-    """В4/В6: цитирай процент САМО ако има n≥MIN_N; иначе — без число."""
-    if seg.get("n") and seg["n"] >= MIN_N and seg.get("win") is not None:
-        return f": {label} {seg['win']}% · {seg['net']:+}$/oz (n={seg['n']})"
-    return " (историята е малка — без число)"
-
-
 def _advice_entry(direction, streak_n, stats, fast, shield, guard_n, sym="XAUUSD",
                   stale_price=False, dd20=None, trace=None):
     """(текст, ok) за реда «ВЛИЗАЙ». В1: сребро цитира САМО сребърни числа.
@@ -1016,12 +1008,6 @@ def _noise(seg):
     Празни lo/hi (стар stats файл) → не съдим, връщаме False (старото поведение)."""
     lo, hi = seg.get("lo"), seg.get("hi")
     return lo is not None and hi is not None and lo <= 0 <= hi
-
-
-def _ci(seg):
-    """Интервалът в текста — за да е проверимо число, не мнение."""
-    lo, hi = seg.get("lo"), seg.get("hi")
-    return f" (95%: {lo:+.2f}..{hi:+.2f}$)" if lo is not None and hi is not None else ""
 
 
 def _zones(h1, direction):
@@ -1255,7 +1241,7 @@ def _ladder_pnl(kind, hit, lv, entry, sign, dol, hit_px=None):
     return round(thirds, 2), n_hit
 
 
-def _отворена_стълба(tr, spot):
+def _отворена_стълба(tr, spot, notes=None):
     """🔴 ОДИТ-61 · КОЛКО ПРАВИ ОТВОРЕНАТА СДЕЛКА, ПО СТЪЛБАТА.
     Трите карти (равносметка, «КЪДЕ СМЕ», пулс) показваха ГОЛАТА разлика за
     цялата позиция — на същия ред, на който изброяват прибраните трети.
@@ -1269,7 +1255,14 @@ def _отворена_стълба(tr, spot):
         ост = (float(spot["mid"]) - float(tr["entry"])) * зн
         return _ladder_pnl("отворена", tr.get("hit", {}) or {}, tr["levels"],
                            float(tr["entry"]), зн, ост, tr.get("hit_px"))
-    except Exception:
+    except Exception as _e:
+        # 🔴 ОДИТ-68 · ДОТУК ТУК СТОЕШЕ ГОЛО `return None, 0`. Счупи ли се
+        # сметката по стълбата, трите карти (равносметка, «КЪДЕ СМЕ», пулс)
+        # просто НЕ показваха пари и никой не разбираше. Мълчание на паричен
+        # път — точно класът, който днес ме ухапа три пъти.
+        if notes is not None:
+            notes.append(f"🔴 сметката по стълбата гръмна ({type(_e).__name__}: "
+                         f"{str(_e)[:60]}) — картата е без число")
         return None, 0
 
 
@@ -1555,7 +1548,7 @@ def _digest_msg(out, date, trade, s_trade, spot_g, spot_s, guard, weekly_part=Fa
                      if tr.get("hit", {}).get(k)]
             # 🔴 ОДИТ-61: ПО СТЪЛБАТА, не гола разлика. Редът над този изброява
             # прибраните трети — беше противоречие на едно и също място.
-            пл, _ = _отворена_стълба(tr, sp)
+            пл, _ = _отворена_стълба(tr, sp, notes if 'notes' in dir() else None)
             L.append(f"{нм} държим от <code>{tr['entry']:,.{dec}f}</code>"
                      + (f" · {' '.join(прибр)} ✅" if прибр else "")
                      + (f" · <b>{пл:+.2f}$</b>" if пл is not None else ""))
@@ -1601,7 +1594,7 @@ def _status_msg(board, new_dir, trade, s_trade, spot_g, spot_s, basis_g, basis_s
                      if tr.get("hit", {}).get(k)]
             # 🔴 ОДИТ-61: ПО СТЪЛБАТА, не гола разлика. Редът над този изброява
             # прибраните трети — беше противоречие на едно и също място.
-            пл, _ = _отворена_стълба(tr, sp)
+            пл, _ = _отворена_стълба(tr, sp, notes if 'notes' in dir() else None)
             L.append(f"{нм} {'покупка' if tr['direction'] == 'long' else 'продажба'} от "
                      f"<code>{tr['entry']:,.{dec}f}</code>"
                      + (f" · {' '.join(прибр)} ✅" if прибр else "")
@@ -1769,7 +1762,7 @@ def _pulse_msg(part, board, best, new_dir, advice_txt, adv_ok, trade, s_trade,
                      if tr.get("hit", {}).get(k)]
             # 🔴 ОДИТ-61: ПО СТЪЛБАТА, не гола разлика. Редът над този изброява
             # прибраните трети — беше противоречие на едно и също място.
-            пл, _ = _отворена_стълба(tr, sp)
+            пл, _ = _отворена_стълба(tr, sp, notes if 'notes' in dir() else None)
             L.append(f"{нм} държим от <code>{tr['entry']:,.{dec}f}</code>"
                      + (f" · {' '.join(прибр)} ✅" if прибр else "")
                      + (f" · <b>{пл:+.2f}$</b>" if пл is not None else ""))
@@ -1819,14 +1812,6 @@ def _cq_zone(score):
     if score < 75: return "Внимание 🟡"
     if score < 90: return "Опасност 🟠"
     return "Балон 🔴"
-
-
-def _cq_clusters_line(cq):
-    """Четирите клъстера като един ред. Празен низ, ако ги няма (стар кеш / провал)."""
-    cl = cq.get("clusters") or {}
-    parts = [f"{nm} {int(round(float(cl[k])))}" for k, nm in CQ_CLUSTERS.items()
-             if cl.get(k) is not None]
-    return " · ".join(parts)
 
 
 def _cq_fetch(now_utc):
