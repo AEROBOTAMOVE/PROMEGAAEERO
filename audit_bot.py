@@ -263,7 +263,24 @@ def check_time(live: Path, code_dir: Path, bars):
     return J
 
 
+def _базис_към(J, when):
+    """Базисът, който САМИЯТ БОТ е ползвал в най-близкия рън до `when`.
+
+    🔴 18.08 · Без него одиторът сравнява фючърсен бар със спот ниво и обявява
+    «ударено» ~56$ по-рано, отколкото ботът законно го вижда. Числото не се
+    гадае — то е записано в дневника на всеки рън (поле `basis`).
+    """
+    import pandas as _pd
+    if not J:
+        return 0.0
+    _w = _pd.Timestamp(str(when)[:19])
+    _к = [(abs((_pd.Timestamp(x["run_utc"][:19]) - _w).total_seconds()), x.get("basis"))
+          for x in J if x.get("run_utc") and isinstance(x.get("basis"), (int, float))]
+    return min(_к)[1] if _к else 0.0
+
+
 def check_delay_engine(live: Path, bars5, A_, J=None):
+    J_ = J or []
     """В5 · Точното закъснение: за всеки пратен ТП/СТОП реконструира кога РЕАЛНО е ударен."""
     import pandas as pd
     J = J or []
@@ -298,10 +315,21 @@ def check_delay_engine(live: Path, bars5, A_, J=None):
         lvl = tr["levels"][kind]; d = tr["direction"]
         w = bars5[bars5.index > pd.Timestamp(tr["opened"])]
         w = w[w.index <= pd.Timestamp(run_utc) + pd.Timedelta(minutes=5)]
+        # 🔴 18.08 · ОДИТОРЪТ СРАВНЯВАШЕ ФЮЧЪРС СРЕЩУ СПОТ. Баровете са ФЮЧЪРСНИ
+        # (GC=F), а `tr["levels"]` са в СПОТ-света на брокера. Ботът вади базиса
+        # ПРЕДИ сравнението (`hi = bars.loc[ts,"High"] - basis`); одиторът — не.
+        # Базисът в дните с проби е бил 54–59$, а целите са на 7.5/12/20$ от
+        # входа. Тоест условието тук се палеше, когато фючърсът е СЕДЕМ ЦЕЛИ над
+        # спот нивото → «ударено» много преди ботът законно да го види, и оттам
+        # ЧЕРВЕНО «закъснение 226 мин», което е артефакт, не дефект.
+        # Същият клас като «одиторът беше сляп» от 04.08.
+        _б = _базис_към(J_, run_utc)
+        _hi = w["High"] - _б
+        _lo = w["Low"] - _б
         if kind == "sl":
-            m = w[w["High"] >= lvl] if d == "short" else w[w["Low"] <= lvl]
+            m = w[_hi >= lvl] if d == "short" else w[_lo <= lvl]
         else:
-            m = w[w["Low"] <= lvl] if d == "short" else w[w["High"] >= lvl]
+            m = w[_lo <= lvl] if d == "short" else w[_hi >= lvl]
         if len(m) == 0:
             continue
         touch = m.index[0]
