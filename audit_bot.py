@@ -343,6 +343,20 @@ def check_delay_engine(live: Path, bars5, A_, J=None, bars5_s=None):
         _от = pd.Timestamp(tr["opened"])
         if kind == "sl" and tr.get("be_since") and abs(float(lvl) - float(tr["entry"])) < 1e-6:
             _от = max(_от, pd.Timestamp(str(tr["be_since"])[:19]))
+        # 🔴 21.08 · СЪЩИЯТ ДЕФЕКТ, ОБОБЩЕН: СТЪЛБАТА СЕ ДОКЛАДВА СТЪПКА ПО
+        # СТЪПКА. ТП2 не може да излезе преди ТП1, ТП3 — преди ТП2. Видимо в
+        # живите данни ВСЕКИ ПЪТ:
+        #   05.08  tp1 06:35 → tp2 06:40 → tp3 06:51
+        #   27.07  tp1 02:40 → tp2 03:01 → tp3 03:36
+        # А прозорецът тръгваше от `opened` за ВСЯКА стъпка → закъснението на
+        # ТП2/ТП3 включва цялото време, докато предната стъпка още не е излязла.
+        # Оттам сребърното «tp2 ударен 05:20, пратен 08:40» = 200 минути.
+        # Всяка стъпка се мери от момента, в който ПРЕДНАТА е пратена.
+        _ред = {"tp2": "tp1", "tp3": "tp2"}
+        if kind in _ред:
+            _пред = [rt for rt, k in sent_exits if k == _ред[kind] and rt <= run_utc]
+            if _пред:
+                _от = max(_от, pd.Timestamp(str(max(_пред))[:19]))
         w = _bars[_bars.index > _от]
         w = w[w.index <= pd.Timestamp(run_utc) + pd.Timedelta(minutes=5)]
         # 🔴 18.08 · ОДИТОРЪТ СРАВНЯВАШЕ ФЮЧЪРС СРЕЩУ СПОТ. Баровете са ФЮЧЪРСНИ
