@@ -34,7 +34,7 @@ import pandas as pd
 # v9.5–v9.8 — всеки ред в дневника твърдеше грешна версия, а дневникът е
 # единственият начин отвън да се види какво работи. П47 пада, ако VERSION не се
 # среща в темата на последния commit.
-VERSION = "v13.5"
+VERSION = "v13.6"
 PIP = 0.10
 SL_PIPS = 200; SL_D = SL_PIPS * PIP                       # стоп: 200п = $20/oz
 TPS = [("ТП1", 75, 7.5), ("ТП2", 120, 12.0), ("ТП3", 200, 20.0)]
@@ -152,6 +152,36 @@ CHART_BRAIN_ON = os.environ.get("CHART_BRAIN", "1") == "1"
 # (`if age >= 30`), а всяка карта, която иска да каже «държа я най-много N
 # дни», трябваше да я преписва на ръка. Число, преписано на ръка, остарява.
 ДНИ_МАКС = int(os.environ.get("ДНИ_МАКС", "30"))   # календарни дни до изход по време
+# 🔴 21.08 · ТАВАНЪТ НА БАЗИСА СТАВА ПРОПОРЦИОНАЛЕН НА ЦЕНАТА.
+# Фиксираните 40$ са били разумни при злато на 2000$ (2% от цената). При 4600$
+# това е 0.87% и РЕЖЕ НОРМАЛНИ СТОЙНОСТИ: измерено, истинският базис е 47.74$,
+# а исторически е бил 54–57$ на 17-18.08 — НАД тавана през цялото време.
+# Заради това ботът се заключи: базисът падна на 25.5 и не можеше да се върне,
+# защото връщането е «скок» над 8$, а истинската стойност е «над тавана» = глич.
+# 80 от 80 ръна спрени, точно когато макрото се подреди за пръв път от 19 дни.
+BASIS_CAP_PCT = float(os.environ.get("BASIS_CAP_PCT", "0.02"))    # 2% от цената
+BASIS_CAP_MIN = float(os.environ.get("BASIS_CAP_MIN", "40"))      # старото поведение като под
+BASIS_CAP_MIN_S = float(os.environ.get("BASIS_CAP_MIN_S", "3"))   # сребро: досегашният под
+BASIS_STUCK_N = int(os.environ.get("BASIS_STUCK_N", "12"))        # ~1 час при рън на 5 мин
+
+
+def _basis_cap(цена, метал="XAUUSD"):
+    """Таван за «абсурден» базис — ПО ЦЕНА, не фиксиран.
+
+    При злато 4600$ → 92$ · при 2000$ → 40$ (както е било).
+    За среброто същият процент върху неговата цена.
+    """
+    try:
+        ц = abs(float(цена))
+    except (TypeError, ValueError):
+        return BASIS_CAP_MIN
+    if метал == "XAUUSD":
+        return max(BASIS_CAP_MIN, BASIS_CAP_PCT * ц)
+    # 🔴 СРЕБРОТО ПАЗИ ТОЧНО ДОСЕГАШНИЯ СИ ПОД (3.0$). Пропорционалното при
+    # сребро на 62$ дава 1.24$ — тоест СТЯГАНЕ, а аз поправям заключване, не
+    # затягам друг метал мимоходом. Долната граница остава, таванът може само
+    # да РАСТЕ с цената.
+    return max(BASIS_CAP_MIN_S, BASIS_CAP_PCT * ц)
 # О8 · до колко часа резервната макро-стойност още върши работа. Отвъд това
 # стара цена е по-лоша от никаква — по-честно е да кажем «не виждам».
 СТАР_МАКРО_Ч = float(os.environ.get("СТАР_МАКРО_Ч", "36"))
@@ -870,10 +900,27 @@ def _basis_update(state, key, raw_spot, bar_close, notes, cap=40.0, now_utc=None
         elif abs(now_b) <= cap and moved:           # НАХОДКА-A: ре-анкер САМО ако и БАРЪТ скочи сходно
             notes.append(f"роловър на контракта ({old:+.2f}→{now_b:+.2f}, барът скочи) — ре-анкер")
             state[key] = round(now_b, 3)
-        else:                                       # само спотът «скочи» (глич) или абсурден → пази стария
-            notes.append(f"отхвърлен скок на базиса ({now_b:+.1f}) — глич/несходно с бара, пазя {old:+.2f}")
+        else:
+            # 🔴 21.08 · ПРЕКЪСВАЧ СРЕЩУ ЗАКЛЮЧВАНЕ. Дотук този клон просто пазеше
+            # стария базис — завинаги. Мерено: на 21.08 отхвърли 80 от 80 ръна и
+            # заключи бота в момента, в който макрото се подреди за пръв път от
+            # 19 дни. Порочният кръг: грешен базис → санитито реже спота →
+            # «стара цена» → без вход. Пазачът срещу глич ОСТАВА, но вече не може
+            # да заключи бота завинаги: щом «стария» отхвърля N ПОРЕДНИ пъти,
+            # значи той вече не описва пазара, а описва себе си.
+            _бр_к = key + "_отказ"
+            state[_бр_к] = int(state.get(_бр_к, 0)) + 1
+            if state[_бр_к] >= BASIS_STUCK_N and abs(now_b) <= cap:
+                notes.append(f"🔓 базисът беше ЗАКЛЮЧЕН {state[_бр_к]} ръна на {old:+.2f} — "
+                             f"закотвям наново на {now_b:+.2f} (пазачът не бива да спира бота завинаги)")
+                state[key] = round(now_b, 3)
+                state[_бр_к] = 0
+            else:
+                notes.append(f"отхвърлен скок на базиса ({now_b:+.1f}) — глич/несходно с бара, "
+                             f"пазя {old:+.2f} · {state[_бр_к]}-и пореден отказ")
     else:
         state[key] = round(old + BASIS_ALPHA * (now_b - old), 3)
+        state[key + "_отказ"] = 0        # прието → броячът на отказите се нулира
     return state[key]
 
 
@@ -2999,7 +3046,12 @@ def main():
     jump_g = abs(raw_g["mid"] - meta["last_spot_g"]) if (raw_g and meta.get("last_spot_g")) else None  # T3
     if raw_g:
         meta["last_spot_g"] = raw_g["mid"]
-    basis_g = _basis_update(meta, "basis_g", raw_g, bar_price, notes, cap=40.0, now_utc=now_utc)
+    # 🔴 21.08 · ТАВАНЪТ ВЕЧЕ Е ПО ЦЕНА. Фиксираните 40$ заключиха бота: при
+    # злато 4639$ истинският базис е 47.7$, тоест НАД тавана → обявен за глич
+    # → базисът замръзна на 25.5 → санитито реже спота → «стара цена» → 80 от
+    # 80 ръна без вход, точно когато макрото се подреди за пръв път от 19 дни.
+    basis_g = _basis_update(meta, "basis_g", raw_g, bar_price, notes,
+                            cap=_basis_cap(bar_price, "XAUUSD"), now_utc=now_utc)
     _сан_g = {}
     spot_g = _spot_sane(raw_g, bar_price - basis_g, 8.0, bar_rng=rng_g, spot_jump=jump_g,
                         следа=_сан_g)
@@ -3346,7 +3398,8 @@ def main():
         jump_s = abs(raw_s["mid"] - meta["last_spot_s"]) if (raw_s and meta.get("last_spot_s")) else None
         if raw_s:
             meta["last_spot_s"] = raw_s["mid"]
-        basis_s = _basis_update(meta, "basis_s", raw_s, s_bar, notes, cap=3.0, now_utc=now_utc,
+        basis_s = _basis_update(meta, "basis_s", raw_s, s_bar, notes,
+                                cap=_basis_cap(s_bar, "XAGUSD"), now_utc=now_utc,
                                 скок=ROLLOVER_JUMP_S)   # О13: сребърен мащаб
         spot_s = _spot_sane(raw_s, s_bar - basis_s, 0.30, bar_rng=rng_s, spot_jump=jump_s)
         s_price_user = spot_s["mid"] if spot_s else round(s_bar - basis_s, 3)
