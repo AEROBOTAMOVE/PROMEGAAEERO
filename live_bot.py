@@ -34,7 +34,7 @@ import pandas as pd
 # v9.5–v9.8 — всеки ред в дневника твърдеше грешна версия, а дневникът е
 # единственият начин отвън да се види какво работи. П47 пада, ако VERSION не се
 # среща в темата на последния commit.
-VERSION = "v13.6"
+VERSION = "v13.7"
 PIP = 0.10
 SL_PIPS = 200; SL_D = SL_PIPS * PIP                       # стоп: 200п = $20/oz
 TPS = [("ТП1", 75, 7.5), ("ТП2", 120, 12.0), ("ТП3", 200, 20.0)]
@@ -163,6 +163,59 @@ BASIS_CAP_PCT = float(os.environ.get("BASIS_CAP_PCT", "0.02"))    # 2% от це
 BASIS_CAP_MIN = float(os.environ.get("BASIS_CAP_MIN", "40"))      # старото поведение като под
 BASIS_CAP_MIN_S = float(os.environ.get("BASIS_CAP_MIN_S", "3"))   # сребро: досегашният под
 BASIS_STUCK_N = int(os.environ.get("BASIS_STUCK_N", "12"))        # ~1 час при рън на 5 мин
+# 📅 21.08 · ОТБРОЯВАНЕ ДО ГОЛЯМА НОВИНА.
+# Дотук идващото събитие се казваше САМО в дневната референция — веднъж на ден,
+# 09:00 София, и САМО в делник. Мерено от live/sent_log.jsonl преди FOMC на
+# 19.08: 180ч, 156ч, 132ч, после ТРИ ДНИ ТИШИНА през уикенда, 60ч, 36ч и
+# накрая 12ч. Тоест последната дума падаше на 12 часа, а събота беше сляпа.
+НОВИНИ_ПРЕДИ_Ч = float(os.environ.get("НОВИНИ_ПРЕДИ_Ч", "15"))   # обещанието: поне толкова часа
+НОВИНИ_ЗАПАС_Ч = float(os.environ.get("НОВИНИ_ЗАПАС_Ч", "0.5"))  # ботът е спал и по 15 мин (мерено,
+                                                                 # 7 дни, макс пауза) → запас, за да
+                                                                 # не падне първата карта под 15ч
+НОВИНИ_ПОВТОР_Ч = float(os.environ.get("НОВИНИ_ПОВТОР_Ч", "2"))  # после — на всеки толкова часа
+
+
+def _прекъсвач(state, key, now, notes, N, име):
+    """N ПОРЕДНИ отказа значат, че ПАЗЕНАТА стойност е грешна — не светът.
+
+    Връща новата стойност, ако е презакотвил; иначе None (значи «още броим»).
+
+    🔴 21.08, ВТОРА ВЕРСИЯ. Първата съдеше освобождаването по СЪЩИЯ таван,
+    който трябваше да оспорва — тоест при истинска стойност НАД тавана
+    заключваше завинаги, точно както преди поправката. Изпълнено: истински
+    базис 100$ при таван 92.99$ → 60 ръна, брояч 60, стойността не мръдва.
+    Затова тук освобождаването е БЕЗУСЛОВНО. Срещу единичен глич пази
+    МЕДИАНАТА на последните N отхвърлени: един изрод не може да дърпа
+    медиана, а N съгласни наблюдения побеждават едно старо число.
+    Системата СЕ СХОЖДА: след всяко презакотвяне идва нова проверка срещу
+    живи цени, и сгреши ли, броячът пак тръгва. Заключването НЕ се схожда.
+    """
+    _бр = key + "_отказ"
+    _сп = key + "_отказани"
+    state[_бр] = int(state.get(_бр, 0)) + 1
+    сп = [float(x) for x in (state.get(_сп) or [])][-(N - 1):] + [float(now)]
+    state[_сп] = [round(x, 3) for x in сп]
+    if state[_бр] < N:
+        return None
+    ред = sorted(сп)
+    _п = len(ред) // 2
+    мед = ред[_п] if len(ред) % 2 else (ред[_п - 1] + ред[_п]) / 2.0
+    _старо = float(state.get(key) or 0.0)
+    _разсейка = ред[-1] - ред[0]
+    notes.append("🔓 %s беше ЗАКЛЮЧЕН %d ръна на %+.2f — закотвям наново на %+.2f "
+                 "(медиана на %d наблюдения, разсейка %.1f$)"
+                 % (име, state[_бр], _старо, мед, len(сп), _разсейка))
+    # 🔴 ЗНАМЕ ЗА ЕДИН РЪН. Презакотвянето мести ЦЯЛАТА скала на баровете с
+    # една стъпка. Нивата на сделката стоят неподвижни (те са в спот-света от
+    # живата цена при отваряне) → разликата изглежда като движение на пазара.
+    # ИЗПЪЛНЕНО: 12 плоски бара + скок +30.22$ → лонгът «удари стоп», шортът
+    # «удари и трите цели». Пазарът не мръдна нито цент. Затова рънът, в който
+    # това стане, НЕ съди барове. Спот-изходите и изходът по време остават.
+    state[key + "_презакотвен"] = True
+    state[key] = round(мед, 3)
+    state[_бр] = 0
+    state[_сп] = []
+    return state[key]
 
 
 def _basis_cap(цена, метал="XAUUSD"):
@@ -426,6 +479,53 @@ def _sofia(iso_utc=None):
         return dt.replace(tzinfo=timezone.utc).astimezone(ZoneInfo("Europe/Sofia")).strftime("%H:%M")
     except Exception:
         return "?"
+
+
+def _sofia_dt(iso_utc):
+    """«дд.мм HH:MM» — ДАТАТА И ЧАСЪТ в ЕДНА И СЪЩА зона (София).
+
+    🔴 21.08 · Дотук картите лепяха `evt.strftime('%d.%m')` (UTC ДАТА) до
+    `_sofia(...)` (СОФИЙСКИ ЧАС). Изпълнено: събитие 25.08 22:30 UTC, което е
+    26.08 01:30 София → картата казваше «25.08 01:30 София». Грешен ДЕН за
+    всяко събитие след 21:00 UTC. Тук двете идват от един и същи момент.
+    """
+    from zoneinfo import ZoneInfo
+    from datetime import datetime, timezone
+    try:
+        dt = datetime.fromisoformat(str(iso_utc).replace("Z", "+00:00"))
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt.astimezone(ZoneInfo("Europe/Sofia")).strftime("%d.%m %H:%M")
+    except Exception:
+        return "?"
+
+
+def _sofia_ако_друг_ден(iso_utc, спрямо_utc=None):
+    """«14:20» ако е СЪЩИЯТ софийски ден · «12.08 15:42» ако е друг.
+
+    🔴 21.08 · Час без дата е верен само докато денят е един. Мерено:
+    3 от 3 дупки на бота пресичат софийска полунощ (две по 49 часа) и
+    1 от 17 наблюдения се затваря на следващия ден. В тези случаи картата
+    сочеше час, който се чете като днешен — и противоречеше на собствения
+    си първи ред («СПА 49ч» до «от 23:55 до 01:02»).
+    """
+    from zoneinfo import ZoneInfo
+    from datetime import datetime, timezone
+    С = ZoneInfo("Europe/Sofia")
+    def _в_софия(x):
+        dt = datetime.fromisoformat(str(x).replace("Z", "+00:00"))
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt.astimezone(С)
+    try:
+        т = _в_софия(iso_utc)
+    except Exception:
+        return "?"
+    try:
+        сега = _в_софия(спрямо_utc) if спрямо_utc else datetime.now(timezone.utc).astimezone(С)
+    except Exception:
+        сега = datetime.now(timezone.utc).astimezone(С)
+    return т.strftime("%H:%M") if т.date() == сега.date() else т.strftime("%d.%m %H:%M")
 
 
 def _ts_le(a, b):
@@ -846,6 +946,20 @@ def _market_closed(now_utc):
 
 
 # ---------- състояние: желязно четене (Ф8.2) ----------
+def _запиши_атомарно(path, текст):
+    """Пише през .tmp + os.replace — прекъснат процес не може да остави отрязан файл.
+
+    🔴 21.08 · meta.json се пишеше с write_text (отрязване, после запис). Умре ли
+    процесът по средата (таймаут на Actions), файлът остава отрязан → `_load_state`
+    го преименува на .corrupt и почва чисто → студен старт на базиса → санитито
+    реже живата цена на всеки рън. Кодът вече знаеше, че това се случва: има цял
+    коментар за същото при outbox.jsonl. os.replace е атомарен и на Windows.
+    """
+    _tmp = path.with_suffix(path.suffix + ".tmp")
+    _tmp.write_text(текст, encoding="utf-8")
+    os.replace(str(_tmp), str(path))
+
+
 def _load_state(path, default):
     """Повреден файл → самолекуване: преименува го и започва чисто."""
     try:
@@ -870,7 +984,7 @@ def _cme_pause(now_utc):
         return False
 
 
-def _basis_update(state, key, raw_spot, bar_close, notes, cap=40.0, now_utc=None,
+def _basis_update(state, key, raw_spot, bar_close, notes, cap=None, now_utc=None,
                   скок=None):        # О13: прагът за роловър е per-инструмент
     """EMA на базиса. ПОЛЗВА СУРОВИЯ спот (преди санитито) — иначе роловърът
     (скок +$25-30) реже спота, базисът замръзва и детекторът не се задейства = deadlock.
@@ -878,6 +992,13 @@ def _basis_update(state, key, raw_spot, bar_close, notes, cap=40.0, now_utc=None
     if raw_spot is None or bar_close is None:
         return state.get(key, 0.0)
     now_b = bar_close - raw_spot["mid"]
+    # 🔴 21.08 · Дотук `cap=40.0` стоеше като стойност ПО ПОДРАЗБИРАНЕ. И двата
+    # живи извиквача подават `cap=`, но всяко бъдещо извикване, което го пропусне
+    # (нов метал, сянка-двигател, копнат ред), мълчаливо възстановява точно
+    # дефекта, спрял бота за два дни. Сега ПРАВИЛНОТО е безплатното, а грешното
+    # иска изрично усилие.
+    if cap is None:
+        cap = _basis_cap(bar_close, "XAGUSD" if "_s" in str(key) else "XAUUSD")
     old = state.get(key)
     prev_bar = state.get(key + "_bar")
     state[key + "_bar"] = round(bar_close, 3)        # за кръстосана проверка следващия рън
@@ -890,9 +1011,22 @@ def _basis_update(state, key, raw_spot, bar_close, notes, cap=40.0, now_utc=None
     if old is None:                                 # НАХОДКА-D: студен старт без глич-защита
         if abs(now_b) <= cap:
             state[key] = round(now_b, 3)
-        else:                                       # първи сампъл е глич → не го анкервай
-            notes.append(f"студен старт: базис {now_b:+.1f} извън диапазон — изчаквам")
-            return 0.0
+        else:
+            # 🔴 21.08 · ДОТУК ТОЗИ КЛОН НЯМАШЕ ИЗХОД. При празна памет и първи
+            # сампъл над тавана се връщаше 0.0 и в state НЕ СЕ ЗАПИСВАШЕ НИЩО —
+            # завинаги. ИЗПЪЛНЕНО: 200 руна, ключът не се появява нито веднъж;
+            # базис 0.0 → санитито мери разминаване 203.58$ при допуск 8$ →
+            # живата цена се реже на ВСЕКИ рън. Пълен рън на бота го показа
+            # дословно: «студен старт ... изчаквам» + «живата цена отрязана» +
+            # «signal НЕ пратен». Празната памет НЕ е хипотеза: _load_state сам
+            # преименува повреден meta.json на .corrupt.
+            if _прекъсвач(state, key, now_b, notes, BASIS_STUCK_N,
+                          "базисът (студен старт)") is None:
+                notes.append(f"студен старт: базис {now_b:+.1f} извън диапазон — изчаквам "
+                             f"· {state[key + '_отказ']}-и пореден")
+                return 0.0
+            state.pop(key + "_презакотвен", None)        # студен старт ≠ смяна на скала
+            return state[key]
     elif abs(now_b - old) > (скок if скок is not None else ROLLOVER_JUMP):
         moved = prev_bar is not None and abs(bar_close - prev_bar) >= 0.5 * abs(now_b - old)
         if _cme_pause(now_utc):                     # A5: нощна пауза → игнорирай скока, пази базиса
@@ -908,19 +1042,14 @@ def _basis_update(state, key, raw_spot, bar_close, notes, cap=40.0, now_utc=None
             # «стара цена» → без вход. Пазачът срещу глич ОСТАВА, но вече не може
             # да заключи бота завинаги: щом «стария» отхвърля N ПОРЕДНИ пъти,
             # значи той вече не описва пазара, а описва себе си.
-            _бр_к = key + "_отказ"
-            state[_бр_к] = int(state.get(_бр_к, 0)) + 1
-            if state[_бр_к] >= BASIS_STUCK_N and abs(now_b) <= cap:
-                notes.append(f"🔓 базисът беше ЗАКЛЮЧЕН {state[_бр_к]} ръна на {old:+.2f} — "
-                             f"закотвям наново на {now_b:+.2f} (пазачът не бива да спира бота завинаги)")
-                state[key] = round(now_b, 3)
-                state[_бр_к] = 0
-            else:
-                notes.append(f"отхвърлен скок на базиса ({now_b:+.1f}) — глич/несходно с бара, "
-                             f"пазя {old:+.2f} · {state[_бр_к]}-и пореден отказ")
+            if _прекъсвач(state, key, now_b, notes, BASIS_STUCK_N, "базисът") is None:
+                notes.append("отхвърлен скок на базиса (%+.1f) — глич/несходно с бара, "
+                             "пазя %+.2f · %d-и пореден отказ"
+                             % (now_b, old, state[key + "_отказ"]))
     else:
         state[key] = round(old + BASIS_ALPHA * (now_b - old), 3)
         state[key + "_отказ"] = 0        # прието → броячът на отказите се нулира
+        state[key + "_отказани"] = []
     return state[key]
 
 
@@ -931,7 +1060,13 @@ TF_BASIS_ALPHA = 0.25      # EMA изглаждане на контрактни�
 # посоката на картата. Съседната `_basis_update` ВЕЧЕ е разделена по метал
 # (cap 40 злато / 3 сребро) — близнакът е разделен там, но не и тук.
 # Сребърният таван пази СЪЩОТО отношение: 120 × (3/40) = 9.0$ = 13.8% от 65$.
+# 🔴 21.08 · БЛИЗНАКЪТ. Фиксиран таван 120$ = 6.00% от 2000$, но 2.59% от 4639$.
+# Живата стойност е порасла −3.9$ (02.08) → −61.6$ (21.08), 15.8× за 19 дни;
+# докстрингът долу сам мери −238$ при роловър. А тук НЯМАШЕ нито брояч, нито
+# изход: мине ли веднъж тавана, функцията връща стария до края на времето.
 TF_BASIS_CAP = 120.0
+TF_BASIS_CAP_PCT = float(os.environ.get("TF_BASIS_CAP_PCT", "0.03"))   # 3% от цената
+TF_BASIS_STUCK_N = int(os.environ.get("TF_BASIS_STUCK_N", "12"))
 TF_BASIS_CAP_S = float(os.environ.get("TF_BASIS_CAP_S", "9.0"))       # |базис| над това = глич/сменен инструмент → пази стария
 def _tf_basis(state, key, intra, daily, notes, days=20, cap=None):
     """ОДИТ 28.07 · КОНТРАКТЕН БАЗИС. Дневната и интрадей кривите на GC=F/SI=F от
@@ -942,7 +1077,7 @@ def _tf_basis(state, key, intra, daily, notes, days=20, cap=None):
     който превежда баровете в спот-света на брокера за леджъра — той НЕ поправя refs.
     Връща стойност, която се ДОБАВЯ към интрадей цената, за да легне на дневното ниво.
     МЕДИАНА (устойчива на роловър-скокове) + EMA, с cap срещу глич."""
-    _cap = TF_BASIS_CAP if cap is None else cap
+    _cap = cap                                       # смята се долу, щом има цена
     try:
         if intra is None or daily is None or len(intra) == 0 or len(daily) == 0:
             return state.get(key, 0.0)
@@ -951,11 +1086,25 @@ def _tf_basis(state, key, intra, daily, notes, days=20, cap=None):
         if len(j) < 5:                                   # малко застъпване → не гадай
             return state.get(key, 0.0)
         now = float((j["Close_d"] - j["Close"]).tail(days).median())
+        if _cap is None:                                 # таван ПО ЦЕНА, не закован
+            _ц = abs(float(j["Close_d"].iloc[-1]))
+            _cap = max(TF_BASIS_CAP, TF_BASIS_CAP_PCT * _ц)
         if not np.isfinite(now) or abs(now) > _cap:
-            notes.append(f"контрактен базис {now:+.1f}$ извън диапазон — пазя стария")
+            if np.isfinite(now):
+                # СЪЩИЯТ прекъсвач: N поредни отказа значат, че ПАЗЕНОТО е старо.
+                # Дотук тази функция нямаше дори БРОЯЧ — мине ли веднъж тавана,
+                # връщаше стария до края на времето, мълчаливо.
+                _нов = _прекъсвач(state, key, now, notes, TF_BASIS_STUCK_N,
+                                  "контрактният базис")
+                if _нов is not None:
+                    return _нов
+            notes.append("контрактен базис %+.1f$ извън диапазон — пазя стария "
+                         "· %d-и пореден отказ" % (now, state.get(key + "_отказ", 0)))
             return state.get(key, 0.0)
         old = state.get(key)
         state[key] = round(now if old is None else old + TF_BASIS_ALPHA * (now - old), 3)
+        state[key + "_отказ"] = 0                        # прието → броячът се нулира
+        state[key + "_отказани"] = []
         return state[key]
     except Exception:
         return state.get(key, 0.0)
@@ -1680,7 +1829,7 @@ def _мозък_следене(файл, дневник, цена, now_utc, но
 
         if удар and удар[0] == "цел1":
             т["цел1_взета"] = True
-            файл.write_text(json.dumps(т, ensure_ascii=False, default=str), encoding="utf-8")
+            _запиши_атомарно(файл, json.dumps(т, ensure_ascii=False, default=str))
             msgs.append(("brain-exit:цел1", _мозък_изход_msg(т, "цел1", удар[1], зн)))
         elif удар:
             msgs.append(("brain-exit:" + удар[0], _мозък_изход_msg(т, удар[0], удар[1], зн)))
@@ -1725,7 +1874,7 @@ def _мозък_следене(файл, дневник, цена, now_utc, но
                  "цел1": round(float(з["цел"]), 2),
                  "цел2": (round(float(з["цел2"]), 2) if з.get("цел2") is not None else None),
                  "цел1_взета": False}
-            файл.write_text(json.dumps(т, ensure_ascii=False, default=str), encoding="utf-8")
+            _запиши_атомарно(файл, json.dumps(т, ensure_ascii=False, default=str))
     return msgs
 
 
@@ -1737,7 +1886,8 @@ def _мозък_изход_msg(т, вид, цена, зн):
              "цел2": ("🏆", "ВТОРАТА ЦЕЛ падна"),
              "стоп": ("🛑", "СТОПЪТ удари")}
     ико, дума = глави.get(вид, ("📌", вид))
-    L = [f"{ико} {дума} · наблюдението от {_sofia(т['отворен'])} · злато {посока}",
+    L = [f"{ико} {дума} · наблюдението от "
+         f"{_sofia_ако_друг_ден(т['отворен'])} · злато {посока}",
          f"💵 {_fmt(т['вход'], 2)} → {_fmt(цена, 2)} · <b>{пари:+.2f}$</b>/унция"]
     if вид == "цел1" and т.get("цел2") is not None:
         L.append(f"🎯 остава {_fmt(т['цел2'], 2)}")
@@ -1772,7 +1922,7 @@ def _shadow_cycle(shadow_file, bars, basis, price_user, now_utc, spot,
                   "checked": now_utc, "levels": dict(open_lv), "hit": {}, "status": "open",
                   "v2": True, "ledger": "spot", "tier": tier, "date": date, "sym": sym, "shadow": True}
     if sh is not None and sh.get("status", "open") == "open":
-        shadow_file.write_text(json.dumps(sh, ensure_ascii=False), encoding="utf-8")
+        _запиши_атомарно(shadow_file, json.dumps(sh, ensure_ascii=False))
     elif shadow_file.exists():
         shadow_file.unlink()                                # затворена/изместена → чист диск
     return msgs
@@ -2007,7 +2157,8 @@ def _спал_msg(мин, откога_utc, докога_utc):
     колко = (f"{ч}ч {м:02d}мин" if ч else f"{м} мин")
     return "\n".join([
         f"😴 <b>БОТЪТ СПА {колко}</b> · {_sofia()}",
-        f"📌 от {_sofia(откога_utc)} до {_sofia(докога_utc)} · нито едно пускане",
+        f"📌 от {_sofia_ако_друг_ден(откога_utc, докога_utc)} до "
+        f"{_sofia_ако_друг_ден(докога_utc)} · нито едно пускане",
         "⚠️ в тази дупка не съм гледал пазара",
         "👁 наваксвам от този бар нататък",
     ])
@@ -2302,15 +2453,110 @@ def _cq_next_event(cq, now_utc):
     if best is None:
         return None
     evt, e = best
-    return f"{e.get('name', '')} — {evt.strftime('%d.%m')} {_sofia(evt.isoformat())} София"
+    return f"{e.get('name', '')} — {_sofia_dt(evt.isoformat())} София"
 
 
-def _cq_msg(cq, now_utc, fng_live=None):
+def _остава(часове):
+    """«15ч30» / «40 мин» — човешки, без десетични точки."""
+    м = int(round(float(часове) * 60))
+    if м < 60:
+        return f"{max(м, 1)} мин"
+    ч, ост = м // 60, м % 60
+    if ост == 0:                       # «2ч00» е машинно; човек казва «2 часа»
+        return "1 час" if ч == 1 else f"{ч} часа"
+    return f"{ч}ч{ост:02d}"
+
+
+def _news_due(cq, now_utc, meta):
+    """(събитие, момент, часове_до, ключ, повод) или None — време ли е за карта?
+
+    ОБЕЩАНИЕТО: първата дума идва поне НОВИНИ_ПРЕДИ_Ч часа преди събитието,
+    после на всеки НОВИНИ_ПОВТОР_Ч часа, до самото него.
+    Защитено: липсва ли календар или е повреден момент → None, ботът не спира.
+    """
+    if not cq or not cq.get("events"):
+        return None
+    try:
+        now = pd.Timestamp(now_utc)
+    except Exception:
+        return None
+    best = None
+    for e in cq["events"]:
+        evt = _cq_evt_dt(e)
+        if evt is not None and evt > now and (best is None or evt < best[0]):
+            best = (evt, e)
+    if best is None:
+        return None
+    evt, e = best
+    ч = (evt - now).total_seconds() / 3600.0
+    # ЗАПАСЪТ: ботът се буди на 5 мин, но мерено е спал и по 15. Без запас
+    # първата карта би паднала под обещаните 15 часа — тихо нарушено обещание.
+    if ч > НОВИНИ_ПРЕДИ_Ч + НОВИНИ_ЗАПАС_Ч:
+        return None
+    ключ = f"{e.get('name', '')}|{e.get('dt', '')}"
+    зап = meta.get("новина") or {}
+    if isinstance(зап, dict) and зап.get("кой") == ключ:
+        try:
+            откога = (now - pd.Timestamp(зап.get("utc"))).total_seconds() / 3600.0
+        except Exception:
+            откога = 999.0
+        if откога < НОВИНИ_ПОВТОР_Ч:
+            return None
+        повод = "повторение"
+    else:
+        повод = "първо"
+    return (e, evt, ч, ключ, повод)
+
+
+def _news_blizko(cq, now_utc):
+    """Има ли събитие вътре в прозореца на отброяването? (за да не папагалства
+    дневната карта, дори в рън, в който самото отброяване не е на ред)"""
+    if not cq or not cq.get("events"):
+        return False
+    try:
+        now = pd.Timestamp(now_utc)
+    except Exception:
+        return False
+    for e in cq["events"]:
+        evt = _cq_evt_dt(e)
+        if evt is not None and now < evt <= now + pd.Timedelta(hours=НОВИНИ_ПРЕДИ_Ч + НОВИНИ_ЗАПАС_Ч):
+            return True
+    return False
+
+
+def _news_msg(e, evt, ч, ключ=None, повод="първо"):
+    """Картата с отброяването. Казва КАКВО, КОГА, СЛЕД КОЛКО, и — най-важното —
+    КАКВО ПРАВИ БОТЪТ заради нея. Без лекции защо съществува макростатистика."""
+    име = str(e.get("name", "макро събитие")).strip()
+    гл = f"📅 ВАЖНА НОВИНА СЛЕД {_остава(ч)} · "
+    _място = 78 - len(гл)                      # таванът на първия ред в стил.py
+    if len(име) > _място:
+        име = име[:max(10, _място - 1)].rstrip(" —-·,") + "…"
+    _от = _sofia_dt((evt - pd.Timedelta(minutes=20)).isoformat())[-5:]
+    _до = _sofia_dt((evt + pd.Timedelta(minutes=40)).isoformat())[-5:]
+    L = [гл + име,
+         f"⏰ {_sofia_dt(evt.isoformat())} София — тогава го обявяват",
+         "⚠️ в такъв момент златото минава по 20-40$ за секунди в двете посоки",
+         f"🛑 не отварям нов вход от {_от} до {_до} София",
+         "📌 отворена сделка не се пипа — стопът и целите остават каквито са"]
+    if ч <= НОВИНИ_ПОВТОР_Ч:
+        L.append("👁 това е последното напомняне преди самото събитие")
+    else:
+        L.append(f"👁 ще ти напомня пак след {_остава(НОВИНИ_ПОВТОР_Ч)}")
+    return "\n".join(L)
+
+
+def _cq_msg(cq, now_utc, fng_live=None, отброяване=False):
     """ОДИТ-28/29 · от 12 реда за биткойн до три реда за онова, което мени
     поведението на бота: следващото голямо макро събитие."""
     съб = _cq_next_event(cq, now_utc)
     L = []
-    if съб:
+    if съб and отброяване:
+        # 🔴 Отброяването вече го казва на всеки 2 часа. Дневната карта да не
+        # повтаря същото като папагал — казва само че отделната карта я води.
+        L.append(f"📌 ПАЗАРЕН ФОН · {_sofia()}")
+        L.append("📅 за идващото събитие ти пращам отделна карта с отброяване")
+    elif съб:
         L.append(f"📅 ИДВА · {съб}")
         L.append("⚠️ около такива новини цената скача на празно")
         L.append("👁 не отварям нов вход в този прозорец")
@@ -2342,16 +2588,23 @@ def _cq_msg(cq, now_utc, fng_live=None):
             L.append(f"🌡 крипто настроение: {зона} ({точки:.0f}/100) · само за фон")
     return "\n".join(L)
 
-def track_trade(trade, bars, basis, now_price, now_utc, spot=None):
+def track_trade(trade, bars, basis, now_price, now_utc, spot=None, скок_базис=False):
     """bars = фючърсни 5м (пълният път, ~10 мин назад), превеждани в спот
     чрез базиса. spot = живата цена (моментално, Ф7.1). Гап → реална цена.
-    Връща (trade|None, events); event = (kind, price, when, via, gap)."""
+    Връща (trade|None, events); event = (kind, price, when, via, gap).
+
+    `скок_базис=True` → базисът току-що е презакотвен и скалата на баровете се
+    е преместила с една стъпка. Тогава баровете НЕ се съдят: измерено, при
+    скок +30.22$ върху 12 АБСОЛЮТНО ПЛОСКИ бара лонгът «удря стоп», а шортът
+    «удря и трите цели» — за движение, което не се е случило. Спот-изходите
+    (в спот-света, независими от базиса) и изходът по време ОСТАВАТ.
+    """
     events = []
     if trade is None:
         return None, events
     since = pd.Timestamp(trade.get("checked", trade["opened"]))
     lv = trade["levels"]; d = trade["direction"]
-    idx = bars.index if bars is not None else []
+    idx = [] if скок_базис else (bars.index if bars is not None else [])
     processed = []                                   # M1: следим кои барове реално обходихме
     for ts in idx:
         if ts <= since:
@@ -2783,7 +3036,7 @@ def _weekend_cycle(out, now_utc, send):
             st[f"{date}·{slot}"] = str(now_utc)
             sent = slot
     st = {k: v for k, v in st.items() if str(k)[:10] >= date[:8] + "01"}   # чисти стар месец
-    st_f.write_text(json.dumps(st, ensure_ascii=False), encoding="utf-8")
+    _запиши_атомарно(st_f, json.dumps(st, ensure_ascii=False))
     with (out / "live_journal.jsonl").open("a", encoding="utf-8") as fh:
         fh.write(json.dumps({"run_utc": now_utc, "date": date, "v": VERSION,
                              "weekend": True, "slot": slot, "sent": sent,
@@ -2975,6 +3228,22 @@ def main():
     meta = _load_state(out / "meta.json", {})
     date_raw = str(gold_d.index[-1].date())
     date = max(date_raw, meta.get("date", date_raw))
+    # 🔴 21.08 · ДАТАТА БЕШЕ РАТЧЕТ — вървеше САМО напред и нямаше път назад.
+    # ЕДИН дневен бар от Yahoo с бъдеща дата (часова зона, частичен бар, хълцук)
+    # влизаше в meta.json, а max() гарантираше, че НИКОГА няма да падне. Оттам
+    # целият ДНЕВЕН часовник се заковава: pulse_09/14/22, равносметката,
+    # КиберКвант референцията, нулирането на стоп-пазача — всички сравняват
+    # `meta[...] != date`, а `date` вече не се мени. ИЗПЪЛНЕНО с истинския main():
+    #   рън 1 (Yahoo дава 2026-12-31) → date=2026-12-31, meta.pulse_14=2026-12-31
+    #   рън 2 (Yahoo СЪВСЕМ ЗДРАВ, 2026-08-21) → пак 2026-12-31, пулс НЯМА
+    # Нито едно съобщение за грешка. Пазачът «само напред» ОСТАВА (той пази от
+    # вчерашен бар), но вече има ТАВАН от часовника на рънъра — а той не идва
+    # от Yahoo. Стойността се поправя САМА на следващия рън.
+    _днес_utc = str(now_utc)[:10]
+    if date > _днес_utc:
+        notes.append(f"🔧 запомнената дата {date} е В БЪДЕЩЕТО (днес е {_днес_utc}) — "
+                     f"връщам се на {date_raw}; дневните карти бяха заключени")
+        date = date_raw if date_raw <= _днес_utc else _днес_utc
     meta["date"] = date
     # Ф8.8: месечна ротация на журнала и следата
     mon = date[:7]
@@ -3098,7 +3367,7 @@ def main():
             _cqf = _cq_fetch(now_utc)
             if _cqf:
                 cq = _cqf
-                (out / "cyberquant.json").write_text(json.dumps(_cqf, ensure_ascii=False), encoding="utf-8")
+                _запиши_атомарно((out / "cyberquant.json"), json.dumps(_cqf, ensure_ascii=False))
                 meta["cq_date"] = date
             else:
                 notes.append("CyberQuant недостъпен този опит — ползвам кеш/прескачам")
@@ -3118,7 +3387,12 @@ def main():
         notes.append(f"следене {track_mode} — 5м потокът липсва")
     if trade:
         trade_obj = copy.deepcopy(trade)                   # Д3: снимка, която track_trade няма да мутира
-        trade, events = track_trade(trade, frames.get("5м"), basis_g, price_user, now_utc, spot=spot_g)
+        _скок_g = bool(meta.pop("basis_g_презакотвен", False))
+        if _скок_g:
+            notes.append("⏸ базисът се презакотви този рън — баровете НЕ се съдят "
+                         "(скалата им се премести); живата цена и времето важат")
+        trade, events = track_trade(trade, frames.get("5м"), basis_g, price_user, now_utc,
+                                    spot=spot_g, скок_базис=_скок_g)
         cum_hit = dict(trade_obj["hit"])                   # попадения от МИНАЛИ рънове
         cum_px = dict(trade_obj.get("hit_px") or {})       # О12: и цените им
         for kind, px, when, via, gap in events:
@@ -3185,7 +3459,7 @@ def main():
     # остава, за да важи 45-мин паузата (нулирането не отваря врата за спам).
     if not actionable and last.get("key"):
         last = {k: v for k, v in last.items() if k != "key"}
-        (out / "last_sent.json").write_text(json.dumps(last), encoding="utf-8")
+        _запиши_атомарно((out / "last_sent.json"), json.dumps(last))
         notes.append("сетъпът изчезна — анти-спам ключът нулиран (връщането му ще е НОВА карта)")
     # 🔴 ОДИТ-3 (29.07): ключът СЪДЪРЖАШЕ `date`, а `date` идва от ДНЕВНИЯ БАР на Yahoo,
     # който се публикува в 02:10 UTC. Значи ключът се нулираше в 05:10 София ВСЕКИ ДЕН и
@@ -3418,7 +3692,11 @@ def main():
         sh_s_entry = None; sh_s_lv = None   # СЯНКА-сребро (какво щеше да е при «не влизай»)
         if s_trade:
             s_obj = copy.deepcopy(s_trade)                 # Д3: истинска снимка
-            s_trade, s_events = track_trade(s_trade, s5, basis_s, s_price_user, now_utc, spot=spot_s)
+            _скок_s = bool(meta.pop("basis_s_презакотвен", False))
+            if _скок_s:
+                notes.append("⏸ сребърният базис се презакотви — баровете НЕ се съдят този рън")
+            s_trade, s_events = track_trade(s_trade, s5, basis_s, s_price_user, now_utc,
+                                            spot=spot_s, скок_базис=_скок_s)
             s_cum = dict(s_obj["hit"])                      # попадения от МИНАЛИ рънове
             for kind, px, when, via, gap in s_events:
                 if kind in ("tp1", "tp2", "tp3"):          # това попадение стана ТОЗИ рън
@@ -3520,7 +3798,7 @@ def main():
         # сребро-сирака: затворена сделка + неуспяла нова карта → старата НЕ оставаше на диска
         # и се пре-следеше всеки рън = дублирани изходи + фалшив стоп-пазач).
         if s_trade:                                        # още отворена → запиши прогреса
-            s_tr_f.write_text(json.dumps(s_trade, ensure_ascii=False), encoding="utf-8")
+            _запиши_атомарно(s_tr_f, json.dumps(s_trade, ensure_ascii=False))
         elif s_tr_f.exists() and (s_exits or silver_trade_new is None):
             s_tr_f.unlink()          # затворена този рън (изходът е в кутията) ИЛИ няма нова сделка
         silver_ok = True                                   # Б3: стигнахме дотук без грешка
@@ -3641,11 +3919,24 @@ def main():
     # КИБЕР КВАНТ дневна референция — веднъж на ден (сутрин 09 София), само делник.
     # Живият страх-и-алчност се дърпа САМО в този един момент (не на всеки рън) — така
     # не се добавя мрежова тежест на 5-минутния цикъл. Провал → картата пак излиза.
+    # 📅 ОТБРОЯВАНЕ ДО ГОЛЯМА НОВИНА — отделна карта, независима от дневната.
+    # НЯМА `not weekend`: мерено, събота 15.08 даде 0 ръна, а неделя 16.08 — 27,
+    # тоест дневната карта беше сляпа цели три дни преди FOMC. Понеделнишко
+    # събитие в 13:30 иска първа дума в неделя вечер — тогава ботът вече е буден.
+    _нд = _news_due(cq, now_utc, meta)
+    if _нд:
+        new_msgs.append(("новина", _news_msg(_нд[0], _нд[1], _нд[2], _нд[3], _нд[4])))
+        notes.append(f"📅 новина след {_остава(_нд[2])}: "
+                     f"{str(_нд[0].get('name', ''))[:44]} ({_нд[4]})")
+
     if sof_now.hour == 9 and meta.get("cq_ref") != date and not weekend and cq:
         _fng = _fng_live()
         if _fng:
             notes.append(f"страх-алчност живо: {_fng['value']} ({_fng['cls']})")
-        new_msgs.append(("cq-ref", _cq_msg(cq, now_utc, fng_live=_fng)))
+        # `отброяване` = отделната карта вече води събитието → дневната да не
+        # го повтаря като папагал.
+        new_msgs.append(("cq-ref", _cq_msg(cq, now_utc, fng_live=_fng,
+                                           отброяване=bool(_нд) or _news_blizko(cq, now_utc))))
 
     # 🔴 ОДИТ-45в · МАКРОТО СМЕНИ СЪСТОЯНИЕТО — казваме ВЕДНАГА, не на следващия слот.
     # Мерено: за 9 дни и 1965 ръна състоянието не се е сменяло нито веднъж, тъй
@@ -3928,16 +4219,20 @@ def main():
         meta["pulse_" + pulse_slot] = date
     if "cq-ref" in sent_tags:                            # CyberQuant референция — маркирай след пращане
         meta["cq_ref"] = date
+    # Б1 · часовникът на отброяването се навива САМО след ПОТВЪРДЕНО пращане.
+    # Иначе провалено пращане би изяло цял двучасов слот мълчаливо — точно
+    # видът тиха загуба, който днес спря бота за два дни.
+    if _нд and "новина" in sent_tags:
+        meta["новина"] = {"кой": _нд[3], "utc": now_utc}
 
     # === 7б) Б1: сделка/състояние се пишат САМО след ПОТВЪРДЕНО пращане на картата ===
     if should_sig and "signal" in sent_tags:
         # key_since = кога този сетъп се появи ПЪРВИ път. Пази се, докато ключът е същият;
         # нов ключ → нов часовник. От него се мери възрастта за повторното предлагане.
         key_since = last.get("key_since") if last.get("key") == key and last.get("key_since") else now_utc
-        (out / "last_sent.json").write_text(json.dumps({"key": key, "date": date, "sent_ok": True,
+        _запиши_атомарно((out / "last_sent.json"), json.dumps({"key": key, "date": date, "sent_ok": True,
                                                         "dir": new_dir, "tier": best[3], "sent_utc": now_utc,
-                                                        "key_since": key_since}),
-                                            encoding="utf-8")
+                                                        "key_since": key_since}))
         if pending_trade is not None:
             trade = pending_trade                          # отваряме сделката чак сега
             statuses.append("trade=OPENED")
@@ -3950,24 +4245,24 @@ def main():
             if s_key:
                 s_since = (s_last.get("key_since") if s_last.get("key") == s_key and s_last.get("key_since")
                            else now_utc)
-                s_state_f.write_text(json.dumps({"key": s_key, "date": date, "sent_ok": True, "dir": s_dir,
+                _запиши_атомарно(s_state_f, json.dumps({"key": s_key, "date": date, "sent_ok": True, "dir": s_dir,
                                                  "tier": s_tk, "sent_utc": now_utc,
-                                                 "key_since": s_since}), encoding="utf-8")
+                                                 "key_since": s_since}))
             if silver_trade_new is not None:
-                s_tr_f.write_text(json.dumps(silver_trade_new, ensure_ascii=False), encoding="utf-8")
+                _запиши_атомарно(s_tr_f, json.dumps(silver_trade_new, ensure_ascii=False))
                 statuses.append("s-trade=OPENED")
         elif silver_trade_new is not None:
             statuses.append("s-signal НЕ пратен — сребърна сделка НЕ отворена")
 
     # === 8) ЗАПИС на състоянието ===
     if trade:
-        tr_f.write_text(json.dumps(trade, ensure_ascii=False), encoding="utf-8")
+        _запиши_атомарно(tr_f, json.dumps(trade, ensure_ascii=False))
     elif tr_f.exists() and (exit_msgs or new_dir is None):
         tr_f.unlink()
     ma_sent = {k: v for k, v in ma_sent.items() if k.startswith(date)}
-    ma_f.write_text(json.dumps(ma_sent), encoding="utf-8")
-    (out / "guard.json").write_text(json.dumps(guard), encoding="utf-8")
-    (out / "meta.json").write_text(json.dumps(meta), encoding="utf-8")
+    _запиши_атомарно(ma_f, json.dumps(ma_sent))
+    _запиши_атомарно((out / "guard.json"), json.dumps(guard))
+    _запиши_атомарно((out / "meta.json"), json.dumps(meta))
 
     run_ended = datetime.now(timezone.utc).replace(tzinfo=None).isoformat(timespec="seconds")
     with (out / "live_journal.jsonl").open("a", encoding="utf-8") as fh:
@@ -4071,7 +4366,7 @@ if __name__ == "__main__":
             _seen[_sig] = {"utc": str(_сега), "грешка": _err[:200],
                            "къде": traceback.format_exc().strip().splitlines()[-3:]}
             try:
-                _ef.write_text(json.dumps(_seen, ensure_ascii=False), encoding="utf-8")
+                _запиши_атомарно(_ef, json.dumps(_seen, ensure_ascii=False))
             except Exception:
                 pass
             print(f"грешка {_sig} записана в лога, БЕЗ съобщение (по избор на собственика)"
