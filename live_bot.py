@@ -34,7 +34,7 @@ import pandas as pd
 # v9.5–v9.8 — всеки ред в дневника твърдеше грешна версия, а дневникът е
 # единственият начин отвън да се види какво работи. П47 пада, ако VERSION не се
 # среща в темата на последния commit.
-VERSION = "v13.9"
+VERSION = "v14.0"
 PIP = 0.10
 SL_PIPS = 200; SL_D = SL_PIPS * PIP                       # стоп: 200п = $20/oz
 TPS = [("ТП1", 75, 7.5), ("ТП2", 120, 12.0), ("ТП3", 200, 20.0)]
@@ -165,6 +165,10 @@ CHART_BRAIN_ON = os.environ.get("CHART_BRAIN", "1") == "1"
 # brain_track.json стои, ново наблюдение не се приема. Мерено в живия дневник:
 # 17 затворени наблюдения, най-дългото 17.2ч, медиана под 2ч — затова прагът е
 # нарочно ШИРОК: спира заклещването, без да реже живи наблюдения.
+# 🔴 21.08 · КОЛКО ДАЛЕЧ МОЖЕ ДА Е БАР ОТ ЦЕНАТА, преди да е ЯСНО, че е на
+# чужда скала. Базисът днес е ~1.2% от цената; 0.5% е под него и над всеки
+# нормален 5-минутен диапазон (мерено p99 на 10-минутния ход: 15$ = 0.32%).
+БАР_САНИТИ_ПЦТ = float(os.environ.get("БАР_САНИТИ_ПЦТ", "0.005"))
 МОЗЪК_ЧАСОВЕ_БЪРЗИ = float(os.environ.get("МОЗЪК_ЧАСОВЕ_БЪРЗИ", "24"))   # 1мин/5м
 МОЗЪК_ЧАСОВЕ_БАВНИ = float(os.environ.get("МОЗЪК_ЧАСОВЕ_БАВНИ", "72"))   # 15м и нагоре
 # 🔴 21.08 · ТАВАНЪТ НА БАЗИСА СТАВА ПРОПОРЦИОНАЛЕН НА ЦЕНАТА.
@@ -187,6 +191,11 @@ PAXG_ПРЕМИЯ = float(os.environ.get("PAXG_ПРЕМИЯ", "2.0"))        # �
 # докато златото е минало от 2000$ на 4650$ — тоест стегнали са се 2.3× сами,
 # без никой да го е решавал. `_basis_cap` вече го направи; тези са близнаците му.
 # ЖЕЛЯЗНО: при 2000$ и двата дават ТОЧНО старите числа, бит за бит.
+# ⚠️ НЕ Я ВДИГАЙ «ЗА ДА МИНАВА ЖИВАТА ЦЕНА». Мерено върху 612 РЕАЛНО отрязани
+# ръна със записана следа: с този процент биха минали само 63 = 10.3%; при
+# останалите 89.7% разминаването е 31$+ и никакъв разумен допуск не го покрива.
+# Лечението на 19-21.08 беше ПРЕКЪСВАЧЪТ на базиса, не допускът. Тази промяна
+# връща ширината, с която пазачът е ПРОЕКТИРАН — нищо повече.
 SPOT_TOL_PCT = float(os.environ.get("SPOT_TOL_PCT", "0.0040"))   # 8$ при 2000$ = 0.40%
 SPOT_TOL_MIN = float(os.environ.get("SPOT_TOL_MIN", "8"))        # старото като под
 ROLL_JUMP_PCT = float(os.environ.get("ROLL_JUMP_PCT", "0.0040"))  # също 0.40%
@@ -255,7 +264,15 @@ def _прекъсвач(state, key, now, notes, N, име):
     state[_бр] = int(state.get(_бр, 0)) + 1
     сп = [float(x) for x in (state.get(_сп) or [])][-(N - 1):] + [float(now)]
     state[_сп] = [round(x, 3) for x in сп]
-    if state[_бр] < N:
+    # 🔴 21.08 · БРОЯЧЪТ НЕ БИВА ДА ИЗПРЕВАРВА ДОКАЗАТЕЛСТВАТА.
+    # Докстрингът обещава «един изрод не може да дърпа медиана», но два изхода
+    # деляха ЕДИН брояч, а само единият пълнеше списъка с наблюдения.
+    # ИЗПЪЛНЕНО: 11 ръна през тихия клон → брояч 11, наблюдения НУЛА; после
+    # ЕДИН изроден образец → брояч 12 ≥ N → «медиана на 1 наблюдения» = самият
+    # глич. Стойността се закотви на −900.00 при истина −61.6. Собствената
+    # бележка дословно го признаваше: «(медиана на 1 наблюдения)».
+    if state[_бр] < N or len(сп) < N:
+        state[_бр] = min(state[_бр], len(сп))       # синхрон: N отказа = N наблюдения
         return None
     ред = sorted(сп)
     _п = len(ред) // 2
@@ -1207,14 +1224,17 @@ def _tf_basis(state, key, intra, daily, notes, days=20, cap=None):
         Тук няма ЖИВА стойност, с която да се презакотви, затова след N поредни
         стойността пада на 0.0 и се обявява: нулата е честно «не знам», а старо
         число е тихо твърдение, което мести дневните референции на 6 рамки."""
-        _бк = key + "_отказ"
+        # 🔴 21.08 · СВОЙ БРОЯЧ. Дотук този клон делеше `_отказ` с `_прекъсвач`,
+        # но никога не пълнеше `_отказани` — тоест вдигаше прага за медианата,
+        # без да дава нито едно наблюдение за нея. Двете беди са различни:
+        # тук НЯМА жива стойност (падаме на 0.00), там ИМА (закотвяме на медиана).
+        _бк = key + "_тих"
         state[_бк] = int(state.get(_бк, 0)) + 1
         if state[_бк] >= TF_BASIS_STUCK_N:
             notes.append(f"🔓 контрактният базис не се пресмята {state[_бк]} ръна "
                          f"({причина}) — пускам го на 0.00 вместо да твърдя старото")
             state[key] = 0.0
             state[_бк] = 0
-            state[key + "_отказани"] = []
             return 0.0
         notes.append(f"контрактният базис не се пресмята ({причина}) — пазя стария "
                      f"· {state[_бк]}-и пореден отказ")
@@ -1245,7 +1265,8 @@ def _tf_basis(state, key, intra, daily, notes, days=20, cap=None):
             return state.get(key, 0.0)
         old = state.get(key)
         state[key] = round(now if old is None else old + TF_BASIS_ALPHA * (now - old), 3)
-        state[key + "_отказ"] = 0                        # прието → броячът се нулира
+        state[key + "_отказ"] = 0                        # прието → броячите се нулират
+        state[key + "_тих"] = 0
         state[key + "_отказани"] = []
         return state[key]
     except Exception as _e:
@@ -1922,7 +1943,7 @@ def _shadow_exit_msg(kind, tr, price_hit, when, via, gap, spot=None, dec=2):
         f"<b>{_пари(стълба, _сим)}</b>" + (" · с гап" if gap else ""),
         "📌 не съм влизал · само да знаеш"])
 
-def _мозък_следене(файл, дневник, цена, now_utc, нов=None, бар=None):
+def _мозък_следене(файл, дневник, цена, now_utc, нов=None, бар=None, бележки=None):
     """ОДИТ-33 · хипотетично следене на мозъчен сетъп. Без пари, без лот.
 
     файл    : brain_track.json — единственото отворено следене
@@ -1991,10 +2012,24 @@ def _мозък_следене(файл, дневник, цена, now_utc, но
         _hi = _lo = float(цена)
         if бар:
             try:
-                _hi = max(float(бар[0]), float(цена))
-                _lo = min(float(бар[1]), float(цена))
-            except (TypeError, ValueError, IndexError):
+                _bh, _bl = float(бар[0]), float(бар[1])
+                # 🔴 21.08 · САНИТИ НА СКАЛАТА. Барът и цената трябва да са в
+                # ЕДИН свят. Подаден на чужда скала (суров фючърс срещу спот-нива),
+                # той фабрикува стоп/цел без никакво движение: измерено, разликата
+                # Е базисът, тоест ~55$ при злато 4640$. Пазачът не гадае — мери:
+                # не обгражда ли барът цената в рамките на БАР_САНИТИ_ПЦТ, той се
+                # изхвърля и се пада на скаларната цена (СТАРОТО поведение).
+                _далеч = min(abs(_bh - float(цена)), abs(_bl - float(цена)))
+                if _далеч > БАР_САНИТИ_ПЦТ * abs(float(цена)):
+                    raise ValueError(f"барът е на чужда скала ({_далеч:.1f}$ от цената)")
+                _hi = max(_bh, float(цена))
+                _lo = min(_bl, float(цена))
+            except (TypeError, ValueError, IndexError) as _еб:
                 _hi = _lo = float(цена)
+                if "чужда скала" in str(_еб) and бележки is not None:
+                    # ДИАГНОСТИКА, не карта: това е за дневника, не за собственика.
+                    # Дотук щеше да излезе като съобщение в Телеграм.
+                    бележки.append(f"🧠 {_еб} — падам на скаларната цена")
         _срещу = _lo if лонг else _hi          # най-лошото, което е видяла
         _за = _hi if лонг else _lo             # най-доброто, което е видяла
         # стопът се проверява ПРЪВ: ако и двете са докоснати в един рън,
@@ -2084,7 +2119,8 @@ def _мозък_изход_msg(т, вид, цена, зн):
 
 
 def _shadow_cycle(shadow_file, bars, basis, price_user, now_utc, spot,
-                  open_dir, open_entry, open_lv, real_open, date, tier, sym, dec):
+                  open_dir, open_entry, open_lv, real_open, date, tier, sym, dec,
+                  скок_базис=False):
     """СЯНКА-следене: хипотетична сделка от «не влизай» карта. Следи стария сетъп през
     дните (същият track_trade), праща «какво щеше да е» при всеки удар, отваря нова при
     информативна карта. НАПЪЛНО ИЗОЛИРАНА — не пипа guard/реалната сделка/статистиката.
@@ -2093,7 +2129,8 @@ def _shadow_cycle(shadow_file, bars, basis, price_user, now_utc, spot,
     sh = _load_state(shadow_file, None)
     if sh is not None:
         sh_obj = copy.deepcopy(sh)                          # снимка за съобщенията
-        sh, events = track_trade(sh, bars, basis, price_user, now_utc, spot=spot)
+        sh, events = track_trade(sh, bars, basis, price_user, now_utc, spot=spot,
+                                 скок_базис=скок_базис)
         cum = dict(sh_obj["hit"])
         for kind, px, when, via, gap in events:
             if kind in ("tp1", "tp2", "tp3"):
@@ -2564,11 +2601,27 @@ def _cq_fetch(now_utc):
         u = CQ + procs + "?batch=1&input=" + urllib.parse.quote(json.dumps(inp))
         with urllib.request.urlopen(urllib.request.Request(u, headers={"User-Agent": "Mozilla/5.0"}), timeout=12) as r:
             return json.loads(r.read().decode())
+    # 🔴 21.08 · ТРИ РАЗЛИЧНИ НЕЩА В ЕДИН try. `score` се ползва САМО за реда
+    # «🌡 крипто настроение … само за фон» — картата сама заявява, че е
+    # декорация. А липсваше ли, ЦЕЛИЯТ календар изчезваше, тоест макро-щитът и
+    # отброяването до новина висяха на козметично число.
+    # ИЗПЪЛНЕНО с реални отговори от мрежата: «терминалът без score (календарът
+    # е ЖИВ)» → None. Сега календарът има СВОЙ try и само той решава.
+    score, fg = None, {}
     try:
         nul = {"json": None, "meta": {"values": ["undefined"]}}
         d = _get("terminal.getData,fearGreed.getAll", {"0": nul, "1": nul})
-        score = float(d[0]["result"]["data"]["json"]["score"])
-        fg = d[1]["result"]["data"]["json"]
+        try:
+            score = float(d[0]["result"]["data"]["json"]["score"])
+        except Exception:
+            score = None
+        try:
+            fg = d[1]["result"]["data"]["json"] or {}
+        except Exception:
+            fg = {}
+    except Exception:
+        d, score, fg = None, None, {}
+    try:
         c = _get("calendar.getUpcoming", {"0": {"json": {"days": 45}}})
         raw = c[0]["result"]["data"]["json"]
         events = []
@@ -2586,7 +2639,18 @@ def _cq_fetch(now_utc):
                     cl[str(k)] = round(float(v), 1)
         except Exception:
             cl = {}
-        return {"score": round(score, 1), "zone": _cq_zone(score), "clusters": cl,
+        # 🔴 21.08 · ПРАЗЕН КАЛЕНДАР ПРИ НЕПРАЗНА СУРОВИНА = СЧУПЕН ФИЛТЪР.
+        # Филтърът съди по ЧУЖДА подредба (`affectsAssets`). Преименува ли
+        # доставчикът полето, `events` става [], но dict-ът е валиден → кешът се
+        # ПРЕЗАПИСВА с 0 събития и денят се маркира като успех. Оттам картата
+        # казва «✅ няма голямо макро събитие пред нас» — мълчанието се преоблича
+        # в ПОЛОЖИТЕЛНО потвърждение, а отброяването не пали нито веднъж.
+        # ИЗПЪЛНЕНО: полето преименувано → dict? True · събития: 0 → ЗАПИСВА СЕ.
+        if raw and not events:
+            return None                              # за изхвърляне — кешът остава
+        return {"score": (round(score, 1) if score is not None else None),
+                "zone": (_cq_zone(score) if score is not None else ""),
+                "raw_n": len(raw), "clusters": cl,
                 "fg_crypto": fg.get("crypto", {}).get("value"), "fg_crypto_cls": fg.get("crypto", {}).get("classification", ""),
                 "fg_stock": fg.get("stock", {}).get("value"), "fg_stock_cls": fg.get("stock", {}).get("classification", ""),
                 "events": events, "fetched": now_utc}
@@ -2807,7 +2871,19 @@ def track_trade(trade, bars, basis, now_price, now_utc, spot=None, скок_ба
         return None, events
     since = pd.Timestamp(trade.get("checked", trade["opened"]))
     lv = trade["levels"]; d = trade["direction"]
-    idx = [] if скок_базис else (bars.index if bars is not None else [])
+    idx = bars.index if bars is not None else []
+    if скок_базис and len(idx):
+        # 🔴 21.08, ВТОРА ВЕРСИЯ. Първата само пропускаше баровете ТОЗИ рън, но
+        # `checked` не мърдаше (при празен `processed` блокът долу не се стига),
+        # а знамето е за ЕДИН рън. Значи на следващия рън СЪЩИТЕ барове пак са
+        # `ts > checked` и се съдеха — вече с новия базис.
+        # ИЗПЪЛНЕНО: рън на скока → събития []; СЛЕДВАЩИЯТ рън → ('sl', 4591.465)
+        # и трите цели за шорта. Дефектът беше само ОТЛОЖЕН с пет минути, а
+        # собственият ми тест го обяви за оправен, защото гледаше само първия рън.
+        # Тези барове са двусмислени ПО УСТРОЙСТВО — не бива да се съдят нито
+        # със стария, нито с новия базис. Затова се прескачат ОКОНЧАТЕЛНО.
+        trade["checked"] = str(idx[-1])
+        idx = []
     processed = []                                   # M1: следим кои барове реално обходихме
     for ts in idx:
         if ts <= since:
@@ -3336,7 +3412,18 @@ def main():
             if isinstance(_рез, dict) and _рез.get("utc"):
                 try:
                     _въз = (pd.Timestamp(now_utc) - pd.Timestamp(_рез["utc"])).total_seconds() / 3600
-                    if _въз <= СТАР_МАКРО_Ч and _рез.get("csv"):
+                    # 🔴 21.08 · ТАВАНЪТ БРОЕШЕ СТЕННО ВРЕМЕ. Ботът не работи в
+                    # уикенда, значи петъчният печат е последният, а първият рън на
+                    # новата седмица е 49.1ч по-късно (МЕРЕНО живо: петък 20:55 →
+                    # неделя 22:02). 49.27 > 36 → резервът се отхвърля БЕЗ ДА Е
+                    # ОПИТАН, в началото на ВСЯКА търговска седмица.
+                    # Инструментът вече съществува в този файл — писан е за точно
+                    # същата грешка при картата «БОТЪТ СПА».
+                    try:
+                        _въз_т = _търговски_минути(_рез["utc"], now_utc) / 60.0
+                    except Exception:
+                        _въз_т = _въз
+                    if _въз_т <= СТАР_МАКРО_Ч and _рез.get("csv"):
                         _д = pd.read_json(io.StringIO(_рез["csv"]), orient="split")
                         _д.index = pd.to_datetime(_д.index)
                         if _име.startswith("миньори"):
@@ -3468,6 +3555,17 @@ def main():
     # Нито едно съобщение за грешка. Пазачът «само напред» ОСТАВА (той пази от
     # вчерашен бар), но вече има ТАВАН от часовника на рънъра — а той не идва
     # от Yahoo. Стойността се поправя САМА на следващия рън.
+    # 🔴 21.08 · ЧЕТИРИ ДНЕВНИ КЛЮЧАЛКИ (пулс, равносметка, КиберКвант референция,
+    # нулиране на стоп-пазача) сравняваха СОФИЙСКИ ЧАС срещу ДАТА ОТ YAHOO — две
+    # различни времеви системи в едно сравнение. ИЗПЪЛНЕНО: дневната серия свършва
+    # на 19.08, ботът върви на 20.08 → date=2026-08-19 цял ден, пулсът и
+    # равносметката НЕ излизат, а стоп-пазачът НЕ се нулира («2 стопа днес» става
+    # вечно). `date` остава за ПАЗАРА (ключове, ma_alerts, бектест); тези четири
+    # минават на КАЛЕНДАРЕН ден от СЪЩИЯ часовник, по който се съди и часът.
+    try:
+        ден_карти = str(datetime.now(timezone.utc).astimezone(_tz("Europe/Sofia")).date())
+    except Exception:
+        ден_карти = str(now_utc)[:10]
     _днес_utc = str(now_utc)[:10]
     if date > _днес_utc:
         notes.append(f"🔧 запомнената дата {date} е В БЪДЕЩЕТО (днес е {_днес_utc}) — "
@@ -3594,8 +3692,8 @@ def main():
     ev_shield, ev_label = _event_shield(daily_ctx, now_utc)
     shield = _in_shield(now_utc) or ev_shield
     guard = _load_state(out / "guard.json", {})
-    if guard.get("date") != date:
-        guard = {"date": date, "long": 0, "short": 0, "s_long": 0, "s_short": 0}
+    if guard.get("date") != ден_карти:
+        guard = {"date": ден_карти, "long": 0, "short": 0, "s_long": 0, "s_short": 0}
 
     # CyberQuant (BTC-цикъл + макро-календар) — референция + макро-щит (дърпа се веднъж на ден)
     cq = _load_state(out / "cyberquant.json", None)
@@ -3611,7 +3709,12 @@ def main():
             _cqf = _cq_fetch(now_utc)
             if _cqf:
                 cq = _cqf
-                _запиши_атомарно((out / "cyberquant.json"), json.dumps(_cqf, ensure_ascii=False))
+                # Двоен колан: дори да мине празен календар, не бива да изяде добър.
+                if (_cqf.get("events") or not (cq and cq.get("events"))):
+                    _запиши_атомарно((out / "cyberquant.json"), json.dumps(_cqf, ensure_ascii=False))
+                else:
+                    notes.append("⚠️ дръпнат календар с 0 събития — пазя стария "
+                                 f"({len((cq or {}).get('events') or [])} събития)")
                 meta["cq_date"] = date
             else:
                 notes.append("CyberQuant недостъпен този опит — ползвам кеш/прескачам")
@@ -3631,7 +3734,11 @@ def main():
         notes.append(f"следене {track_mode} — 5м потокът липсва")
     if trade:
         trade_obj = copy.deepcopy(trade)                   # Д3: снимка, която track_trade няма да мутира
-        _скок_g = bool(meta.pop("basis_g_презакотвен", False))
+        # 🔴 21.08 · ДОТУК ТУК СТОЕШЕ `meta.pop(...)` — тоест знамето изчезваше
+        # още при реалната сделка и СЯНКАТА никога не го виждаше. Изпълнено:
+        # 3 плоски бара + скок → сянката праща «щеше да удари стоп · −30.79$».
+        # Сега се ЧЕТЕ; трие се веднъж накрая, след всички консуматори.
+        _скок_g = bool(meta.get("basis_g_презакотвен", False))
         if _скок_g:
             notes.append("⏸ базисът се презакотви този рън — баровете НЕ се съдят "
                          "(скалата им се премести); живата цена и времето важат")
@@ -3957,7 +4064,7 @@ def main():
         sh_s_entry = None; sh_s_lv = None   # СЯНКА-сребро (какво щеше да е при «не влизай»)
         if s_trade:
             s_obj = copy.deepcopy(s_trade)                 # Д3: истинска снимка
-            _скок_s = bool(meta.pop("basis_s_презакотвен", False))
+            _скок_s = bool(meta.get("basis_s_презакотвен", False))
             if _скок_s:
                 notes.append("⏸ сребърният базис се презакотви — баровете НЕ се съдят този рън")
             s_trade, s_events = track_trade(s_trade, s5, basis_s, s_price_user, now_utc,
@@ -4056,7 +4163,8 @@ def main():
             silver_new_msgs += _shadow_cycle(out / "shadow_silver.json", s5, basis_s, s_price_user,
                                              now_utc, spot_s, s_dir if s_dir in ("long", "short") else None,
                                              sh_s_entry, sh_s_lv, (s_trade is not None or silver_trade_new is not None),
-                                             date, s_tk, "XAGUSD", 3)
+                                             date, s_tk, "XAGUSD", 3,
+                                             скок_базис=_скок_s)
         except Exception as _e:
             notes.append(f"сянка-сребро пропусната: {type(_e).__name__}")
         # Реконсилиация на СЛЕДЕНАТА сделка — БЕЗУСЛОВНО (огледало на златото §8; поправя
@@ -4150,7 +4258,8 @@ def main():
         _сянка = _shadow_cycle(out / "shadow_trade.json", frames.get("5м"), basis_g, price_user,
                                now_utc, spot_g, new_dir, sh_open_e, sh_open_lv,
                                (trade is not None or pending_trade is not None),
-                               date, best[3] if actionable else "", "XAUUSD", 2)
+                               date, best[3] if actionable else "", "XAUUSD", 2,
+                               скок_базис=_скок_g)
         if _сянка:
             _пред = [m for m in new_msgs if not str(m[0]).startswith(("signal", "s-signal"))]
             _сиг = [m for m in new_msgs if str(m[0]).startswith(("signal", "s-signal"))]
@@ -4160,7 +4269,7 @@ def main():
 
     # === 6б) ВЕЧЕРНА РАВНОСМЕТКА + ПУЛС (Ф5/Ф8.4) и СТАТУС (Ф9.8) ===
     sof_now = datetime.now(timezone.utc).astimezone(_tz("Europe/Sofia"))
-    want_digest = sof_now.hour >= 21 and meta.get("digest") != date and not weekend
+    want_digest = sof_now.hour >= 21 and meta.get("digest") != ден_карти and not weekend
     if want_digest:
         s_tr_now = _load_state(s_tr_f, None)
         new_msgs.append(("digest", _digest_msg(out, date, trade, s_tr_now, spot_g, spot_s, guard,
@@ -4193,7 +4302,7 @@ def main():
         notes.append(f"📅 новина след {_остава(_нд[2])}: "
                      f"{str(_нд[0].get('name', ''))[:44]} ({_нд[4]})")
 
-    if sof_now.hour == 9 and meta.get("cq_ref") != date and not weekend and cq:
+    if sof_now.hour == 9 and meta.get("cq_ref") != ден_карти and not weekend and cq:
         _fng = _fng_live()
         if _fng:
             notes.append(f"страх-алчност живо: {_fng['value']} ({_fng['cls']})")
@@ -4224,7 +4333,7 @@ def main():
     # Веднъж на слот (meta-пазач), само делник. Информативен — не отваря сделка.
     pulse_slot = None
     for ph, hr in (("09", 9), ("14", 14), ("22", 22)):
-        if sof_now.hour == hr and meta.get("pulse_" + ph) != date and not weekend:
+        if sof_now.hour == hr and meta.get("pulse_" + ph) != ден_карти and not weekend:
             s_tr_p = _load_state(s_tr_f, None)
             new_msgs.append(("pulse", _pulse_msg(ph, board, best, new_dir, advice_txt, _adv_ok,
                                                  trade, s_tr_p, spot_g, spot_s, macro, shield, weekend,
@@ -4447,14 +4556,23 @@ def main():
                     try:
                         _f1 = frames.get("1мин")
                         if _f1 is not None and len(_f1):
-                            _бар1 = (float(_f1["High"].iloc[-1]) - _изм_посл,
-                                     float(_f1["Low"].iloc[-1]) - _изм_посл)
+                            # 🔴 21.08 · ДОТУК ТУК СТОЕШЕ `_изм_посл`, който се пълни
+                            # САМО след `if not _s.get("праща"): continue` — тоест
+                            # единствено в рън с ПРАТЕНА мозъчна карта: измерено
+                            # 32 от 4247 ръна = 0.75%. В останалите 99.25% барът
+                            # излизаше СУРОВ ФЮЧЪРС срещу спот-нива; разликата Е
+                            # базисът (54.9$). ИЗПЪЛНЕНО: шортът «удря стоп» с
+                            # резултат −50.08, лонгът «удря ЦЕЛ2» с +25.00, а
+                            # реалният спот-диапазон на бара е (4584.89, 4584.09).
+                            # `_изм` е текущият базис, сметнат ПРЕДИ цикъла.
+                            _бар1 = (float(_f1["High"].iloc[-1]) - _изм,
+                                     float(_f1["Low"].iloc[-1]) - _изм)
                     except Exception:
                         _бар1 = None
                     new_msgs += _мозък_следене(out / "brain_track.json",
                                                out / "brain_result.jsonl",
                                                price_user, now_utc, нов=_нов,
-                                               бар=_бар1)
+                                               бар=_бар1, бележки=notes)
                 except Exception as _e:
                     notes.append(f"🧠 следенето се спъна ({type(_e).__name__}) — прескочено")
             # ОДИТ-44 · СЪСТОЯНИЕТО СЕ ЗАПИСВА ТУК — след като цикълът е
@@ -4515,11 +4633,11 @@ def main():
         statuses.append("тихо (без събития)")
 
     if want_digest and "digest" in sent_tags:            # Д3: маркирай чак след пращане
-        meta["digest"] = date
+        meta["digest"] = ден_карти
     if pulse_slot and "pulse" in sent_tags:              # пулсът — маркирай слота чак след пращане
-        meta["pulse_" + pulse_slot] = date
+        meta["pulse_" + pulse_slot] = ден_карти
     if "cq-ref" in sent_tags:                            # CyberQuant референция — маркирай след пращане
-        meta["cq_ref"] = date
+        meta["cq_ref"] = ден_карти
     # Б1 · часовникът на отброяването се навива САМО след ПОТВЪРДЕНО пращане.
     # Иначе провалено пращане би изяло цял двучасов слот мълчаливо — точно
     # видът тиха загуба, който днес спря бота за два дни.
@@ -4561,6 +4679,12 @@ def main():
     elif tr_f.exists() and (exit_msgs or new_dir is None):
         tr_f.unlink()
     ma_sent = {k: v for k, v in ma_sent.items() if k.startswith(date)}
+    # 🔴 21.08 · ЗНАМЕТО СЕ ТРИЕ ЕДИН ПЪТ, НАКРАЯ. Дотук се POP-ваше още при
+    # реалната сделка и СЯНКАТА никога не го виждаше — а тя е форуърд-тестът,
+    # чиито числа влизат в преценката за риска. Изпълнено: 3 плоски бара + скок
+    # → «щеше да удари стоп · −30.79$» на пазар, който не е мръднал.
+    meta.pop("basis_g_презакотвен", None)
+    meta.pop("basis_s_презакотвен", None)
     _запиши_атомарно(ma_f, json.dumps(ma_sent))
     _запиши_атомарно((out / "guard.json"), json.dumps(guard))
     _запиши_атомарно((out / "meta.json"), json.dumps(meta))
