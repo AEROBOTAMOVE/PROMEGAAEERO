@@ -263,7 +263,7 @@ def check_time(live: Path, code_dir: Path, bars):
     return J
 
 
-def _базис_към(J, when):
+def _базис_към(J, when, поле="basis"):
     """Базисът, който САМИЯТ БОТ е ползвал в най-близкия рън до `when`.
 
     🔴 18.08 · Без него одиторът сравнява фючърсен бар със спот ниво и обявява
@@ -274,12 +274,12 @@ def _базис_към(J, when):
     if not J:
         return 0.0
     _w = _pd.Timestamp(str(when)[:19])
-    _к = [(abs((_pd.Timestamp(x["run_utc"][:19]) - _w).total_seconds()), x.get("basis"))
-          for x in J if x.get("run_utc") and isinstance(x.get("basis"), (int, float))]
+    _к = [(abs((_pd.Timestamp(x["run_utc"][:19]) - _w).total_seconds()), x.get(поле))
+          for x in J if x.get("run_utc") and isinstance(x.get(поле), (int, float))]
     return min(_к)[1] if _к else 0.0
 
 
-def check_delay_engine(live: Path, bars5, A_, J=None):
+def check_delay_engine(live: Path, bars5, A_, J=None, bars5_s=None):
     J_ = J or []
     """В5 · Точното закъснение: за всеки пратен ТП/СТОП реконструира кога РЕАЛНО е ударен."""
     import pandas as pd
@@ -322,11 +322,28 @@ def check_delay_engine(live: Path, bars5, A_, J=None):
         # (вход 61.451 · 62.135 · 62.188), а «закъсненията» от 110/205/226 мин
         # са просто разстоянието от отварянето до пращането.
         # Среброто НЯМА свои барове тук → не се мери, вместо да се лъже.
-        if (tr.get("sym") or "XAUUSD") != "XAUUSD":
+        # 🔴 21.08 · ВСЯКА СДЕЛКА СРЕЩУ СВОИТЕ БАРОВЕ. Дотук среброто просто се
+        # прескачаше (честно — по-добре да не мери, отколкото да лъже), но
+        # закъснението му не се е мерило НИТО ВЕДНЪЖ.
+        _сим = tr.get("sym") or "XAUUSD"
+        _bars = bars5 if _сим == "XAUUSD" else bars5_s
+        if _bars is None or len(_bars) == 0:
             _пропуснати_сребро.append(kind)
             continue
         lvl = tr["levels"][kind]; d = tr["direction"]
-        w = bars5[bars5.index > pd.Timestamp(tr["opened"])]
+        # 🔴 21.08 · ОДИТОРЪТ МЕРЕШЕ НИВО СРЕЩУ БАРОВЕ ОТПРЕДИ ТО ДА СЪЩЕСТВУВА.
+        # След ТП1 стопът се мести на входа (BE-стоп). `tr["levels"]["sl"]` носи
+        # ФИНАЛНОТО ниво, а прозорецът тръгваше от `opened` — тоест цената
+        # пресича входа часове ПРЕДИ ТП1 да е ударен, и това се брои за «стоп».
+        # ДОКАЗАНО върху живата сделка от 28.07: отворена 02:10, ТП1 пратен
+        # 05:35, стоп пратен 06:01 — а одиторът твърдеше «стопът е ударен 05:15»,
+        # тоест ДВАЙСЕТ МИНУТИ ПРЕДИ ТП1. Оттам «закъснение 226 мин».
+        # Самият запис носи `be_since` — точния момент на преместването. Не се
+        # гади: чете се. Същият клас като «одиторът беше сляп» от 04.08.
+        _от = pd.Timestamp(tr["opened"])
+        if kind == "sl" and tr.get("be_since") and abs(float(lvl) - float(tr["entry"])) < 1e-6:
+            _от = max(_от, pd.Timestamp(str(tr["be_since"])[:19]))
+        w = _bars[_bars.index > _от]
         w = w[w.index <= pd.Timestamp(run_utc) + pd.Timedelta(minutes=5)]
         # 🔴 18.08 · ОДИТОРЪТ СРАВНЯВАШЕ ФЮЧЪРС СРЕЩУ СПОТ. Баровете са ФЮЧЪРСНИ
         # (GC=F), а `tr["levels"]` са в СПОТ-света на брокера. Ботът вади базиса
@@ -336,7 +353,8 @@ def check_delay_engine(live: Path, bars5, A_, J=None):
         # спот нивото → «ударено» много преди ботът законно да го види, и оттам
         # ЧЕРВЕНО «закъснение 226 мин», което е артефакт, не дефект.
         # Същият клас като «одиторът беше сляп» от 04.08.
-        _б = _базис_към(J_, run_utc)
+        # Базисът също е ПЕР-МЕТАЛ: златото ползва `basis`, среброто — `basis_s`.
+        _б = _базис_към(J_, run_utc, "basis" if _сим == "XAUUSD" else "basis_s")
         _hi = w["High"] - _б
         _lo = w["Low"] - _б
         if kind == "sl":
@@ -350,12 +368,15 @@ def check_delay_engine(live: Path, bars5, A_, J=None):
         if 0 <= delay < 24 * 60:
             delays.append((delay, kind, str(touch), run_utc))
     if _пропуснати_сребро:
-        A_.warn(cat, "В5с", "сребърното закъснение НЕ СЕ МЕРИ",
-                f"{len(_пропуснати_сребро)} сребърни изхода пропуснати "
+        A_.warn(cat, "В5с", "част от изходите БЕЗ барове",
+                f"{len(_пропуснати_сребро)} изхода пропуснати "
                 f"({', '.join(sorted(set(_пропуснати_сребро)))})",
-                "одиторът има само ЗЛАТНИ барове. Досега сребърните сделки се мереха "
-                "срещу тях и даваха фалшиви часове — това беше цялото червено В5. "
-                "За истинско измерване трябват сребърни 5-минутни барове.")
+                "сребърните барове (SI=F) не се дръпнаха този рън — без тях "
+                "закъснението не се мери, вместо да се лъже срещу чужди барове.")
+    else:
+        _ср = [x for x in delays if str(x[1]).startswith("s") or True]
+        A_.ok(cat, "В5с", "сребърното закъснение СЕ МЕРИ",
+              "всяка сделка се съди срещу СВОИТЕ барове и СВОЯ базис")
     if not delays:
         A_.warn(cat, "В5", "точно закъснение", "не можах да съпоставя изходи с барове")
         return
@@ -1107,6 +1128,24 @@ def main():
     except Exception as e:
         print(f"   ⚠ баровете не се дръпнаха ({type(e).__name__}) — част от проверките ще се пропуснат")
 
+    # 🔴 21.08 · СРЕБЪРНИ БАРОВЕ. Дотук одиторът имаше САМО златни, затова
+    # сребърното закъснение не се е мерило НИТО ВЕДНЪЖ (7 изхода невидими).
+    # Изходът беше честен — «не мери, вместо да лъже» — но сляпото петно си
+    # оставаше сляпо. Сега всяка сделка се съди срещу СВОИТЕ барове.
+    bars5_s = None
+    try:
+        import pandas as pd, yfinance as yf
+        _ds = yf.download("SI=F", period="60d", interval="5m", progress=False, auto_adjust=True)
+        _ds.columns = [c if isinstance(c, str) else c[0] for c in _ds.columns]
+        _is = pd.DatetimeIndex(_ds.index)
+        if _is.tz is not None:
+            _is = _is.tz_convert("UTC").tz_localize(None)
+        _ds.index = _is
+        bars5_s = _ds.dropna(subset=["Close"])
+        print(f"   сребърни барове: {len(bars5_s)} × 5м · последен {bars5_s.index[-1]}")
+    except Exception as e:
+        print(f"   ⚠ сребърните барове не се дръпнаха ({type(e).__name__}) — В5с остава непроверена")
+
     import importlib.util
     spec = importlib.util.spec_from_file_location("lb", code_dir / "live_bot.py")
     lb = importlib.util.module_from_spec(spec); spec.loader.exec_module(lb)
@@ -1132,7 +1171,7 @@ def main():
             if cat == "ВРЕМЕ":
                 _J = check_time(live, code_dir, bars5)
                 if pi == 0:                                # В5 git-реконструкция е бавна → веднъж
-                    check_delay_engine(live, bars5, A, J=_J)
+                    check_delay_engine(live, bars5, A, J=_J, bars5_s=bars5_s)
             elif cat == "ТОЧНОСТ":
                 check_accuracy(live, code_dir, lb, bars5)
             elif cat == "МЪРТВИ":

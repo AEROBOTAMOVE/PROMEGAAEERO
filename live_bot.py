@@ -34,7 +34,7 @@ import pandas as pd
 # v9.5–v9.8 — всеки ред в дневника твърдеше грешна версия, а дневникът е
 # единственият начин отвън да се види какво работи. П47 пада, ако VERSION не се
 # среща в темата на последния commit.
-VERSION = "v14.0"
+VERSION = "v14.1"
 PIP = 0.10
 SL_PIPS = 200; SL_D = SL_PIPS * PIP                       # стоп: 200п = $20/oz
 TPS = [("ТП1", 75, 7.5), ("ТП2", 120, 12.0), ("ТП3", 200, 20.0)]
@@ -237,6 +237,14 @@ def _roll_jump(цена, метал="XAUUSD"):
 # 09:00 София, и САМО в делник. Мерено от live/sent_log.jsonl преди FOMC на
 # 19.08: 180ч, 156ч, 132ч, после ТРИ ДНИ ТИШИНА през уикенда, 60ч, 36ч и
 # накрая 12ч. Тоест последната дума падаше на 12 часа, а събота беше сляпа.
+# 🔴 21.08 · МАКРО-СЪБИТИЯ, КОИТО ЗА ЗЛАТОТО ВАЖАТ ВИНАГИ, независимо как
+# доставчикът е маркирал «кои активи засяга». PCE изпадаше точно така.
+# И кирилица, и латиница — доставчикът дава заглавията на български.
+МАКРО_ИМЕНА = tuple(x.strip().upper() for x in os.environ.get(
+    "МАКРО_ИМЕНА",
+    "FOMC,CPI,PCE,NFP,NON-FARM,PAYROLL,ФРС,ЛИХВ,ИНФЛАЦ,ЗАЕТОСТ,БЕЗРАБОТ,"
+    "GDP,БВП,POWELL,ПАУЪЛ,JACKSON,ДЖЕКСЪН,ISM,PPI,RETAIL,ПРОДАЖБИ"
+).split(",") if x.strip())
 НОВИНИ_ПРЕДИ_Ч = float(os.environ.get("НОВИНИ_ПРЕДИ_Ч", "15"))   # обещанието: поне толкова часа
 НОВИНИ_ЗАПАС_Ч = float(os.environ.get("НОВИНИ_ЗАПАС_Ч", "0.5"))  # ботът е спал и по 15 мин (мерено,
                                                                  # 7 дни, макс пауза) → запас, за да
@@ -910,7 +918,7 @@ SPOT_MAX_AGE = 90        # A1: котировка по-стара от 90 сек
 # до age=0, тоест платформа с часовник +60с И ЗАСТОЯЛА цена минаваше за съвсем
 # прясна. Истинското скю е ~1с; 2с е достатъчно и не крие застой.
 СКЮ_ДОПУСК = float(os.environ.get("СКЮ_ДОПУСК", "2"))
-def _spot(instr="XAU/USD", market_closed=False, cme_pause=False, реф=None):
+def _spot(instr="XAU/USD", market_closed=False, cme_pause=False, реф=None, следа=None):
     """Swissquote публичен фийд, без ключ; за злато има РЕЗЕРВНА ВЕРИГА (PAXG: Binance → Coinbase → Kraken).
     A1: избира цена САМО от ПРЯСНА платформа; прозорец 90 сек. Връща bid/ask/mid/src/age_sec.
     T1: под-секундно часово разминаване (age малко под 0) НЕ бракува фийда."""
@@ -935,11 +943,23 @@ def _spot(instr="XAU/USD", market_closed=False, cme_pause=False, реф=None):
                 if p["bid"] < p["ask"] and (best is None or (p["ask"] - p["bid"]) < (best[1] - best[0])):
                     best = (p["bid"], p["ask"]); best_age = age
         if best is not None:
+            if следа is not None:
+                следа.append(("swq", "ok"))
             return {"bid": round(best[0], 3), "ask": round(best[1], 3),
                     "mid": round((best[0] + best[1]) / 2, 3), "src": "swq",
                     "age_sec": round(best_age, 1)}
-    except Exception:
-        pass
+        if следа is not None:
+            следа.append(("swq", "празен отговор"))
+    except Exception as _еs:
+        # 🔴 21.08 · ДОТУК ТУК СТОЕШЕ ГОЛО `pass`. Умре ли мрежата или смени ли
+        # Swissquote схемата си (bid/ask → buy/sell), функцията връщаше None
+        # ТОЧНО както при затворен пазар — двете състояния бяха неразличими,
+        # а в главния поток разликата се губеше докрай.
+        # ЧЕСТНО ЗА ТЕЖЕСТТА: латентно, не текущо — от 4242 живи ръна има 76
+        # случая spot=None без отрязване и ВСИЧКИТЕ 76 са в час 21 UTC (CME
+        # паузата), тоест по устройство. Реални попадения от мъртва мрежа: 0.
+        if следа is not None:
+            следа.append(("swq", type(_еs).__name__))
     # 🔴 ОДИТ-53 · И В ДНЕВНАТА CME ПАУЗА. Дотук пазачът беше само уикендът, а
     # CME Globex спира и всеки делник по един час (17:00 Ню Йорк). Тогава
     # фючърсът е затворен, а PAXG е крипто и върви 24/7 — цена, която никой не
@@ -987,7 +1007,9 @@ def _spot(instr="XAU/USD", market_closed=False, cme_pause=False, реф=None):
                 if 0 < b < a and _низ:                    # груб санити: злато в разумен диапазон
                     return {"bid": round(b, 2), "ask": round(a, 2), "mid": round((b + a) / 2, 2),
                             "src": src, "age_sec": None}
-            except Exception:
+            except Exception as _ер:
+                if следа is not None:
+                    следа.append((src, type(_ер).__name__))
                 continue
     return None
 
@@ -2627,9 +2649,18 @@ def _cq_fetch(now_utc):
         events = []
         for e in raw:
             assets = str(e.get("affectsAssets", "")).upper()
+            имe = str(e.get("title", ""))
             imp = str(e.get("impact", "")).lower()
-            if imp in ("high", "critical") and any(a in assets for a in ("GOLD", "XAU", "DXY", "USD")):
-                events.append({"name": str(e.get("title", ""))[:60], "dt": str(e.get("eventDate", "")), "impact": imp})
+            _по_актив = any(a in assets for a in ("GOLD", "XAU", "DXY", "USD"))
+            # 🔴 21.08 · ВТОРИ, НЕЗАВИСИМ ПРИЗНАК: ИМЕТО. Дотук се съдеше САМО
+            # по `affectsAssets` — ЧУЖДО поле с ЧУЖДА подредба. PCE е макро за
+            # златото, но доставчикът го маркира като крипто/акции → изпадаше от
+            # календара, тоест нито макро-щит, нито отброяване до новина.
+            # Старият филтър НЕ се маха; този само добавя пропуснатите.
+            _по_име = any(k in имe.upper() for k in МАКРО_ИМЕНА)
+            if imp in ("high", "critical") and (_по_актив or _по_име):
+                events.append({"name": имe[:60], "dt": str(e.get("eventDate", "")),
+                               "impact": imp, "по": ("актив" if _по_актив else "име")})
         # КИБЕР КВАНТ: четирите клъстера (валуация/моментум/настроения/on-chain).
         # Защитено — липсват ли, останалото пак минава.
         cl = {}
@@ -3651,8 +3682,13 @@ def main():
     # спот + базис + санити (Ф8.3 / Ф9.2 / Ф9.7 / A1 / A4 / A5)
     # РЕД: суров спот → базис (детекцията на роловър иска суровия!) → санити срещу бар−базис
     rng_g = _bar_range(fine)                             # A4: диапазон за динамичния праг
+    _сл_g = []
     raw_g = _spot("XAU/USD", market_closed=weekend, cme_pause=_cme_pause(now_utc),
-                  реф=bar_price)
+                  реф=bar_price, следа=_сл_g)
+    if raw_g is None and not weekend and not _cme_pause(now_utc) and _сл_g:
+        # «пазарът спи» и «фийдът умря» спират да са една и съща дума
+        notes.append("🔴 живата цена НЕ СЕ ДЪРПА · " +
+                     " · ".join(f"{и}: {п}" for и, п in _сл_g[:4]))
     jump_g = abs(raw_g["mid"] - meta["last_spot_g"]) if (raw_g and meta.get("last_spot_g")) else None  # T3
     if raw_g:
         meta["last_spot_g"] = raw_g["mid"]
