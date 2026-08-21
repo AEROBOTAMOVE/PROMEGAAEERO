@@ -34,7 +34,7 @@ import pandas as pd
 # v9.5–v9.8 — всеки ред в дневника твърдеше грешна версия, а дневникът е
 # единственият начин отвън да се види какво работи. П47 пада, ако VERSION не се
 # среща в темата на последния commit.
-VERSION = "v13.7"
+VERSION = "v13.8"
 PIP = 0.10
 SL_PIPS = 200; SL_D = SL_PIPS * PIP                       # стоп: 200п = $20/oz
 TPS = [("ТП1", 75, 7.5), ("ТП2", 120, 12.0), ("ТП3", 200, 20.0)]
@@ -152,6 +152,12 @@ CHART_BRAIN_ON = os.environ.get("CHART_BRAIN", "1") == "1"
 # (`if age >= 30`), а всяка карта, която иска да каже «държа я най-много N
 # дни», трябваше да я преписва на ръка. Число, преписано на ръка, остарява.
 ДНИ_МАКС = int(os.environ.get("ДНИ_МАКС", "30"))   # календарни дни до изход по време
+# 🔴 21.08 · ХОРИЗОНТ ЗА МОЗЪЧНОТО НАБЛЮДЕНИЕ. Дотук нямаше никакъв: докато
+# brain_track.json стои, ново наблюдение не се приема. Мерено в живия дневник:
+# 17 затворени наблюдения, най-дългото 17.2ч, медиана под 2ч — затова прагът е
+# нарочно ШИРОК: спира заклещването, без да реже живи наблюдения.
+МОЗЪК_ЧАСОВЕ_БЪРЗИ = float(os.environ.get("МОЗЪК_ЧАСОВЕ_БЪРЗИ", "24"))   # 1мин/5м
+МОЗЪК_ЧАСОВЕ_БАВНИ = float(os.environ.get("МОЗЪК_ЧАСОВЕ_БАВНИ", "72"))   # 15м и нагоре
 # 🔴 21.08 · ТАВАНЪТ НА БАЗИСА СТАВА ПРОПОРЦИОНАЛЕН НА ЦЕНАТА.
 # Фиксираните 40$ са били разумни при злато на 2000$ (2% от цената). При 4600$
 # това е 0.87% и РЕЖЕ НОРМАЛНИ СТОЙНОСТИ: измерено, истинският базис е 47.74$,
@@ -163,6 +169,51 @@ BASIS_CAP_PCT = float(os.environ.get("BASIS_CAP_PCT", "0.02"))    # 2% от це
 BASIS_CAP_MIN = float(os.environ.get("BASIS_CAP_MIN", "40"))      # старото поведение като под
 BASIS_CAP_MIN_S = float(os.environ.get("BASIS_CAP_MIN_S", "3"))   # сребро: досегашният под
 BASIS_STUCK_N = int(os.environ.get("BASIS_STUCK_N", "12"))        # ~1 час при рън на 5 мин
+# 🔴 21.08 · КОГА РЕЗЕРВАТА ПОЕМА БАЗИСА. Умре ли Swissquote, а PAXG работи,
+# базисът дотук замръзваше ЗАВИНАГИ и прекъсвачът дори не биваше извикан.
+# Живият дневник показва, че вратата е отворена: paxg-cb в 66 реални ръна.
+РЕЗЕРВА_ОТКОТВИ = int(os.environ.get("РЕЗЕРВА_ОТКОТВИ", "30"))   # ~2.5 часа
+PAXG_ПРЕМИЯ = float(os.environ.get("PAXG_ПРЕМИЯ", "2.0"))        # мерена 1-4$ крипто-премия
+# 🔴 21.08 · ДВАТА ПРАГА СТАВАТ ОТНОСИТЕЛНИ. И двата са в ДОЛАРИ и не са мърдали,
+# докато златото е минало от 2000$ на 4650$ — тоест стегнали са се 2.3× сами,
+# без никой да го е решавал. `_basis_cap` вече го направи; тези са близнаците му.
+# ЖЕЛЯЗНО: при 2000$ и двата дават ТОЧНО старите числа, бит за бит.
+SPOT_TOL_PCT = float(os.environ.get("SPOT_TOL_PCT", "0.0040"))   # 8$ при 2000$ = 0.40%
+SPOT_TOL_MIN = float(os.environ.get("SPOT_TOL_MIN", "8"))        # старото като под
+ROLL_JUMP_PCT = float(os.environ.get("ROLL_JUMP_PCT", "0.0040"))  # също 0.40%
+
+
+def _spot_tol(цена):
+    """Базовият допуск на санитито — ПО ЦЕНА, не закован.
+
+    МЕРЕНО (1239 ръна със следа, преди 19.08): подът 8.00$ е ДЕЙСТВАЩИЯТ допуск
+    в 97.3% от ръновете, а на здрави дни реже живата цена в 7.8% от тях. От тези
+    97 отрязвания 94 (97%) са в рамките на 0.40% от цената — тоест биха минали
+    при ширината, която 8$ СА БИЛИ при злато 2000$.
+    Пазачът не се маха: истинският глич, който е спрял (100$), е далеч над това.
+    """
+    try:
+        ц = abs(float(цена))
+    except (TypeError, ValueError):
+        return SPOT_TOL_MIN
+    return max(SPOT_TOL_MIN, SPOT_TOL_PCT * ц)
+
+
+def _roll_jump(цена, метал="XAUUSD"):
+    """Прагът «това е роловър, не движение» — ПО ЦЕНА.
+
+    МЕРЕНО (3215 живи записа): базисът е стабилно 1.21–1.38% от цената, значи и
+    вариацията му расте с нея. |скок| p50 1.77 · p95 5.28 · МАКС 17.52 · над 8$
+    в 0.7% от ръновете — тоест 8$ седят ВЪТРЕ в шума. Истинският роловър е
+    $25-30. Праг 18.6$ при 4650$ седи МЕЖДУ двете — по-чиста граница, не по-мътна.
+    """
+    try:
+        ц = abs(float(цена))
+    except (TypeError, ValueError):
+        return ROLLOVER_JUMP if метал == "XAUUSD" else ROLLOVER_JUMP_S
+    if метал == "XAUUSD":
+        return max(ROLLOVER_JUMP, ROLL_JUMP_PCT * ц)
+    return max(ROLLOVER_JUMP_S, ROLL_JUMP_PCT * ц)
 # 📅 21.08 · ОТБРОЯВАНЕ ДО ГОЛЯМА НОВИНА.
 # Дотук идващото събитие се казваше САМО в дневната референция — веднъж на ден,
 # 09:00 София, и САМО в делник. Мерено от live/sent_log.jsonl преди FOMC на
@@ -808,7 +859,7 @@ SPOT_MAX_AGE = 90        # A1: котировка по-стара от 90 сек
 # до age=0, тоест платформа с часовник +60с И ЗАСТОЯЛА цена минаваше за съвсем
 # прясна. Истинското скю е ~1с; 2с е достатъчно и не крие застой.
 СКЮ_ДОПУСК = float(os.environ.get("СКЮ_ДОПУСК", "2"))
-def _spot(instr="XAU/USD", market_closed=False, cme_pause=False):
+def _spot(instr="XAU/USD", market_closed=False, cme_pause=False, реф=None):
     """Swissquote публичен фийд, без ключ; за злато има РЕЗЕРВНА ВЕРИГА (PAXG: Binance → Coinbase → Kraken).
     A1: избира цена САМО от ПРЯСНА платформа; прозорец 90 сек. Връща bid/ask/mid/src/age_sec.
     T1: под-секундно часово разминаване (age малко под 0) НЕ бракува фийда."""
@@ -869,7 +920,20 @@ def _spot(instr="XAU/USD", market_closed=False, cme_pause=False):
                 with urllib.request.urlopen(req, timeout=8) as r:
                     q = json.loads(r.read().decode())
                 b, a = pick(q)
-                if 0 < b < a and 500 < b < 20000:          # груб санити: злато в разумен диапазон
+                # 🔴 21.08 · ДОТУК: `500 < b < 20000` — абсолютни долари на ЕДИНСТВЕНАТА
+                # резервна верига. Долната граница е под всяка цена на златото от
+                # 2005 г. (мъртва); горната е ЖИВА СТЕНА — мине ли я златото,
+                # резервата връща None ТИХО и ботът спира да предлага входове
+                # винаги когато основният фийд мълчи. Днес 4639$ е 23.2% от нея.
+                # Същият шаблон като убития дефект, само с по-далечна дата.
+                # Сега санитито е спрямо БАРА: по-строго И не може да остарее.
+                # Без подадена референция — старите граници като резерва.
+                try:
+                    _р = abs(float(реф)) if реф else 0.0
+                except (TypeError, ValueError):
+                    _р = 0.0
+                _низ = (0.80 * _р <= b <= 1.20 * _р) if _р > 0 else (500 < b < 20000)
+                if 0 < b < a and _низ:                    # груб санити: злато в разумен диапазон
                     return {"bid": round(b, 2), "ask": round(a, 2), "mid": round((b + a) / 2, 2),
                             "src": src, "age_sec": None}
             except Exception:
@@ -1007,6 +1071,28 @@ def _basis_update(state, key, raw_spot, bar_close, notes, cap=None, now_utc=None
     # ОДИТ-6: резервата вече е ВЕРИГА (paxg-bin / paxg-cb / paxg-kr) → пазачът хваща по ПРЕФИКС,
     # иначе новите имена биха се промъкнали и биха замърсили базиса с крипто-премията.
     if str(raw_spot.get("src") or "").startswith("paxg"):
+        # 🔴 21.08 · ТОЗИ РАНЕН ИЗХОД СТОЕШЕ ПРЕДИ ЦЕЛИЯ ПРЕКЪСВАЧ. Смисълът му е
+        # верен — PAXG носи 1-4$ крипто-премия и не бива да цапа EMA-то — но
+        # излизаше БЕЗ да пипне брояча, БЕЗ памет и БЕЗ нито една дума.
+        # ИЗПЪЛНЕНО: 200 ръна само с резервата → базисът не мръдва от 25.52,
+        # бележките са ПРАЗЕН СПИСЪК, ключът `_отказ` дори не съществува; после
+        # санитито мери 21.48$ при допуск 8$ и реже живата цена. Това е БУКВАЛНО
+        # заключването от 19-20.08, само през друга врата — и без брояч, който
+        # да го развърже. Вратата е отворена в продукцията: paxg-cb в 66 ръна.
+        # Сега: брои, обажда се, и при много дълга тишина закотвя наново — със
+        # свалена премия, защото стар базис е по-лоша догадка от нов минус 2$.
+        _рез = key + "_резерва"
+        state[_рез] = int(state.get(_рез, 0)) + 1
+        if state[_рез] >= РЕЗЕРВА_ОТКОТВИ:
+            _чист = now_b - (PAXG_ПРЕМИЯ if now_b > 0 else -PAXG_ПРЕМИЯ)
+            notes.append(f"🔓 базисът стои {state[_рез]} ръна без златния фийд — "
+                         f"закотвям наново на {_чист:+.2f} (резерва минус премията "
+                         f"{PAXG_ПРЕМИЯ:.1f}$); стар базис лъже повече от нов с премия")
+            state[key] = round(_чист, 3)
+            state[_рез] = 0
+        elif state[_рез] >= BASIS_STUCK_N:
+            notes.append(f"⚠️ базисът не се обновява от {state[_рез]} ръна — златният "
+                         f"фийд мълчи, карам на резерва (пазя {state.get(key)})")
         return state.get(key, round(now_b, 3))
     if old is None:                                 # НАХОДКА-D: студен старт без глич-защита
         if abs(now_b) <= cap:
@@ -1027,7 +1113,8 @@ def _basis_update(state, key, raw_spot, bar_close, notes, cap=None, now_utc=None
                 return 0.0
             state.pop(key + "_презакотвен", None)        # студен старт ≠ смяна на скала
             return state[key]
-    elif abs(now_b - old) > (скок if скок is not None else ROLLOVER_JUMP):
+    elif abs(now_b - old) > (скок if скок is not None
+                             else _roll_jump(bar_close, "XAGUSD" if "_s" in str(key) else "XAUUSD")):
         moved = prev_bar is not None and abs(bar_close - prev_bar) >= 0.5 * abs(now_b - old)
         if _cme_pause(now_utc):                     # A5: нощна пауза → игнорирай скока, пази базиса
             notes.append(f"скок на базиса ({now_b:+.1f}) в CME паузата — игнориран, пазя {old:+.2f}")
@@ -1050,6 +1137,7 @@ def _basis_update(state, key, raw_spot, bar_close, notes, cap=None, now_utc=None
         state[key] = round(old + BASIS_ALPHA * (now_b - old), 3)
         state[key + "_отказ"] = 0        # прието → броячът на отказите се нулира
         state[key + "_отказани"] = []
+        state[key + "_резерва"] = 0      # златният фийд се върна
     return state[key]
 
 
@@ -1078,13 +1166,34 @@ def _tf_basis(state, key, intra, daily, notes, days=20, cap=None):
     Връща стойност, която се ДОБАВЯ към интрадей цената, за да легне на дневното ниво.
     МЕДИАНА (устойчива на роловър-скокове) + EMA, с cap срещу глич."""
     _cap = cap                                       # смята се долу, щом има цена
+    def _тих(причина):
+        """🔴 21.08 · ДОТУК И ТРИТЕ ИЗХОДА ТУК ВРЪЩАХА СТАРОТО МЪЛЧАЛИВО, а
+        прекъсвачът живееше САМО в клона «над тавана». ИЗПЪЛНЕНО с КОНТРОЛА:
+        по клона «над тавана» — 60 бележки + отключване; по клона `except` —
+        60 ръна, 0 бележки, брояч 0. Дефектът беше точно в разликата.
+        Тук няма ЖИВА стойност, с която да се презакотви, затова след N поредни
+        стойността пада на 0.0 и се обявява: нулата е честно «не знам», а старо
+        число е тихо твърдение, което мести дневните референции на 6 рамки."""
+        _бк = key + "_отказ"
+        state[_бк] = int(state.get(_бк, 0)) + 1
+        if state[_бк] >= TF_BASIS_STUCK_N:
+            notes.append(f"🔓 контрактният базис не се пресмята {state[_бк]} ръна "
+                         f"({причина}) — пускам го на 0.00 вместо да твърдя старото")
+            state[key] = 0.0
+            state[_бк] = 0
+            state[key + "_отказани"] = []
+            return 0.0
+        notes.append(f"контрактният базис не се пресмята ({причина}) — пазя стария "
+                     f"· {state[_бк]}-и пореден отказ")
+        return state.get(key, 0.0)
+
     try:
         if intra is None or daily is None or len(intra) == 0 or len(daily) == 0:
-            return state.get(key, 0.0)
+            return _тих("няма данни")
         r = intra.resample("1D").agg(Close=("Close", "last")).dropna()
         j = r.join(daily[["Close"]], how="inner", rsuffix="_d")
         if len(j) < 5:                                   # малко застъпване → не гадай
-            return state.get(key, 0.0)
+            return _тих("малко застъпване")
         now = float((j["Close_d"] - j["Close"]).tail(days).median())
         if _cap is None:                                 # таван ПО ЦЕНА, не закован
             _ц = abs(float(j["Close_d"].iloc[-1]))
@@ -1106,8 +1215,8 @@ def _tf_basis(state, key, intra, daily, notes, days=20, cap=None):
         state[key + "_отказ"] = 0                        # прието → броячът се нулира
         state[key + "_отказани"] = []
         return state[key]
-    except Exception:
-        return state.get(key, 0.0)
+    except Exception as _e:
+        return _тих(type(_e).__name__)
 
 
 # ---------- съвети (Ф1.3 / Ф2 / F18) ----------
@@ -1466,7 +1575,7 @@ def _fast(fast):
     return f" · бърз пазар ±${fast:.0f}/10мин, само лимитна" if fast else ""
 
 
-def _reentry_ban(meta, direction, streak_n, why=None, set_it=False):
+def _reentry_ban(meta, direction, streak_n, why=None, set_it=False, ден=None):
     """О4 · забраната за ре-влизане ПЕРСИСТИРА, докато същият пресен стрийк е жив.
 
     Дотук `_reentry_verdict` пазеше САМО рънa на затварянето — следващият рън,
@@ -1478,9 +1587,19 @@ def _reentry_ban(meta, direction, streak_n, why=None, set_it=False):
     """
     ключ = "reentry_ban"
     ст = meta.get(ключ) or {}
+    # 🔴 21.08 · ЗАПИСЪТ НЯМАШЕ ДАТА, а причината му обещава срок: «2 стопа днес
+    # в тази посока — спирам ДО УТРЕ». Нищо в записа не можеше да изпълни това
+    # обещание: той падаше само при СМЯНА на посоката или стрийка. При застоял
+    # дневен бар (празник, тънка сесия — ботът има отделна бележка за това)
+    # стрийкът стои същият с дни и забраната се произнася наново.
+    # ИЗПЪЛНЕНО: ден 1 → забранен · ден 2, същият стрийк → пак забранен.
+    # `guard.json` СЕ нулира по дата; замразената му причина — не. Сега и тя.
     if set_it and why:
-        meta[ключ] = {"dir": direction, "streak": int(streak_n), "why": why}
+        meta[ключ] = {"dir": direction, "streak": int(streak_n), "why": why, "date": ден}
         return True, why
+    if ден and ст.get("date") and str(ст.get("date")) != str(ден):
+        meta.pop(ключ, None)          # «до утре» вече наистина значи «до утре»
+        return False, ""
     if (ст.get("dir") == direction and int(ст.get("streak", -1)) == int(streak_n)
             and 1 <= int(streak_n) <= 3):
         return True, ст.get("why") or "ре-влизането е спряно за този сигнал"
@@ -1796,6 +1915,39 @@ def _мозък_следене(файл, дневник, цена, now_utc, но
     msgs = []
     т = _load_state(файл, None)
 
+    # 🔴 21.08 · НАБЛЮДЕНИЕТО НЯМАШЕ ИЗХОД ПО ВРЕМЕ. Затваряше се само при стоп
+    # или цел2, а докато файлът стои, НИТО ЕДНО ново наблюдение не се приема.
+    # Реалната сделка има изход по време (ДНИ_МАКС=30); наблюдението — не.
+    # ИЗПЪЛНЕНО: 500 ръна с часовник 17 МЕСЕЦА след отварянето — файлът още
+    # държи, новото наблюдение НЕ е прието, карти няма.
+    # ЗА ЧЕСТНОСТ: в живия brain_result.jsonl всичките 17 записа се затварят
+    # бързо (макс 17.2ч, медиана под 2ч) — механизмът е доказан, заклещване в
+    # продукция НЕ е наблюдавано. Затова хоризонтът е широк: спира заклещването,
+    # без да реже живи наблюдения.
+    if т is not None and цена is not None and now_utc:
+        try:
+            _въз_ч = (pd.Timestamp(now_utc) - pd.Timestamp(т.get("отворен"))).total_seconds() / 3600.0
+        except Exception:
+            _въз_ч = None
+        _хор = МОЗЪК_ЧАСОВЕ_БЪРЗИ if str(т.get("рамка", "")) in ("1мин", "5м") else МОЗЪК_ЧАСОВЕ_БАВНИ
+        if _въз_ч is not None and _въз_ч >= _хор:
+            _зн_в = 1 if т["посока"] == "long" else -1
+            т["изход"] = "време"
+            т["цена_изход"] = round(float(цена), 2)
+            т["затворен"] = now_utc
+            т["пари"] = round((float(цена) - float(т["вход"])) * _зн_в, 2)
+            try:
+                with io.open(str(дневник), "a", encoding="utf-8") as _ф:
+                    _ф.write(json.dumps(т, ensure_ascii=False, default=str) + chr(10))
+            except Exception:
+                pass
+            try:
+                файл.unlink()
+            except Exception:
+                pass
+            msgs.append(("brain-exit:време", _мозък_изход_msg(т, "време", float(цена), _зн_в)))
+            т = None
+
     if т is not None and цена is not None:
         лонг = т["посока"] == "long"
         зн = 1 if лонг else -1
@@ -1884,7 +2036,8 @@ def _мозък_изход_msg(т, вид, цена, зн):
     пари = (цена - т["вход"]) * зн
     глави = {"цел1": ("✅", "ПЪРВАТА ЦЕЛ падна"),
              "цел2": ("🏆", "ВТОРАТА ЦЕЛ падна"),
-             "стоп": ("🛑", "СТОПЪТ удари")}
+             "стоп": ("🛑", "СТОПЪТ удари"),
+             "време": ("⏰", "ВРЕМЕТО изтече")}
     ико, дума = глави.get(вид, ("📌", вид))
     L = [f"{ико} {дума} · наблюдението от "
          f"{_sofia_ако_друг_ден(т['отворен'])} · злато {посока}",
@@ -2786,7 +2939,17 @@ def _send_raw(text):
             if e.code in (429, 408, 425) or e.code >= 500:
                 last = f"SEND_FAILED: HTTP {e.code} (rate/timeout/server) {desc}".strip()
                 import time; time.sleep(3)
-            elif 400 <= e.code < 500:                      # 400/403/404/413 = истински «отровни»
+            elif e.code in (401, 403):
+                # 🔴 21.08 · «МОЯТА КАРТА Е РАЗВАЛЕНА» ≠ «МОЯТА САМОЛИЧНОСТ Е
+                # РАЗВАЛЕНА». 401 (отменен токен) и 403 (ботът изгонен от групата)
+                # падаха в същата кофа като развален HTML → след 3 ръна картата се
+                # хвърляше със статус «ОТРОВНО-ХВЪРЛЕНО (развален HTML)». Пазачът
+                # за липсващ токен не палеше, защото токен ИМА — просто невалиден.
+                # ИЗПЪЛНЕНО: рън 4 хвърли карта с изряден HTML `<b>ЛОНГ 4639</b>`.
+                # Изходът на процеса беше 0, алармата не гръмна, дневникът зелен.
+                # Този провал е ОБЩ ЗА ВСЯКА КАРТА — не бива да осъжда никоя.
+                return f"AUTH_FAIL:{e.code} {desc}".strip()
+            elif 400 <= e.code < 500:                      # 400/404/413 = истински «отровни»
                 return f"HARD_FAIL:{e.code} {desc}".strip()   # + точната причина от Телеграм
             else:
                 last = f"SEND_FAILED: HTTP {e.code} {desc}".strip()
@@ -2873,7 +3036,7 @@ def _outbox_flush(out_dir, new_msgs, statuses, dry=False):
     if len(pending) < _преди_дедуп:
         statuses.append(f"📎 дедуп: {_преди_дедуп - len(pending)} стари копия махнати "
                         f"(пази се най-новото на всеки таг)")
-    remaining = []; sent_tags = set(); no_token = False
+    remaining = []; sent_tags = set(); no_token = False; auth_fail = ""
     # 🔴 ОДИТ-48 · ТАВАНЪТ БЕШЕ ОБЯВЕН И НЕ СЕ ПОЛЗВАШЕ НИКЪДЕ (мое, v9.8), а
     # тестът ми «го пазеше», защото проверяваше само декларацията. Сега реже.
     _орязани = 0
@@ -2921,6 +3084,13 @@ def _outbox_flush(out_dir, new_msgs, statuses, dry=False):
             with (out_dir / "sent_log.jsonl").open("a", encoding="utf-8") as fh:
                 fh.write(json.dumps({"utc": now_iso, "tag": msg["tag"], "text": msg["text"]},
                                     ensure_ascii=False) + "\n")
+        elif st.startswith("AUTH_FAIL"):
+            # Самоличността е обща за всяка карта → НЕ брои за «отровна» карта.
+            # Съобщението остава в пощата и се вдига същата тревога като при
+            # липсващ токен, за да гръмне `if: failure()` в workflow-а.
+            remaining.append(msg)
+            no_token = True
+            auth_fail = st[len("AUTH_FAIL:"):].strip()[:70]
         elif st.startswith("HARD_FAIL"):
             msg["hard_fails"] = msg.get("hard_fails", 0) + 1
             remaining.append(msg)                         # ще опита още 2 пъти, после отровно
@@ -2949,6 +3119,15 @@ def _outbox_flush(out_dir, new_msgs, statuses, dry=False):
                             f"изхвърлени (таван {ОПАШКА_ТАВАН}); изходните са запазени")
     ob_f.write_text("\n".join(json.dumps(m, ensure_ascii=False) for m in remaining), encoding="utf-8")
     if no_token:
+        # 🔴 21.08 · ДВЕ РАЗЛИЧНИ БЕДИ, ЕДИН ТЕКСТ. «Няма токен» и «токенът е
+        # отменен / ботът е изгонен» изискват различно действие от собственика,
+        # а картата казваше едно и също. Числото и думата до него не бива да си
+        # противоречат: щом токен ИМА, не пиши «липсва».
+        if auth_fail:
+            statuses.append(f"🔴 ТЕЛЕГРАМ ОТКАЗВА САМОЛИЧНОСТТА ({auth_fail}) — "
+                            f"{len(remaining)} карти чакат в пощата, НИТО ЕДНА не е хвърлена")
+            raise SystemExit(f"ТЕЛЕГРАМ: {auth_fail} — токенът е отменен или ботът е изгонен "
+                             f"от групата; {len(remaining)} карти остават в outbox.jsonl")
         statuses.append(f"🔴 ЛИПСВА TELEGRAM_TOKEN/CHAT_ID — {len(remaining)} карти чакат в пощата")
         raise SystemExit(f"КОНФИГУРАЦИЯ: няма TELEGRAM_TOKEN/TELEGRAM_CHAT_ID; "
                          f"{len(remaining)} карти НЕ са изпратени и остават в outbox.jsonl")
@@ -3311,7 +3490,8 @@ def main():
     # спот + базис + санити (Ф8.3 / Ф9.2 / Ф9.7 / A1 / A4 / A5)
     # РЕД: суров спот → базис (детекцията на роловър иска суровия!) → санити срещу бар−базис
     rng_g = _bar_range(fine)                             # A4: диапазон за динамичния праг
-    raw_g = _spot("XAU/USD", market_closed=weekend, cme_pause=_cme_pause(now_utc))
+    raw_g = _spot("XAU/USD", market_closed=weekend, cme_pause=_cme_pause(now_utc),
+                  реф=bar_price)
     jump_g = abs(raw_g["mid"] - meta["last_spot_g"]) if (raw_g and meta.get("last_spot_g")) else None  # T3
     if raw_g:
         meta["last_spot_g"] = raw_g["mid"]
@@ -3322,7 +3502,8 @@ def main():
     basis_g = _basis_update(meta, "basis_g", raw_g, bar_price, notes,
                             cap=_basis_cap(bar_price, "XAUUSD"), now_utc=now_utc)
     _сан_g = {}
-    spot_g = _spot_sane(raw_g, bar_price - basis_g, 8.0, bar_rng=rng_g, spot_jump=jump_g,
+    spot_g = _spot_sane(raw_g, bar_price - basis_g, _spot_tol(bar_price),
+                        bar_rng=rng_g, spot_jump=jump_g,
                         следа=_сан_g)
     spot_rejected_g = bool(raw_g is not None and spot_g is None)   # A2: суровият беше жив, санитито го отряза
     if spot_rejected_g and _сан_g:
@@ -3538,18 +3719,27 @@ def main():
     # ре-влизане след приключена сделка — по F18 правилата
     closed_kinds = [k for _, _, k, _ in exit_msgs if k in ("tp3", "sl", "time", "flip")]
     reentry = False
+    # 🔴 21.08 · ЧИСТЕНЕТО БЕШЕ ЗАКЛЮЧЕНО ПОД `closed_kinds`. И двете извиквания
+    # на `_reentry_ban` са в блока долу, тоест в рън, в който нищо не се е
+    # затворило, функцията изобщо не се вика — и записът стои в meta.json
+    # неограничено. Тук той пада, щом денят/посоката/стрийкът са се сменили.
+    if meta.get("reentry_ban"):
+        _чист_ст = meta.get("reentry_ban") or {}
+        if str(_чист_ст.get("date", "")) != str(date):
+            meta.pop("reentry_ban", None)
+            notes.append("♻️ забраната за ре-влизане падна — нов ден")
     if closed_kinds and actionable and trade is None:
         # О4 · първо питаме ПЕРСИСТИРАЩАТА забрана: щитът вече не важи само за
         # рънa на затварянето. Дотук следващият рън, пет минути по-късно, я
         # заобикаляше и отваряше точно шорта, който правилото отказва.
         _стр_re = regime["streaks"].get(new_dir, 0)
-        _забранен, _защо_бан = _reentry_ban(meta, new_dir, _стр_re)
+        _забранен, _защо_бан = _reentry_ban(meta, new_dir, _стр_re, ден=date)
         if _забранен:
             ok_re, why_re = False, _защо_бан
         else:
             ok_re, why_re = _reentry_verdict(new_dir, _стр_re, shield, guard.get(new_dir, 0))
             if not ok_re:
-                _reentry_ban(meta, new_dir, _стр_re, why=why_re, set_it=True)
+                _reentry_ban(meta, new_dir, _стр_re, why=why_re, set_it=True, ден=date)
         if ok_re and cool_ok:
             should_sig = True; reentry = True
         else:
@@ -3668,14 +3858,26 @@ def main():
         sdd.index = sdd.index.normalize()
         s_bar = float(s5["Close"].iloc[-1])
         rng_s = _bar_range(s5)
-        raw_s = _spot("XAG/USD", market_closed=weekend, cme_pause=_cme_pause(now_utc))
+        raw_s = _spot("XAG/USD", market_closed=weekend, cme_pause=_cme_pause(now_utc),
+                      реф=s_bar)
         jump_s = abs(raw_s["mid"] - meta["last_spot_s"]) if (raw_s and meta.get("last_spot_s")) else None
         if raw_s:
             meta["last_spot_s"] = raw_s["mid"]
         basis_s = _basis_update(meta, "basis_s", raw_s, s_bar, notes,
                                 cap=_basis_cap(s_bar, "XAGUSD"), now_utc=now_utc,
-                                скок=ROLLOVER_JUMP_S)   # О13: сребърен мащаб
-        spot_s = _spot_sane(raw_s, s_bar - basis_s, 0.30, bar_rng=rng_s, spot_jump=jump_s)
+                                скок=_roll_jump(s_bar, "XAGUSD"))   # О13: сребърен мащаб
+        # 🔴 21.08 · ДОТУК БЕЗ `следа=`. За разлика от златото, дневникът нямаше
+        # НИТО ЕДНО поле за сребърния спот: `silver_ok` е True в 4213 от 4213
+        # записа, а дали санитито реже — невидимо. Прагът 0.30$ НЕ се пипа
+        # (първо мерим, после решаваме — дисциплината ОДИТ-55); добавя се само
+        # видимостта, за да може изобщо да бъде измерен.
+        _сан_s = {}
+        # Сребърният ПОД 0.30$ НЕ се пипа (няма измерване — следата тръгва днес),
+        # но получава СЪЩИЯ относителен под, тоест 0.30$ при сребро 75$ и повече
+        # само ако цената качи. Долната граница остава старата, бит за бит.
+        spot_s = _spot_sane(raw_s, s_bar - basis_s, max(0.30, SPOT_TOL_PCT * abs(float(s_bar or 0))),
+                            bar_rng=rng_s, spot_jump=jump_s,
+                            следа=_сан_s)
         s_price_user = spot_s["mid"] if spot_s else round(s_bar - basis_s, 3)
         s_refs = _refs(sdd)
         # ОДИТ 28.07: същият контрактен базис и при среброто (s5 = интрадей, s_refs = дневни)
@@ -4274,6 +4476,12 @@ def main():
                              "spread": round(spot_g["ask"] - spot_g["bid"], 3) if spot_g else None,
                              "basis": basis_g, "tf_basis": meta.get("tf_basis_g"), "shield": shield, "stale_bar": stale_bar,
                              "track_mode": track_mode, "silver_ok": silver_ok,
+                             # 🔴 21.08 · СРЕБЪРНИЯТ СПОТ БЕШЕ НЕВИДИМ: `silver_ok` беше
+                             # True в 4213 от 4213 записа, а дали санитито го реже —
+                             # никъде. Прагът не се пипа, докато няма с какво да се мери.
+                             "saniti_s": (locals().get("_сан_s") or None),
+                             "spot_s": (spot_s or {}).get("mid") if "spot_s" in dir() else None,
+                             "spot_src_s": (spot_s or {}).get("src") if "spot_s" in dir() else None,
                              "trade": ({"dir": trade["direction"], "entry": trade["entry"], "tier": trade.get("tier")}
                                        if trade else None),
                              # 🔴 ОДИТ-5: най-важният вход на бота нямаше ТРАЙНА следа — краката
