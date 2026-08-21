@@ -34,7 +34,7 @@ import pandas as pd
 # v9.5–v9.8 — всеки ред в дневника твърдеше грешна версия, а дневникът е
 # единственият начин отвън да се види какво работи. П47 пада, ако VERSION не се
 # среща в темата на последния commit.
-VERSION = "v13.8"
+VERSION = "v13.9"
 PIP = 0.10
 SL_PIPS = 200; SL_D = SL_PIPS * PIP                       # стоп: 200п = $20/oz
 TPS = [("ТП1", 75, 7.5), ("ТП2", 120, 12.0), ("ТП3", 200, 20.0)]
@@ -117,6 +117,15 @@ CHART_BRAIN_ON = os.environ.get("CHART_BRAIN", "1") == "1"
 # рън, който не тръгва, не пада. Нормалният интервал е 5 мин; 45 е девет пъти
 # над него. СПАЛ_МИН=0 изключва картата.
 СПАЛ_МИН = int(os.environ.get("СПАЛ_МИН", "45"))
+# 🔴 21.08 · ВТОРИЯТ БУДИЛНИК — този, който липсваше.
+# Горният пита «ПУСКАН ЛИ СЪМ?». Въпросът «пускан съм и НИЩО НЕ ИЗЛИЗА» не се
+# задаваше никъде. Точно затова аварията от 19-21.08 не гръмна: кронът вървеше
+# на 5 минути, дупките бяха 6-7 мин (девет пъти под СПАЛ_МИН), а живата цена
+# липсваше 320 РЪНА ПОДРЕД. Всяко тихо `except` в този файл е невидимо именно
+# защото няма кой да брои поредните ръна, в които нещо съществено е None.
+# 24 ръна ≈ 2 часа при каденция 5 мин. СУХИ_МАКС=0 изключва картата.
+СУХИ_МАКС = int(os.environ.get("СУХИ_МАКС", "24"))
+СУХИ_ПОВТОР_Ч = float(os.environ.get("СУХИ_ПОВТОР_Ч", "3"))   # дедуп, като err_seen
 # 🔴 ОДИТ-49 · БЕЗ ЧИСЛА НЯМА ВХОД. Повредена/непрочетена статистика дотук
 # ОТВАРЯШЕ гейта («ДА, малък размер»), вместо да го затвори — и то в пазар,
 # мерен на −0.47$/сделка. Числата от бектеста са ЦЯЛОТО основание този бот да
@@ -322,6 +331,7 @@ def _basis_cap(цена, метал="XAUUSD"):
 # по-късно: стоп, −1.55$. Сетъп, който плаща по-малко от риска си, не е вход.
 МОЗЪК_МИН_RR = float(os.environ.get("МОЗЪК_МИН_RR", "1.5"))
 CB = None
+CB_ГРЕШКА = ""          # 🔴 «счупен» и «изключен» са различни беди с различен лек
 if CHART_BRAIN_ON:
     try:
         import importlib.util as _ilu
@@ -330,7 +340,15 @@ if CHART_BRAIN_ON:
         CB = _ilu.module_from_spec(_cbs); _cbs.loader.exec_module(CB)
     except Exception as _e:
         CB = None
-        print(f"🧠 мозъкът не се зареди ({type(_e).__name__}: {_e}) — ботът работи без него")
+        # 🔴 21.08 · ПРИЧИНАТА ОТИВАШЕ САМО В stdout, тоест в лога на Actions,
+        # който по устройство е недостъпен отвън (за това има цял коментар,
+        # ОДИТ-52). После бележката ТВЪРДЕШЕ «изключен (CHART_BRAIN=0)».
+        # Значи неуспешна редакция в brain/ или липсваща зависимост дават бот,
+        # който работи безупречно, не праща нито една мозъчна карта и обяснява
+        # това с «ти си ме изключил». Сега причината живее в променлива и влиза
+        # в дневника, който СЕ чете отвън.
+        CB_ГРЕШКА = f"{type(_e).__name__}: {str(_e)[:90]}"
+        print(f"🧠 мозъкът не се зареди ({CB_ГРЕШКА}) — ботът работи без него")
 
 
 # ---------- дърпане на данни (упорито) ----------
@@ -522,12 +540,33 @@ def _разст(a, b, метал="XAUUSD", dec=2):
     return f"{_пипс(д, метал)} ({д:,.{dec}f}$)"
 
 
-def _sofia(iso_utc=None):
+ЧАСОВИ_ЗОНИ_СЧУПЕНИ = ""
+
+
+def _tz(име):
+    """ZoneInfo с ЕДНО общо знаме при провал.
+
+    🔴 21.08 · `_market_closed`, `_cme_pause` и `_in_shield` питат САМО за
+    'America/New_York' и всеки завършва с `except: return False` = «безопасно е».
+    ИЗПЪЛНЕНО: без тази зона СЪБОТА минава за отворен пазар, CME паузата изчезва
+    (значи базисът ре-анкерва върху фалшив скок, а спотът пуска крипто-прокси
+    срещу затворен фючърс) и US-щитът изчезва. Нито print, нито бележка.
+    Пазачът не се чупи — той тихо престава да съществува. Сега поне се обажда.
+    """
+    global ЧАСОВИ_ЗОНИ_СЧУПЕНИ
     from zoneinfo import ZoneInfo
+    try:
+        return ZoneInfo(име)
+    except Exception as _e:
+        ЧАСОВИ_ЗОНИ_СЧУПЕНИ = f"{име} ({type(_e).__name__})"
+        raise
+
+
+def _sofia(iso_utc=None):
     from datetime import datetime, timezone
     try:
         dt = datetime.fromisoformat(str(iso_utc)) if iso_utc else datetime.now(timezone.utc).replace(tzinfo=None)
-        return dt.replace(tzinfo=timezone.utc).astimezone(ZoneInfo("Europe/Sofia")).strftime("%H:%M")
+        return dt.replace(tzinfo=timezone.utc).astimezone(_tz("Europe/Sofia")).strftime("%H:%M")
     except Exception:
         return "?"
 
@@ -540,13 +579,12 @@ def _sofia_dt(iso_utc):
     26.08 01:30 София → картата казваше «25.08 01:30 София». Грешен ДЕН за
     всяко събитие след 21:00 UTC. Тук двете идват от един и същи момент.
     """
-    from zoneinfo import ZoneInfo
     from datetime import datetime, timezone
     try:
         dt = datetime.fromisoformat(str(iso_utc).replace("Z", "+00:00"))
         if dt.tzinfo is None:
             dt = dt.replace(tzinfo=timezone.utc)
-        return dt.astimezone(ZoneInfo("Europe/Sofia")).strftime("%d.%m %H:%M")
+        return dt.astimezone(_tz("Europe/Sofia")).strftime("%d.%m %H:%M")
     except Exception:
         return "?"
 
@@ -560,9 +598,8 @@ def _sofia_ако_друг_ден(iso_utc, спрямо_utc=None):
     сочеше час, който се чете като днешен — и противоречеше на собствения
     си първи ред («СПА 49ч» до «от 23:55 до 01:02»).
     """
-    from zoneinfo import ZoneInfo
     from datetime import datetime, timezone
-    С = ZoneInfo("Europe/Sofia")
+    С = _tz("Europe/Sofia")
     def _в_софия(x):
         dt = datetime.fromisoformat(str(x).replace("Z", "+00:00"))
         if dt.tzinfo is None:
@@ -592,11 +629,10 @@ def _ts_le(a, b):
 
 def _sofia_hour(iso_utc=None):
     """Софийският ЧАС като число (0-23), с лятно/зимно време. −1 при повреден вход."""
-    from zoneinfo import ZoneInfo
     from datetime import datetime, timezone
     try:
         dt = datetime.fromisoformat(str(iso_utc)) if iso_utc else datetime.now(timezone.utc).replace(tzinfo=None)
-        return dt.replace(tzinfo=timezone.utc).astimezone(ZoneInfo("Europe/Sofia")).hour
+        return dt.replace(tzinfo=timezone.utc).astimezone(_tz("Europe/Sofia")).hour
     except Exception:
         return -1
 
@@ -613,10 +649,9 @@ def _reoffer_hour_ok(iso_utc=None):
 def _in_shield(now_utc=None):
     """В US-прозореца 8:25–9:15 НЮ ЙОРКСКО време ли сме (данните в 8:30 ET)?
     Дефиниран в ET, не в София — лятното време се мести в различни седмици."""
-    from zoneinfo import ZoneInfo
     try:
         dt = datetime.fromisoformat(str(now_utc)) if now_utc else datetime.now(timezone.utc).replace(tzinfo=None)
-        et = dt.replace(tzinfo=timezone.utc).astimezone(ZoneInfo("America/New_York"))
+        et = dt.replace(tzinfo=timezone.utc).astimezone(_tz("America/New_York"))
         m = et.hour * 60 + et.minute
         return SHIELD_ET[0] <= m <= SHIELD_ET[1]
     except Exception:
@@ -625,13 +660,12 @@ def _in_shield(now_utc=None):
 
 def _shield_sofia_label():
     """Прозорецът на щита, преведен в София час (за картите)."""
-    from zoneinfo import ZoneInfo
     try:
-        today = datetime.now(timezone.utc).astimezone(ZoneInfo("America/New_York")).date()
+        today = datetime.now(timezone.utc).astimezone(_tz("America/New_York")).date()
         a = datetime(today.year, today.month, today.day, SHIELD_ET[0] // 60, SHIELD_ET[0] % 60,
-                     tzinfo=ZoneInfo("America/New_York")).astimezone(ZoneInfo("Europe/Sofia"))
+                     tzinfo=_tz("America/New_York")).astimezone(_tz("Europe/Sofia"))
         b = datetime(today.year, today.month, today.day, SHIELD_ET[1] // 60, SHIELD_ET[1] % 60,
-                     tzinfo=ZoneInfo("America/New_York")).astimezone(ZoneInfo("Europe/Sofia"))
+                     tzinfo=_tz("America/New_York")).astimezone(_tz("Europe/Sofia"))
         return f"{a.strftime('%H:%M')}–{b.strftime('%H:%M')} София"
     except Exception:
         return "15:25–16:15 София"
@@ -988,9 +1022,8 @@ def _entry_side(spot, direction):
 
 def _to_ny(now_utc):
     """T2: UTC → Ню Йорк (America/New_York) — сам смята лятно/зимно време."""
-    from zoneinfo import ZoneInfo
     dt = datetime.fromisoformat(str(now_utc)) if not isinstance(now_utc, datetime) else now_utc
-    return dt.replace(tzinfo=timezone.utc).astimezone(ZoneInfo("America/New_York"))
+    return dt.replace(tzinfo=timezone.utc).astimezone(_tz("America/New_York"))
 
 
 def _market_closed(now_utc):
@@ -2163,9 +2196,8 @@ def _event_shield(ctx, now_utc):
     етикет и за предстоящо събитие до 60 мин (само предупреждение)."""
     if not ctx:
         return False, None
-    from zoneinfo import ZoneInfo
     try:
-        now_s = datetime.fromisoformat(str(now_utc)).replace(tzinfo=timezone.utc).astimezone(ZoneInfo("Europe/Sofia"))
+        now_s = datetime.fromisoformat(str(now_utc)).replace(tzinfo=timezone.utc).astimezone(_tz("Europe/Sofia"))
         for ev in ctx.get("events", []):
             t = str(ev.get("time_sofia", ""))
             if ":" not in t:
@@ -2301,6 +2333,24 @@ def _търговски_минути(от_utc, до_utc, крачка=15):
             мин += стъпка
         t += pd.Timedelta(minutes=крачка)
     return мин
+
+
+def _сухо_msg(бр, причина, откога_utc, now_utc):
+    """🔴 21.08 · «ПУСКАН СЪМ И НИЩО НЕ ИЗЛИЗА» — картата, която липсваше.
+
+    Мерено: на 19-21.08 ботът мълча 320 ръна подред, а единственият будилник
+    (дупка ≥45 мин) не пламна нито веднъж, защото кронът си вървеше изрядно.
+    «Работи» и «върши работа» са два различни въпроса; дотук се задаваше само
+    първият."""
+    ч = бр * 5 / 60.0
+    L = [f"🔴 <b>БУДЕН СЪМ, НО НЕ МОГА ДА РАБОТЯ</b> · {_sofia()}",
+         f"📌 {бр} проверки подред без жива цена (около {ч:.1f}ч)",
+         f"⏰ последно ставаше в {_sofia_ако_друг_ден(откога_utc, now_utc)}"
+         if откога_utc else "⏰ откакто помня, не е ставало",
+         f"⚠️ причина: {str(причина)[:110]}",
+         "👁 нови входове НЕ се отварят · отворена сделка се следи както обикновено",
+         "📌 това не е тих пазар — това е счупена тръба към цената"]
+    return "\n".join(L)
 
 
 def _спал_msg(мин, откога_utc, докога_utc):
@@ -3456,6 +3506,11 @@ def main():
     # 🔴 ОДИТ-47 · КОЛКО ДЪЛГО СЪМ СПАЛ. Сглобява се ТУК, вкарва се СЛЕД
     # `new_msgs = []` — обратното (append преди списъка) държа седемте спирачки
     # неми от деня, в който ги написах.
+    # 🔴 21.08 · ВТОРИЯТ БУДИЛНИК. Горният пита «пускан ли съм?»; този пита
+    # «пускан съм и НИЩО ЛИ НЕ ИЗЛИЗА?». Второто е въпросът, който липсваше:
+    # на 19-21.08 живата цена липсваше 320 РЪНА ПОДРЕД, а дупките бяха 6-7 мин
+    # (девет пъти под СПАЛ_МИН=45) → нито една аларма.
+    _сухо_карта = None
     _спал_карта = None
     try:
         _посл = meta.get("последен_рън")
@@ -3469,6 +3524,14 @@ def main():
                 notes.append(f"😴 дупка от {_дупка:.0f} мин ({_посл} → {now_utc})")
     except Exception as _e:
         notes.append(f"проверката за сън се спъна: {type(_e).__name__}: {_e}")
+    if ЧАСОВИ_ЗОНИ_СЧУПЕНИ:
+        # 🔴 21.08 · Три пазача (уикенд, CME пауза, US-щит) питат САМО за
+        # 'America/New_York' и всеки завършва с `except: return False` =
+        # «безопасно е». Липсва ли зоната, и трите наведнъж тихо престават да
+        # съществуват: СЪБОТА минава за отворен пазар, базисът ре-анкерва върху
+        # фалшив скок, а спотът пуска крипто-прокси срещу затворен фючърс.
+        notes.append(f"🔴 часовата зона {ЧАСОВИ_ЗОНИ_СЧУПЕНИ} ЛИПСВА — уикенд-пазачът, "
+                     f"CME паузата и US-щитът СА ИЗКЛЮЧЕНИ, без да са спирани")
     meta["последен_рън"] = now_utc
 
     # A6: застоял бар — данните стари, а ботът жив (празник/тънка сесия)
@@ -4096,8 +4159,7 @@ def main():
         notes.append(f"сянка-злато пропусната: {type(_e).__name__}")
 
     # === 6б) ВЕЧЕРНА РАВНОСМЕТКА + ПУЛС (Ф5/Ф8.4) и СТАТУС (Ф9.8) ===
-    from zoneinfo import ZoneInfo
-    sof_now = datetime.now(timezone.utc).astimezone(ZoneInfo("Europe/Sofia"))
+    sof_now = datetime.now(timezone.utc).astimezone(_tz("Europe/Sofia"))
     want_digest = sof_now.hour >= 21 and meta.get("digest") != date and not weekend
     if want_digest:
         s_tr_now = _load_state(s_tr_f, None)
@@ -4178,7 +4240,8 @@ def main():
     # ЖЕЛЯЗНО: тези карти НЕ отварят сделка и НЕ пипат trade/guard/board.
     # Те са СВЕДЕНИЕ. Мереното правило си остава единственото, което търгува.
     if CB is None:
-        notes.append("🧠 мозъкът е изключен (CHART_BRAIN=0)")
+        notes.append(f"🔴 мозъкът НЕ СЕ ЗАРЕДИ ({CB_ГРЕШКА}) — НЕ е изключен, СЧУПЕН е"
+                     if CB_ГРЕШКА else "🧠 мозъкът е изключен (CHART_BRAIN=0)")
     elif weekend:
         notes.append("🧠 мозъкът мълчи — борсата е затворена")
     else:
@@ -4408,6 +4471,42 @@ def main():
                             if _setups else " (тихо — няма събитие на този бар)"))
         except Exception as _e:
             notes.append(f"🧠 мозъкът се спъна ({type(_e).__name__}: {str(_e)[:90]}) — прескочен")
+
+    # 🔴 21.08 · БРОЯЧЪТ НА СУХИТЕ РЪНА. «Сух» = буден, пазарът работи, но няма
+    # ЖИВА ЦЕНА — тоест не може да се отвори вход по ТЕХНИЧЕСКА причина, не по
+    # пазарна. Нулира се при първата жива цена. Точно този брояч би вдигнал
+    # тревога на 19.08 вечерта, вместо два дни мълчание.
+    try:
+        if СУХИ_МАКС > 0 and not weekend:
+            if spot_g is not None:
+                if int(meta.get("сухи_ръна", 0)) >= СУХИ_МАКС:
+                    notes.append(f"✅ живата цена се върна след {meta.get('сухи_ръна')} сухи ръна")
+                meta["сухи_ръна"] = 0
+                meta.pop("сухи_от", None)
+            else:
+                meta["сухи_ръна"] = int(meta.get("сухи_ръна", 0)) + 1
+                meta.setdefault("сухи_от", meta.get("сухи_последно_жив") or now_utc)
+                if meta["сухи_ръна"] >= СУХИ_МАКС:
+                    _посл_каз = meta.get("сухи_казано")
+                    _мин = 999.0
+                    if _посл_каз:
+                        try:
+                            _мин = (pd.Timestamp(now_utc) - pd.Timestamp(_посл_каз)).total_seconds() / 60.0
+                        except Exception:
+                            _мин = 999.0
+                    if _мин >= СУХИ_ПОВТОР_Ч * 60:
+                        _пр = "живата цена се реже от санитито" if spot_rejected_g \
+                              else "фийдът за живата цена мълчи"
+                        _сухо_карта = ("сухо", _сухо_msg(meta["сухи_ръна"], _пр,
+                                                         meta.get("сухи_последно_жив"), now_utc))
+                        meta["сухи_казано"] = now_utc
+                notes.append(f"🏜 {meta['сухи_ръна']} поредни ръна без жива цена")
+            if spot_g is not None:
+                meta["сухи_последно_жив"] = now_utc
+    except Exception as _e:
+        notes.append(f"броячът на сухите ръна се спъна: {type(_e).__name__}")
+    if _сухо_карта:
+        new_msgs.insert(0, _сухо_карта)
 
     # === 7) ПРАЩАНЕ през пощенската кутия (Ф8.1) ===
     statuses = []
