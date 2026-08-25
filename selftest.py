@@ -1193,8 +1193,29 @@ _REAL = {k: getattr(lb, k) for k in ("_yf", "_rates", "_spot", "_cq_fetch", "_fn
 _REAL_SLEEP = _t13.sleep
 
 
+# 🔴 26.08 · ЗАКОВАНИТЕ ДАТИ В СТЕНДА ГНИЯТ. П13 падна ДНЕС без нито ред
+# променен код: `_fx(900, "2026-07-20", "5min")` стана «застоял бар:
+# 243211 мин стар», дъската излезе празна (key="0|", actionable=false) и
+# ботът ЗАКОННО замълча — а тестът го обяви за счупен.
+# ЦЕНАТА: падащ selftest БЛОКИРА бота (selftest gate). Точно така на 24.08
+# паднаха 215 от 223 ръна и ботът не тръгна ЦЯЛ ДЕН.
+# ЛЕКЪТ: `_назад(n, freq)` смята началото НАЗАД ОТ СЕГА. Стендът вече не
+# гние. Същият клас като П75 («тестът заковаваше днешната дата»).
+def _назад(n, freq):
+    """Начална дата, при която n бара с честота freq свършват СЕГА."""
+    _ед = {"D": "D", "5min": "5min", "1h": "h", "h": "h"}.get(freq, freq)
+    _кр = pd.Timestamp.utcnow().tz_localize(None).floor("min")
+    return (_кр - pd.tseries.frequencies.to_offset(_ед) * (n - 1)).strftime("%Y-%m-%d %H:%M")
+
+
 def _fx(n, start, freq, px, drift=0.0):
-    """Изкуствена свещна серия — детерминирана, без случайност."""
+    """Изкуствена свещна серия — детерминирана, без случайност.
+
+    `start=None` → серията СВЪРШВА сега (виж `_назад`). Всяко ново ползване
+    да ползва None; заковаваш ли дата, тестът ще падне след време СAM.
+    """
+    if start is None:
+        start = _назад(n, freq)
     i = pd.date_range(start, periods=n, freq=freq)
     c = px + _np.arange(n) * drift + _np.sin(_np.arange(n) / 7.0) * 2.0
     return pd.DataFrame({"Open": c, "High": c + 1.5, "Low": c - 1.5, "Close": c,
@@ -1203,12 +1224,12 @@ def _fx(n, start, freq, px, drift=0.0):
 
 def _run_main(spot=None, stats_path="backtest_stats.json", send_ok=True, extra_argv=()):
     """Пуска ЦЕЛИЯ main() в tmp папка, без мрежа. Връща (изходен_код, пратени, папка)."""
-    D = {"GC=F": _fx(800, "2024-01-01", "D", 3800, 0.35),
-         "GDX": _fx(600, "2024-06-01", "D", 40, 0.02),
-         "DX-Y.NYB": _fx(600, "2024-06-01", "D", 100, -0.005),
-         "SI=F": _fx(900, "2026-07-20", "5min", 46.0, 0.001)}
+    D = {"GC=F": _fx(800, None, "D", 3800, 0.35),
+         "GDX": _fx(600, None, "D", 40, 0.02),
+         "DX-Y.NYB": _fx(600, None, "D", 100, -0.005),
+         "SI=F": _fx(900, None, "5min", 46.0, 0.001)}
     sent = []
-    lb._yf = lambda s, period="2y", interval="1d": D.get(s, _fx(900, "2026-07-20", "5min", 4000, 0.002)).copy()
+    lb._yf = lambda s, period="2y", interval="1d": D.get(s, _fx(900, None, "5min", 4000, 0.002)).copy()
     lb._rates = lambda: pd.Series(2.0 - _np.arange(600) * 0.0008,
                                   index=pd.date_range("2024-06-01", periods=600, freq="D"))
     # 🔴 21.08 · **kwargs НАРОЧНО. Дотук подписът беше фиксиран и щом ботът
@@ -1715,7 +1736,19 @@ ck("П18 рънът минава до края с новия запис", _c18 =
 _j18 = [json.loads(x) for x in
         (_t18 / "live_journal.jsonl").read_text(encoding="utf-8").splitlines() if x.strip()]
 ck("П18 дневникът НОСИ ключа за присъдата", "gate" in _j18[0])
-ck("П18 без посока присъдата е None, а ключът пак стои", _j18[0].get("gate", "ЛИПСВА") is None)
+# 🔄 ОБЪРНАТ 26.08 · тестът пазеше «gate is None», защото синтетичният борд
+# стоеше на «wait» — и САМ си го признаваше два реда по-горе: «важните
+# твърдения НЕ БИХА СЕ ИЗПЪЛНИЛИ — точно това е празно зелено».
+# Откакто датите на стенда са ОТНОСИТЕЛНИ, дъската има истинска посока и
+# пълният път се изпълнява наистина. Тестът вече иска ПОВЕЧЕ:
+#   · ключът «gate» ВИНАГИ присъства (проверимост)
+#   · има ли посока — записът е ПЪЛЕН, не полупразен
+_g18 = _j18[0].get("gate", "ЛИПСВА")
+ck("П18 ключът за присъдата ВИНАГИ стои в дневника", _g18 != "ЛИПСВА")
+ck("П18 има ли посока — записът е ПЪЛЕН (dir · cell · ok · by · why)",
+   _g18 is None or all(k in _g18 for k in ("dir", "cell", "ok", "by", "why")))
+ck("П18 и присъдата е bool, не низ",
+   _g18 is None or isinstance(_g18.get("ok"), bool))
 
 
 def _run_dir18(force_dir):
@@ -2290,9 +2323,9 @@ else:
     def _run22(cb, _N22=5013):
         _D5 = _bars22(_N22, seed=1).rename(columns=str.capitalize)
         _D5.index = _pd22.date_range("2026-04-01", periods=_N22, freq="5min")
-        _DD = {"GC=F": _fx(800, "2024-01-01", "D", 3800, 0.35),
-               "GDX": _fx(600, "2024-06-01", "D", 40, 0.02),
-               "DX-Y.NYB": _fx(600, "2024-06-01", "D", 100, -0.005)}
+        _DD = {"GC=F": _fx(800, None, "D", 3800, 0.35),
+               "GDX": _fx(600, None, "D", 40, 0.02),
+               "DX-Y.NYB": _fx(600, None, "D", 100, -0.005)}
         _sent = []
         _старо = {k: getattr(lb, k) for k in ("_yf", "_rates", "_spot", "_cq_fetch",
                                               "_fng_live", "_send_raw", "CB")}
@@ -2311,7 +2344,7 @@ else:
         def _yf22(s, period="2y", interval="1d"):
             if s == "GC=F" and interval in ("1m", "5m"):
                 return _D5.copy()
-            return _DD.get(s, _fx(900, "2026-07-20", "5min", 4000, 0.002)).copy()
+            return _DD.get(s, _fx(900, None, "5min", 4000, 0.002)).copy()
         lb._yf = _yf22
         lb._rates = lambda: _pd22.Series(
             2.0 - _np22.arange(600) * 0.0008,
@@ -4348,12 +4381,12 @@ _стар62 = sys.argv
 # същите дубльори като `_run_main` — без мрежа, детерминистично
 _зап62 = {k: getattr(lb, k) for k in ("_yf", "_rates", "_spot", "_cq_fetch",
                                       "_fng_live", "_send_raw")}
-_D62 = {"GC=F": _fx(800, "2024-01-01", "D", 3800, 0.35),
-        "GDX": _fx(600, "2024-06-01", "D", 40, 0.02),
-        "DX-Y.NYB": _fx(600, "2024-06-01", "D", 100, -0.005),
-        "SI=F": _fx(900, "2026-07-20", "5min", 46.0, 0.001)}
+_D62 = {"GC=F": _fx(800, None, "D", 3800, 0.35),
+        "GDX": _fx(600, None, "D", 40, 0.02),
+        "DX-Y.NYB": _fx(600, None, "D", 100, -0.005),
+        "SI=F": _fx(900, None, "5min", 46.0, 0.001)}
 lb._yf = lambda s, period="2y", interval="1d": _D62.get(
-    s, _fx(900, "2026-07-20", "5min", 4000, 0.002)).copy()
+    s, _fx(900, None, "5min", 4000, 0.002)).copy()
 lb._rates = lambda: _pd22.Series(2.0 - _np.arange(600) * 0.0008,
                                  index=_pd22.date_range("2024-06-01", periods=600, freq="D"))
 lb._spot = lambda instr="XAU/USD", market_closed=False, cme_pause=False, **_к: {
