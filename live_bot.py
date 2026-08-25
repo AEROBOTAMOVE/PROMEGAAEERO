@@ -34,7 +34,7 @@ import pandas as pd
 # v9.5–v9.8 — всеки ред в дневника твърдеше грешна версия, а дневникът е
 # единственият начин отвън да се види какво работи. П47 пада, ако VERSION не се
 # среща в темата на последния commit.
-VERSION = "v15.2"
+VERSION = "v15.3"
 PIP = 0.10
 SL_PIPS = 200; SL_D = SL_PIPS * PIP                       # стоп: 200п = $20/oz
 TPS = [("ТП1", 75, 7.5), ("ТП2", 120, 12.0), ("ТП3", 200, 20.0)]
@@ -3243,6 +3243,19 @@ def _outbox_flush(out_dir, new_msgs, statuses, dry=False):
     # и НЕ регенериран този рън → условията са се сменили (щит/пауза/уикенд/F1) → изхвърли го,
     # инак картата стига до човека, но сделка НЕ се отваря/следи (осиротяла карта).
     fresh_tags = {t for t, _ in new_msgs}
+    # 🔴 21.08 · ИЗХВЪРЛЯНЕТО СТАВАШЕ БЕЗМЪЛВНО. То е ПРЕДИ цикъла за пращане,
+    # значи никога не стига до `statuses.append` — а дедупът точно отдолу СЕ
+    # обажда. Междувременно на собственика вече е отпечатано «signal НЕ пратен
+    # … (ще опита пак)», а втори опит НЯМА: щом реофер-вратите са затворени,
+    # картата не се регенерира и изчезва. ДОКАЗАНО с истинската функция:
+    # карта в пощата → statuses=[] · sent_tags=set() · outbox ПРАЗЕН.
+    _осир = [m for m in pending
+             if (m["tag"] in ("signal", "s-signal") and m["tag"] not in fresh_tags
+                 and m.get("first_ts", now_iso) < now_iso)]
+    if _осир:
+        statuses.append(f"🔴 {len(_осир)} осиротели карти изхвърлени "
+                        f"({', '.join(sorted(set(m['tag'] for m in _осир)))}) — "
+                        f"условията се смениха, НЯМА да се опита пак")
     pending = [m for m in pending
                if not (m["tag"] in ("signal", "s-signal") and m["tag"] not in fresh_tags
                        and m.get("first_ts", now_iso) < now_iso)]
@@ -4021,6 +4034,15 @@ def main():
         elif last.get("key") == key:
             _спрян = ("същият сетъп, вече ти го дадох",
                       "нов ключ = нова карта")
+        # 🔴 21.08 · БЕЛЕЖКАТА. Всички стари спирачки пишат И бележка, И `_спрян`;
+        # новият блок пишеше само `_спрян`. ИЗМЕРЕНО с реплей на 119 ръна:
+        # 117 от 119 ръна със спряна карта нямат НИТО ЕДНА обяснителна бележка.
+        # Провали ли се пращането, в журнала остава НИЩО.
+        if _спрян:
+            notes.append(f"🚦 спряна: {_спрян[0]} · ключ={key} · възраст="
+                         f"{('%.1fч' % key_age_h) if key_age_h is not None else '?'} · "
+                         f"от_карта={('%.0fмин' % mins_since) if mins_since is not None else '?'} · "
+                         f"cool_ok={cool_ok} · reoffer={reoffer}")
     # ре-влизане след приключена сделка — по F18 правилата
     closed_kinds = [k for _, _, k, _ in exit_msgs if k in ("tp3", "sl", "time", "flip")]
     reentry = False
@@ -4831,7 +4853,13 @@ def main():
             trade = pending_trade                          # отваряме сделката чак сега
             statuses.append("trade=OPENED")
     elif should_sig:
-        statuses.append("signal НЕ пратен — сделка НЕ отворена (ще опита пак)")
+        # 🔴 21.08 · «ще опита пак» беше НЕИСТИНА, когато реофер-вратите са
+        # затворени: картата се изхвърля от пощата на следващия рън и изчезва.
+        # Сега текстът зависи от това дали ИМА как да се повтори.
+        _пак = bool(reoffer or (last.get("key") != key) or tier_up)
+        statuses.append("signal НЕ пратен — сделка НЕ отворена "
+                        + ("(ще опита пак)" if _пак
+                           else "(и НЯМА да опита пак — вратите са затворени)"))
 
     # === 7в) Б1 за СРЕБРОТО: сребърна сделка/състояние също само след пращане ===
     if silver_trade_new is not None or s_key is not None:
@@ -4905,6 +4933,24 @@ def main():
                              # не носят причината. САМО ЗАПИС — решението НЕ се променя.
                              # `by` = кой пласт РЕШИ. `cell` е кофата, която БИ важала —
                              # тя е меродавна САМО когато by == "клетка".
+                             # 🔴 21.08 · РЕШЕНИЕТО ЗА КАРТА ВЛИЗА В ЖУРНАЛА.
+                             # Дотук се пишеха `gate`, `board`, `macro` — но НИТО
+                             # ЕДНО от полетата, с които се решава за КАРТА.
+                             # ПРЕБРОЕНО: 4017 от 4311 ръна (93.2%) са само
+                             # «тихо (без събития)». Гейтът има следа от ОДИТ-15;
+                             # анти-спамът, който спира 94% от картите, нямаше.
+                             # САМО ЗАПИС — решението не се мени с нищо.
+                             "karta": {"key": key, "key_age_h": (round(key_age_h, 2)
+                                                                 if key_age_h is not None else None),
+                                       "mins_since": (round(mins_since, 1)
+                                                      if mins_since is not None else None),
+                                       "tier_up": bool(tier_up), "reoffer": bool(reoffer),
+                                       "cool_ok": bool(cool_ok), "should": bool(should_sig),
+                                       "actionable": bool(actionable),
+                                       "adv_ok": bool(_adv_ok),
+                                       "gate_flip": bool(_гейт_обрат),
+                                       "stale_setup": bool(stale_setup),
+                                       "spryan": (_спрян[0] if _спрян else None)},
                              "gate": ({"dir": new_dir, "streak": streak_n,
                                        "cell": _cell_name(streak_n), "ok": bool(_adv_ok),
                                        "by": _gate_trace.get("by"),
