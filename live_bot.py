@@ -34,7 +34,7 @@ import pandas as pd
 # v9.5–v9.8 — всеки ред в дневника твърдеше грешна версия, а дневникът е
 # единственият начин отвън да се види какво работи. П47 пада, ако VERSION не се
 # среща в темата на последния commit.
-VERSION = "v15.3"
+VERSION = "v15.4"
 PIP = 0.10
 SL_PIPS = 200; SL_D = SL_PIPS * PIP                       # стоп: 200п = $20/oz
 TPS = [("ТП1", 75, 7.5), ("ТП2", 120, 12.0), ("ТП3", 200, 20.0)]
@@ -1380,8 +1380,39 @@ NEAR_HIGH_DD20 = 0.015
 # Числото е точно онова, което `cool_ok` реално ползваше.
 COOL_MIN = int(os.environ.get("COOL_MIN", "45"))       # минути между две карти
 COOL_FLIP_MIN = int(os.environ.get("COOL_FLIP_MIN", "15"))  # при СМЯНА на посоката
-REOFFER_H = 6          # най-рано толкова часа след ПОСЛЕДНАТА карта
-REOFFER_MAX_AGE_H = 12 # ...и само докато САМИЯТ СЕТЪП е по-млад от толкова часа
+# 🔴 21.08 · ПЪТ НАЗАД ЗА ДВЕТЕ. ПРЕБРОЕНО с реплей на целия журнал
+# (4342 ръна, 18.95 дни, врата по врата, репликата свършва байт-в-байт същия
+# last_sent.json като живия):
+#     БАЗА днес:  59 сигнала = 3.11 на ден
+#     блокери:    maxage=2467 ръна · reoffer_h=1313 · cool45=437
+#     REOFFER_MAX_AGE_H=12 отворен  →  +35 карти  = 1.85/ден
+#     REOFFER_H=6 отворен           → +112 карти  = 5.91/ден
+#     ДВЕТЕ ЗАЕДНО                  → +399 карти  = 21.06/ден  ← карта на 68 мин, СПАМ
+# Стойностите НЕ се менят тук — само стават достъпни от средата, за да има
+# път назад и напред с една дума, както е за REOFFER_LO/HI и STANDING_H.
+REOFFER_H = float(os.environ.get("REOFFER_H", "6"))       # най-рано толкова часа след ПОСЛЕДНАТА карта
+# 🔴 21.08 · ПО-КРАТКО НАПОМНЯНЕ, НО САМО ТАМ, КЪДЕТО Е МЕРЕНО.
+# Пределните входове (напомняне пали само при `trade is None`), 22-годишна
+# лента, доставената геометрия, блоков бутстрап по ден:
+#     ЛОНГ · day1+fresh  +3ч  +4.033$  [+1.372, +6.658]  ✅ ЧИСТ ПЛЮС
+#     ЛОНГ · day1+fresh  +6ч  +0.899$  недоказано        ← сегашното
+#     ЛОНГ · stale       +3ч  −0.672$  недоказано, ОТРИЦАТЕЛНА оценка
+#     ШОРТ               +3ч  −0.017$  недоказано
+# Тоест свиването плаща САМО в пресните лонг клетки — и там плаща силно.
+# Глобално свиване би платило за stale и шорта, където оценката е нула/минус.
+REOFFER_H_ПРЕСЕН = float(os.environ.get("REOFFER_H_ПРЕСЕН", "3"))
+
+
+def _reoffer_h(direction, streak_n):
+    """Часовете между две напомняния — ПО КЛЕТКА, защото мереното е различно.
+
+    `day1`/`fresh` за ЛОНГ → по-кратко (мерено +4.03$ с чист интервал).
+    Всичко останало → както е било (мерено нула или минус при свиване).
+    """
+    if direction == "long" and _cell_name(streak_n) in ("day1", "fresh"):
+        return REOFFER_H_ПРЕСЕН
+    return REOFFER_H
+REOFFER_MAX_AGE_H = float(os.environ.get("REOFFER_MAX_AGE_H", "12"))  # ...и докато СЕТЪПЪТ е по-млад
 # 🔴 21.08 · 4ч → 2ч. Тази карта НЕ отваря сделка и НЕ пипа стоп-пазача — тя е
 # ИНФОРМАЦИЯ. Мерено: за 119 ръна, в които гейтът каза ДА в 116, излязоха ДВЕ
 # карти. При 2 часа стават ~6 на делник — колкото собственикът да вижда нивата,
@@ -3978,12 +4009,35 @@ def main():
                # на входа. «strong» беше втори, недокументиран праг върху него.
                # РЕОФЕР_КЛАС=strong връща старото поведение с една дума.
                and rank.get(best[3], 0) >= rank.get(РЕОФЕР_КЛАС, 1)
-               and mins_since is not None and mins_since >= REOFFER_H * 60
+               and mins_since is not None
+               and mins_since >= _reoffer_h(new_dir, regime["streaks"].get(new_dir or "", 0)) * 60
                and key_age_h is not None and key_age_h <= REOFFER_MAX_AGE_H
                and _reoffer_hour_ok(now_utc))
+    # 🔴 21.08 · КОЙ ИМЕННО СПИРА. ПРЕБРОЕНО: REOFFER_H е ЕДИНСТВЕН блокер в
+    # 931 от 4342 ръна (21.4%) и участва в 1390 (32.0%) — и не пишеше НИТО
+    # бележка, НИТО статус. Мълчеше без следа, точно като анти-спама преди
+    # днешната следа. Един ред прави вратата видима.
+    if (bool(actionable) and new_dir and last.get("key") == key and not tier_up
+            and not reoffer and not args.force):
+        _бл = []
+        _рх = _reoffer_h(new_dir, regime["streaks"].get(new_dir or "", 0))
+        if mins_since is not None and mins_since < _рх * 60:
+            _бл.append(f"REOFFER_H: {mins_since / 60:.1f}ч от картата, трябват {_рх:.0f}ч "
+                       f"(клетка {_cell_name(regime['streaks'].get(new_dir or '', 0))})")
+        if key_age_h is not None and key_age_h > REOFFER_MAX_AGE_H:
+            _бл.append(f"MAX_AGE: сетъпът е на {key_age_h:.1f}ч, таван {REOFFER_MAX_AGE_H:.0f}ч")
+        if not cool_ok:
+            _бл.append(f"пауза: под {COOL_MIN} мин от последната карта")
+        if not _reoffer_hour_ok(now_utc):
+            _бл.append(f"час: извън {REOFFER_LO}-{REOFFER_HI} София")
+        if _бл:
+            notes.append("🚧 напомнянето е спряно от · " + " · ".join(_бл))
     should_sig = args.force or (bool(actionable) and (last.get("key") != key or tier_up or reoffer) and cool_ok)
     if reoffer and last.get("key") == key:
-        notes.append(f"повторно предлагане: сетъпът е на {key_age_h:.1f}ч (таван {REOFFER_MAX_AGE_H}ч), вход не е взет")
+        notes.append(f"повторно предлагане: сетъпът е на {key_age_h:.1f}ч "
+                     f"(таван {REOFFER_MAX_AGE_H:.0f}ч, праг "
+                     f"{_reoffer_h(new_dir, regime['streaks'].get(new_dir or '', 0)):.0f}ч), "
+                     f"вход не е взет")
     # 🔴 ОДИТ-5: таванът от 12ч сам по себе си превръща «една карта на ДЕН» в «една карта на
     # СЕТЪП» — реплей на живия борд показа ЧЕТИРИ дни от девет с НУЛА златни карти (два борда
     # стояха 48.0ч и 42.8ч; датата в ключа беше единственото, което ги нулираше). Мълчанието
