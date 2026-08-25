@@ -873,7 +873,8 @@ def _спряна_msg(direction, best, price_user, причина, обясне�
         f"📌 {причина}" + (f" · {обяснение}" if обяснение else ""),
         "👁 нищо сега · пиша щом падне спирачката"])
 
-def _standing_msg(direction, best, age_h, spot, bar_price, price_user, board, macro, health, now_utc):
+def _standing_msg(direction, best, age_h, spot, bar_price, price_user, board, macro, health,
+                  now_utc, таван=None):
     """ОДИТ-29 · сетъпът стои, но не е пресен. Четири реда."""
     ико = "🟢" if direction == "long" else "🔴"
     посока = "покупка" if direction == "long" else "продажба"
@@ -915,11 +916,14 @@ def _standing_msg(direction, best, age_h, spot, bar_price, price_user, board, ma
     # Иначе картата твърди «вече 276ч» до нива, смятани от ДНЕШНАТА цена — две
     # неща, които не могат да са верни едновременно. Причината обаче се казва
     # ВИНАГИ, с числото на правилото — тя не зависи от възрастта.
+    # 🔴 25.08 · ТРЕТИЯТ БЛИЗНАК: тази карта отива при СОБСТВЕНИКА и печаташе
+    # голото 12ч, независимо от клетката. Сега получава своя таван отвън.
+    _т = REOFFER_MAX_AGE_H if таван is None else float(таван)
     if age_h is not None and age_h < СТОЯЩ_МАКС_Ч:
         L.append(f"👁 не влизам: сетъпът е на {age_h:.0f}ч, правилото пуска до "
-                 f"{REOFFER_MAX_AGE_H}ч · решаваш ти")
+                 f"{_т:.0f}ч · решаваш ти")
     else:
-        L.append(f"👁 не влизам: правилото пуска повторен вход до {REOFFER_MAX_AGE_H}ч "
+        L.append(f"👁 не влизам: правилото пуска повторен вход до {_т:.0f}ч "
                  f"· нивата са от сега, решаваш ти")
     return "\n".join(L)
 
@@ -1401,6 +1405,34 @@ REOFFER_H = float(os.environ.get("REOFFER_H", "6"))       # най-рано то
 # Тоест свиването плаща САМО в пресните лонг клетки — и там плаща силно.
 # Глобално свиване би платило за stale и шорта, където оценката е нула/минус.
 REOFFER_H_ПРЕСЕН = float(os.environ.get("REOFFER_H_ПРЕСЕН", "3"))
+REOFFER_MAX_AGE_H = float(os.environ.get("REOFFER_MAX_AGE_H", "12"))  # ...и докато СЕТЪПЪТ е по-млад
+# 🔴 25.08 · РЕДЪТ. `_max_age_h` ВРЪЩАШЕ `REOFFER_MAX_AGE_H` 12 реда ПРЕДИ
+# константата да е дефинирана. Работеше (Python търси глобалните при ВИКАНЕ,
+# не при дефиниране), но е капан: един внос отгоре и става NameError.
+# 🔴 21.08 · ТАВАНЪТ НА ВЪЗРАСТТА СЪЩО СТАВА ПО КЛЕТКА, по същата причина.
+# Глобалното «12-24ч дава −1.590$» е мерено БЕЗ разделяне по клетка — то
+# смесва шортовете и `mixed`, които и БЕЗ напомняне губят.
+# Пределните входове по клетка (22 години, доставената геометрия, блоков
+# бутстрап по ден; напомняне пали само при `trade is None`):
+#     ЛОНГ · fresh  +12ч  +3.740$  [+0.012, +6.620]  ✅ ЧИСТ ПЛЮС
+#     ЛОНГ · fresh  +18ч  +3.148$  недоказано, ПЛЮС
+#     ЛОНГ · fresh  +24ч  +1.676$  недоказано, ПЛЮС
+#     ЛОНГ · day1   +12ч  +0.092$ · +18ч −1.651$ · +24ч +0.453$  ← РАЗБЪРКАНО
+#     ЛОНГ · stale  +12ч  −1.599$ · ШОРТ +12ч −0.279$
+# Тоест `fresh` е положителен на ВСЕКИ хоризонт; `day1` не е; останалите — не.
+# Затова таванът се вдига САМО за `long·fresh`. Път назад: една променлива.
+MAX_AGE_ПРЕСЕН = float(os.environ.get("MAX_AGE_ПРЕСЕН", "24"))
+
+
+def _max_age_h(direction, streak_n):
+    """Таванът на възрастта — ПО КЛЕТКА, защото мереното е различно.
+
+    `long·fresh` → по-широк (положителен на всеки мерен хоризонт).
+    Всичко останало → както е било (мерено нула, минус или разбъркано).
+    """
+    if direction == "long" and _cell_name(streak_n) == "fresh":
+        return MAX_AGE_ПРЕСЕН
+    return REOFFER_MAX_AGE_H
 
 
 def _reoffer_h(direction, streak_n):
@@ -1412,7 +1444,6 @@ def _reoffer_h(direction, streak_n):
     if direction == "long" and _cell_name(streak_n) in ("day1", "fresh"):
         return REOFFER_H_ПРЕСЕН
     return REOFFER_H
-REOFFER_MAX_AGE_H = float(os.environ.get("REOFFER_MAX_AGE_H", "12"))  # ...и докато СЕТЪПЪТ е по-млад
 # 🔴 21.08 · 4ч → 2ч. Тази карта НЕ отваря сделка и НЕ пипа стоп-пазача — тя е
 # ИНФОРМАЦИЯ. Мерено: за 119 ръна, в които гейтът каза ДА в 116, излязоха ДВЕ
 # карти. При 2 часа стават ~6 на делник — колкото собственикът да вижда нивата,
@@ -4011,7 +4042,8 @@ def main():
                and rank.get(best[3], 0) >= rank.get(РЕОФЕР_КЛАС, 1)
                and mins_since is not None
                and mins_since >= _reoffer_h(new_dir, regime["streaks"].get(new_dir or "", 0)) * 60
-               and key_age_h is not None and key_age_h <= REOFFER_MAX_AGE_H
+               and key_age_h is not None
+               and key_age_h <= _max_age_h(new_dir, regime["streaks"].get(new_dir or "", 0))
                and _reoffer_hour_ok(now_utc))
     # 🔴 21.08 · КОЙ ИМЕННО СПИРА. ПРЕБРОЕНО: REOFFER_H е ЕДИНСТВЕН блокер в
     # 931 от 4342 ръна (21.4%) и участва в 1390 (32.0%) — и не пишеше НИТО
@@ -4024,8 +4056,9 @@ def main():
         if mins_since is not None and mins_since < _рх * 60:
             _бл.append(f"REOFFER_H: {mins_since / 60:.1f}ч от картата, трябват {_рх:.0f}ч "
                        f"(клетка {_cell_name(regime['streaks'].get(new_dir or '', 0))})")
-        if key_age_h is not None and key_age_h > REOFFER_MAX_AGE_H:
-            _бл.append(f"MAX_AGE: сетъпът е на {key_age_h:.1f}ч, таван {REOFFER_MAX_AGE_H:.0f}ч")
+        _ма = _max_age_h(new_dir, regime["streaks"].get(new_dir or "", 0))
+        if key_age_h is not None and key_age_h > _ма:
+            _бл.append(f"MAX_AGE: сетъпът е на {key_age_h:.1f}ч, таван {_ма:.0f}ч")
         if not cool_ok:
             _бл.append(f"пауза: под {COOL_MIN} мин от последната карта")
         if not _reoffer_hour_ok(now_utc):
@@ -4053,7 +4086,8 @@ def main():
             st_mins = None
     stale_setup = (bool(actionable) and trade is None and new_dir is not None
                    and last.get("key") == key and not reoffer
-                   and key_age_h is not None and key_age_h > REOFFER_MAX_AGE_H
+                   and key_age_h is not None
+                   and key_age_h > _max_age_h(new_dir, regime["streaks"].get(new_dir or "", 0))
                    and mins_since is not None and mins_since >= STANDING_H * 60
                    and (st_mins is None or st_mins >= STANDING_H * 60))
     # 🔴 21.08 · НОЩНИЯТ ФИЛТЪР СЕ МАХА ОТ ИНФОРМАТИВНАТА КАРТА.
@@ -4063,8 +4097,12 @@ def main():
     # прозореца; от тях 87 биха били напомняне, свити до 3 пропуснати карти.
     # Златото се търгува 23 часа в денонощието — няма причина да мълчи нощем.
     if stale_setup:
+        # 🔴 25.08 · БЛИЗНАКЪТ. Условието горе вече съди ПО КЛЕТКА, а текстът
+        # печаташе голото 12ч — тоест при `long·fresh` на 15ч ботът НЕ го смята
+        # за стоящ (15 < 24), но щеше да каже «след 12ч ръбът е изчерпан».
         notes.append(f"стоящ сетъп: {key_age_h:.1f}ч — информативна карта, НЕ вход "
-                     f"(след {REOFFER_MAX_AGE_H}ч ръбът е изчерпан, мерено)")
+                     f"(след {_max_age_h(new_dir, regime['streaks'].get(new_dir or '', 0)):.0f}ч "
+                     f"ръбът е изчерпан, мерено)")
 
     # ОДИТ-26: коя спирачка е спряла картата (None = никоя)
     _спрян = None
@@ -4076,11 +4114,21 @@ def main():
     # 98.8% от него. Тук се пълни от АНТИ-СПАМ пласта, който на практика спира
     # 94% от картите — и то с ЧИСЛА, не с настроение.
     if actionable and new_dir and not should_sig and not weekend and trade is None:
-        if key_age_h is not None and key_age_h > REOFFER_MAX_AGE_H:
-            _спрян = (f"сетъпът е на {key_age_h:.0f}ч, правилото пуска до {REOFFER_MAX_AGE_H}ч",
+        # 🔴 25.08 · И ТУК БЛИЗНАЦИ. Този блок обяснява на собственика ЗАЩО
+        # мълчи ботът — и съдеше по ГЛОБАЛНИТЕ 12ч/6ч, докато решението горе
+        # вече съди ПО КЛЕТКА. Тоест `long·fresh` на 15ч щеше да получи карта
+        # «правилото пуска до 12ч», а ботът в същия рън да е готов да влезе.
+        # Обяснението, което противоречи на действието, е по-лошо от мълчание.
+        _тав = _max_age_h(new_dir, regime["streaks"].get(new_dir or "", 0))
+        _прг = _reoffer_h(new_dir, regime["streaks"].get(new_dir or "", 0))
+        _клт = _cell_name(regime["streaks"].get(new_dir or "", 0))
+        if key_age_h is not None and key_age_h > _тав:
+            _спрян = (f"сетъпът е на {key_age_h:.0f}ч, правилото пуска до {_тав:.0f}ч "
+                      f"(клетка {_клт})",
                       "мерено: след този таван пределният вход не плаща")
-        elif mins_since is not None and mins_since < REOFFER_H * 60:
-            _спрян = (f"{mins_since / 60:.1f}ч от последната карта, трябват {REOFFER_H}ч",
+        elif mins_since is not None and mins_since < _прг * 60:
+            _спрян = (f"{mins_since / 60:.1f}ч от последната карта, трябват {_прг:.0f}ч "
+                      f"(клетка {_клт})",
                       "за да не стане верига от напомняния")
         elif not cool_ok:
             _спрян = ("още съм в паузата след последната карта",
@@ -4536,8 +4584,10 @@ def main():
     # ЗНАЕ, че сетъпът още стои и къде е цената спрямо нивата. Без нея таванът от 12ч правеше
     # четири от девет дни напълно неми за златото.
     if stale_setup and not should_sig and not weekend:
-        new_msgs.append(("standing", _standing_msg(new_dir, best, key_age_h, spot_g, bar_price,
-                                                   price_user, board, macro, macro_health, now_utc)))
+        new_msgs.append(("standing", _standing_msg(
+            new_dir, best, key_age_h, spot_g, bar_price,
+            price_user, board, macro, macro_health, now_utc,
+            таван=_max_age_h(new_dir, regime["streaks"].get(new_dir or "", 0)))))
         meta["standing_utc"] = now_utc
 
     # КИБЕР КВАНТ дневна референция — веднъж на ден (сутрин 09 София), само делник.
