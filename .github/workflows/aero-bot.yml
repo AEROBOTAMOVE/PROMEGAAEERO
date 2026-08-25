@@ -35,9 +35,15 @@ jobs:
           python -c "import re,io;print('AERO', re.search(r'VERSION = \"([^\"]+)\"', io.open('live_bot.py',encoding='utf-8').read()).group(1))"
           git log --oneline -1
       - name: selftest gate                             # W1: счупен код НЕ праща сигнали
-        timeout-minutes: 5
+        id: selftest_gate
+        # 🔴 25.08 · таванът беше 5 мин. МЕРЕНО от живото Actions: стъпката трае
+        # 59-71с и при падане, И при минаване — тоест НЕ Е таймаут, а истински
+        # провал на тест. Таванът се вдига все пак: селфтестът расте с всеки нов
+        # тест и един ден ще опре в него ТИХО, а тих таван спира бота за цял ден.
+        timeout-minutes: 12
         run: python selftest.py
       - name: run bot
+        id: run_bot
         # 🔴 ОДИТ-5: без таван един увиснал yfinance-разговор държи concurrency групата
         # «aero-bot» и GitHub ОТМЕНЯ наредените следващи рънове. Мерено в живия дневник:
         # 35-минутна дупка на 24.07 16:01→16:36 UTC, в средата на нюйоркската сесия,
@@ -141,16 +147,56 @@ jobs:
           # 5-6 и алармата излиза на всеки 5 минути до края на епизода.
           # Сега: 5+ от ПОСЛЕДНИТЕ 6 паднали И под 5 от ПРЕДХОДНИТЕ 6 → един
           # сигнал на епизод, без да се пази състояние никъде.
+          # 🔴 25.08 · ТРИ ДЕФЕКТА В ТАЗИ АЛАРМА, всичките мерени от живото Actions.
+          #
+          # 1 · СТРЕЛЯШЕ САМО НА ПРЕХОДА. «5+ от последните 6 И под 5 от
+          #     предходните 6» значи: щом престоят продължи, PREV също става 5+
+          #     и алармата МЛЪКВА. ИЗМЕРЕНО: на 24.08 паднаха 215 от 223 ръна —
+          #     ЦЯЛ ТЪРГОВСКИ ДЕН — и собственикът получи най-много ЕДНО
+          #     съобщение в началото. Пазач срещу фалшива тревога, който създаде
+          #     ПРОПУСНАТА. Трети път, когато този шаблон ме бие.
+          #
+          # 2 · САМАТА АЛАРМА ГЪРМЕШЕ. `CONCL=$(curl | grep -o ...)` беше без
+          #     `|| true`, а обвивката тук е `bash -eo pipefail`. Върне ли API
+          #     `"conclusion":null` (рън в ход — БЕЗ кавички, не съвпада), grep
+          #     излиза с 1 и УБИВА стъпката. В Actions се вижда като
+          #     «alarm on barrier failure → failure».
+          #
+          # 3 · НЕ КАЗВАШЕ КОЕ Е СПРЯЛО БОТА. «Не успявам да тръгна» не
+          #     разграничава «мрежата падна» от «моят selftest блокира бота».
+          #     На 24.08 беше второто и никой не разбра.
+          #
+          # СЕГА: брои НЕПРЕКЪСНАТАТА поредица падания и стреля на СТЪПАЛА —
+          # 6 (30 мин), 24 (2ч), 48 (4ч), 96 (8ч), 192 (16ч), 288 (24ч).
+          # Един сигнал на стъпало: без спам, но и без мълчание при дълъг престой.
           CONCL=$(curl -s -H "Authorization: Bearer ${{ github.token }}" \
-            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/workflows/aero-bot.yml/runs?status=completed&per_page=12" \
-            | grep -o '"conclusion":"[a-z]*"')
-          FAILS=$(echo "$CONCL" | head -6 | grep -c 'failure' || true)
-          PREV=$(echo "$CONCL" | sed -n '7,12p' | grep -c 'failure' || true)
-          echo "падания: последни 6 = ${FAILS:-0} · предходни 6 = ${PREV:-0}"
-          if [ "${FAILS:-0}" -ge 5 ] && [ "${PREV:-0}" -lt 5 ]; then
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/workflows/aero-bot.yml/runs?status=completed&per_page=100" \
+            | grep -o '"conclusion":"[a-z]*"' || true)
+          STREAK=0
+          for c in $CONCL; do
+            case "$c" in *failure*) STREAK=$((STREAK+1));; *) break;; esac
+          done
+          # текущият рън още не е в списъка (той е «in_progress») → брои се тук
+          STREAK=$((STREAK+1))
+          # коя СТЪПКА е спряла бота — разликата между «мрежа» и «мой тест»
+          KOJ="нещо в пускането"
+          if [ "${{ steps.selftest_gate.outcome }}" = "failure" ]; then
+            KOJ="СОБСТВЕНИЯТ МИ selftest — кодът е спрян нарочно, не е мрежа"
+          elif [ "${{ steps.run_bot.outcome }}" = "failure" ]; then
+            KOJ="самото пускане (мрежа/фийд) след 3 опита"
+          fi
+          echo "непрекъсната поредица падания: $STREAK · спряло от: $KOJ"
+          SEND=0
+          for T in 6 24 48 96 192 288; do
+            [ "$STREAK" = "$T" ] && SEND=1
+          done
+          if [ "$SEND" = "1" ]; then
+            MIN=$((STREAK*5))
             curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage" \
               -d chat_id="${TELEGRAM_CHAT_ID}" -d parse_mode=HTML \
-              -d text="🔕 <b>Половин час съм тих</b>%0A<i>Не успявам да тръгна вече 30 минути — може да си пропуснал сигнали. Продължавам да опитвам на всеки 5 минути. Това е единственото техническо съобщение, което ще получиш.</i>" || true
+              -d text="🔕 <b>Тих съм вече ${MIN} минути</b>%0A<i>${KOJ}.</i>%0A<i>Толкова време без пускане значи пропуснати сигнали. Продължавам да опитвам на всеки 5 минути и ще се обадя пак, ако не тръгна.</i>" || true
+            echo "::warning::пратено съобщение за престой от ${MIN} мин ($KOJ)"
           else
-            echo "::notice::падане, но под прага за съобщение (${FAILS:-0}/5) — пробвам пак"
+            echo "::notice::поредица $STREAK — под следващото стъпало, пробвам пак"
           fi
+          exit 0

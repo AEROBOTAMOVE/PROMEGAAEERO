@@ -176,8 +176,43 @@ def check_time(live: Path, code_dir: Path, bars):
     t_last = datetime.fromisoformat(last["run_utc"])
     age = (now_utc() - t_last).total_seconds() / 60
 
+    # 🔴 25.08 · В1 ОБЯВИ «БОТЪТ МЪЛЧИ ОТ 84 МИН», докато Actions показваше
+    # успешен рън преди 5 минути. Причината: одитът чете МЕСТНОТО копие на
+    # журнала, а то е от последния `git pull`. Тоест алармата казваше
+    # «ботът мълчи», когато мълчи МОЯТ CHECKOUT.
+    # Същият клас като одитора, който сравняваше файла САМ СЪС СЕБЕ СИ.
+    # Поправката: преди да обвини бота, В1 пита GitHub кога е последният
+    # commit на състоянието. Различават ли се — вината е в копието, не в бота.
+    # Няма ли мрежа/токен — казва го изрично, вместо да гадае.
+    _отдалечен = None
+    try:
+        import urllib.request as _u1, json as _j1, os as _o1
+        _rq = _u1.Request("https://api.github.com/repos/AEROBOTAMOVE/PROMEGAAEERO"
+                          "/commits?path=live/live_journal.jsonl&per_page=1",
+                          headers={"Accept": "application/vnd.github+json",
+                                   "User-Agent": "aero-audit"})
+        _tk = _o1.environ.get("GH_TOKEN") or _o1.environ.get("GITHUB_TOKEN")
+        if _tk:
+            _rq.add_header("Authorization", "Bearer " + _tk)
+        _c1 = _j1.load(_u1.urlopen(_rq, timeout=20))
+        if _c1:
+            _отдалечен = datetime.fromisoformat(
+                _c1[0]["commit"]["committer"]["date"].replace("Z", "+00:00"))
+    except Exception:
+        _отдалечен = None
+    _застояло = None
+    if _отдалечен is not None:
+        _д = (_отдалечен.replace(tzinfo=None) - t_last.replace(tzinfo=None)).total_seconds() / 60
+        if _д > 12:
+            _застояло = _д
+
     # В1 · ПУЛС — жив ли е ботът СЕГА
-    if not is_trading_time(now_utc()):
+    if _застояло is not None:
+        A.warn(cat, "В1", "пулс — МЕСТНОТО КОПИЕ е застояло",
+               f"журналът тук е с {_застояло:.0f} мин по-стар от GitHub "
+               f"(тук {age:.0f} мин тишина, но ботът е бутал състояние)",
+               "пусни `git pull` и одитирай пак — ботът НЕ е виновен")
+    elif not is_trading_time(now_utc()):
         A.ok(cat, "В1", "пулс", f"пазарът е затворен · последно пускане преди {age:.0f} мин")
     elif age <= 12:
         A.ok(cat, "В1", "пулс", f"последно пускане преди {age:.0f} мин")
@@ -699,11 +734,24 @@ def check_integrity(live: Path, code_dir: Path, repo: Path, skip_selftest=False)
     if skip_selftest:
         A.ok(cat, "Ц2", "selftest", "(пропуснат на повторно преминаване)")
     elif st.exists():
-        r = subprocess.run([sys.executable, str(st)], cwd=str(code_dir), capture_output=True,
-                           text=True, encoding="utf-8", errors="replace", timeout=180,
-                           env={**os.environ, "PYTHONIOENCODING": "utf-8"})
-        out = (r.stdout or "") + (r.stderr or "")
-        if r.returncode == 0:
+        # 🔴 25.08 · ОДИТ-РОБОТЪТ ГЪРМЕШЕ ТОЧНО ТУК. Таймаутът беше 180с, а
+        # селфтестът порасна на 1963 проверки и мина над него → TimeoutExpired
+        # излиташе нагоре и убиваше ЦЕЛИЯ одит на последната му стъпка.
+        # Тоест: колкото повече тестове пиша, толкова по-сигурно роботът пада —
+        # проверчик, който се самоубива от собствения си успех.
+        # ДВЕ поправки: по-широк таймаут И хващане, за да не яде целия одит.
+        try:
+            r = subprocess.run([sys.executable, str(st)], cwd=str(code_dir), capture_output=True,
+                               text=True, encoding="utf-8", errors="replace", timeout=900,
+                               env={**os.environ, "PYTHONIOENCODING": "utf-8"})
+        except subprocess.TimeoutExpired:
+            A.warn(cat, "Ц2", "selftest", "не свърши за 900с — НЕ Е ПРОВЕРЕН "
+                                          "(одитът продължава, вместо да падне)")
+            r = None
+        out = "" if r is None else ((r.stdout or "") + (r.stderr or ""))
+        if r is None:
+            pass
+        elif r.returncode == 0:
             n = out.count("PASS")
             A.ok(cat, "Ц2", "selftest", f"{n}/{n} минават")
         else:
