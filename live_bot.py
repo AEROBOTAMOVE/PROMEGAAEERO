@@ -2914,7 +2914,12 @@ def _digest_msg(out, date, trade, s_trade, spot_g, spot_s, guard, weekly_part=Fa
             пл, _ = _отворена_стълба(tr, sp, notes if 'notes' in dir() else None)
             L.append(f"{нм} държим от <code>{tr['entry']:,.{dec}f}</code>"
                      + (f" · {' '.join(прибр)} ✅" if прибр else "")
-                     + (f" · <b>{пл:+.2f}$</b>" if пл is not None else ""))
+                     # 🔴 26.08 · САМО ДОЛАРИ, без пипсове. Собственикът:
+                     # «парите не са нужни, пипсовете да са точни на макс —
+                     # хората си играят с каквито лотове могат». Третата карта
+                     # (ред 2960) отдавна ползва `_пари`, тези две — не.
+                     + (f" · <b>{_пари(пл, tr.get('sym', 'XAUUSD'))}</b>"
+                        if пл is not None else ""))
         else:
             L.append(f"{нм} няма сделка")
     if trade and s_trade and trade["direction"] == s_trade["direction"]:
@@ -3188,7 +3193,12 @@ def _pulse_msg(part, board, best, new_dir, advice_txt, adv_ok, trade, s_trade,
             пл, _ = _отворена_стълба(tr, sp, notes if 'notes' in dir() else None)
             L.append(f"{нм} държим от <code>{tr['entry']:,.{dec}f}</code>"
                      + (f" · {' '.join(прибр)} ✅" if прибр else "")
-                     + (f" · <b>{пл:+.2f}$</b>" if пл is not None else ""))
+                     # 🔴 26.08 · САМО ДОЛАРИ, без пипсове. Собственикът:
+                     # «парите не са нужни, пипсовете да са точни на макс —
+                     # хората си играят с каквито лотове могат». Третата карта
+                     # (ред 2960) отдавна ползва `_пари`, тези две — не.
+                     + (f" · <b>{_пари(пл, tr.get('sym', 'XAUUSD'))}</b>"
+                        if пл is not None else ""))
     if shield and new_dir == "short":
         L.append("👁 чакам американските данни")
     elif има:
