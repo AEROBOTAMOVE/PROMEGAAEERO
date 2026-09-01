@@ -34,7 +34,7 @@ import pandas as pd
 # v9.5–v9.8 — всеки ред в дневника твърдеше грешна версия, а дневникът е
 # единственият начин отвън да се види какво работи. П47 пада, ако VERSION не се
 # среща в темата на последния commit.
-VERSION = "v18.1"
+VERSION = "v18.2"
 PIP = 0.10
 SL_PIPS = 200; SL_D = SL_PIPS * PIP                       # стоп: 200п = $20/oz
 TPS = [("ТП1", 75, 7.5), ("ТП2", 120, 12.0), ("ТП3", 200, 20.0)]
@@ -4208,6 +4208,8 @@ def _вход_запис(u):
     return {"utc": datetime.fromtimestamp(int(m.get("date") or 0),
                                           timezone.utc).replace(tzinfo=None)
             .isoformat(timespec="minutes"),
+            # чатът е нужен, за да се приема питане САМО от собственика
+            "чат": str((m.get("chat") or {}).get("id") or ""),
             "източник": str(_из)[:60], "препратен": _пре,
             "текст": txt[:1500],
             # СУРОВ признак, не решение: споменава ли изобщо злато
@@ -4224,6 +4226,35 @@ def _за_злато(txt):
     """Споменава ли текстът злато. СУРОВ признак, не решение."""
     t = str(txt or "").lower()
     return any(w in t for w in ДУМИ_ЗЛАТО)
+
+
+# 🔴 01.09 · Собственикът: «искам всичко ясно и точно и ПОСТОЯННО, и да не
+# се премълчава нищо, но без спам — всяка сделка и всичко да се вижда».
+# Картата «КЪДЕ СМЕ» съществува от седмици, но се пуска САМО с флаг от
+# командния ред — тоест той нямаше как да я извика. Сега, когато ботът вече
+# ЧЕТЕ (v17.8), питането става възможно: пишеш му и той отговаря.
+# Това е ПО-ДОБРО от още една автоматична карта: няма спам, а отговорът идва
+# точно когато ти трябва.
+ДУМИ_ПИТАНЕ = ("къде сме", "къде см", "статус", "status", "какво става",
+               "кво става", "сделка", "сделки", "къде", "?")
+
+
+def _е_питане(z):
+    """Питане ли е това съобщение — и от СОБСТВЕНИКА ли е.
+
+    🔴 ЖЕЛЯЗНО: приема се САМО от чата, конфигуриран в TELEGRAM_CHAT_ID.
+    Текстът от чужд източник е ДАННИ, не команди — препратен пост от канал
+    никога не е питане, дори да съдържа въпросителна.
+    """
+    if not z or z.get("препратен"):
+        return False
+    _ч = str(os.environ.get("TELEGRAM_CHAT_ID") or "")
+    if _ч and str(z.get("чат") or "") != _ч:
+        return False
+    _т = " ".join(str(z.get("текст") or "").lower().split())
+    if not _т or len(_т) > 60:          # дълъг текст е разказ, не въпрос
+        return False
+    return any(w in _т for w in ДУМИ_ПИТАНЕ)
 
 
 def _вход_чети(out, meta, notes=None):
@@ -4249,6 +4280,10 @@ def _вход_чети(out, meta, notes=None):
     if notes is not None and редове:
         _зл = sum(1 for z in редове if z["за_злато"])
         notes.append("📥 %d нови съобщения до бота (%d за злато)" % (len(редове), _зл))
+    _пит = any(_е_питане(z) for z in редове)
+    if _пит and notes is not None:
+        notes.append("❓ питан съм «къде сме» — отговарям с картата на състоянието")
+    meta["питан"] = bool(_пит)
     return len(редове)
 
 
@@ -5934,7 +5969,9 @@ def main():
         new_msgs.append(("digest", _digest_msg(out, date, trade, s_tr_now, spot_g, spot_s, guard,
                                                weekly_part=(sof_now.weekday() == 4))))
         # Д3: meta["digest"] се маркира СЛЕД потвърдено пращане (виж 7б)
-    if args.status or os.environ.get("STATUS_CARD") == "yes":
+    # 🔴 01.09 · и когато СОБСТВЕНИКЪТ попита. Дотук картата беше достъпна
+    # само с флаг от командния ред, тоест на практика недостъпна за него.
+    if args.status or os.environ.get("STATUS_CARD") == "yes" or meta.get("питан"):
         s_tr_now = _load_state(s_tr_f, None)
         new_msgs.append(("status", _status_msg(board, new_dir, trade, s_tr_now, spot_g, spot_s,
                                                basis_g, basis_s, guard, shield, date, macro)))
