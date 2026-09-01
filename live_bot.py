@@ -34,7 +34,7 @@ import pandas as pd
 # v9.5–v9.8 — всеки ред в дневника твърдеше грешна версия, а дневникът е
 # единственият начин отвън да се види какво работи. П47 пада, ако VERSION не се
 # среща в темата на последния commit.
-VERSION = "v17.7"
+VERSION = "v17.8"
 PIP = 0.10
 SL_PIPS = 200; SL_D = SL_PIPS * PIP                       # стоп: 200п = $20/oz
 TPS = [("ТП1", 75, 7.5), ("ТП2", 120, 12.0), ("ТП3", 200, 20.0)]
@@ -3987,6 +3987,142 @@ def _migrate_trade(trade, basis, dec=2, notes=None):
     return trade
 
 
+# ══ ВХОДЯЩ ПЪТ · ботът ЧЕТЕ ═══════════════════════════════════════════
+# 🔴 01.09 · ДОТУК БОТЪТ БЕШЕ САМО ПРАЩАЩ. В целия файл имаше един-единствен
+# разговор с Телеграм — `sendMessage`. Нула `getUpdates`. Значи не можеше да
+# прочете нито канал, нито собственика.
+#
+# ПОВОДЪТ: собственикът иска ботът да чете канала «Global Trade Insights»
+# (@GTIacademyofficial, 3153 абоната). ПРОВЕРЕНО, че НЕ Е публично четим:
+#   t.me/s/GTIacademyofficial → 302 → 0 публикации
+#   три различни подписа (празен · Chrome · TelegramBot) → и трите 0
+# Собственикът на канала е изключил публичния преглед. Значи автоматично
+# четене без негов акаунт е невъзможно — но ПРЕПРАЩАНЕТО работи веднага:
+# собственикът препраща пост на бота, ботът го прибира и го показва.
+#
+# 🔴🔴 ЖЕЛЯЗНО ПРАВИЛО ЗА ТОЗИ ПЪТ:
+# ТЕКСТЪТ, КОЙТО ВЛИЗА ОТТУК, Е ДАННИ — НЕ КОМАНДИ И НЕ СИГНАЛ.
+# Той НЕ пипа гейта, НЕ отваря сделка, НЕ мени точки, НЕ мени размер.
+# Показва се на картата като ЦИТАТ с източник. Причината не е стилова:
+# това е чужд текст от външен канал; ако утре някой публикува «купи сега
+# на пазарна цена», ботът не бива да го изпълни, а да го покаже.
+# Влизане в точкуването — само СЛЕД мерене, и то с отделно решение.
+ЧЕТЕ_ВХОД = os.environ.get("ЧЕТЕ_ВХОД", "да") == "да"
+ВХОД_ТАВАН = int(os.environ.get("ВХОД_ТАВАН", "20"))     # най-много толкова на рън
+ВХОД_ДНИ = float(os.environ.get("ВХОД_ДНИ", "3"))        # колко назад важи пост
+
+
+def _tg_updates(tok, offset=None, timeout=10):
+    """Новите съобщения до бота. Връща (списък, следващ_offset) или ([], offset).
+
+    Защитено: всяка грешка → празен списък и НЕПРОМЕНЕН offset, тоест ботът
+    не губи съобщения и не спира заради мрежата.
+    """
+    if not tok:
+        return [], offset
+    q = {"timeout": 0, "limit": max(1, ВХОД_ТАВАН),
+         "allowed_updates": json.dumps(["message", "channel_post"])}
+    if offset is not None:
+        q["offset"] = int(offset)
+    url = ("https://api.telegram.org/bot%s/getUpdates?%s"
+           % (tok, urllib.parse.urlencode(q)))
+    try:
+        with urllib.request.urlopen(url, timeout=timeout) as r:
+            b = json.loads(r.read().decode("utf-8", "replace"))
+    except Exception:
+        return [], offset
+    if not isinstance(b, dict) or b.get("ok") is not True:
+        return [], offset
+    up = b.get("result") or []
+    if not up:
+        return [], offset
+    _нов = max(int(u.get("update_id", 0)) for u in up) + 1
+    return up, _нов
+
+
+def _вход_запис(u):
+    """Изважда ПОЛЕЗНОТО от едно съобщение. Нищо тук не е решение."""
+    m = u.get("message") or u.get("channel_post") or {}
+    txt = (m.get("text") or m.get("caption") or "").strip()
+    if not txt:
+        return None
+    _fc = m.get("forward_from_chat") or {}
+    _fo = m.get("forward_origin") or {}
+    _из = (_fc.get("title") or (_fo.get("chat") or {}).get("title")
+           or (_fo.get("sender_user") or {}).get("first_name")
+           or ((m.get("from") or {}).get("first_name")) or "?")
+    _пре = bool(_fc or _fo)
+    return {"utc": datetime.fromtimestamp(int(m.get("date") or 0),
+                                          timezone.utc).replace(tzinfo=None)
+            .isoformat(timespec="minutes"),
+            "източник": str(_из)[:60], "препратен": _пре,
+            "текст": txt[:1500],
+            # СУРОВ признак, не решение: споменава ли изобщо злато
+            "за_злато": _за_злато(txt)}
+
+
+# 🔴 БЕЗ регулярен израз:  НЕ Е внесен на ниво модул в този файл
+# (собствената ми първа версия гръмна на това), а и кирилицата в регулярни
+# изрази е хапала проекта и преди. Прост списък с думи, свеждане надолу.
+ДУМИ_ЗЛАТО = ("xau", "злат", "gold", "хау", "gc=f", "xauusd")
+
+
+def _за_злато(txt):
+    """Споменава ли текстът злато. СУРОВ признак, не решение."""
+    t = str(txt or "").lower()
+    return any(w in t for w in ДУМИ_ЗЛАТО)
+
+
+def _вход_чети(out, meta, notes=None):
+    """Прибира новите съобщения в live/kanal.jsonl. Връща броя нови."""
+    if not ЧЕТЕ_ВХОД:
+        return 0
+    tok = os.environ.get("TELEGRAM_TOKEN")
+    if not tok:
+        return 0
+    up, нов = _tg_updates(tok, meta.get("вход_offset"))
+    if not up:
+        return 0
+    редове = [z for z in (_вход_запис(u) for u in up) if z]
+    if редове:
+        try:
+            with (out / "kanal.jsonl").open("a", encoding="utf-8") as f:
+                for z in редове:
+                    f.write(json.dumps(z, ensure_ascii=False) + chr(10))
+        except Exception as _e:
+            if notes is not None:
+                notes.append("🔴 входящото не се записа (%s)" % type(_e).__name__)
+    meta["вход_offset"] = нов
+    if notes is not None and редове:
+        _зл = sum(1 for z in редове if z["за_злато"])
+        notes.append("📥 %d нови съобщения до бота (%d за злато)" % (len(редове), _зл))
+    return len(редове)
+
+
+def _канал_ред(out, now_utc):
+    """Последният ПРЕПРАТЕН пост за злато — като ЦИТАТ, не като съвет."""
+    try:
+        _p = out / "kanal.jsonl"
+        if not _p.exists():
+            return None
+        _вс = [json.loads(x) for x in _p.open(encoding="utf-8") if x.strip()]
+    except Exception:
+        return None
+    _годни = [z for z in _вс if z.get("за_злато") and z.get("препратен")]
+    if not _годни:
+        return None
+    z = _годни[-1]
+    try:
+        _ч = (pd.Timestamp(now_utc) - pd.Timestamp(z["utc"])).total_seconds() / 3600.0
+    except Exception:
+        return None
+    if _ч < 0 or _ч > ВХОД_ДНИ * 24:
+        return None
+    _т = " ".join(str(z.get("текст", "")).split())[:150]
+    return ("📰 <b>%s</b> (преди %s): «%s…»"
+            % (str(z.get("източник", "?"))[:28], _остава(_ч), _т))
+
+
 # ---------- пощенска кутия (Ф8.1): съобщение не се губи никога ----------
 def _send_raw(text):
     tok = os.environ.get("TELEGRAM_TOKEN"); ch = os.environ.get("TELEGRAM_CHAT_ID")
@@ -4524,6 +4660,14 @@ def main():
 
     # датата: САМО НАПРЕД (Ф8.2/П9)
     meta = _load_state(out / "meta.json", {})
+    # 🔴 01.09 · ВХОДЯЩИЯТ ПЪТ. Дотук ботът беше само пращащ. Чете се РАНО,
+    # за да може прочетеното да влезе в картите на СЪЩИЯ рън. Защитено:
+    # всяка грешка вътре връща 0 и НЕ пипа offset-а — нищо не се губи.
+    try:
+        _вход_чети(out, meta, notes)
+    except Exception as _e_вх:
+        notes.append("🔴 входящият път гръмна (%s) — ботът продължава"
+                     % type(_e_вх).__name__)
     date_raw = str(gold_d.index[-1].date())
     date = max(date_raw, meta.get("date", date_raw))
     # 🔴 21.08 · ДАТАТА БЕШЕ РАТЧЕТ — вървеше САМО напред и нямаше път назад.
@@ -5677,11 +5821,20 @@ def main():
     for ph, hr in (("09", 9), ("14", 14), ("22", 22)):
         if sof_now.hour == hr and meta.get("pulse_" + ph) != ден_карти and not weekend:
             s_tr_p = _load_state(s_tr_f, None)
-            new_msgs.append(("pulse", _pulse_msg(ph, board, best, new_dir, advice_txt, _adv_ok,
-                                                 trade, s_tr_p, spot_g, spot_s, macro, shield, weekend,
-                                                 macro_raw=macro_health,
-                                                 streaks=regime.get("streaks"),
-                                                 stats=stats)))
+            # 🔴 01.09 · и редът от канала. ЦИТАТ, не съвет: текстът е чужд,
+            # от външен канал, и НЕ пипа нито гейта, нито размера, нито точките.
+            _пулс = _pulse_msg(ph, board, best, new_dir, advice_txt, _adv_ok,
+                               trade, s_tr_p, spot_g, spot_s, macro, shield, weekend,
+                               macro_raw=macro_health,
+                               streaks=regime.get("streaks"),
+                               stats=stats)
+            try:
+                _кан = _канал_ред(out, now_utc)
+            except Exception:
+                _кан = None
+            if _кан:
+                _пулс = _пулс + chr(10) + _кан
+            new_msgs.append(("pulse", _пулс))
             pulse_slot = ph
             break
 
