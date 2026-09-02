@@ -54,7 +54,19 @@ jobs:
           TELEGRAM_CHAT_ID: "-1003827523037"
           BALANCE: ${{ vars.BALANCE || '1000' }}
           RISK_PCT: ${{ vars.RISK_PCT || '2' }}
-          STATUS_CARD: ${{ github.event.inputs.status || 'no' }}
+          STATUS_CARD: ${{ github.event.inputs.status || 'no' }}
+          # 🔴 02.09 · РЪЧКИТЕ С «ПЪТ НАЗАД БЕЗ КАЧВАНЕ» най-после стигат до
+          # бота. Всяка идва от Settings → Variables; празно = подразбирането
+          # в кода (`_env` третира празното като липсващо). Смяна на
+          # поведението = една стойност в Variables, БЕЗ комит.
+          ЛОНГ_СТОП_ПИПСА: ${{ vars.LONG_STOP_PIPS || '' }}
+          ГЕЙТ_ЛОНГ_НЕДОКАЗАНО: ${{ vars.GATE_LONG_UNPROVEN || '' }}
+          МАЛЪК_РАЗМЕР_W: ${{ vars.SMALL_SIZE_W || '' }}
+          РЕЖИМ_W_ПОД: ${{ vars.REGIME_W_BELOW || '' }}
+          ЛОНГ_САМО_НАД_SMA200: ${{ vars.LONG_ONLY_ABOVE_SMA200 || '' }}
+          БЕЗ_ЛОНГ_ПЕТЪК: ${{ vars.NO_LONG_FRIDAY || '' }}
+          ШОРТ_ГЕОМЕТРИЯ: ${{ vars.SHORT_GEOMETRY || '' }}
+          МИН_ДНИ: ${{ vars.MIN_DAYS || '' }}
         # ОДИТ-19 · СЪЖИВЯВАНЕ. Повечето падания са мигновени (мрежа, 429 от Yahoo,
         # бавен фийд). Дотук едно мигване вдигаше червена аларма. Сега се пробва ПАК.
         run: |
