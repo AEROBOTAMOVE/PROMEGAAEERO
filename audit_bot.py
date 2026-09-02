@@ -607,6 +607,50 @@ def TP3_D(lb):
 
 
 # ─────────────────── 💀 МЪРТВИ ───────────────────
+def check_sent(live: Path):
+    """🔴 01.09 · ПРАТЕНОТО — дневникът на онова, което НАИСТИНА е стигнало до
+    собственика. 1072 записа към 01.09, а покритието му от одита беше 0%:
+    нито една проверка не го отваряше. Всеки въпрос от вида «колко карти
+    получих», «кога», «колко дубликати» имаше готов отговор в него и никой не
+    питаше. Чете се през `jall` (архив + текущ), както brain_journal.
+    Нула нови редове в Telegram — това е ОДИТ, не карта."""
+    cat = "ПРАТЕНО"
+    S = jall(live, "sent_log.jsonl")
+    if not S:
+        A.warn(cat, "Р1", "дневник на пратеното", "sent_log.jsonl липсва или е празен",
+               "ботът пише в него при всяка пратена карта — липсата значи, че не праща")
+        return
+    A.ok(cat, "Р1", "дневник на пратеното", f"{len(S)} пратени карти (архив + текущ)")
+    # Р2 · дубликати — същият таг и същият текст в рамките на 10 минути
+    from datetime import datetime as _dt
+    dup = 0
+    last = {}
+    for r in S:
+        tag, txt, ts = str(r.get("tag", "")), str(r.get("text", ""))[:120], str(r.get("utc") or r.get("ts") or "")
+        try:
+            t = _dt.fromisoformat(ts.replace("Z", ""))
+        except Exception:
+            continue
+        k = (tag, txt)
+        if k in last and abs((t - last[k]).total_seconds()) <= 600:
+            dup += 1
+        last[k] = t
+    if dup:
+        A.fail(cat, "Р2", "ДУБЛИРАНИ КАРТИ", f"{dup} карти са пратени втори път в рамките на 10 мин",
+               "същият таг+текст два пъти — дедупликацията не ги е спряла")
+    else:
+        A.ok(cat, "Р2", "без дубликати", "нито една карта не е пратена два пъти в 10 мин")
+    # Р3 · по тагове — какво е излизало
+    from collections import Counter as _C
+    tags = _C(str(r.get("tag", "?")).split(":")[0] for r in S)
+    top = " · ".join(f"{k} {v}" for k, v in tags.most_common(6))
+    A.ok(cat, "Р3", "какво е излизало", top)
+    # Р4 · изходни карти срещу сигнали (една сделка = много карти; червената е една)
+    ex = sum(v for k, v in tags.items() if k.startswith(("exit", "s-exit", "sh-exit", "brain-exit")))
+    sig = sum(v for k, v in tags.items() if k in ("signal", "s-signal", "brain"))
+    A.ok(cat, "Р4", "изходи срещу сигнали", f"{ex} изходни · {sig} сигнални")
+
+
 def check_dead(live: Path):
     cat = "МЪРТВИ"
     # М1 · заседнала поща (+ Б6: отровно съобщение)
@@ -1238,6 +1282,10 @@ def main():
                 check_accuracy(live, code_dir, lb, bars5)
             elif cat == "МЪРТВИ":
                 check_dead(live)
+                try:
+                    check_sent(live)          # 01.09 · покритие на sent_log 0% → 4 проверки
+                except Exception as _e:
+                    A.warn("ПРАТЕНО", "Р0", "проверката се спъна", f"{type(_e).__name__}: {str(_e)[:80]}")
             elif cat == "ЦЯЛОСТ":
                 check_integrity(live, code_dir, repo, skip_selftest=(pi > 0))   # selftest бавен → веднъж
             elif cat == "ЧЕСТНОСТ":
