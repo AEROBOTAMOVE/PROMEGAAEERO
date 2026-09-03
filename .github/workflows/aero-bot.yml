@@ -229,11 +229,43 @@ jobs:
             KOJ="самото пускане (мрежа/фийд) след 3 опита"
           fi
           echo "непрекъсната поредица падания: $STREAK · спряло от: $KOJ"
+          # 🔴🔴 03.09 · ВЕРИГАТА НЕ ВИЖДА НАКЪСАНАТА СМЪРТ.
+          # Горният брояч спира на първото НЕпадане (`*) break`). Значи хваща
+          # само непрекъснат престой. А на 02-03.09 ботът гърмеше ПРЕЗ РЕД:
+          # 141 от 316 ръна за 24 часа (45%) не стигнаха до дневника, между тях
+          # три цели часа по 12/12 мъртви — и веригата НИТО ВЕДНЪЖ не стигна 6,
+          # защото минаващите рънове я нулираха. Четиринайсет часа счупен бот,
+          # нула тревоги, а отвън изглеждаше жив: commit на всеки 5 минути.
+          # Затова тук се брои и РАВНОСМЕТКА: колко падания има в ТЕКУЩАТА
+          # шестчасова кофа. Кофата е ФИКСИРАНА (не пълзяща) и затова броят в
+          # нея само расте — «точно 12» се пали РОВНО ВЕДНЪЖ на кофа, без да
+          # има нужда от памет между рънове. Максимум 4 съобщения на ден, и то
+          # само докато ботът наистина е счупен; при здрав бот — нула.
+          # 12 падания за 6 часа е ~17% от ~72 ръна. Здрав ден дава 0-2 (мрежа).
+          # ПЪТ НАЗАД: махане на блока `RATE` и на `$RATE` от условието SEND.
+          RATE=0
+          if command -v jq >/dev/null 2>&1; then
+            KOFA=$(( $(date -u +%s) / 21600 * 21600 ))
+            OT=$(date -u -d "@${KOFA}" +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || echo "")
+            if [ -n "$OT" ]; then
+              RATE=$(curl -s -H "Authorization: Bearer ${{ github.token }}"                 "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/workflows/aero-bot.yml/runs?status=completed&per_page=100"                 | jq --arg c "$OT" '[.workflow_runs[]
+                    | select(.created_at >= $c)
+                    | select(.conclusion=="failure")] | length' 2>/dev/null || echo 0)
+            fi
+          fi
+          RATE=${RATE:-0}
+          echo "падания в текущата 6-часова кофа: $RATE"
           SEND=0
           for T in 6 24 48 96 192 288; do
             [ "$STREAK" = "$T" ] && SEND=1
           done
-          if [ "$SEND" = "1" ]; then
+          if [ "$RATE" = "12" ]; then SEND=2; fi
+          if [ "$SEND" = "2" ]; then
+            # накъсаната смърт: между паданията ИМА минаващи рънове, затова
+            # «тих съм от N минути» би било невярно. Казва се това, което е.
+            curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage"               -d chat_id="${TELEGRAM_CHAT_ID}" -d parse_mode=HTML               -d text="🔕 <b>Гърмя през ред — ${RATE} пъти за 6 часа</b>%0A<i>${KOJ}.</i>%0A<i>Между паданията минавам, затова изглеждам жив. Пропускам сигнали. Обаждам се веднъж на 6 часа, докато трае.</i>" || true
+            echo "::warning::пратено съобщение за НАКЪСАН престой ($RATE за 6ч · $KOJ)"
+          elif [ "$SEND" = "1" ]; then
             MIN=$((STREAK*5))
             curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage" \
               -d chat_id="${TELEGRAM_CHAT_ID}" -d parse_mode=HTML \
