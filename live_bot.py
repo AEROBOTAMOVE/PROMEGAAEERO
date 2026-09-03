@@ -34,7 +34,7 @@ import pandas as pd
 # v9.5–v9.8 — всеки ред в дневника твърдеше грешна версия, а дневникът е
 # единственият начин отвън да се види какво работи. П47 пада, ако VERSION не се
 # среща в темата на последния commit.
-VERSION = "v18.39"
+VERSION = "v18.40"
 
 
 def _env(ключ, подразб):
@@ -3482,7 +3482,7 @@ def _sig_msg(direction, score, agree_n, tier_name, spot, bar_price, bar_ts, lv, 
              advice_txt, macro, streak_n, regime, stats, balance, risk_pct, weekly=None,
              reentry=False, open_trade=None, sym="XAUUSD", dec=2, extra_ctx=None, adv_ok=True,
              shadow_on=None, zone=None, other_trade=None, мерено=None, now_utc=None,
-             превес=None):
+             превес=None, държиш_още=0):
     """ОДИТ-29 · един ред, едно нещо, едно емоджи отпред.
     Дотук картата беше добър български и лоша карта: изречения с подчинени
     и точка в средата. На телефон се чете РЕД, не абзац."""
@@ -3515,7 +3515,18 @@ def _sig_msg(direction, score, agree_n, tier_name, spot, bar_price, bar_ts, lv, 
             L.append(f"💵 сега <code>{_fmt(spot['mid'], dec)}</code>"
                      + (" ⚠️ от крипто-резерва, не от златния фийд"
                         if _от_резерва(spot) else ""))
-        L.append("👁 дръж я · не отваряй нова")
+        # 🔴🔴 03.09 · «НЕ ОТВАРЯЙ НОВА» БЕШЕ НЕВЯРНО ПРИ ТАВАН > 1.
+        # ЖИВО на 03.09: в 02:11, 02:33 и 02:37 ботът отвори слотове #2, #3 и
+        # #4, а картата в СЪЩИЯ рън каза «дръж я · не отваряй нова» и показа
+        # входа на ПЪРВАТА сделка (4401.59), докато новите бяха на 4411.38,
+        # 4415.78 и 4417.97. После собственикът получи 11 ИЗХОДНИ карти —
+        # с пари и със заповед «ПРИБЕРИ ⅓ СЕГА» — за позиции, чиито входове
+        # НИКОГА не са били обявени. Преброено на целия дневник: 11 от 79
+        # изходни карти нямат входна.
+        # Тази карта се праща САМО когато НЕ се отваря нова (виж `_ще_отвори`
+        # при извикването); ако все пак има други слотове, тя го КАЗВА.
+        L.append("👁 дръж я" + (" · държиш %d наведнъж" % (държиш_още + 1)
+                                if държиш_още else " · не отваряй нова"))
         return "\n".join(L)
 
     if not adv_ok:
@@ -3779,6 +3790,20 @@ def _sig_msg(direction, score, agree_n, tier_name, spot, bar_price, bar_ts, lv, 
         _друг = "среброто" if sym == "XAUUSD" else "златото"
         L.append(f"⚠️ вече държиш {_друг} в същата посока · рискът е един голям, "
                  f"не два малки")
+    # 🔴 03.09 · ВХОДНАТА карта казва, че държиш още. Иначе три различни входа
+    # за час изглеждат като ЕДНА И СЪЩА сделка, повтаряна — а те са три
+    # отделни позиции с три отделни стопа. Лепи се към реда «📌», за да не
+    # расте картата над тавана от 7 реда.
+    # (Първата ми версия падна в `_exit_msg` — съседна функция със същия
+    # `if next_line:` — и щеше да счупи ВСЯКА изходна карта с NameError.
+    # Хванато с РЕНДИРАНЕ преди качване, не с четене.)
+    if държиш_още:
+        for _i_др in range(len(L)):
+            if L[_i_др].startswith("📌 "):
+                L[_i_др] += " · държиш %d наведнъж" % (държиш_още + 1)
+                break
+        else:
+            L.append("📌 държиш %d наведнъж" % (държиш_още + 1))
     if reentry:
         L.append("♻️ ре-влизане · предишната приключи")
     return "\n".join(L)
@@ -7399,10 +7424,21 @@ def main():
         sh_now = _load_state(out / "shadow_trade.json", None)
         if sh_now is not None and sh_now.get("direction") != new_dir:
             sh_now = None                                   # ще бъде пре-отворена → картата е права
+        # 🔴🔴 03.09 · ЩЕ ЛИ СЕ ОТВОРИ НОВА В ТОЗИ РЪН. Условието е ДОСЛОВНО
+        # същото като долу (ред ~7430), само пресметнато ПО-РАНО — картата се
+        # строеше ПРЕДИ решението и затова не можеше да го спомене.
+        # Отваря ли се нова, картата е за НЕЯ (с нейните нива), а не «дръж
+        # старата». Иначе собственикът получава изходни карти за позиции,
+        # които никога не е виждал да се отварят.
+        _отв_сега = (1 if trade else 0) + len(доп_сделки)
+        _ще_отвори = ((open_tr is None or _отв_сега < ТАВАН_СДЕЛКИ)
+                      and bool(new_dir) and _adv_ok)
         new_msgs.append(("signal", _sig_msg(new_dir, best[2], agree_n, best[4], spot_g, bar_price, bar_ts,
                                             lv_user, entry_user, advice_txt, macro, streak_n, regime, stats,
                                             args.balance, args.risk, weekly=weekly, reentry=reentry,
-                                            open_trade=open_tr, extra_ctx=" · ".join(extra) if extra else None,
+                                            open_trade=(None if _ще_отвори else open_tr),
+                                            държиш_още=(_отв_сега if _ще_отвори else 0),
+                                            extra_ctx=" · ".join(extra) if extra else None,
                                             adv_ok=_adv_ok, shadow_on=sh_now,
                                             zone=_zones(frames.get("1час"), new_dir),
                                             other_trade=s_trade,
