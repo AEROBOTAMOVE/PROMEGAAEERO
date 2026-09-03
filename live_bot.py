@@ -34,7 +34,7 @@ import pandas as pd
 # v9.5–v9.8 — всеки ред в дневника твърдеше грешна версия, а дневникът е
 # единственият начин отвън да се види какво работи. П47 пада, ако VERSION не се
 # среща в темата на последния commit.
-VERSION = "v18.40"
+VERSION = "v18.41"
 
 
 def _env(ключ, подразб):
@@ -6731,7 +6731,15 @@ def main():
             key_age_h = (pd.Timestamp(now_utc) - pd.Timestamp(last["key_since"])).total_seconds() / 3600
         except Exception:
             key_age_h = None
-    reoffer = (bool(actionable) and trade is None and new_dir is not None
+    # 🔴🔴 03.09 · «trade is None» ОБЕЗСМИСЛЯШЕ ТАВАНА ОТ 12.
+    # Дотук ЕДНА отворена сделка спираше всяко напомняне — все едно таванът е 1.
+    # А `ТАВАН_СДЕЛКИ` е 12 и входът по-долу (ред ~7427) вече пита за СВОБОДЕН
+    # СЛОТ, не за «нула сделки». Двете врати съдеха по различни правила:
+    # входът виждаше 11 свободни места, напомнянето виждаше «зает съм».
+    # Сега и двете питат едно и също. При ТАВАН_СДЕЛКИ=1 изразът се свежда
+    # ДОСЛОВНО до стария (`trade is None`), тоест пътят назад е самата ръчка.
+    _слот_за_напомняне = ((1 if trade else 0) + len(доп_сделки)) < ТАВАН_СДЕЛКИ
+    reoffer = (bool(actionable) and _слот_за_напомняне and new_dir is not None
                # 🔴 ОДИТ-44 · ГЛАВНИЯТ ЗАГЛУШИТЕЛ. Мерено на 1928 живи ръна:
                # 1341 (69.6%) са спрени ТОЧНО тук, а след 06.08 — 967 от 967
                # (100%), защото класът е «medium», не «strong».
@@ -6783,7 +6791,8 @@ def main():
             st_mins = (pd.Timestamp(now_utc) - pd.Timestamp(meta["standing_utc"])).total_seconds() / 60
         except Exception:
             st_mins = None
-    stale_setup = (bool(actionable) and trade is None and new_dir is not None
+    # 🔴 03.09 · близнакът: и «стоящият сетъп» питаше за «нула сделки».
+    stale_setup = (bool(actionable) and _слот_за_напомняне and new_dir is not None
                    and last.get("key") == key and not reoffer
                    and key_age_h is not None
                    and key_age_h > _max_age_h(new_dir, regime["streaks"].get(new_dir or "", 0))
@@ -7154,7 +7163,16 @@ def main():
         notes.append("🔇 «виждам, но не давам» заради ПАУЗАТА не се праща — "
                      "сигналната карта вече го каза")
         _спр_ок = False
-    if _спрян is not None and new_dir and actionable and not weekend and _спр_ок:
+    # 🔴🔴 03.09 · ОТКАЗЪТ И СИГНАЛЪТ ИЗЛИЗАХА В ЕДНА И СЪЩА СЕКУНДА.
+    # ПРЕБРОЕНО в живия дневник: 8 такива двойки. Дословно от 25.08 08:08:
+    #     ⏸ ВИЖДАМ ПОКУПКА · но не я давам · 08:08
+    #     🟢 КУПИ ЗЛАТО · 08:08
+    # Двете си противоречат в лицето. Причината: отказът се строи ТУК, а
+    # сигналът — 250 реда по-долу, при `if should_sig and actionable`. Дотук
+    # никой не питаше дали ДРУГИЯТ ще излезе.
+    # Условието е ДОСЛОВНО същото като на сигналната карта.
+    if (_спрян is not None and new_dir and actionable and not weekend and _спр_ок
+            and not (should_sig and actionable)):
         meta["спряна_посл"] = {"повод": _вид_повод(str(_спрян[0])),
                                "utc": now_utc}
         try:
@@ -7330,6 +7348,23 @@ def main():
             if kind in ("tp3", "sl", "time", "flip"):
                 nl = "НЕ — среброто търгува само дневната карта (сутрин); ре-влизанията не издържаха теста (F19)."
             silver_new_msgs.append(("s-exit:" + kind, _exit_msg(kind, s_obj, px, when, via, gap, spot=spot_s, next_line=nl, dec=3)))
+        # 🔴🔴 03.09 · ЗАМРАЗЕНА СРЕБЪРНА СЯНКА. `shadow_silver.json` се
+        # пипа САМО вътре в `if s_should:`. Заглушено ли е среброто, `s_should`
+        # е винаги False → сянката стои непокътната. НАМЕРЕНА ЖИВА: отворена на
+        # 25.08 17:54 на цена 68.90, стояла 8 ДНИ. Отпуши ли се среброто утре,
+        # тя ще проговори за събитие отпреди осем дни, представено само с ЧАС —
+        # тоест ще изглежда като днешно.
+        # Затваря се ВЕДНЪЖ, тихо: бележка в дневника, БЕЗ карта (сянката е
+        # хартиена, няма пари, а карта за осемдневно събитие само обърква).
+        if not s_should and (out / "shadow_silver.json").exists():
+            try:
+                _сс = _load_state(out / "shadow_silver.json", None)
+                _отв = (_сс or {}).get("opened")
+                (out / "shadow_silver.json").unlink()
+                notes.append("🧹 сребърната сянка е затворена — среброто е "
+                             "заглушено, а тя стоеше от %s" % (_отв or "?"))
+            except Exception as _есс:
+                notes.append("сребърната сянка не се затвори (%s)" % type(_есс).__name__)
         if s_should:
             s_entry_user = _entry_side(spot_s, s_dir) if spot_s else s_price_user
             s_lv_user = _levels_silver(round(s_entry_user, 3), s_dir)
