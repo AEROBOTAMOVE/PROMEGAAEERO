@@ -80,6 +80,7 @@ jobs:
           КРАЙ_ДОПУСК_ДЯЛ: ${{ vars.EDGE_TOL_FRAC || '' }}
           COOL_MIN: ${{ vars.COOL_MIN || '' }}
           COOL_FLIP_MIN: ${{ vars.COOL_FLIP_MIN || '' }}
+          ВХОД_ТЕКСТ_ЗНАЦИ: ${{ vars.POST_TEXT_CHARS || '' }}
           РАМКА_МИН_БАРОВЕ: ${{ vars.FRAME_MIN_BARS || '' }}
           НОВИНИ_КОТВА_NY: ${{ vars.NEWS_ANCHOR_NY || '' }}
           НОВИНИ_ПРЕДИ_Ч: ${{ vars.NEWS_AHEAD_H || '' }}
