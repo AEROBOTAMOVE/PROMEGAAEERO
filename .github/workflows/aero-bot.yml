@@ -91,7 +91,8 @@ jobs:
           ПРОГНОЗА_К_СЕДМИЦА: ${{ vars.FORECAST_K_WEEK || '' }}
           КАРТА_РЕДОВЕ: ${{ vars.CARD_LINES || '' }}
           КАРТА_ЗНАЦИ: ${{ vars.CARD_CHARS || '' }}
-          КАРТА_ПЪРВИ_РЕД: ${{ vars.CARD_FIRST_LINE || '' }}
+          КАРТА_ПЪРВИ_РЕД: ${{ vars.CARD_FIRST_LINE || '' }}
+          ПУЛС_СЛОТОВЕ: ${{ vars.PULSE_SLOTS || '' }}
           МАЛЪК_РАЗМЕР_W: ${{ vars.SMALL_SIZE_W || '' }}
           РЕЖИМ_W_ПОД: ${{ vars.REGIME_W_BELOW || '' }}
           ЛОНГ_САМО_НАД_SMA200: ${{ vars.LONG_ONLY_ABOVE_SMA200 || '' }}
