@@ -77,6 +77,9 @@ jobs:
           ГЕЙТ_ЛОНГ_НЕДОКАЗАНО: ${{ vars.GATE_LONG_UNPROVEN || '' }}
           ГЕЙТ_ШОРТ_НЕДОКАЗАНО: ${{ vars.GATE_SHORT_UNPROVEN || '' }}
           РАМКИ_СВОИ_ЛИНИИ: ${{ vars.FRAME_OWN_REFS || '' }}
+          КРАЙ_ДОПУСК_ДЯЛ: ${{ vars.EDGE_TOL_FRAC || '' }}
+          COOL_MIN: ${{ vars.COOL_MIN || '' }}
+          COOL_FLIP_MIN: ${{ vars.COOL_FLIP_MIN || '' }}
           РАМКА_МИН_БАРОВЕ: ${{ vars.FRAME_MIN_BARS || '' }}
           НОВИНИ_КОТВА_NY: ${{ vars.NEWS_ANCHOR_NY || '' }}
           НОВИНИ_ПРЕДИ_Ч: ${{ vars.NEWS_AHEAD_H || '' }}
