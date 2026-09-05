@@ -83,7 +83,10 @@ jobs:
           НОВИНИ_ЕТАПИ: ${{ vars.NEWS_STAGES || '' }}
           СУТРИН_ОТ: ${{ vars.MORNING_FROM || '' }}
           СУТРИН_ДО: ${{ vars.MORNING_TO || '' }}
-          ГОЛЯМ_ХОД_ПРОЦЕНТИЛ: ${{ vars.BIG_DXY_PCTL || '' }}
+          ГОЛЯМ_ХОД_ПРОЦЕНТИЛ: ${{ vars.BIG_DXY_PCTL || '' }}
+          НОВИНИ_ИЗТОЧНИК: ${{ vars.NEWS_SOURCE || '' }}
+          NASDAQ_ДНИ: ${{ vars.NASDAQ_DAYS || '' }}
+          NASDAQ_БЮДЖЕТ_С: ${{ vars.NASDAQ_BUDGET_S || '' }}
           МАЛЪК_РАЗМЕР_W: ${{ vars.SMALL_SIZE_W || '' }}
           РЕЖИМ_W_ПОД: ${{ vars.REGIME_W_BELOW || '' }}
           ЛОНГ_САМО_НАД_SMA200: ${{ vars.LONG_ONLY_ABOVE_SMA200 || '' }}

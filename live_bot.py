@@ -34,7 +34,7 @@ import pandas as pd
 # v9.5–v9.8 — всеки ред в дневника твърдеше грешна версия, а дневникът е
 # единственият начин отвън да се види какво работи. П47 пада, ако VERSION не се
 # среща в темата на последния commit.
-VERSION = "v18.49"
+VERSION = "v18.50"
 
 
 def _env(ключ, подразб):
@@ -5193,6 +5193,138 @@ def _cq_zone(score):
 # засенчване значи, че поправка в първото няма да свърши нищо и никой няма
 # да разбере защо. Махнато е второто; първото остава непроменено.
 
+# 🔴🔴🔴 05.09 · СТАРИЯТ ИЗТОЧНИК Е МЪРТЪВ · ЖИВ ЗАМЕСТНИК.
+#
+# `cyberquant-g2mrw3tb.manus.space` връща **HTTP 404**, проверено на живо.
+# В дневника: 83 бележки «CyberQuant недостъпен». Кешът `cyberquant.json`
+# съдържа събития от 19.08 и 27.08 — тоест ботът е говорил за календар
+# отпреди ДВЕ СЕДМИЦИ. Това е втората половина на «новините закъсняват»:
+# часът беше грешен (поправено), а СЪБИТИЯТА бяха стари.
+#
+# NASDAQ · https://api.nasdaq.com/api/calendar/economicevents?date=ГГГГ-ММ-ДД
+# ПРОВЕРЕНО НА ЖИВО 05.09: HTTP 200, без ключ, дава БЪДЕЩИ дни —
+#   +0д 55 събития (23 САЩ) · +3д 62 · +7д 65 (31 САЩ) · +14д 14 (5 САЩ)
+# Уикендите връщат 0, което е вярно.
+#
+# 🔴 ЧАСЪТ Е В НЮ ЙОРК, не в GMT, въпреки че полето се казва `gmt`.
+# ПРОВЕРЕНО по две независими събития с известен час:
+#   «Average Hourly Earnings 08:30» — NFP е 8:30 ET (не 8:30 GMT = 4:30 ET)
+#   «IEA Monthly Report 05:00» — IEA публикува 10:00 CET = 05:00 ET
+# Затова часът се чете КАТО НЮЙОРКСКИ и се превежда през истинската зона.
+# Това съвпада с котвата `_cq_evt_dt` — двете не си противоречат.
+#
+# ПЪТ НАЗАД: `vars.NEWS_SOURCE = cq` връща само стария източник.
+НОВИНИ_ИЗТОЧНИК = _env("НОВИНИ_ИЗТОЧНИК", "nasdaq")
+NASDAQ_ДНИ = int(_env("NASDAQ_ДНИ", "16"))
+# таван за ЦЯЛОТО дърпане в секунди (виж бележката в `_nasdaq_fetch`)
+NASDAQ_БЮДЖЕТ_С = float(_env("NASDAQ_БЮДЖЕТ_С", "45"))
+
+
+def _time_ns_mono():
+    """Монотонен часовник в секунди — не се мести при смяна на времето."""
+    import time as _t
+    return _t.monotonic()
+
+
+def _nasdaq_fetch(now_utc, дни=None):
+    """Икономическият календар на Nasdaq → списък събития като на `cq`.
+
+    Защитено докрай: всеки проблем връща [], ботът НЕ спира. Един ден без
+    отговор е един пропуснат ден, не счупен бот.
+    """
+    #  НЕ Е на ниво модул в този файл — известен капан, същият
+    # клас като NameError-а от 03.09. Внася се локално.
+    from datetime import timedelta as _тд
+    дни = NASDAQ_ДНИ if дни is None else int(дни)
+    try:
+        _нача = datetime.fromisoformat(str(now_utc)).date()
+    except Exception:
+        _нача = datetime.now(timezone.utc).date()
+    _UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+           "(KHTML, like Gecko) Chrome/120.0 Safari/537.36")
+    # 🔴 05.09 · ТАВАН ЗА ЦЯЛАТА РАБОТА. Шестнайсет дни са шестнайсет заявки;
+    # при бавна мрежа 16 × 12с = 192 секунди в рън, който има 8 минути общо и
+    # върши и друго. Един бавен източник НЕ бива да яде рънa.
+    # Спре ли по време, връща каквото е събрало дотук — частичен календар е
+    # по-добър от никакъв, и се вижда в дневника колко е събрал.
+    _край_бюджет = _time_ns_mono() + NASDAQ_БЮДЖЕТ_С
+    events, _видени = [], set()
+    # 🔴🔴 05.09 · ДАТАТА НА NASDAQ Е ИЗМЕСТЕНА С ЕДИН ДЕН.
+    # Заявката за ден X връща събитията на ДЕН X−1. ПРОВЕРЕНО ТРИ ПЪТИ на
+    # живо, с дати, чийто ден е известен независимо:
+    #   date=2026-09-08 → «United States - Labor Day», а Labor Day 2026 е
+    #                     ПОНЕДЕЛНИК 07.09
+    #   date=2026-09-12 (СЪБОТА) → Core CPI, а CPI никога не излиза в събота;
+    #                     истинският ден е петък 11.09
+    #   date=2026-09-11 (петък) → Initial Jobless Claims, а те са ЧЕТВЪРТЪК
+    # Без тази поправка ВСЯКО събитие щеше да се обяви с ден закъснение —
+    # тоест точно оплакването «новините закъсняват», само че по нов начин.
+    # Затова за целеви ден `_д` се пита за `_д + 1`.
+    for _и in range(дни):
+        _д = _нача + _тд(days=_и)
+        # събота/неделя нямат макро публикации — не хабим заявки
+        if _д.weekday() >= 5:
+            continue
+        if _time_ns_mono() > _край_бюджет:
+            break
+        try:
+            _u = ("https://api.nasdaq.com/api/calendar/economicevents?date=%s"
+                  % (_д + _тд(days=1)).isoformat())
+            _r = urllib.request.Request(_u, headers={"User-Agent": _UA,
+                                                     "Accept": "application/json"})
+            with urllib.request.urlopen(_r, timeout=8) as _f:
+                _j = json.loads(_f.read().decode())
+        except Exception:
+            continue
+        for _ред in ((_j.get("data") or {}).get("rows") or []):
+            try:
+                if str(_ред.get("country", "")).strip() != "United States":
+                    continue
+                _име = str(_ред.get("eventName", "")).strip()
+                if not _име or not any(_k in _име.upper() for _k in МАКРО_ИМЕНА):
+                    continue
+                _час = str(_ред.get("gmt", "")).strip()
+                if ":" not in _час:              # «All Day» — няма момент
+                    continue
+                _чч, _мм = _час.split(":")[:2]
+                # ПОЛЕТО СЕ КАЗВА gmt, НО Е НЮЙОРКСКО (виж бележката горе)
+                _ню = datetime(_д.year, _д.month, _д.day, int(_чч), int(_мм),
+                               tzinfo=_tz("America/New_York"))
+                _utc = _ню.astimezone(timezone.utc).replace(tzinfo=None)
+                _кл = (_име.upper(), _utc.isoformat(timespec="minutes"))
+                if _кл in _видени:               # Nasdaq дублира редове (YoY/MoM)
+                    continue
+                _видени.add(_кл)
+                events.append({"name": _име[:60],
+                               "dt": _utc.isoformat(timespec="seconds") + "Z",
+                               "impact": "critical" if any(
+                                   _k in _име.upper() for _k in
+                                   ("FOMC", "NFP", "NONFARM", "NON-FARM", "CPI", "PCE")
+                               ) else "high",
+                               "по": "nasdaq"})
+            except Exception:
+                continue
+    # 🔴 05.09 · ЕДНО СЪБИТИЕ НА ЧАС. Nasdaq дава ШЕСТ реда за CPI в един и
+    # същи момент (CPI · Core CPI · Core CPI Index · CPI Index n.s.a. ·
+    # CPI Index s.a · CPI n.s.a) — за пазара това е ЕДНА публикация.
+    # Без сливане отброяването щеше да ги брои за шест различни събития и
+    # да прати шест пъти повече карти, тоест точно спамът, който собственикът
+    # мрази — и то за нещо, което вече е поправено веднъж (виж НОВИНИ_ЕТАПИ).
+    # ЗАПАЗВА СЕ НАЙ-КЪСОТО ИМЕ: «CPI», не «CPI Index, n.s.a.» — то е и
+    # най-разбираемото, а картата е с таван от 78 знака на първия ред.
+    _по_час = {}
+    for _е in events:
+        _к = _е["dt"]
+        _стар = _по_час.get(_к)
+        if (_стар is None
+                or (_е["impact"] == "critical" and _стар["impact"] != "critical")
+                or (_е["impact"] == _стар["impact"]
+                    and len(_е["name"]) < len(_стар["name"]))):
+            _по_час[_к] = _е
+    events = sorted(_по_час.values(), key=lambda e: e["dt"])
+    return events
+
+
 def _cq_fetch(now_utc):
     """CyberQuant публично tRPC API, БЕЗ логин. Защитено — при всеки проблем връща None
     (никога не чупи бота). Дърпа CQS скор + страх/алчност + макро-календар. Веднъж на ден."""
@@ -6842,6 +6974,32 @@ def main():
         if _cm >= 60:
             meta["cq_last_try"] = now_utc
             _cqf = _cq_fetch(now_utc)
+            # 🔴🔴🔴 05.09 · СТАРИЯТ ИЗТОЧНИК Е МЪРТЪВ — NASDAQ Е ЖИВИЯТ.
+            # `cyberquant-...manus.space` връща HTTP 404 (проверено на живо);
+            # в дневника има 83 бележки «недостъпен», а кешът съдържаше
+            # събития от 19.08 и 27.08 — тоест ботът говореше за календар
+            # отпреди ДВЕ СЕДМИЦИ.
+            # Nasdaq дава БЪДЕЩИ дни без ключ (проверено: 9 събития за 16 дни
+            # напред, вкл. CPI петък 15:30 София и PPI четвъртък 15:30).
+            # РЕДЪТ Е НАРОЧЕН: първо старият (ако някога възкръсне, той носи
+            # и `score`, и страх/алчност), после Nasdaq за СЪБИТИЯТА. Тоест
+            # новото не изхвърля стария — само запълва дупката, която той
+            # оставя от седмици.
+            if НОВИНИ_ИЗТОЧНИК != "cq":
+                try:
+                    _нзд = _nasdaq_fetch(now_utc)
+                except Exception as _енз:
+                    _нзд = []
+                    notes.append("Nasdaq календарът се спъна (%s)" % type(_енз).__name__)
+                if _нзд:
+                    _cqf = dict(_cqf or {})
+                    _стари = len((_cqf.get("events") or []))
+                    _cqf["events"] = _нзд
+                    _cqf.setdefault("zone", (cq or {}).get("zone"))
+                    _cqf.setdefault("score", (cq or {}).get("score"))
+                    _cqf["източник"] = "nasdaq"
+                    notes.append("📅 календарът е от Nasdaq: %d събития "
+                                 "(старият даде %d)" % (len(_нзд), _стари))
             if _cqf:
                 cq = _cqf
                 # Двоен колан: дори да мине празен календар, не бива да изяде добър.
