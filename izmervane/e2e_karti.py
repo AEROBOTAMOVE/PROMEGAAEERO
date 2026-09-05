@@ -122,6 +122,13 @@ for i, т in enumerate(пратени):
     print("   " + ч.replace("\n", "\n   ")[:600])
     print()
 print("=" * 78)
+print("ПРАЗЕН КАЛЕНДАР — казва ли го")
+print("=" * 78)
+_к2,_п2,_з2,_ = _пусни("2026-09-07T04:30:00", календар=False)
+_бел=[str(n) for n in (_з2.get("notes") or []) if "календар" in str(n).lower()]
+print("  бележки за календара:", _бел or "НЯМА 🔴")
+print()
+print("=" * 78)
 print("ПРОВЕРКА")
 print("=" * 78)
 _текст = "\n".join(str(x) for x in пратени)

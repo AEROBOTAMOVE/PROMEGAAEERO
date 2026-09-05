@@ -90,6 +90,7 @@ jobs:
           МАКРО_ИМЕНА_EN: ${{ vars.MACRO_NAMES_EN || '' }}
           МАКРО_ИМЕНА_ПРЕСКОК: ${{ vars.MACRO_NAMES_SKIP || '' }}
           КРИТИЧНИ_ИМЕНА: ${{ vars.MACRO_NAMES_CRITICAL || '' }}
+          NASDAQ_ПРАЗНИ_ТРЕВОГА: ${{ vars.NASDAQ_EMPTY_ALARM || '' }}
           ПРОГНОЗА_К_ДЕН: ${{ vars.FORECAST_K_DAY || '' }}
           ОБЗОР_ЗНАЦИ: ${{ vars.OVERVIEW_CHARS || '' }}
           ОБЗОР_РЕДОВЕ: ${{ vars.OVERVIEW_LINES || '' }}
