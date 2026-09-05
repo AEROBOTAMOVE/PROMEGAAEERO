@@ -96,6 +96,7 @@ jobs:
           ОБЗОР_РЕДОВЕ: ${{ vars.OVERVIEW_LINES || '' }}
           ПРОГНОЗА_К_СЕДМИЦА: ${{ vars.FORECAST_K_WEEK || '' }}
           КАРТА_РЕДОВЕ: ${{ vars.CARD_LINES || '' }}
+          СПРЕД_ТАВАН_ПИПСА: ${{ vars.SPREAD_CAP_PIPS || '' }}
           КАРТА_ЗНАЦИ: ${{ vars.CARD_CHARS || '' }}
           КАРТА_ПЪРВИ_РЕД: ${{ vars.CARD_FIRST_LINE || '' }}
           ПУЛС_СЛОТОВЕ: ${{ vars.PULSE_SLOTS || '' }}
