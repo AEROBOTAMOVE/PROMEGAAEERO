@@ -88,6 +88,8 @@ jobs:
           NASDAQ_ДНИ: ${{ vars.NASDAQ_DAYS || '' }}
           NASDAQ_БЮДЖЕТ_С: ${{ vars.NASDAQ_BUDGET_S || '' }}
           ПРОГНОЗА_К_ДЕН: ${{ vars.FORECAST_K_DAY || '' }}
+          ОБЗОР_ЗНАЦИ: ${{ vars.OVERVIEW_CHARS || '' }}
+          ОБЗОР_РЕДОВЕ: ${{ vars.OVERVIEW_LINES || '' }}
           ПРОГНОЗА_К_СЕДМИЦА: ${{ vars.FORECAST_K_WEEK || '' }}
           КАРТА_РЕДОВЕ: ${{ vars.CARD_LINES || '' }}
           КАРТА_ЗНАЦИ: ${{ vars.CARD_CHARS || '' }}
