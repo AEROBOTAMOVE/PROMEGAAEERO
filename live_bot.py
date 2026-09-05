@@ -34,7 +34,7 @@ import pandas as pd
 # v9.5–v9.8 — всеки ред в дневника твърдеше грешна версия, а дневникът е
 # единственият начин отвън да се види какво работи. П47 пада, ако VERSION не се
 # среща в темата на последния commit.
-VERSION = "v18.56"
+VERSION = "v18.57"
 
 
 def _env(ключ, подразб):
@@ -5279,6 +5279,93 @@ def _time_ns_mono():
     return _t.monotonic()
 
 
+# 🔴🔴🔴 05.09 · ФИЛТЪРЪТ ИЗХВЪРЛЯШЕ FOMC — НАЙ-ГОЛЯМОТО СЪБИТИЕ НА МЕСЕЦА.
+#
+# `МАКРО_ИМЕНА` е списък на БЪЛГАРСКИ (ФРС · ЛИХВ · ЗАЕТОСТ), защото беше
+# писан за стария източник, който даваше български заглавия. Nasdaq пише на
+# АНГЛИЙСКИ и нарича решението на Фед «Fed Interest Rate Decision» — низ,
+# който не съдържа НИТО ЕДНО от старите парчета.
+# ПРОВЕРЕНО НА ЖИВО 05.09: за седмицата на FOMC (14-19.09) Nasdaq дава
+# 7 федерални събития на 16.09, включително «Fed Interest Rate Decision» и
+# петте «Interest Rate Projection» (точковата диаграма) — и СТАРИЯТ ФИЛТЪР
+# пропуска ВСИЧКИТЕ.
+#
+# ИЗТЕГЛЕНИ СА РЕАЛНИТЕ ИМЕНА: 85 различни събития на САЩ за месец напред.
+# Оттам са построени двата списъка отдолу — по НАБЛЮДЕНИЕ, не по спомен.
+#
+# 🔴 И ИЗКЛЮЧВАЩИЯТ СПИСЪК Е ЗАДЪЛЖИТЕЛЕН, не украса. Без него минават:
+#   «Atlanta Fed GDPNow» — 6 пъти на месец, а е ПРОГНОЗА на регионална Фед,
+#   не публикация; щеше да е най-честото «събитие» в календара
+#   «Philly Fed CAPEX Index» и още четири подкомпонента на един отчет
+#   търгове на облигации · ипотечни индекси · петрол и газ (те движат ДРУГО)
+# Изключващият се проверява ПРЪВ — иначе «GDPNow» минава по парчето «GDP».
+#
+# ПЪТ НАЗАД: `vars.MACRO_NAMES_EN` и `vars.MACRO_NAMES_SKIP` (празно = долните).
+МАКРО_ИМЕНА_EN = tuple(x.strip().upper() for x in _env(
+    "МАКРО_ИМЕНА_EN",
+    # КРИТИЧНИ — местят златото силно
+    "FED INTEREST RATE DECISION,INTEREST RATE PROJECTION,FOMC,POWELL,"
+    "CPI,PCE,NONFARM,NON-FARM,PAYROLL,UNEMPLOYMENT RATE,"
+    # ВАЖНИ
+    "PPI,RETAIL SALES,INITIAL JOBLESS CLAIMS,ISM,GDP,MICHIGAN,JOLTS,"
+    "DURABLE GOODS,CONSUMER CONFIDENCE,PHILADELPHIA FED MANUFACTURING,"
+    "EMPIRE STATE,ADP EMPLOYMENT,TRADE BALANCE,INDUSTRIAL PRODUCTION"
+).split(",") if x.strip())
+
+МАКРО_ИМЕНА_ПРЕСКОК = tuple(x.strip().upper() for x in _env(
+    "МАКРО_ИМЕНА_ПРЕСКОК",
+    "GDPNOW,CLEVELAND,AUCTION,MBA ,MORTGAGE,CRUDE,GASOLINE,DISTILLATE,HEATING OIL,"
+    "NATURAL GAS,REFINERY,EIA ,REDBOOK,IPSOS,PHILLY FED,WEEKLY,"
+    "4-WEEK AVG,CONTINUING JOBLESS,TIC ,CAPITAL FLOW,FOREIGN BUYING,"
+    "INVENTORIES,BILL ,NOTE ,BOND "
+).split(",") if x.strip())
+
+КРИТИЧНИ_ИМЕНА = tuple(x.strip().upper() for x in _env(
+    "КРИТИЧНИ_ИМЕНА",
+    "FED INTEREST RATE DECISION,INTEREST RATE PROJECTION,FOMC,POWELL,"
+    "CPI,PCE,NONFARM,NON-FARM,PAYROLL,UNEMPLOYMENT RATE,"
+    # 05.09 · и БЪЛГАРСКИТЕ на стария източник — П153 хвана, че «NFP —
+    # Доклад за заетостта» минаваше като ВАЖНО, но не като КРИТИЧНО.
+    "NFP,ЗАЕТОСТ,БЕЗРАБОТ,ИНФЛАЦ,ЛИХВ,ФРС"
+).split(",") if x.strip())
+
+
+# 🔴 05.09 · КЪСИТЕ СЪКРАЩЕНИЯ СЕ ТЪРСЯТ КАТО ЦЯЛА ДУМА.
+# ХВАНАТО ПРИ ЖИВО ТЕГЛЕНЕ: «NFIB Small Business OptimISM» мина по
+# парчето «ISM». Три букви вътре в чужда дума не са индикатор — това е
+# същият клас капан като «спи» в «спират».
+# Дългите фрази («FED INTEREST RATE DECISION») си остават по подниз —
+# там случайно съвпадение няма как да стане.
+_КЪСИ_ИМЕНА = frozenset(("ISM", "CPI", "PPI", "PCE", "GDP", "NFP",
+                         "ADP", "JOLTS", "БВП", "ФРС"))
+
+
+def _има_име(парче, текст):
+    """Парчето в текста — ЦЯЛА ДУМА за късите, подниз за дългите."""
+    if парче in _КЪСИ_ИМЕНА:
+        import re as _reим
+        return _reим.search(r"(?<![A-ZА-Я0-9])" + _reим.escape(парче)
+                            + r"(?![A-ZА-Я0-9])", текст) is not None
+    return парче in текст
+
+
+def _макро_ли(име):
+    """(важно_ли, критично_ли) за име на български ИЛИ английски.
+
+    Изключващият списък се проверява ПРЪВ — «Atlanta Fed GDPNow» иначе
+    минава по парчето «GDP», а е прогноза, не публикация.
+    """
+    _и = str(име or "").upper()
+    if not _и:
+        return False, False
+    if any(_п in _и for _п in МАКРО_ИМЕНА_ПРЕСКОК):
+        return False, False
+    _крит = any(_има_име(_k, _и) for _k in КРИТИЧНИ_ИМЕНА)
+    _важно = _крит or any(_има_име(_k, _и) for _k in МАКРО_ИМЕНА_EN) \
+        or any(_има_име(_k, _и) for _k in МАКРО_ИМЕНА)
+    return _важно, _крит
+
+
 def _nasdaq_fetch(now_utc, дни=None):
     """Икономическият календар на Nasdaq → списък събития като на `cq`.
 
@@ -5334,7 +5421,8 @@ def _nasdaq_fetch(now_utc, дни=None):
                 if str(_ред.get("country", "")).strip() != "United States":
                     continue
                 _име = str(_ред.get("eventName", "")).strip()
-                if not _име or not any(_k in _име.upper() for _k in МАКРО_ИМЕНА):
+                _важно, _крит = _макро_ли(_име)
+                if not _важно:
                     continue
                 _час = str(_ред.get("gmt", "")).strip()
                 if ":" not in _час:              # «All Day» — няма момент
@@ -5350,10 +5438,7 @@ def _nasdaq_fetch(now_utc, дни=None):
                 _видени.add(_кл)
                 events.append({"name": _име[:60],
                                "dt": _utc.isoformat(timespec="seconds") + "Z",
-                               "impact": "critical" if any(
-                                   _k in _име.upper() for _k in
-                                   ("FOMC", "NFP", "NONFARM", "NON-FARM", "CPI", "PCE")
-                               ) else "high",
+                               "impact": "critical" if _крит else "high",
                                "по": "nasdaq"})
             except Exception:
                 continue
@@ -8477,8 +8562,20 @@ def main():
     if (_в_сутрин and not weekend and sof_now.weekday() <= 1
             and meta.get("седмица") != _седм_ключ(now_utc)):
         try:
+            # 🔴🔴🔴 05.09 · ТУК БЕШЕ СЧУПЕНО И ЩЕШЕ ДА ИЗЛЕЗЕ ВСЕКИ ПОНЕДЕЛНИК.
+            # Махнах `price` от подписа на `_седмица_msg` (беше мъртъв
+            # параметър, П130 го хвана) — но ИЗВИКВАНЕТО остана със стария
+            # брой позиции. Резултатът: `cq` получаваше ЦЕНАТА, `now_utc`
+            # получаваше КАЛЕНДАРА, `sym` получаваше ЧАСА.
+            # Картата излизаше «📅 СЕДМИЦАТА ·  · ?» — без дати, без час, без
+            # събития. Нищо не гърмеше: всяко парче е в try/except.
+            # ХВАНАТО С РЪН КРАЙ ДО КРАЙ, не с четене — синтетичните тестове
+            # викаха функцията ПРЯКО и затова не виждаха извикването.
+            # СЕГА С ИМЕНА: смени ли се подписът пак, Python ще гръмне ВЕДНАГА
+            # с TypeError вместо да размести мълчаливо.
             new_msgs.append(("седмица", _седмица_msg(
-                gold_d, board, macro, streak_n, price_user, cq, now_utc)))
+                gold_d=gold_d, board=board, macro=macro, streak_n=streak_n,
+                cq=cq, now_utc=now_utc)))
             meta["седмица"] = _седм_ключ(now_utc)
             notes.append("📅 прогноза за седмицата")
         except Exception as _есд:
@@ -8486,7 +8583,8 @@ def main():
     if _в_сутрин and meta.get("обзор") != ден_карти and not weekend:
         try:
             new_msgs.append(("обзор", _обзор_msg(
-                gold_d, board, macro, streak_n, price_user, cq, now_utc,
+                gold_d=gold_d, board=board, macro=macro, streak_n=streak_n,
+                price=price_user, cq=cq, now_utc=now_utc,
                 отворени=(1 if trade else 0) + len(доп_сделки), dxy_d=dxy_d)))
             meta["обзор"] = ден_карти
             notes.append("☀️ обзор на деня")
