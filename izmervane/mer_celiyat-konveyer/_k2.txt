@@ -1,0 +1,19 @@
+Traceback (most recent call last):
+  File "C:\Users\User\AppData\Local\Temp\claude\C--Users-User-Downloads-----\2674809c-6765-4e6e-873d-82958246267b\scratchpad\repo\izmervane\mer_celiyat-konveyer\k2_funiya.py", line 93, in <module>
+    main()
+  File "C:\Users\User\AppData\Local\Temp\claude\C--Users-User-Downloads-----\2674809c-6765-4e6e-873d-82958246267b\scratchpad\repo\izmervane\mer_celiyat-konveyer\k2_funiya.py", line 40, in main
+    G, D, B = konv.данни()
+              ^^^^^^^^^^^^
+  File "C:\Users\User\AppData\Local\Temp\claude\C--Users-User-Downloads-----\2674809c-6765-4e6e-873d-82958246267b\scratchpad\repo\izmervane\mer_celiyat-konveyer\konv.py", line 289, in данни
+    G = pd.read_parquet(TUK / "reshetka.parquet")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\site-packages\pandas\io\parquet.py", line 668, in read_parquet
+    impl = get_engine(engine)
+           ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\site-packages\pandas\io\parquet.py", line 68, in get_engine
+    raise ImportError(
+ImportError: Unable to find a usable engine; tried using: 'pyarrow', 'fastparquet'.
+A suitable version of pyarrow or fastparquet is required for parquet support.
+Trying to import the above resulted in these errors:
+ - `Import pyarrow` failed. pyarrow is required for parquet support. Use pip or conda to install the pyarrow package.
+ - `Import fastparquet` failed. fastparquet is required for parquet support. Use pip or conda to install the fastparquet package.

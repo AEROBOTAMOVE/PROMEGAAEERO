@@ -1,0 +1,28 @@
+[tape] cache 7,959,839 bars (0.5s)
+[entries] all=6846 short=3321 long=3525
+  shipped ladder 7.5/12/20 SL20 BE  5d   n=3321  max|dnet|=0.00e+00  net-mismatch=0  kind-mismatch=0  mean=-0.8431  (9s)
+  ladder 7.5/12/20 SL20 no-BE       5d   n=3321  max|dnet|=0.00e+00  net-mismatch=0  kind-mismatch=0  mean=-1.0652  (12s)
+  flat TP15 SL15                    5d   n=3321  max|dnet|=0.00e+00  net-mismatch=0  kind-mismatch=0  mean=-0.9378  (7s)
+  flat TP10 SL30                    5d   n=3321  max|dnet|=0.00e+00  net-mismatch=0  kind-mismatch=0  mean=-0.7708  (7s)
+  flat TP30 SL10                    5d   n=3321  max|dnet|=0.00e+00  net-mismatch=0  kind-mismatch=0  mean=-1.1101  (8s)
+  halves 5/10 SL25 BE               1d   n=3321  max|dnet|=0.00e+00  net-mismatch=0  kind-mismatch=0  mean=-0.4323  (2s)
+  shipped ladder                    2d   n=3321  max|dnet|=0.00e+00  net-mismatch=0  kind-mismatch=0  mean=-0.5644  (4s)
+  flat TP20 SL40                   10d   n=3321  max|dnet|=0.00e+00  net-mismatch=0  kind-mismatch=0  mean=-1.7725  (18s)
+
+VERDICT: PASS - engine reproduces gh._one_trade exactly
+
+### gh.TIME_EXIT_DAYS is a WHOLE day ordinal - fractions do nothing
+   TIME_EXIT_DAYS=0.02   mean net over first 300 shorts = -0.105787
+   TIME_EXIT_DAYS=0.05   mean net over first 300 shorts = -0.105787
+   TIME_EXIT_DAYS=0.15   mean net over first 300 shorts = -0.105787
+   TIME_EXIT_DAYS=0.5    mean net over first 300 shorts = -0.105787
+   TIME_EXIT_DAYS=1      mean net over first 300 shorts = -0.105787
+   TIME_EXIT_DAYS=2      mean net over first 300 shorts = +1.001278
+
+### my minute horizon does move (same 300 shorts, ladder geometry)
+   minutes=60    n=300  mean net = -0.533882
+   minutes=120   n=300  mean net = -0.565386
+   minutes=240   n=300  mean net = -0.546628
+   minutes=480   n=300  mean net = -0.695126
+   minutes=1440  n=300  mean net = -0.066727
+   minutes=7200  n=300  mean net = +0.308400
