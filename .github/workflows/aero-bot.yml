@@ -75,7 +75,9 @@ jobs:
           # поведението = една стойност в Variables, БЕЗ комит.
           ЛОНГ_СТОП_ПИПСА: ${{ vars.LONG_STOP_PIPS || '' }}
           ГЕЙТ_ЛОНГ_НЕДОКАЗАНО: ${{ vars.GATE_LONG_UNPROVEN || '' }}
-          ГЕЙТ_ШОРТ_НЕДОКАЗАНО: ${{ vars.GATE_SHORT_UNPROVEN || '' }}
+          ГЕЙТ_ШОРТ_НЕДОКАЗАНО: ${{ vars.GATE_SHORT_UNPROVEN || '' }}
+          РАМКИ_СВОИ_ЛИНИИ: ${{ vars.FRAME_OWN_REFS || '' }}
+          РАМКА_МИН_БАРОВЕ: ${{ vars.FRAME_MIN_BARS || '' }}
           МАЛЪК_РАЗМЕР_W: ${{ vars.SMALL_SIZE_W || '' }}
           РЕЖИМ_W_ПОД: ${{ vars.REGIME_W_BELOW || '' }}
           ЛОНГ_САМО_НАД_SMA200: ${{ vars.LONG_ONLY_ABOVE_SMA200 || '' }}
