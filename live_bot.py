@@ -34,7 +34,7 @@ import pandas as pd
 # v9.5–v9.8 — всеки ред в дневника твърдеше грешна версия, а дневникът е
 # единственият начин отвън да се види какво работи. П47 пада, ако VERSION не се
 # среща в темата на последния commit.
-VERSION = "v18.64"
+VERSION = "v18.65"
 
 
 def _env(ключ, подразб):
@@ -4719,8 +4719,16 @@ def _вид_повод(t):
     return " ".join(_т.split())[:40]
 
 
-def _exit_msg(kind, tr, price_hit, when, via, gap, spot=None, next_line="", dec=2):
-    """ОДИТ-29 · КОЯ цел · КОЛКО пари · КАКВО правиш. По един ред всяко."""
+def _exit_msg(kind, tr, price_hit, when, via, gap, spot=None, next_line="", dec=2,
+              оставащи=0):
+    """ОДИТ-29 · КОЯ цел · КОЛКО пари · КАКВО правиш. По един ред всяко.
+
+    🔴 08.09 · `оставащи` е БРОЯТ НА ДРУГИТЕ ОТВОРЕНИ позиции в мига на този
+    изход. Дотук картата пишеше «затворена · чакам нов сигнал» БЕЗУСЛОВНО.
+    ЖИВО НА 08.09: в 11:37 излезе «🛑 СТОП · −134 пипса · затворена · чакам
+    нов сигнал», а В СЪЩИЯ МИГ шорт #3 (вход 4395.56) беше ОТВОРЕН. Тоест
+    картата обяви край на търговията, докато пари стоят на пазара.
+    Собственикът прочете точно това: «вика че е стопа ударен»."""
     _сим = tr.get("sym", "XAUUSD")
     метал = "ЗЛАТО" if _сим == "XAUUSD" else "СРЕБРО"
     посока = "покупка" if tr["direction"] == "long" else "продажба"
@@ -4915,7 +4923,12 @@ def _exit_msg(kind, tr, price_hit, when, via, gap, spot=None, next_line="", dec=
                  f"оттук) · {_дял_остатък(tr, 2)} остава")
     else:
         L.append(f"💰 сделката донесе <b>{_пари(стълба, _сим)}</b> общо")
-        L.append("👁 затворена · чакам нов сигнал")
+        if оставащи > 0:
+            L.append("👁 тази е затворена · <b>още %d %s остава%s отворена</b>"
+                     % (оставащи, "сделка" if оставащи == 1 else "сделки",
+                        "" if оставащи == 1 else "т"))
+        else:
+            L.append("👁 затворена · чакам нов сигнал")
     if next_line:
         L.append(f"♻️ ново влизане: {next_line}")
     return "\n".join(L)
@@ -7004,8 +7017,171 @@ def _cq_msg(cq, now_utc, fng_live=None, отброяване=False):
 # 🔴 01.09 ·  влиза, за да може отказът на пределен стоп да се КАЖЕ.
 # Мълчалив отказ е по-лош от фалшив стоп: човекът не разбира защо сделката
 # още стои. По подразбиране None → старото поведение за всеки друг викащ.
+БАЗИС_ИСТОРИЯ = int(_env("БАЗИС_ИСТОРИЯ", "1"))            # 0 = старото поведение
+БАЗИС_ИСТ_МАКС = int(_env("БАЗИС_ИСТ_МАКС", "300"))        # ~25ч по 5 мин · баровете изостават 10-15 мин, повече не трябва
+# 🔴 08.09 · ПРОЗОРЕЦЪТ Е КОЛКОТО САМИЯ БАР, не по-широк. Първо го сложих
+# на 12 минути и поправката НЕ хвана случая от 08.09: медианата на четири
+# записа (45.32 · 46.31 · 44.55 · 42.47) дава 44.93, целта се разминава с
+# ЕДИН ЦЕНТ. Причината е проста и не е «настройка»: съди се цена, случила
+# се в тези пет минути — значи важи базисът от тези пет минути, а не от
+# следващите седем, в които той е паднал с 3.8$.
+БАЗИС_ИСТ_ПРОЗОРЕЦ = float(_env("БАЗИС_ИСТ_ПРОЗОРЕЦ", "5"))    # минути около бара
+
+
+def _basis_zapomni(state, klyuch, kogа, basis):
+    """Помни базиса на всеки рън, за да може после барът да се преведе с
+    базиса ОТ СВОЕТО ВРЕМЕ, а не от времето на съденето.
+
+    Пази се вътре в `meta.json` — същият файл, същото атомарно писане, нула
+    нови пътища за чупене. Списък от двойки [час, базис], най-старите падат.
+    """
+    if not БАЗИС_ИСТОРИЯ or basis is None:
+        return
+    try:
+        h = state.get(klyuch)
+        if not isinstance(h, list):
+            h = []
+        t = str(kogа)
+        if h and h[-1][0] == t:            # същият рън два пъти → презаписва се
+            h[-1] = [t, round(float(basis), 3)]
+        else:
+            h.append([t, round(float(basis), 3)])
+        state[klyuch] = h[-БАЗИС_ИСТ_МАКС:]
+    except Exception:
+        pass                                # историята НИКОГА не бива да вали рън
+
+
+def _basis_v_moment(hist, ts, rezerva, prozorec=None):
+    """Базисът, действал ОКОЛО момента `ts`.
+
+    Взима се МЕДИАНАТА на записите в прозорец ±12 мин, а не най-близкият
+    единичен запис: един изкривен спот-тик не бива да размества нивата на
+    цял бар. Няма записи в прозореца → най-близкият до 60 мин. Няма и такъв
+    → подаденият текущ базис (тоест точно старото поведение).
+    """
+    if not БАЗИС_ИСТОРИЯ or not hist:
+        return rezerva
+    prozorec = БАЗИС_ИСТ_ПРОЗОРЕЦ if prozorec is None else prozorec
+    try:
+        t = pd.Timestamp(ts)
+        if t.tzinfo is not None:
+            t = t.tz_localize(None)
+        blizki, nay, nay_d = [], None, None
+        for zap in hist:
+            try:
+                z = pd.Timestamp(zap[0])
+                if z.tzinfo is not None:
+                    z = z.tz_localize(None)
+                d = abs((z - t).total_seconds()) / 60.0
+            except Exception:
+                continue
+            if d <= prozorec:
+                blizki.append(float(zap[1]))
+            if nay_d is None or d < nay_d:
+                nay_d, nay = d, float(zap[1])
+        if blizki:
+            blizki.sort()
+            n = len(blizki)
+            return blizki[n // 2] if n % 2 else (blizki[n // 2 - 1] + blizki[n // 2]) / 2.0
+        if nay is not None and nay_d is not None and nay_d <= 60.0:
+            return nay
+    except Exception:
+        pass
+    return rezerva
+
+
+ЗЛАТЕН_ПЪТ = int(_env("ЗЛАТЕН_ПЪТ", "1"))                 # 0 = само фючърсните барове
+ЗЛАТЕН_ПЪТ_МИН = int(_env("ЗЛАТЕН_ПЪТ_МИН", "240"))       # колко минути назад да се търси
+ЗЛАТЕН_ПЪТ_ОТМ_МАКС = float(_env("ЗЛАТЕН_ПЪТ_ОТМ_МАКС", "12"))   # $ · над това отместването е глич
+
+
+def _zlaten_pyt(minuti=None, notes=None):
+    """МИНУТНИЯТ път на злато-подобна цена · връх и дъно, не една точка.
+
+    🔴🔴🔴 08.09 · ЗАЩО СЪЩЕСТВУВА.
+    Дотук между два рънa (5 мин) ботът НЕ ВИЖДАШЕ НИЩО. Разполагаше с:
+      · една точка спот на всеки рън — без връх и дъно;
+      · 5-минутни ФЮЧЪРСНИ барове, които изостават 10-15 мин и се превеждат
+        в спот през базис, чието стандартно отклонение е 2.17$ за 08.09 и
+        13.11$ за трите дни (роловърът). При стоп 13$ и първа цел на 5$ това
+        не е шум — това е достатъчно да размени изход с изход.
+
+    PAXG е токен, обезпечен с ЕДНА ТРОЙУНЦИЯ ЗЛАТО. Ботът вече го ползва
+    като резервен спот-източник. Разликата PAXG↔спот е МЕРЕНА на 440 двойки
+    от три дни: стандартно отклонение 2.17$ срещу 13.11$ на фючърсния базис,
+    тоест 6× по-точна; а в рамките на един ден 1.83 срещу 2.17.
+    Но истинската печалба не е точността, а ЗАКЪСНЕНИЕТО И СТЪПКАТА:
+    минутни барове, изоставащи една минута, вместо петминутни, изоставащи
+    десет. Стоп, докоснат в 10:20, се вижда в 10:22, а не в 11:37.
+
+    ИЗМЕРЕНО ВЪРХУ ЖИВИЯ СЛУЧАЙ ОТ 08.09: шорт #2 (вход 4394.21, стоп
+    4407.21) МИНАВА стопа си по PAXG-пътя в 10:20 на 4407.72. Ботът го
+    затвори в 11:37 — час и седемнайсет минути по-късно.
+
+    ВЕРИГА: Kraken → Coinbase → Binance. Редът НЕ Е случаен: Binance връща
+    451 на американски IP-та, а GitHub Actions върви в САЩ. Той е последен
+    именно защото там не работи — но работи от машина в Европа.
+
+    ПЪТ НАЗАД: `ЗЛАТЕН_ПЪТ=0` → баровете пак са фючърсните, както досега.
+    """
+    if not ЗЛАТЕН_ПЪТ:
+        return None, None
+    minuti = minuti or ЗЛАТЕН_ПЪТ_МИН
+
+    def _kraken():
+        u = "https://api.kraken.com/0/public/OHLC?pair=PAXGUSD&interval=1"
+        req = urllib.request.Request(u, headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, timeout=10) as r:
+            j = json.loads(r.read().decode())
+        res = j.get("result") or {}
+        k = [x for x in res if x != "last"]
+        if not k:
+            return None
+        return [(int(a[0]), float(a[1]), float(a[2]), float(a[3]), float(a[4]))
+                for a in res[k[0]]]
+
+    def _coinbase():
+        u = "https://api.exchange.coinbase.com/products/PAXG-USD/candles?granularity=60"
+        req = urllib.request.Request(u, headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, timeout=10) as r:
+            j = json.loads(r.read().decode())
+        # [ время, low, high, open, close, обем ]
+        return [(int(a[0]), float(a[3]), float(a[2]), float(a[1]), float(a[4]))
+                for a in sorted(j, key=lambda x: x[0])]
+
+    def _binance():
+        u = ("https://api.binance.com/api/v3/klines?symbol=PAXGUSDT"
+             "&interval=1m&limit=1000")
+        req = urllib.request.Request(u, headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, timeout=10) as r:
+            j = json.loads(r.read().decode())
+        return [(int(a[0]) // 1000, float(a[1]), float(a[2]), float(a[3]), float(a[4]))
+                for a in j]
+
+    for ime, fn in (("kraken", _kraken), ("coinbase", _coinbase), ("binance", _binance)):
+        try:
+            редове = fn()
+            if not редове or len(редове) < 5:
+                continue
+            редове = редове[-minuti:]
+            idx = [pd.Timestamp(x[0], unit="s") for x in редове]
+            df = pd.DataFrame(
+                {"Open": [x[1] for x in редове], "High": [x[2] for x in редове],
+                 "Low": [x[3] for x in редове], "Close": [x[4] for x in редове]},
+                index=pd.DatetimeIndex(idx))
+            df = df[~df.index.duplicated(keep="last")].sort_index()
+            return df, ime
+        except Exception as e:
+            if notes is not None:
+                notes.append("златният път · %s мълчи (%s)" % (ime, str(e)[:60]))
+    if notes is not None:
+        notes.append("⚠️ златният път недостъпен и от трите борси — следя по "
+                     "фючърсните барове, както преди")
+    return None, None
+
+
 def track_trade(trade, bars, basis, now_price, now_utc, spot=None, скок_базис=False,
-                notes=None):
+                notes=None, basis_hist=None):
     """bars = фючърсни 5м (пълният път, ~10 мин назад), превеждани в спот
     чрез базиса. spot = живата цена (моментално, Ф7.1). Гап → реална цена.
     Връща (trade|None, events); event = (kind, price, when, via, gap).
@@ -7035,12 +7211,38 @@ def track_trade(trade, bars, basis, now_price, now_utc, spot=None, скок_ба
         trade["checked"] = str(idx[-1])
         idx = []
     processed = []                                   # M1: следим кои барове реално обходихме
+    _разминат = 0.0                                  # най-голямата поправка този рън
     for ts in idx:
         if ts <= since:
             continue
-        hi = float(bars.loc[ts, "High"]) - basis
-        lo = float(bars.loc[ts, "Low"]) - basis
-        op = float(bars.loc[ts, "Open"]) - basis
+        # 🔴🔴🔴 08.09 · БАЗИСЪТ НА МОМЕНТА НА БАРА, НЕ НА МОМЕНТА НА РЪНА.
+        #
+        # ХВАНАТО ЖИВО, ПО ОПЛАКВАНЕ НА СОБСТВЕНИКА («бота даде шорта, не
+        # прибра, а беше стигнало прибиране на 4390»). Мерено върху 08.09:
+        #   шорт #3 · вход 4395.56 · цел1 4390.56
+        #   5м барът в 11:10 има фючърсно дъно 4435.50
+        #   базисът В 11:10 е 45.32 → спот 4390.18  → ЦЕЛТА Е УДАРЕНА
+        #   този бар обаче става видим чак към 11:22-11:27 (баровете
+        #   изостават с 10 мин), а тогава базисът вече е 42.51
+        #   → 4435.50 − 42.51 = 4392.99 → ЦЕЛТА «НЕ Е УДАРЕНА»
+        # Целта беше изядена от 2.8$ дрейф на базиса, не от пазара.
+        #
+        # СЪЩАТА причина обяснява и втората половина на оплакването: шорт #2
+        # мина СТОПА си в 09:50 (спот 4408.77 при стоп 4407.21), но барът се
+        # съди в 10:02 с базис 43.56 вместо 41.33 → 4406.54 → пропуснат.
+        # Сделката остана отворена още 1ч 47м и се затвори на 4407.65.
+        #
+        # ЦЕНАТА: базисът се движеше 41.33 → 46.31 САМО за 08.09 — 4.98$
+        # размах при стоп 13.00$, тоест 38% от ширината на стопа. Това не е
+        # шум около нулата; това е достатъчно да размени изход с изход.
+        #
+        # ПЪТ НАЗАД: `БАЗИС_ИСТОРИЯ=0` връща старото поведение — един базис
+        # за всички барове.
+        _bz = _basis_v_moment(basis_hist, ts, basis)
+        _разминат = max(_разминат, abs(_bz - basis))
+        hi = float(bars.loc[ts, "High"]) - _bz
+        lo = float(bars.loc[ts, "Low"]) - _bz
+        op = float(bars.loc[ts, "Open"]) - _bz
         if pd.isna(hi) or pd.isna(lo) or pd.isna(op):  # M2: бар с NaN OHLC крие удар → пропусни
             continue
         processed.append(ts)
@@ -7093,6 +7295,13 @@ def track_trade(trade, bars, basis, now_price, now_utc, spot=None, скок_ба
                         trade["status"] = "closed_tp3"
         if trade.get("status", "open") != "open":
             break
+    # 🔴 08.09 · КАЗВА СЕ КОЛКО е поправено, за да може да се мери, а не да
+    # се вярва. Праг 0.5$ = 5 пипса: под това няма как да размени изход.
+    if notes is not None and _разминат >= 0.5 and processed:
+        notes.append("📐 базисът на баровете е взет от ТЕХНИЯ момент, не от "
+                     "сегашния — най-голямата поправка е %.2f$ (%d бара)"
+                     % (_разминат, len(processed)))
+
     # Ф7.1 · МОМЕНТАЛНО: живият спот СЕГА (баровете са до 10-15 мин назад)
     if trade.get("status", "open") == "open" and spot:
         p = spot["mid"]
@@ -8182,6 +8391,9 @@ def main():
     # 80 ръна без вход, точно когато макрото се подреди за пръв път от 19 дни.
     basis_g = _basis_update(meta, "basis_g", raw_g, bar_price, notes,
                             cap=_basis_cap(bar_price, "XAUUSD"), now_utc=now_utc)
+    # 🔴 08.09 · ПАМЕТТА НА БАЗИСА. Пише се ВЕДНАГА след пресмятането, за да
+    # има следващият рън с какво да преведе баровете от ТОЗИ момент.
+    _basis_zapomni(meta, "basis_hist_g", now_utc, basis_g)
     _сан_g = {}
     spot_g = _spot_sane(raw_g, bar_price - basis_g, _spot_tol(bar_price),
                         bar_rng=rng_g, spot_jump=jump_g,
@@ -8336,6 +8548,47 @@ def main():
     track_mode = "bars+spot" if frames.get("5м") is not None else ("spot-only" if spot_g else "skipped")
     if track_mode != "bars+spot" and trade:
         notes.append(f"следене {track_mode} — 5м потокът липсва")
+
+    # 🔴🔴🔴 08.09 · ЗЛАТНИЯТ ПЪТ · минутата вместо десетте минути.
+    # Виж `_zlaten_pyt`. Тук се решава СЛЕДИ ЛИ СЕ по него: иска се и път,
+    # и жив спот, за да се сверят двете. Без някое от двете — старият път,
+    # непроменен.
+    _пътят = _извор_път = None
+    _път_баз = None
+    if (trade or доп_сделки) and spot_g:
+        _пътят, _извор_път = _zlaten_pyt(notes=notes)
+    if _пътят is not None and len(_пътят) and spot_g:
+        try:
+            _посл_p = float(_пътят["Close"].iloc[-1])
+            _сур_баз = _посл_p - float(spot_g["mid"])
+            # 🔴 ПАЗАЧ: премията на PAXG е мерена 1-4$. Отместване над 12$
+            # значи, че единият фийд е счупен — тогава НЕ се следи по пътя,
+            # вместо да се мести всяко ниво с грешна константа.
+            if abs(_сур_баз) > ЗЛАТЕН_ПЪТ_ОТМ_МАКС:
+                notes.append("⚠️ златният път (%s) е на %.2f$ от спота — над "
+                             "тавана %.0f$; не го ползвам този рън"
+                             % (_извор_път, _сур_баз, ЗЛАТЕН_ПЪТ_ОТМ_МАКС))
+                _пътят = None
+            else:
+                _basis_zapomni(meta, "pyt_hist_g", now_utc, _сур_баз)
+                _път_баз = _сур_баз
+                track_mode = "път:" + str(_извор_път)
+                _въз = float(_пътят["Low"].min()); _вър = float(_пътят["High"].max())
+                notes.append("🛤 следя по МИНУТНИЯ път (%s · %d минути · "
+                             "отместване %+.2f$) — виждам връх %.2f и дъно %.2f, "
+                             "не само точката на рънa"
+                             % (_извор_път, len(_пътят), _сур_баз,
+                                _вър - _сур_баз, _въз - _сур_баз))
+        except Exception as _е_п:
+            notes.append("златният път не се сверява (%s) — старият път"
+                         % str(_е_п)[:60])
+            _пътят = None
+    _сл_барове = _пътят if _пътят is not None else frames.get("5м")
+    _сл_базис = _път_баз if _пътят is not None else basis_g
+    _сл_ист = (meta.get("pyt_hist_g") if _пътят is not None
+               else meta.get("basis_hist_g"))
+    # скокът на базиса е за ФЮЧЪРСНИЯ базис · пътят няма роловър
+    _сл_скок = False if _пътят is not None else _скок_g
     if trade:
         trade_obj = copy.deepcopy(trade)                   # Д3: снимка, която track_trade няма да мутира
         # 🔴 21.08 · ДОТУК ТУК СТОЕШЕ `meta.pop(...)` — тоест знамето изчезваше
@@ -8345,8 +8598,9 @@ def main():
         if _скок_g:
             notes.append("⏸ базисът се презакотви този рън — баровете НЕ се съдят "
                          "(скалата им се премести); живата цена и времето важат")
-        trade, events = track_trade(trade, frames.get("5м"), basis_g, price_user, now_utc,
-                                    spot=spot_g, скок_базис=_скок_g, notes=notes)
+        trade, events = track_trade(trade, _сл_барове, _сл_базис, price_user, now_utc,
+                                    spot=spot_g, скок_базис=_сл_скок, notes=notes,
+                                    basis_hist=_сл_ист)
         cum_hit = dict(trade_obj["hit"])                   # попадения от МИНАЛИ рънове
         cum_px = dict(trade_obj.get("hit_px") or {})       # О12: и цените им
         for kind, px, when, via, gap in events:
@@ -8407,8 +8661,9 @@ def main():
             continue
         try:
             _сн2 = copy.deepcopy(_т2)
-            _т2, _ев2 = track_trade(_т2, frames.get("5м"), basis_g, price_user,
-                                    now_utc, spot=spot_g, скок_базис=_скок_g)
+            _т2, _ев2 = track_trade(_т2, _сл_барове, _сл_базис, price_user,
+                                    now_utc, spot=spot_g, скок_базис=_сл_скок,
+                                    basis_hist=_сл_ист)
             _ch2 = dict(_сн2["hit"])
             _cp2 = dict(_сн2.get("hit_px") or {})
             for _вид, _цн, _кга, _през, _гап in _ев2:
@@ -9120,6 +9375,7 @@ def main():
         basis_s = _basis_update(meta, "basis_s", raw_s, s_bar, notes,
                                 cap=_basis_cap(s_bar, "XAGUSD"), now_utc=now_utc,
                                 скок=_roll_jump(s_bar, "XAGUSD"))   # О13: сребърен мащаб
+        _basis_zapomni(meta, "basis_hist_s", now_utc, basis_s)
         # 🔴 21.08 · ДОТУК БЕЗ `следа=`. За разлика от златото, дневникът нямаше
         # НИТО ЕДНО поле за сребърния спот: `silver_ok` е True в 4213 от 4213
         # записа, а дали санитито реже — невидимо. Прагът 0.30$ НЕ се пипа
@@ -9152,7 +9408,8 @@ def main():
             if _скок_s:
                 notes.append("⏸ сребърният базис се презакотви — баровете НЕ се съдят този рън")
             s_trade, s_events = track_trade(s_trade, s5, basis_s, s_price_user, now_utc,
-                                            spot=spot_s, скок_базис=_скок_s)
+                                            spot=spot_s, скок_базис=_скок_s,
+                                            basis_hist=meta.get("basis_hist_s"))
             s_cum = dict(s_obj["hit"])                      # попадения от МИНАЛИ рънове
             for kind, px, when, via, gap in s_events:
                 if kind in ("tp1", "tp2", "tp3"):          # това попадение стана ТОЗИ рън
@@ -9315,7 +9572,11 @@ def main():
                     nl = "ДА — нова карта идва." if (ok_re and should_sig) else f"НЕ — {why_re or 'изчакай следващия ясен сигнал'}"
             else:
                 nl = "НЕ — няма активен сигнал." if not actionable else ""
-        new_msgs.append((tag, _exit_msg(k, tro, px, when, via, gap, spot=spot_g, next_line=nl)))
+        # 🔴 08.09 · КОЛКО ОСТАВАТ. `trade` вече е None (тази се затвори), но
+        # вторият ред може да държи още позиции — и точно това не се казваше.
+        _ост = len([x for x in (доп_сделки or []) if x])
+        new_msgs.append((tag, _exit_msg(k, tro, px, when, via, gap, spot=spot_g,
+                                        next_line=nl, оставащи=_ост)))
     new_msgs += silver_new_msgs
     for tag, m in ma_alerts:
         new_msgs.append(("ma:" + tag.split("|")[1], m))
