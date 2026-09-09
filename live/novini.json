@@ -1,34 +1,44 @@
 {
- "kogato": "2026-09-09T18:37:50Z",
- "sekundi": 0.95,
+ "kogato": "2026-09-09T19:13:10Z",
+ "sekundi": 8.27,
  "broi": 200,
- "novi_tozi_pyt": 6,
+ "novi_tozi_pyt": 0,
  "iztochnici_ok": [
   "MarketWatch",
   "Fed политика",
-  "Fed всички",
   "Investing",
-  "Yahoo злато",
   "Yahoo долар",
+  "Yahoo злато",
   "CNBC",
   "FT пазари",
-  "Google Fed",
-  "Google злато",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Fed всички",
+   "greshka": "HTTPError: HTTP Error 404: Not Found"
+  },
+  {
+   "ime": "Google злато",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  },
+  {
+   "ime": "Google Fed",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.27с",
-  "новини · FT пазари · 25 бр. за 0.46с",
-  "новини · Fed всички · 20 бр. за 0.2с",
-  "новини · Fed политика · 15 бр. за 0.17с",
-  "новини · Google Fed · 40 бр. за 0.54с",
-  "новини · Google злато · 40 бр. за 0.57с",
-  "новини · Investing · 10 бр. за 0.2с",
-  "новини · MarketWatch · 10 бр. за 0.13с",
-  "новини · Mining.com · 36 бр. за 0.93с",
-  "новини · Yahoo долар · 15 бр. за 0.25с",
-  "новини · Yahoo злато · 16 бр. за 0.24с"
+  "новини · CNBC · 30 бр. за 0.36с",
+  "новини · FT пазари · 25 бр. за 0.54с",
+  "новини · Fed всички · ПАДНА: HTTPError: HTTP Error 404: Not Found",
+  "новини · Fed политика · 15 бр. за 0.26с",
+  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Investing · 10 бр. за 0.27с",
+  "новини · MarketWatch · 10 бр. за 0.24с",
+  "новини · Mining.com · 36 бр. за 0.95с",
+  "новини · Yahoo долар · 15 бр. за 0.29с",
+  "новини · Yahoo злато · 16 бр. за 0.33с"
  ],
  "novini": [
   {
@@ -1304,18 +1314,6 @@
    "zashto": "Пряко за златото."
   },
   {
-   "zaglavie": "NRED Identifies Priority Deep Copper-Gold Drill Target at Wilmac Copper-Gold Project",
-   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/nred-identifies-priority-deep-copper-113000173.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-09-09T11:30:00Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото."
-  },
-  {
    "zaglavie": "Aris Mining Named to the 2026 TSX30",
    "vryzka": "https://finance.yahoo.com/markets/stocks/articles/aris-mining-named-2026-tsx30-113000918.html?.tsrc=rss",
    "izvor": "Yahoo Finance",
@@ -1326,6 +1324,18 @@
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null
+  },
+  {
+   "zaglavie": "NRED Identifies Priority Deep Copper-Gold Drill Target at Wilmac Copper-Gold Project",
+   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/nred-identifies-priority-deep-copper-113000173.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-09-09T11:30:00Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото."
   },
   {
    "zaglavie": "Strategists say S&P 500 could top 8,000 — but risks of a pullback are mounting",
