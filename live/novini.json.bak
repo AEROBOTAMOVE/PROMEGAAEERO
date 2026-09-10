@@ -1,40 +1,144 @@
 {
- "kogato": "2026-09-10T03:47:51Z",
- "sekundi": 1.1,
+ "kogato": "2026-09-10T04:23:08Z",
+ "sekundi": 1.7,
  "broi": 200,
- "novi_tozi_pyt": 4,
+ "novi_tozi_pyt": 9,
  "iztochnici_ok": [
-  "Fed политика",
   "MarketWatch",
-  "Yahoo злато",
   "Investing",
-  "CNBC",
   "Yahoo долар",
-  "FT пазари",
+  "Fed политика",
+  "Fed всички",
+  "Yahoo злато",
+  "CNBC",
   "Google Fed",
   "Google злато",
+  "FT пазари",
   "Mining.com"
  ],
- "iztochnici_padnali": [
-  {
-   "ime": "Fed всички",
-   "greshka": "HTTPError: HTTP Error 404: Not Found"
-  }
- ],
+ "iztochnici_padnali": [],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.24с",
-  "новини · FT пазари · 25 бр. за 0.41с",
-  "новини · Fed всички · ПАДНА: HTTPError: HTTP Error 404: Not Found",
-  "новини · Fed политика · 15 бр. за 0.14с",
-  "новини · Google Fed · 40 бр. за 0.49с",
+  "новини · CNBC · 30 бр. за 0.32с",
+  "новини · FT пазари · 25 бр. за 0.56с",
+  "новини · Fed всички · 20 бр. за 0.31с",
+  "новини · Fed политика · 15 бр. за 0.31с",
+  "новини · Google Fed · 40 бр. за 0.53с",
   "новини · Google злато · 40 бр. за 0.55с",
-  "новини · Investing · 10 бр. за 0.23с",
-  "новини · MarketWatch · 10 бр. за 0.21с",
-  "новини · Mining.com · 36 бр. за 1.08с",
-  "новини · Yahoo долар · 15 бр. за 0.27с",
-  "новини · Yahoo злато · 15 бр. за 0.23с"
+  "новини · Investing · 10 бр. за 0.25с",
+  "новини · MarketWatch · 10 бр. за 0.14с",
+  "новини · Mining.com · 36 бр. за 1.68с",
+  "новини · Yahoo долар · 14 бр. за 0.3с",
+  "новини · Yahoo злато · 15 бр. за 0.32с"
  ],
  "novini": [
+  {
+   "zaglavie": "Bank of Japan must raise rates further, board member says",
+   "vryzka": "https://www.ft.com/content/8313accc-1de6-48a8-b184-e5e3b20c5b19?syn-25a6b1a6=1",
+   "izvor": "Financial Times",
+   "chas": "2026-09-10T04:07:25Z",
+   "vazhnost": 3,
+   "za": "долар",
+   "emisiya": "FT пазари",
+   "chas_ot_iztochnika": true,
+   "duma": "rates",
+   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече."
+  },
+  {
+   "zaglavie": "Gold, silver prices today, 10 September: Check retail rates of 24K, 22K gold, 999 silver in Delhi, Mumbai and Kolkata",
+   "vryzka": "https://news.google.com/rss/articles/CBMiiwJBVV95cUxOcmV6UjFEU0xzZUFudUdFcjRvOUdUbVdfb2JMWDNzaHdrWDZSWVo3UHFjZ1NvVUFmYWlMemE3U0hGbXJyU3NmZFowaW9TYmxWWG5nUldfdVg1Ym5nbHRSZEdTR1Z2bHQyWXZCcGtJXzh6akJySjVGMWltXzVIbEtNU1hiTWxua1ZRNEhweHZGV0Vhb0tkZTBDR05fSXJIeEY4ajl2VDNScHhVQ1NhYnNRQVZvV1dUbDRQZkRhaW9jZWpUVFNhUkdSNy1pZG5mNWpXbnBBbFlSM3RlRGJ4bVpjT0Y4RjBEMUZ5STFtN2hyYTVMcW1lMWNnejBkdUJWalpYSkpUY1hLOUhnS1nSAZACQVVfeXFMUExBa2NOMWljSHV4YXF6Y1lSbThJWW5sdXotUnFBdzF2bC1PTWVKZFRVQi1VbWVyM3dBd0NCNkZEaE0yUWZVQm9OdDQ4RjFIeTBiS1psSUJKWmNxMHRHZlBoMUpZZkVJaGREQThkOXBucERTRUgyN0JlQ3BKWkZISGkwLThtTEtobkhBbHpOQWI5UDJ",
+   "izvor": "Livemint",
+   "chas": "2026-09-10T04:05:59Z",
+   "vazhnost": 3,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "rates",
+   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече."
+  },
+  {
+   "zaglavie": "The new rainmakers of European private equity",
+   "vryzka": "https://www.ft.com/content/b77c5dd4-f9b9-451a-b184-2061288a4894?syn-25a6b1a6=1",
+   "izvor": "Financial Times",
+   "chas": "2026-09-10T04:00:28Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "FT пазари",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null
+  },
+  {
+   "zaglavie": "London credit investor Arini hit by Europe’s thorniest credit trades",
+   "vryzka": "https://www.ft.com/content/a62199d1-9388-4735-a4f0-db519c84eb79?syn-25a6b1a6=1",
+   "izvor": "Financial Times",
+   "chas": "2026-09-10T04:00:28Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "FT пазари",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null
+  },
+  {
+   "zaglavie": "Oil shock revives interest in clean hydrogen",
+   "vryzka": "https://www.ft.com/content/4c61ab58-e410-4f7f-b314-83b66deb3c84?syn-25a6b1a6=1",
+   "izvor": "Financial Times",
+   "chas": "2026-09-10T04:00:19Z",
+   "vazhnost": 3,
+   "za": "общо",
+   "emisiya": "FT пазари",
+   "chas_ot_iztochnika": true,
+   "duma": "war",
+   "zashto": "Война значи страх, а страхът гони парите към златото."
+  },
+  {
+   "zaglavie": "Fans, franchises and the big four: how private capital is targeting elite sport",
+   "vryzka": "https://www.ft.com/content/8acfb405-b58c-40db-b879-7dc03efe0595?syn-25a6b1a6=1",
+   "izvor": "Financial Times",
+   "chas": "2026-09-10T04:00:10Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "FT пазари",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null
+  },
+  {
+   "zaglavie": "Trust companies turn away crypto-rich on money-laundering fears",
+   "vryzka": "https://www.ft.com/content/482c18d2-c044-448d-8661-76e19b700523?syn-25a6b1a6=1",
+   "izvor": "Financial Times",
+   "chas": "2026-09-10T04:00:10Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "FT пазари",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null
+  },
+  {
+   "zaglavie": "US-China borrowing costs diverge to widest level ever",
+   "vryzka": "https://www.ft.com/content/258d6f1d-07a5-4c78-9c21-9867d8817077?syn-25a6b1a6=1",
+   "izvor": "Financial Times",
+   "chas": "2026-09-10T03:54:16Z",
+   "vazhnost": 2,
+   "za": "лихви",
+   "emisiya": "FT пазари",
+   "chas_ot_iztochnika": true,
+   "duma": "treasury",
+   "zashto": "Доходността на американския дълг е прякото сравнение за златото — качи ли се тя, златото обикновено пада."
+  },
+  {
+   "zaglavie": "Gold holds steady above $4,400 as traders seem hesitant ahead of US inflation data",
+   "vryzka": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxQcXdUMnc4MWo5VTJTSmhiNVV6OW80cEJDaEhmZ05UY2JiX0U0R2ViYkNCOE4xWlRMdVVSdWZ3R3E3dXdmR3YxM2NsS1VDaldBNVA4QWt0am9GWGNwZk1xZDU1aGlJdDFrRFFfQmZycngyZHNqYUc4dTR5akVwZ3JXam51Y3hVUUlmNmxXaV95ZVhRSU93NlBJTVJjN1ZlYjQtUGRmNTNmZXFVUG0zTy1hRDFBR0pzalJSbG00TzJtTE9Idw?oc=5",
+   "izvor": "FXStreet",
+   "chas": "2026-09-10T03:51:09Z",
+   "vazhnost": 3,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "inflation",
+   "zashto": "Инфлацията е основната причина да се държи злато — то пази стойност, когато парите я губят."
+  },
   {
    "zaglavie": "Will the Federal Reserve raise interest rates next week? Two major inflation reports released over the next two days will set the tone.",
    "vryzka": "https://news.google.com/rss/articles/CBMiogFBVV95cUxPTWdjOXJJbEZoanpXSThtYnBNSzdsRkNna05nTm1JcTY4b3d3ZkpGZWl4ZU9YOXJ1eDRTWDkzMG43dkZON2RPNUVISWNrVUh0bUZiMlBGVXhkd0owSGk3X0c2bjRaUFpKZlVzbllpV3NXVmdGcklIR0RyT2s1SzU5RjdxZWx2eUNlQVFOa19wNlhHYWxYd182TjFsWnJCQ0dIVFE?oc=5",
@@ -82,6 +186,18 @@
    "chas_ot_iztochnika": true,
    "duma": "tariff",
    "zashto": "Митата вдигат цените и карат страните да търсят убежище — и двете стигат до златото."
+  },
+  {
+   "zaglavie": "US jobs report puts September Fed rate hike odds in focus",
+   "vryzka": "https://news.google.com/rss/articles/CBMilwFBVV95cUxNc2x0cGZCencteHdRSjNOdHNtNUtHYjh6cC1la3M4a1lWZjkwWVZCd3BsX1gwZnZYRXNhek81b3FyYl9VNEt4NE9YYWtmUW5BVzgxZ0Iwb3Q2UDUtVjZSd1RJM1JkVjN5NjRrUDk5RjNNNjVVQUI3VDg1ZjIzQkp2ZFhiTENsQ2xodWt1bDZqS05UdkY0VUpV?oc=5",
+   "izvor": "equiti.com",
+   "chas": "2026-09-10T02:24:19Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото."
   },
   {
    "zaglavie": "Challenger Gold Launches New Roadmap to First Production at Hualilán Project",
@@ -158,7 +274,7 @@
   {
    "zaglavie": "Gold steadies near US$4,400 as traders weigh Fed rate hike path",
    "vryzka": "https://news.google.com/rss/articles/CBMixwFBVV95cUxQSC1DX2pzWjR3STlhRnRGLUMyOWY4djZIVGc2NW8yZ1lYc2xCc2tOdHY2aXlSbE9sMjZYTHNUS1lDMzZ4Z1ZZaGZxanJrOEpDeDgxdGhqU2NCSHNySWkyNm5HMWhrN2haZWJocE40d2lCekZsR3FUZFdETWpTUldSalFjR3BBNlZZdG1SdWFmbjRvUEtRNUw4NUExajJqU1R2OWx0VDRIOUFILWpRcG5CczViTVU0WGVwODBLbmM2QnZhTGE4OFZB?oc=5",
-   "izvor": "The Business Times",
+   "izvor": "businesstimes.com.sg",
    "chas": "2026-09-10T01:51:00Z",
    "vazhnost": 3,
    "za": "злато",
@@ -290,7 +406,7 @@
   {
    "zaglavie": "Most Economists Expect Fed To Hold Rates Through Year-End",
    "vryzka": "https://news.google.com/rss/articles/CBMimgFBVV95cUxNcjU2X2w4VFN2OG5JUk1fcDVDUmI4MzZ6S0pJbmVxMzhkRVZfWXhIN3Q1a0d2V2p3OE5oWXoxTTJ6eEhER2kwT1BraEN2cEM0ajZEMnFHRkJValRkR3JTR2hMVldQTWZXX2pZNTFmendqUWlHbUdHWG9FRkQwYWxfTUxxMk1PdGFPZTFXbHk2WXNfaFJKV0tSRER3?oc=5",
-   "izvor": "cutoday.info",
+   "izvor": "CUToday",
    "chas": "2026-09-10T00:05:04Z",
    "vazhnost": 3,
    "za": "лихви",
@@ -382,18 +498,6 @@
    "chas_ot_iztochnika": true,
    "duma": "gold",
    "zashto": "Пряко за златото."
-  },
-  {
-   "zaglavie": "US jobs report puts September Fed rate hike odds in focus",
-   "vryzka": "https://news.google.com/rss/articles/CBMilwFBVV95cUxNc2x0cGZCencteHdRSjNOdHNtNUtHYjh6cC1la3M4a1lWZjkwWVZCd3BsX1gwZnZYRXNhek81b3FyYl9VNEt4NE9YYWtmUW5BVzgxZ0Iwb3Q2UDUtVjZSd1RJM1JkVjN5NjRrUDk5RjNNNjVVQUI3VDg1ZjIzQkp2ZFhiTENsQ2xodWt1bDZqS05UdkY0VUpV?oc=5",
-   "izvor": "equiti.com",
-   "chas": "2026-09-09T23:17:24Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото."
   },
   {
    "zaglavie": "Gold price drops by Tk 2,216 a bhari",
@@ -553,7 +657,7 @@
   },
   {
    "zaglavie": "No urgent need for Fed to hike or cut interest rates, says investor",
-   "vryzka": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE8zbXFQTE5qb2dOVzFaODVNTUNISjF6dS02SU8wMGtGTkxCWE9GNC11bjd0MzBZbE1GZ3h4ZDkxRkNZNUxwODluUC1rdmY3OXkxOEJkQ1g3Wm1CVThnM3JUSVljQVJGaVU?oc=5",
+   "vryzka": "https://news.google.com/rss/articles/CBMiekFVX3lxTE1hZjZPR1lNRHBQTGNFYWp4Vk9xYUxPVnhXY2ppM2Y5Z0pnU040cXU1TkJFYVJydVluelNMalIxRVpWbGdiangzRkcxYU9aNlM5eTMzNDhCT1hITS15cHpSX1dRbmUweXhqQVRFc24wWXZKMi1mdDFncElB?oc=5",
    "izvor": "Reuters",
    "chas": "2026-09-09T21:03:44Z",
    "vazhnost": 3,
@@ -638,7 +742,7 @@
   {
    "zaglavie": "August CPI Report: Will It Trigger a Fed Rate Hike in September 2026? - News and Statistics",
    "vryzka": "https://news.google.com/rss/articles/CBMijAFBVV95cUxPeTRvUkRUSlVieW4wQkMzN0RITHRUM3E2LTJEejlTc1A2NHhVUkdNbktSOVNQbnZNMzFRaUFIYkhfeUtGWWhEa0ZlTzdWMGdYZ1lpRGtGTm11LVBOOG9RUG15STFVTDdfQ24xU0lrdEVzYm5uSngzMGwyMURlWTlZZ3pLbnlCQnZCWmFNZg?oc=5",
-   "izvor": "indexbox.io",
+   "izvor": "IndexBox",
    "chas": "2026-09-09T20:14:03Z",
    "vazhnost": 3,
    "za": "лихви",
@@ -1309,7 +1413,7 @@
   },
   {
    "zaglavie": "US borrowing costs hit three-year high as $6bn bond intervention backfires",
-   "vryzka": "https://www.telegraph.co.uk/business/2026/09/09/us-borrowing-costs-three-year-high-6bn-bond-intervention/?.tsrc=rss",
+   "vryzka": "https://uk.finance.yahoo.com/news/us-borrowing-costs-hit-three-164330915.html?.tsrc=rss",
    "izvor": "Yahoo Finance",
    "chas": "2026-09-09T16:43:30Z",
    "vazhnost": 1,
@@ -2326,114 +2430,6 @@
    "chas_ot_iztochnika": true,
    "duma": "gold",
    "zashto": "Пряко за златото."
-  },
-  {
-   "zaglavie": "Aris Mining Named to the 2026 TSX30",
-   "vryzka": "https://finance.yahoo.com/markets/stocks/articles/aris-mining-named-2026-tsx30-113000918.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-09-09T11:30:00Z",
-   "vazhnost": 1,
-   "za": "злато",
-   "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null
-  },
-  {
-   "zaglavie": "Scottie Resources Intercepts 9.7 g/t Gold over 18.00 m and 26.2 g/t Gold over 2.45 m at Blueberry Contact Zone at Scottie Gold Mine Project, BC",
-   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/scottie-resources-intercepts-9-7-113000055.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-09-09T11:30:00Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото."
-  },
-  {
-   "zaglavie": "Pan Global Intersects 15 Meters of 3.9 g/t Gold From Surface, Cármenes Project, Spain",
-   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/pan-global-intersects-15-meters-113000670.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-09-09T11:30:00Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото."
-  },
-  {
-   "zaglavie": "NRED Identifies Priority Deep Copper-Gold Drill Target at Wilmac Copper-Gold Project",
-   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/nred-identifies-priority-deep-copper-113000173.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-09-09T11:30:00Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото."
-  },
-  {
-   "zaglavie": "Strategists say S&P 500 could top 8,000 — but risks of a pullback are mounting",
-   "vryzka": "https://www.marketwatch.com/story/strategists-say-s-p-500-could-top-8-000-but-risks-of-a-pullback-are-mounting-e1629564?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-09-09T11:24:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null
-  },
-  {
-   "zaglavie": "Meridian Mining CEO: Cabaçal DFS nears as company eyes mid-tier copper-gold status",
-   "vryzka": "https://finance.yahoo.com/video/meridian-mining-ceo-caba-al-112323413.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-09-09T11:23:23Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото."
-  },
-  {
-   "zaglavie": "Western Gold Completes Drilling at First Target and Reports High Grade Surface Sampling Results for Caledonian Gold Project",
-   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/western-gold-completes-drilling-first-112000873.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-09-09T11:20:00Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото."
-  },
-  {
-   "zaglavie": "First copper-gold concentrate produced at Eldorado’s Skouries site",
-   "vryzka": "https://www.mining-technology.com/news/first-copper-gold-concentrate-eldorados-skouries-site/?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-09-09T11:18:19Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото."
-  },
-  {
-   "zaglavie": "Trump presses the Fed to cut interest rates, but Warsh may take the opposite approach: facing a \"choose one of three\" dilemma at next week's meeting",
-   "vryzka": "https://news.google.com/rss/articles/CBMimgFBVV95cUxQdzVLUE1Gb2F5R0JLZHh6OERCX0ZjZ1Q4UEk0RjV0U1BjekNkU0YzaUlidlNxbGhTNlRibzg5eWo4ZlgxeUxnOW8xcjVaWnhEUDJTMnFqZGJOU1RGZ0M1dFdvWUhUMjBDQ3gzVnB5RTJfLUlkNTJjUUw4d2wwYXc3UmxlRS1hSEhVOGFVb1R3M2Z6QjRwdElLZmZn?oc=5",
-   "izvor": "富途牛牛",
-   "chas": "2026-09-09T11:16:16Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото."
   }
  ]
 }
