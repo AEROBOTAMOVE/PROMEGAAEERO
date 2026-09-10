@@ -1,48 +1,68 @@
 {
- "kogato": "2026-09-10T21:33:00Z",
- "sekundi": 0.96,
+ "kogato": "2026-09-10T22:03:18Z",
+ "sekundi": 1.11,
  "broi": 200,
- "novi_tozi_pyt": 5,
+ "novi_tozi_pyt": 3,
  "iztochnici_ok": [
+  "MarketWatch",
   "Fed политика",
+  "Fed всички",
   "Investing",
   "Yahoo злато",
   "Yahoo долар",
   "CNBC",
-  "MarketWatch",
   "FT пазари",
   "Google Fed",
   "Google злато",
   "Mining.com"
  ],
- "iztochnici_padnali": [
-  {
-   "ime": "Fed всички",
-   "greshka": "HTTPError: HTTP Error 404: Not Found"
-  }
- ],
+ "iztochnici_padnali": [],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.24с",
-  "новини · FT пазари · 25 бр. за 0.4с",
-  "новини · Fed всички · ПАДНА: HTTPError: HTTP Error 404: Not Found",
-  "новини · Fed политика · 15 бр. за 0.15с",
-  "новини · Google Fed · 40 бр. за 0.53с",
-  "новини · Google злато · 40 бр. за 0.55с",
-  "новини · Investing · 10 бр. за 0.22с",
-  "новини · MarketWatch · 10 бр. за 0.27с",
-  "новини · Mining.com · 36 бр. за 0.94с",
-  "новини · Yahoo долар · 16 бр. за 0.24с",
-  "новини · Yahoo злато · 15 бр. за 0.24с"
+  "новини · CNBC · 30 бр. за 0.32с",
+  "новини · FT пазари · 25 бр. за 0.36с",
+  "новини · Fed всички · 20 бр. за 0.18с",
+  "новини · Fed политика · 15 бр. за 0.17с",
+  "новини · Google Fed · 40 бр. за 0.56с",
+  "новини · Google злато · 40 бр. за 0.58с",
+  "новини · Investing · 10 бр. за 0.19с",
+  "новини · MarketWatch · 10 бр. за 0.16с",
+  "новини · Mining.com · 36 бр. за 1.09с",
+  "новини · Yahoo долар · 16 бр. за 0.29с",
+  "новини · Yahoo злато · 15 бр. за 0.29с"
  ],
  "novini": [
   {
    "zaglavie": "Oracle’s AI bet pays off as cloud momentum helps drive a rosier forecast",
    "vryzka": "https://www.marketwatch.com/story/oracles-ai-bet-pays-off-as-cloud-momentum-helps-drive-a-rosier-forecast-cc41a4aa?mod=mw_rss_topstories",
    "izvor": "MarketWatch",
-   "chas": "2026-09-10T21:22:00Z",
+   "chas": "2026-09-10T21:55:00Z",
    "vazhnost": 1,
    "za": "общо",
    "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null
+  },
+  {
+   "zaglavie": "Weekly Mortgage Rates Climb as Inflation Anxiety Builds",
+   "vryzka": "https://news.google.com/rss/articles/CBMi4wFBVV95cUxPNUZEVV96OHI4NEZrS2U5Nk1OWXlGZC11b3pDSzNXdVA5aVBXUFQtTXM0aWo1VW5rTC03RzJRWFZ0a2ZudmkwZ3E4ODNIRkRLYzI3MVZjcDgtekNlV0tuYWVTRmdua3ZGaXVmSnpGMDZORHBMV2ZjRXNkUFp2MWZIdFdWbTZaM1p6VERDcVhJbHNHQjNuQUF0Rm9zN1dVVUVHVFZsYmxCMjBfcXdhT1I5SEFJNHo4UDFPWEdVbjRzV2U0VUZqbkMxcU9EcDVmaVRXOGJTZjN6SEN6enEzU2hOVGdvTQ?oc=5",
+   "izvor": "Tioga Publishing",
+   "chas": "2026-09-10T21:54:52Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "rates",
+   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече."
+  },
+  {
+   "zaglavie": "Agnico Eagle Mines (AEM) Suffers a Larger Drop Than the General Market: Key Insights",
+   "vryzka": "https://finance.yahoo.com/markets/stocks/articles/agnico-eagle-mines-aem-suffers-215002400.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-09-10T21:50:02Z",
+   "vazhnost": 1,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null
@@ -684,6 +704,18 @@
    "zashto": "Пряко за златото."
   },
   {
+   "zaglavie": "Gold’s record prices are reshaping demand as investors replace jewelry buyers - Metals Focus",
+   "vryzka": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxPbFRJc2xhcjJuNzc1TmJsT2xGbWYzZDExVlFuQ2dLLXVJcDBZaFFVcEdfZXBRT3M0aDVuanlIckpVb0tvaE5Md3ktXzNqZGJsTmcyNVFSTFFRTzZHOUZjaWZMYnNOWkJ4SkZ2MmFqaEd4RGFkdk4yXzB5dGZMenVzY09Wa1pFekRQcG5kWjhCTWtVTmpGb0FwSkt1RE5zcjFFMExwZjlWT2NRT0tJc0ZkclROU2lnendLQzhv?oc=5",
+   "izvor": "KITCO",
+   "chas": "2026-09-10T18:07:07Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото."
+  },
+  {
    "zaglavie": "‘I’m the executor’: My two siblings and I inherited an IRA. Can we just cash it out?",
    "vryzka": "https://www.marketwatch.com/story/im-the-executor-my-two-siblings-and-i-inherited-an-ira-can-we-just-cash-it-out-dafc5b8d?mod=mw_rss_topstories",
    "izvor": "MarketWatch",
@@ -1116,6 +1148,18 @@
    "zashto": null
   },
   {
+   "zaglavie": "Spot gold price slides to $4,340/oz after August PPI rises 0.4%, core PPI rises 0.2%",
+   "vryzka": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxOcmpmbm5JXzV6UV9iZDFsb29UdlVBWUUxbl9YYmZBYXdfOWM3SEgwUUs4eXFUdkFUTGxHcVBVR1EzdjJfVHVva2R0YlJZa0xwM2duNHQzQmljODhQbVdiYTVmbjZRdVJ4MUdaVkpzT0paODU1cmhnUWhRalViVlQyb3FGOGhjNXIxRlE0Z0doQ1VlaUNwWW00ajFlWUJkMWJtNjJmV2JkbVduU2xNRzFfdjVnQ2kwSllORzFn?oc=5",
+   "izvor": "KITCO",
+   "chas": "2026-09-10T15:56:46Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото."
+  },
+  {
    "zaglavie": "Global bond sell-off reignites as oil jumps above $105",
    "vryzka": "https://www.ft.com/content/49e8c693-0064-4ef9-917f-5f2be97458fc?syn-25a6b1a6=1",
    "izvor": "Financial Times",
@@ -1282,18 +1326,6 @@
    "chas_ot_iztochnika": true,
    "duma": "treasuries",
    "zashto": "Доходността на американския дълг е прякото сравнение за златото — качи ли се тя, златото обикновено пада."
-  },
-  {
-   "zaglavie": "Gold’s record prices are reshaping demand as investors replace jewelry buyers - Metals Focus",
-   "vryzka": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxPbFRJc2xhcjJuNzc1TmJsT2xGbWYzZDExVlFuQ2dLLXVJcDBZaFFVcEdfZXBRT3M0aDVuanlIckpVb0tvaE5Md3ktXzNqZGJsTmcyNVFSTFFRTzZHOUZjaWZMYnNOWkJ4SkZ2MmFqaEd4RGFkdk4yXzB5dGZMenVzY09Wa1pFekRQcG5kWjhCTWtVTmpGb0FwSkt1RE5zcjFFMExwZjlWT2NRT0tJc0ZkclROU2lnendLQzhv?oc=5",
-   "izvor": "KITCO",
-   "chas": "2026-09-10T15:02:00Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото."
   },
   {
    "zaglavie": "Swiss gold ban squeezes Sudan’s war economy",
@@ -1538,7 +1570,7 @@
   {
    "zaglavie": "PPI comes in as expected, but rate-hike odds climb ahead of Fed meeting",
    "vryzka": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxOV0EyY0JhV25RWE91QUVPbXppNkIxNVp1NGZSMGZ5Q2JXRU8tTGk2cmVHZ0w3V3pwMHd3ZkYzd3p3aGZmd3U5a3M5Y3hjbFlta0xBUWxjT184cE1ZTWtaX2lVRnNuTlBqd0ZSWVd1cmhXRXNCMWhNMGFMYXVlUkZSWDNJOEJ5X3J4MEVKMGZiSEtVUFFFbVoxMzFfSHNZZWpaTS1HVUJOQUhxMUVKeXBRYTJCVDlFX1ZI?oc=5",
-   "izvor": "InvestmentNews",
+   "izvor": "investmentnews.com",
    "chas": "2026-09-10T14:07:10Z",
    "vazhnost": 3,
    "za": "лихви",
@@ -2398,42 +2430,6 @@
    "chas_ot_iztochnika": true,
    "duma": "gold",
    "zashto": "Пряко за златото."
-  },
-  {
-   "zaglavie": "Regis Resources Ltd's Dividend Analysis",
-   "vryzka": "https://finance.yahoo.com/markets/stocks/articles/regis-resources-ltds-dividend-analysis-111626609.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-09-10T11:16:26Z",
-   "vazhnost": 1,
-   "za": "злато",
-   "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null
-  },
-  {
-   "zaglavie": "Op-Ed: Brazil’s critical minerals push comes with a catch",
-   "vryzka": "https://www.mining.com/op-ed-brazils-critical-minerals-push-comes-with-a-catch/",
-   "izvor": "Mining.com",
-   "chas": "2026-09-10T11:15:00Z",
-   "vazhnost": 1,
-   "za": "злато",
-   "emisiya": "Mining.com",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null
-  },
-  {
-   "zaglavie": "I have two sons. Should I allow one son to build a $400,000 house on my land?",
-   "vryzka": "https://www.marketwatch.com/story/i-have-two-sons-should-i-allow-one-son-to-build-a-400-000-house-on-my-property-im-not-permitted-to-subdivide-the-land-5ec23b62?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-09-10T11:15:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null
   }
  ]
 }
