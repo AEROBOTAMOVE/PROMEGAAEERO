@@ -1,36 +1,55 @@
 {
- "kogato": "2026-09-11T22:21:56Z",
- "sekundi": 1.21,
+ "kogato": "2026-09-11T22:56:54Z",
+ "sekundi": 8.59,
  "broi": 200,
- "novi_tozi_pyt": 6,
+ "novi_tozi_pyt": 1,
  "iztochnici_ok": [
-  "Fed всички",
   "Fed политика",
+  "Fed всички",
+  "MarketWatch",
   "Investing",
   "Yahoo долар",
-  "CNBC",
-  "MarketWatch",
   "Yahoo злато",
-  "Google Fed",
+  "CNBC",
   "FT пазари",
-  "Google злато",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google злато",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  },
+  {
+   "ime": "Google Fed",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.23с",
-  "новини · FT пазари · 25 бр. за 0.58с",
-  "новини · Fed всички · 20 бр. за 0.19с",
-  "новини · Fed политика · 15 бр. за 0.19с",
-  "новини · Google Fed · 40 бр. за 0.56с",
-  "новини · Google злато · 40 бр. за 0.63с",
-  "новини · Investing · 10 бр. за 0.21с",
-  "новини · MarketWatch · 10 бр. за 0.25с",
-  "новини · Mining.com · 36 бр. за 1.19с",
-  "новини · Yahoo долар · 17 бр. за 0.23с",
-  "новини · Yahoo злато · 15 бр. за 0.29с"
+  "новини · CNBC · 30 бр. за 0.35с",
+  "новини · FT пазари · 25 бр. за 0.37с",
+  "новини · Fed всички · 20 бр. за 0.17с",
+  "новини · Fed политика · 15 бр. за 0.16с",
+  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Investing · 10 бр. за 0.22с",
+  "новини · MarketWatch · 10 бр. за 0.19с",
+  "новини · Mining.com · 36 бр. за 1.04с",
+  "новини · Yahoo долар · 17 бр. за 0.27с",
+  "новини · Yahoo злато · 15 бр. за 0.3с"
  ],
  "novini": [
+  {
+   "zaglavie": "Early SpaceX investor Atreides poaches co-CIO of ‘Tiger cub’ Lone Pine",
+   "vryzka": "https://www.ft.com/content/282a7b82-49b1-48ce-b645-737da2ff093a?syn-25a6b1a6=1",
+   "izvor": "Financial Times",
+   "chas": "2026-09-11T22:55:46Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "FT пазари",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null
+  },
   {
    "zaglavie": "Wall Street turns bullish on gold price ahead of the Fed, Main Street clings to slim bullish majority despite weekly slide",
    "vryzka": "https://news.google.com/rss/articles/CBMitwFBVV95cUxQM0hVdUNrZEZxdm8xb0RMbzVWdm5wTjkxYW1UR2FjSE42Si1XTEk0Q3Q1eU1BeW00NlF5aWVZc3Zsclk2OWY2V2dlUHNzeC05UWZZTldXdEhHNjN0Y0V6d2RKMUR2elNab0F6WWhFbzNPZGotQk4xeGhOeHJhcU84Z2dnc1BNUVZZY1dQWHBpOU1EeS00ZHZTTFZxMWxfbktzZjliSTRlbm1LQlVDT3dvLUJYMXg4SHc?oc=5",
@@ -296,18 +315,6 @@
    "zashto": null
   },
   {
-   "zaglavie": "Empowering users but destabilizing nations: Risks of dollar stablecoins",
-   "vryzka": "https://finance.yahoo.com/video/empowering-users-destabilizing-nations-risks-203000071.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-09-11T20:30:00Z",
-   "vazhnost": 2,
-   "za": "долар",
-   "emisiya": "Yahoo долар",
-   "chas_ot_iztochnika": true,
-   "duma": "dollar",
-   "zashto": "Златото се мери в долари: по-силен долар обикновено значи по-евтино злато."
-  },
-  {
    "zaglavie": "I’m a single 58-year-old veteran in California with $1.5 million and a VA pension. Can I retire?",
    "vryzka": "https://www.marketwatch.com/story/im-a-single-58-year-old-veteran-with-1-5-million-in-assets-and-a-va-pension-can-i-afford-to-retire-9fadfd41?mod=mw_rss_topstories",
    "izvor": "MarketWatch",
@@ -330,6 +337,18 @@
    "chas_ot_iztochnika": true,
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото."
+  },
+  {
+   "zaglavie": "Empowering users but destabilizing nations: Risks of dollar stablecoins",
+   "vryzka": "https://finance.yahoo.com/video/empowering-users-destabilizing-nations-risks-203000071.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-09-11T20:30:00Z",
+   "vazhnost": 2,
+   "za": "долар",
+   "emisiya": "Yahoo долар",
+   "chas_ot_iztochnika": true,
+   "duma": "dollar",
+   "zashto": "Златото се мери в долари: по-силен долар обикновено значи по-евтино злато."
   },
   {
    "zaglavie": "Saudi Arabia shuts East-West pipeline that bypasses Hormuz after attacks",
@@ -524,18 +543,6 @@
    "zashto": "Пряко за златото."
   },
   {
-   "zaglavie": "Gold’s Next Leg Higher? ETF Inflows Signal Investors Are Back",
-   "vryzka": "https://news.google.com/rss/articles/CBMipwFBVV95cUxNN3E4WUJwMTZjSk81MEN6UW5tMC03T3FLOXpRcWQ2RXhJYjl6ckM2RENyUURjbzBYamFfSFdRc05VTnB1b1gtQnR1LW82eUU3OFpWZk9VY2Zoc2x3ajRnZlA1bVpaTHZvUl8ta3NwRVpsSF9YOUNtQnBGMEtPN3A0MzB2cExkcUtrX2tjam8zcXpRdDgtUFhPVkdkV3VkdXMxX2x2SkJjOA?oc=5",
-   "izvor": "Investing.com",
-   "chas": "2026-09-11T19:01:08Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото."
-  },
-  {
    "zaglavie": "Gold Selloff Shows Why Real Yields Still Dominate Inflation Risk",
    "vryzka": "https://www.investing.com/analysis/gold-selloff-shows-why-real-yields-still-dominate-inflation-risk-200687562",
    "izvor": "Investing.com",
@@ -558,6 +565,18 @@
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null
+  },
+  {
+   "zaglavie": "Gold’s Next Leg Higher? ETF Inflows Signal Investors Are Back",
+   "vryzka": "https://www.investing.com/analysis/golds-next-leg-higher-etf-inflows-signal-investors-are-back-200687559",
+   "izvor": "Investing.com",
+   "chas": "2026-09-11T18:56:00Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Investing",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото."
   },
   {
    "zaglavie": "August sees inflation rise, fueling expectations of Fed rate hike",
@@ -2418,18 +2437,6 @@
    "chas_ot_iztochnika": true,
    "duma": "gold",
    "zashto": "Пряко за златото."
-  },
-  {
-   "zaglavie": "Stubbornly High Inflation Keeps Pressure On Fed To Hike Interest Rates",
-   "vryzka": "https://news.google.com/rss/articles/CBMinwFBVV95cUxOa2xlUmFQb0VMNE56OU8wU1FKdzNIOFlGVC1yNGpXUVdzQnkxT05HVEh3UzdwYV9CYTBBYy1qN1RUWFNCMkViMnlaSUxTMkFtRzQ2bTY4MXdvXzkwRm0wVGF1Z2hONDlqdnVpZllWaDM1emgwUjlpZFozREE2ZzdqMGt1N2pSRVpvRldNN0JWOFFidmxVV1RjaFVBTUxMM3M?oc=5",
-   "izvor": "finance.yahoo.com",
-   "chas": "2026-09-11T12:34:31Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "inflation",
-   "zashto": "Инфлацията е основната причина да се държи злато — то пази стойност, когато парите я губят."
   }
  ]
 }
