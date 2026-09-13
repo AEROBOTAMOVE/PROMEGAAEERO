@@ -1,36 +1,67 @@
 {
- "kogato": "2026-09-13T04:02:26Z",
- "sekundi": 1.37,
+ "kogato": "2026-09-13T05:55:16Z",
+ "sekundi": 8.55,
  "broi": 200,
  "novi_tozi_pyt": 2,
  "iztochnici_ok": [
-  "Fed всички",
   "Fed политика",
-  "Investing",
-  "Yahoo злато",
+  "Fed всички",
   "MarketWatch",
-  "Yahoo долар",
+  "Investing",
   "CNBC",
+  "Yahoo злато",
+  "Yahoo долар",
   "FT пазари",
-  "Google Fed",
-  "Google злато",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google злато",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  },
+  {
+   "ime": "Google Fed",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.38с",
-  "новини · FT пазари · 25 бр. за 0.4с",
-  "новини · Fed всички · 20 бр. за 0.23с",
-  "новини · Fed политика · 15 бр. за 0.26с",
-  "новини · Google Fed · 40 бр. за 0.71с",
-  "новини · Google злато · 40 бр. за 0.73с",
-  "новини · Investing · 10 бр. за 0.27с",
-  "новини · MarketWatch · 10 бр. за 0.34с",
-  "новини · Mining.com · 36 бр. за 1.36с",
-  "новини · Yahoo долар · 16 бр. за 0.36с",
-  "новини · Yahoo злато · 16 бр. за 0.31с"
+  "новини · CNBC · 30 бр. за 0.29с",
+  "новини · FT пазари · 25 бр. за 0.7с",
+  "новини · Fed всички · 20 бр. за 0.17с",
+  "новини · Fed политика · 15 бр. за 0.16с",
+  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Investing · 10 бр. за 0.21с",
+  "новини · MarketWatch · 10 бр. за 0.17с",
+  "новини · Mining.com · 36 бр. за 1.11с",
+  "новини · Yahoo долар · 16 бр. за 0.32с",
+  "новини · Yahoo злато · 16 бр. за 0.32с"
  ],
  "novini": [
+  {
+   "zaglavie": "Boom-era PE funds will fall short on promises, executives warn",
+   "vryzka": "https://www.ft.com/content/183569b4-8102-4b38-8a20-a3597a442f26?syn-25a6b1a6=1",
+   "izvor": "Financial Times",
+   "chas": "2026-09-13T04:00:12Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "FT пазари",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null
+  },
+  {
+   "zaglavie": "CVC faces shareholder revolt over €10.7bn Recordati take-private",
+   "vryzka": "https://www.ft.com/content/a4a22443-2082-409b-96e1-650c44a40f44?syn-25a6b1a6=1",
+   "izvor": "Financial Times",
+   "chas": "2026-09-13T04:00:12Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "FT пазари",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null
+  },
   {
    "zaglavie": "Private equity plans to put the swing back into Japan’s golf tour",
    "vryzka": "https://www.ft.com/content/4dbba9b1-26ab-448c-acb3-215ecd9609ca?syn-25a6b1a6=1",
@@ -2406,30 +2437,6 @@
    "chas_ot_iztochnika": true,
    "duma": "gold",
    "zashto": "Пряко за златото."
-  },
-  {
-   "zaglavie": "Oracle shook off fears about AI spending, but its stock still turns south",
-   "vryzka": "https://www.marketwatch.com/story/oracle-shares-are-climbing-after-results-what-wall-street-analysts-are-saying-now-0d4517ae?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-09-11T19:21:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null
-  },
-  {
-   "zaglavie": "Hot CPI sends Fed rate hike odds soaring to 90%",
-   "vryzka": "https://news.google.com/rss/articles/CBMieEFVX3lxTE9PNnJJeFpyVHJUSnRTMlpmM1liYXVxTWlxQXhYNWJlcFpqbTBSVWJVM1d0UGRyLXdoZDloMlNqdjR2T2dpS3plUzl4SDFsN2EzTWxhVEJWeXhJZm80YkJ1OTlOUzNhS0NjSzdLVkNxWm81NmRMdi1Hdg?oc=5",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-09-11T19:17:00Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "cpi",
-   "zashto": "ЦПИ е измерването на инфлацията. Изненада в него мести златото в същия ден."
   }
  ]
 }
