@@ -250,6 +250,7 @@ jobs:
           ФАЙЛОВЕ_ЗА_САЙТА: ${{ vars.SITE_FILES || '' }}
           НОВИНИ_ВСИЧКИ: ${{ vars.NEWS_ALL_SLOTS || '' }}
           НОВИНИ_FOMC_МИН: ${{ vars.NEWS_FOMC_MIN || '' }}
+          КАЛЕНДАР_ПАЗАЧ: ${{ vars.CALENDAR_GUARD || '' }}
           СМЕТКА_ТОРБА: ${{ vars.BAG_SUM || '' }}
           ЕДИН_ВХОД: ${{ vars.ONE_ENTRY || '' }}
           БЕЗ_НАСРЕЩНИ: ${{ vars.NO_OPPOSITE || '' }}

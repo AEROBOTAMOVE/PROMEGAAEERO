@@ -6729,6 +6729,162 @@ def _новина_прозорец(име):
     return 20, 40
 
 
+# 🔴🔴 15.09 · КАЛЕНДАРНИЯТ ПАЗАЧ (преди FOMC, 16.09.2026 18:00 UTC).
+# Календарът сгреши три пъти за две седмици: NFP на 04.09 с ЧАС закъснение,
+# Джексън Хоул в грешен ден, версия на 11.09 БЕЗ FOMC. Доставчикът се взимаше
+# на доверие. Пазачът го сверява ВЕДНЪЖ НА РЪН с две неща, които не зависят
+# от доставчика:
+#   (1) стандартните нюйоркски часове: 08:30 — заетост/NFP, CPI, PPI, продажби
+#       на дребно, БВП, PCE, молби за помощи, дълготрайни стоки; 10:00 — ISM,
+#       JOLTS, Мичиган, продажби на жилища; FOMC изявление 14:00,
+#       пресконференция 14:30. Лятно/зимно време — от America/New_York.
+#       Позната публикация извън своя час → «часът не е потвърден» (дневник
+#       + картите). FOMC в ден извън графика на Фед — същото.
+#   (2) графикът на FOMC за 2026 — проверен на 15.09.2026 в
+#       federalreserve.gov/monetarypolicy/fomccalendars.htm и в прессъобщението
+#       от 09.08.2024 (pressreleases/monetary20240809a.htm). Липсва ли
+#       изявлението на втория ден на заседание, пазачът го ДОБАВЯ в 14:00 Ню
+#       Йорк като критично и го казва в дневника.
+# Нищо не се трие и не се мести: часът на картата е какъвто го дава котвата
+# (`_cq_evt_dt`); пазачът само казва, че не е потвърден. Добавеното НЕ се
+# записва в `cyberquant.json` — строи се наново на всеки рън.
+# ПЪТ НАЗАД: vars.CALENDAR_GUARD = 0 → календарът и картите дословно старите.
+КАЛЕНДАР_ПАЗАЧ = int(_env("КАЛЕНДАР_ПАЗАЧ", "1"))
+# вторият ден на всяко заседание = денят на изявлението (14:00 Ню Йорк)
+КАЛЕНДАР_FOMC = ("2026-01-28", "2026-03-18", "2026-04-29", "2026-06-17",
+                 "2026-07-29", "2026-09-16", "2026-10-28", "2026-12-09",
+                 "2027-01-27")          # последното е предварително (от прессъобщението)
+КАЛЕНДАР_ЧАС_NY = {"fomc": (14, 0), "пресконференция": (14, 30),
+                   "08:30": (8, 30), "10:00": (10, 0)}
+# «X*» = начало на дума; иначе цяла дума (след нормализиране на името)
+_КАЛ_НЕ = ("ADP", "MINUTES", "ПРОТОКОЛ*", "GDPNOW", "CLEVELAND", "SPEAK*",
+           "SPEECH", "TESTIF*", "ГОВОРИ*", "РЕЧ", "ECB", "BOE", "BOJ")
+_КАЛ_ФЕД = ("FOMC", "FED", "ФРС", "FEDERAL FUNDS", "INTEREST RATE DECISION",
+            "INTEREST RATE PROJECTION")
+_КАЛ_РЕШ = ("DECISION", "STATEMENT", "PROJECTION*", "FEDERAL FUNDS", "РЕШЕНИЕ*", "ЛИХВ*")
+_КАЛ_ПРЕС = ("PRESS CONFERENCE", "ПРЕСКОНФЕРЕНЦ*")
+_КАЛ_10 = ("ISM", "JOLTS", "JOB OPENINGS", "MICHIGAN", "CONSUMER SENTIMENT",
+           "CONSUMER CONFIDENCE", "NEW HOME SALES", "EXISTING HOME SALES")
+_КАЛ_830 = ("NONFARM", "NFP", "PAYROLL*", "EMPLOYMENT SITUATION", "UNEMPLOYMENT RATE",
+            "AVERAGE HOURLY EARNINGS", "CPI", "CONSUMER PRICE", "PPI", "PRODUCER PRICE",
+            "RETAIL SALES", "GDP", "GROSS DOMESTIC", "PCE", "PERSONAL CONSUMPTION",
+            "PERSONAL INCOME", "PERSONAL SPENDING", "JOBLESS", "DURABLE GOODS",
+            "ЗАЕТОСТ*", "БЕЗРАБОТ*", "ИНФЛАЦ*", "БВП", "ПРОДАЖБИ НА ДРЕБНО")
+
+
+def _кал_има(ключ, н):
+    """Ключът в нормализираното име · «X*» = начало на дума, иначе цяла дума."""
+    _из = r"(?<![0-9A-ZА-Я])" + _re_новина.escape(ключ.rstrip("*"))
+    if not ключ.endswith("*"):
+        _из += r"(?![0-9A-ZА-Я])"
+    return _re_новина.search(_из, н) is not None
+
+
+def _календар_вид(име):
+    """Коя стандартна публикация е името → ключ от КАЛЕНДАР_ЧАС_NY, или None.
+
+    Нормализира: главни букви, всяка пунктуация → интервал, «NON FARM» →
+    «NONFARM». Непознато, реч, протокол, ADP (08:15) → None = не се сверява.
+    """
+    н = " ".join(_re_новина.sub(r"[^0-9A-ZА-Я]+", " ", str(име or "").upper()).split())
+    н = н.replace("NON FARM", "NONFARM")
+    if not н or any(_кал_има(к, н) for к in _КАЛ_НЕ):
+        return None
+    _фед = ((any(_кал_има(к, н) for к in _КАЛ_ФЕД) and any(_кал_има(к, н) for к in _КАЛ_РЕШ))
+            or н == "FOMC" or (_кал_има("РЕШЕНИЕ*", н) and _кал_има("ЛИХВ*", н)))
+    if any(_кал_има(к, н) for к in _КАЛ_ПРЕС):
+        return "fomc" if _фед else "пресконференция"
+    if _фед:
+        return "fomc"
+    if any(_кал_има(к, н) for к in _КАЛ_10):
+        return "10:00"
+    if any(_кал_има(к, н) for к in _КАЛ_830):
+        return "08:30"
+    return None
+
+
+def _календар_пазач(cq, now_utc, notes):
+    """Сверява ЗАРЕДЕНИЯ календар (веднъж на рън) → (бележени, добавени).
+
+    Бележи позната публикация извън стандартния си нюйоркски час (и FOMC в
+    ден извън графика) с `час_непотвърден`; добавя липсващо изявление на
+    FOMC в 14:00 Ню Йорк. Всяко действие — бележка в дневника.
+    Лост 0 → нищо не пипа (дословно старото). Никога не вдига грешка.
+    """
+    if not КАЛЕНДАР_ПАЗАЧ or not isinstance(cq, dict) or not cq.get("events"):
+        return 0, 0
+    if notes is None:
+        notes = []
+    бел, доб = 0, 0
+    try:
+        from datetime import datetime as _dtк
+        _нюз = _tz("America/New_York")
+        now = pd.Timestamp(now_utc)
+        now = now.tz_convert("UTC").tz_localize(None) if now.tz is not None else now
+        _fomc_дни = set()
+        for e in list(cq["events"]):
+            if not isinstance(e, dict) or e.get("добавено_от_пазача"):
+                continue
+            вид = _календар_вид(e.get("name"))
+            if вид is None:
+                continue
+            try:
+                ts = pd.Timestamp(e.get("dt", ""))
+                ts = ts.tz_convert("UTC").tz_localize(None) if ts.tz is not None else ts
+                ню = ts.tz_localize("UTC").tz_convert(_нюз)
+            except Exception:
+                continue
+            _ден = ню.date().isoformat()
+            ч, м = КАЛЕНДАР_ЧАС_NY[вид]
+            _защо = None
+            if (ню.hour, ню.minute) != (ч, м):
+                _защо = ("доставчикът дава %02d:%02d Ню Йорк, стандартът е %02d:%02d"
+                         % (ню.hour, ню.minute, ч, м))
+            if вид == "fomc":
+                _fomc_дни.add(_ден)
+                if (КАЛЕНДАР_FOMC[0][:4] + "-01-01" <= _ден <= КАЛЕНДАР_FOMC[-1]
+                        and _ден not in КАЛЕНДАР_FOMC):
+                    _защо = "денят не е в графика на Фед"
+            if _защо:
+                e["час_непотвърден"] = True
+                бел += 1
+                notes.append("📅 календарен пазач: «%s» %s — %s · часът не е потвърден"
+                             % (str(e.get("name", ""))[:40], ню.strftime("%d.%m"), _защо))
+        _вече = {x.get("добавено_от_пазача") for x in cq["events"] if isinstance(x, dict)}
+        for д in КАЛЕНДАР_FOMC:
+            if д in _fomc_дни or д in _вече:
+                continue
+            г, мс, дн = (int(x) for x in д.split("-"))
+            T = pd.Timestamp(_dtк(г, мс, дн, 14, 0, tzinfo=_нюз)).tz_convert("UTC").tz_localize(None)
+            if not (now - pd.Timedelta(minutes=max(НОВИНИ_FOMC_МИН, 40)) <= T
+                    <= now + pd.Timedelta(days=NASDAQ_ДНИ)):
+                continue
+            cq["events"].append({"name": "FOMC · решение за лихвите",
+                                 "dt": T.strftime("%Y-%m-%dT%H:%M:%SZ"),
+                                 "impact": "critical", "по": "пазач",
+                                 "добавено_от_пазача": д})
+            доб += 1
+            notes.append("📅 календарен пазач: FOMC %s липсваше в календара — добавен "
+                         "в 14:00 Ню Йорк (%s UTC), критично"
+                         % (T.strftime("%d.%m"), T.strftime("%H:%M")))
+    except Exception as _е:
+        notes.append("календарният пазач се спъна (%s)" % type(_е).__name__)
+    return бел, доб
+
+
+def _календар_белег(e):
+    """Добавката на картата до часа: «⚠️ часът не е потвърден» за бележено
+    събитие, «по официалния график на Фед» за добавеното. Лост 0 → ""."""
+    if not КАЛЕНДАР_ПАЗАЧ or not isinstance(e, dict):
+        return ""
+    if e.get("добавено_от_пазача"):
+        return " · по официалния график на Фед"
+    if e.get("час_непотвърден"):
+        return " ⚠️ часът не е потвърден"
+    return ""
+
+
+
 def _cq_next_event(cq, now_utc):
     """Най-близкото БЪДЕЩО голямо събитие → етикет (за референцията)."""
     if not cq or not cq.get("events"):
@@ -6762,7 +6918,7 @@ def _cq_next_event(cq, now_utc):
                  else "СЛЕД %d ДНИ" % _д)
     except Exception:
         _когa = ""
-    return f"{e.get('name', '')} — {_sofia_dt(evt.isoformat())} София", _когa
+    return f"{e.get('name', '')}{_календар_белег(e)} — {_sofia_dt(evt.isoformat())} София", _когa
 
 
 def _остава(часове):
@@ -6889,7 +7045,7 @@ def _news_msg(e, evt, ч, ключ=None, повод="първо"):
     if _цял_ред:
         L.append("📌 <b>%s</b>" % име)
     L += [
-         f"⏰ {_sofia_dt(evt.isoformat())} София — тогава го обявяват",
+         f"⏰ {_sofia_dt(evt.isoformat())} София — тогава го обявяват{_календар_белег(e)}",
          "⚠️ в такъв момент златото минава по 20-40$ за секунди в двете посоки",
          # 🔴 15.09 · v18.74 · Ф3 · при НОВИНИ_ДАВАЙ=1 ботът ОТВАРЯ (с
          # предупреждение на картата). «Не отварям» беше обещание, което не пази.
@@ -9209,6 +9365,9 @@ def main():
                 meta["cq_date"] = date
             else:
                 notes.append("CyberQuant недостъпен този опит — ползвам кеш/прескачам")
+    # 🔴 15.09 · КАЛЕНДАРНИЯТ ПАЗАЧ · веднъж на рън, върху заредения календар,
+    # ПРЕДИ щита — добавеното FOMC трябва да вдигне щита. Виж КАЛЕНДАР_ПАЗАЧ.
+    _календар_пазач(cq, now_utc, notes=notes)
     cq_block, cq_ev = _cq_macro_block(cq, now_utc)        # голямо макро събитие СЕГА? (блокира двете посоки)
 
     # цената за човека: живият спот; резерва — барът минус базиса
