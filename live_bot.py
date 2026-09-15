@@ -34,7 +34,7 @@ import pandas as pd
 # v9.5–v9.8 — всеки ред в дневника твърдеше грешна версия, а дневникът е
 # единственият начин отвън да се види какво работи. П47 пада, ако VERSION не се
 # среща в темата на последния commit.
-VERSION = "v18.81"
+VERSION = "v18.82"
 
 
 def _env(ключ, подразб):
@@ -4771,7 +4771,19 @@ def _stignala_do(kind, hit, lv, entry, sign, hit_px=None):
 
 
 
-def _торба(kind, hit, lv, entry, dol):
+# 🔴🔴🔴 15.09 · v18.82 · СТОПЪТ СЕ БРОИ НА НИВОТО · законът на собственика:
+# «стоп преди цел 1 = −390 (3 × −130)». Ботът гледа цената през ~5 мин и я
+# хваща ОТВЪД стопа (продажбата 12:03: стоп 4276.28, видя 4276.52 → −132 × 3
+# = −397). Стоп-поръчката излиза на нивото, затова изход «sl» → невзетите
+# позиции = нивото на стопа (−130, или 0 когато стопът е на входа). Истински
+# гап (ходът е по-далеч от стопа с над СТОП_ДОПУСК_USD) → истинският ход, за да
+# не лъжем при гап. Всяка част е цял пипс → сборът = сумата на частите.
+# Назад: vars.STOP_AT_LEVEL = 0.
+СТОП_ПО_НИВО = int(_env("СТОП_ПО_НИВО", "1"))
+СТОП_ДОПУСК_USD = 3.0
+
+
+def _торба(kind, hit, lv, entry, dol, сим="XAUUSD"):
     """🔴🔴 15.09 · v18.76 · ВСИЧКО В ТОРБАТА · решение на собственика (клик).
 
     Сделката е ТРИ ПЪЛНИ позиции — по една на цел. Всяка се брои с точните си
@@ -4782,11 +4794,25 @@ def _торба(kind, hit, lv, entry, dol):
     Огледално: печалбите се събират по позиции — загубата също.
     Връща (сбор_в_долари, [част_на_цел1, част_на_цел2, част_на_цел3])."""
     части = []
+    _стоп = None
+    if СТОП_ПО_НИВО and kind == "sl" and lv.get("sl") is not None and lv.get("tp1") is not None:
+        try:
+            _зн = 1 if float(lv["tp1"]) > float(entry) else -1
+            _н = (float(lv["sl"]) - float(entry)) * _зн
+            if abs(float(dol) - _н) <= СТОП_ДОПУСК_USD:
+                _стоп = _н
+        except (TypeError, ValueError):
+            _стоп = None
+    _ст = PIP if сим == "XAUUSD" else 0.001
     for k in ("tp1", "tp2", "tp3"):
         if k not in lv or lv.get(k) is None:
             continue
         if hit.get(k) or k == kind:
             части.append(round(abs(float(lv[k]) - float(entry)), 2))
+        elif _стоп is not None:
+            части.append(round(_стоп, 2))
+        elif СТОП_ПО_НИВО:
+            части.append(round(round(float(dol) / _ст) * _ст, 3))
         else:
             части.append(round(float(dol), 2))
     return round(sum(части), 2), части
@@ -5323,7 +5349,7 @@ def _exit_msg(kind, tr, price_hit, when, via, gap, spot=None, next_line="", dec=
             # 🔴🔴 15.09 · v18.76 · ВСИЧКО В ТОРБАТА · сборът на трите позиции.
             # Собственикът: «удря 50 — плюс 50, после удря 120 — всичко в
             # торбата». Загубата е огледална: три позиции на стопа = −390.
-            _сб76, _ч76 = _торба(kind, hit, lv, e, дол)
+            _сб76, _ч76 = _торба(kind, hit, lv, e, дол, сим=_сим)
             if _сб76 >= 0:
                 L.insert(1, f"💰 <b>СДЕЛКАТА ДОНЕСЕ {_пари(_сб76, _сим)}</b>")
             else:
@@ -12766,7 +12792,7 @@ def _сайт_сделка(tag, payload):
     if abs(_дол) < 0.005:
         _дол = 0.0
     _hit = tro.get("hit") or {}
-    _сб, _ч = _торба(k, _hit, tro.get("levels") or {}, _e, _дол)
+    _сб, _ч = _торба(k, _hit, tro.get("levels") or {}, _e, _дол, сим=_сим)
     try:
         _кога = pd.Timestamp(str(when)).isoformat()[:16]
     except Exception:
@@ -12778,6 +12804,25 @@ def _сайт_сделка(tag, payload):
                 "parts": [_сайт_пипс(x, _сим) for x in _ч],
                 "sum_pips": _сайт_пипс(_сб, _сим), "v": VERSION})
     return зап
+
+
+def _сайт_по_закона(r):
+    """🔴 v18.82 · един стар запис → частите и сборът по `_торба` (стопът на
+    нивото, цели пипсове). Връща True, ако нещо се е сменило."""
+    try:
+        _e = float(r["entry"])
+        _зн = 1 if r.get("direction") == "long" else -1
+        _дол = (float(r["exit_px"]) - _e) * _зн
+        _lv = {k: v for k, v in (r.get("levels") or {}).items() if v is not None}
+        _сб, _ч = _торба(r.get("exit_kind"), r.get("hit") or {}, _lv, _e, _дол)
+        _части = [_сайт_пипс(x, "XAUUSD") for x in _ч]
+        _сбор = _сайт_пипс(_сб, "XAUUSD")
+    except (KeyError, TypeError, ValueError):
+        return False
+    if _части == r.get("parts") and _сбор == r.get("sum_pips"):
+        return False
+    r["parts"], r["sum_pips"], r["prebroeno"] = _части, _сбор, VERSION
+    return True
 
 
 def _сайт_сделки(out, exit_msgs, notes):
@@ -12792,15 +12837,25 @@ def _сайт_сделки(out, exit_msgs, notes):
             нови.append(_сайт_сделка(tag, payload))
         except Exception as е:
             notes.append("⚠️ sdelki.json · изходът %s не се описа (%s)" % (tag, type(е).__name__))
-    if not нови:
+    if not нови and not СТОП_ПО_НИВО:
         return 0
     f = Path(out) / "sdelki.json"
     стари = _load_state(f, [])
     if not isinstance(стари, list):
         стари = []
+    # 🔴 v18.82 · старите записи се преброяват по закона (стопът на нивото)
+    _преброени = 0
+    if СТОП_ПО_НИВО:
+        for r in стари:
+            if isinstance(r, dict) and _сайт_по_закона(r):
+                _преброени += 1
+    if not нови and not _преброени:
+        return 0
     _ид = {r["id"] for r in нови}
     всички = [r for r in стари if isinstance(r, dict) and r.get("id") not in _ид] + нови
     _запиши_атомарно(f, json.dumps(всички[-САЙТ_СДЕЛКИ_ТАВАН:], ensure_ascii=False))
+    if _преброени:
+        notes.append("🧺 sdelki.json · %d стари сделки преброени по закона (стопът на нивото)" % _преброени)
     return len(нови)
 
 
