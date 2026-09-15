@@ -243,6 +243,10 @@ jobs:
           # 🔴 15.09 · v18.72 · заглавието на сигнала и редът «📏 размер» си
           # противоречаха в 53 от 186 карти. НАЗАД: TITLE_BY_SIZE=0.
           ЗАГЛАВИЕ_ПО_РАЗМЕР: ${{ vars.TITLE_BY_SIZE || '' }}
+          # 🔴🔴 15.09 · v18.73 · ТОЧНИТЕ ПИПСОВЕ НА ЦЕЛТА. Собственикът: «имаш цел
+          # 50 — прибираш 50; имаш 100 — прибираш 100; няма половини, проценти,
+          # дялове». Картите пишат само това. НАЗАД: WHOLE_TARGETS=0.
+          БРОЕНЕ_ЦЯЛО: ${{ vars.WHOLE_TARGETS || '' }}
           ЗЛАТЕН_ПЪТ: ${{ vars.GOLD_PATH || '' }}
           ЗЛАТЕН_ПЪТ_МИН: ${{ vars.GOLD_PATH_MIN || '' }}
           ЗЛАТЕН_ПЪТ_ОТМ_МАКС: ${{ vars.GOLD_PATH_OFFSET_MAX || '' }}
@@ -301,6 +305,12 @@ jobs:
         run: |
           git config user.name "aero-bot"
           git config user.email "bot@users.noreply.github.com"
+          # 🔴 15.09 · ОПАШКИТЕ ЗА ПЛАТФОРМАТА. Телефонът на клиента теглеше
+          # целия дневник (8,2 MB) на всеки 5 мин за един нов ред. Range не
+          # може (CORS). Малките опашки се сливат с кеша в платформата.
+          # НАЗАД: изтриване на двата реда — платформата пада на целите файлове.
+          tail -n 120 live/live_journal.jsonl > live/live_journal_opashka.jsonl 2>/dev/null || true
+          tail -n 400 live/brain_journal.jsonl > live/brain_journal_opashka.jsonl 2>/dev/null || true
           git add -A live/ || true
           git commit -m "state" || echo "nothing"
           ok=0
