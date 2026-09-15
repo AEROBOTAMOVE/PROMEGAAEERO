@@ -11135,6 +11135,10 @@ def main():
         _запиши_атомарно(tr2_f, json.dumps(доп_сделки, ensure_ascii=False))
     elif tr2_f.exists():
         tr2_f.unlink()
+    # 🔴 15.09 · файловете за клиентското приложение (виж `_сайт_файлове`).
+    # СЛЕД записа на състоянието: сделката напуска open_trade*.json и влиза
+    # в sdelki.json в един и същи рън. SITE_FILES=0 → нищо не се пише.
+    _сайт_файлове(out, exit_msgs, trade, доп_сделки, spot_g, now_utc, notes)
     ma_sent = {k: v for k, v in ma_sent.items() if k.startswith(date)}
     # 🔴 21.08 · ЗНАМЕТО СЕ ТРИЕ ЕДИН ПЪТ, НАКРАЯ. Дотук се POP-ваше още при
     # реалната сделка и СЯНКАТА никога не го виждаше — а тя е форуърд-тестът,
@@ -11242,6 +11246,129 @@ def main():
     if notes:
         print("БЕЛЕЖКИ:", " | ".join(notes))
     print(f"[LIVE {date} {VERSION}] посока: {new_dir or '—'} · {' · '.join(statuses)}")
+
+
+# ══════════════════════════════════════════════════════════════════════
+# 🔴 15.09 · ФАЙЛОВЕТЕ ЗА КЛИЕНТСКОТО ПРИЛОЖЕНИЕ · само добавено, нито една
+# карта не се пипа.
+#   live/sdelki.json   — всяка ЗАТВОРЕНА сделка (главна и допълнителна),
+#                        най-новата последна, пазят се последните 400
+#   live/otvoreni.json — отворените сделки, пренаписан на всеки рън
+# Частите и сборът идват от `_торба` и `_отворена_стълба` — СЪЩИТЕ функции,
+# от които пишат картите. Затова приложението и картата не могат да кажат
+# две различни числа за една и съща сделка.
+# Срив тук НИКОГА не чупи рън: всеки запис е в try и оставя само бележка.
+# ПЪТ НАЗАД: SITE_FILES=0 — нищо не се пише (старите файлове остават).
+# ══════════════════════════════════════════════════════════════════════
+ФАЙЛОВЕ_ЗА_САЙТА = int(_env("ФАЙЛОВЕ_ЗА_САЙТА", "1"))
+САЙТ_СДЕЛКИ_ТАВАН = 400
+_САЙТ_ЗАТВАРЯ = ("tp3", "sl", "time", "flip")
+
+
+def _сайт_пипс(долари, сим="XAUUSD"):
+    """Долари на унция → цели пипсове · същото закръгляне като `_пп_част`."""
+    return int(round(float(долари) / (PIP if сим == "XAUUSD" else 0.001)))
+
+
+def _сайт_основа(tr, slot):
+    """Общите полета: кой, накъде, откъде, кога (и в София), кой слот."""
+    _о = tr.get("opened")
+    _lv = tr.get("levels") or {}
+    return {"id": "%s|%s|%s" % (tr.get("direction"), tr.get("entry"), _о),
+            "direction": tr.get("direction"), "entry": tr.get("entry"), "opened": _о,
+            "entry_sofia": (_sofia(_о) if _о else None), "slot": slot,
+            "tier": tr.get("tier"),
+            "levels": {k: _lv.get(k) for k in ("tp1", "tp2", "tp3", "sl")}}
+
+
+def _сайт_сделка(tag, payload):
+    """Един запис за ЗАТВОРЕНА сделка — от същия payload, от който е картата.
+    Ходът се смята дословно като в `_exit_msg`; частите — от `_торба`."""
+    k, tro, px, when, _via, _gap = payload
+    _сим = tro.get("sym", "XAUUSD")
+    _e = float(tro["entry"])
+    _дол = (float(px) - _e) * (1 if tro["direction"] == "long" else -1)
+    if abs(_дол) < 0.005:
+        _дол = 0.0
+    _hit = tro.get("hit") or {}
+    _сб, _ч = _торба(k, _hit, tro.get("levels") or {}, _e, _дол)
+    try:
+        _кога = pd.Timestamp(str(when)).isoformat()[:16]
+    except Exception:
+        _кога = str(when)
+    зап = _сайт_основа(tro, "main" if str(tag).startswith("exit:") else "extra")
+    зап.update({"closed": _кога, "closed_sofia": _sofia(_кога),
+                "hit": {x: True for x in ("tp1", "tp2", "tp3") if _hit.get(x) or x == k},
+                "exit_kind": k, "exit_px": round(float(px), 3),
+                "parts": [_сайт_пипс(x, _сим) for x in _ч],
+                "sum_pips": _сайт_пипс(_сб, _сим), "v": VERSION})
+    return зап
+
+
+def _сайт_сделки(out, exit_msgs, notes):
+    """live/sdelki.json · добавя затворените ТОЗИ рън; пази последните 400.
+    Същият id (посока|вход|отворена) се ЗАМЕНЯ, не се дублира — повторен
+    рън след срив не ражда втора сделка."""
+    нови = []
+    for tag, payload, kind, _посока in exit_msgs:
+        if kind not in _САЙТ_ЗАТВАРЯ:
+            continue
+        try:
+            нови.append(_сайт_сделка(tag, payload))
+        except Exception as е:
+            notes.append("⚠️ sdelki.json · изходът %s не се описа (%s)" % (tag, type(е).__name__))
+    if not нови:
+        return 0
+    f = Path(out) / "sdelki.json"
+    стари = _load_state(f, [])
+    if not isinstance(стари, list):
+        стари = []
+    _ид = {r["id"] for r in нови}
+    всички = [r for r in стари if isinstance(r, dict) and r.get("id") not in _ид] + нови
+    _запиши_атомарно(f, json.dumps(всички[-САЙТ_СДЕЛКИ_ТАВАН:], ensure_ascii=False))
+    return len(нови)
+
+
+def _сайт_отворени(out, trade, доп, spot, now_utc, notes):
+    """live/otvoreni.json · отворените сделки СЕГА (главна + допълнителни).
+    `bag_pips` = взетите цели + останалите позиции по живата цена — дословно
+    числото на картите (`_отворена_стълба`)."""
+    сделки = []
+    for _т, _слот in ([(trade, "main")] if trade else []) + [(t, "extra") for t in (доп or []) if t]:
+        _hit = _т.get("hit") or {}
+        _lv = _т.get("levels") or {}
+        _б = _отворена_стълба(_т, spot, notes)[0]
+        try:
+            _на_входа = abs(float(_lv.get("sl")) - float(_т.get("entry"))) < 0.005
+        except (TypeError, ValueError):
+            _на_входа = False
+        зап = _сайт_основа(_т, _слот)
+        зап.update({"taken": [k for k in ("tp1", "tp2", "tp3") if _hit.get(k)],
+                    "stop_at_entry": bool(_на_входа),
+                    "bag_pips": (None if _б is None else _сайт_пипс(_б, _т.get("sym", "XAUUSD")))})
+        сделки.append(зап)
+    _запиши_атомарно(Path(out) / "otvoreni.json", json.dumps(
+        {"updated": now_utc, "v": VERSION, "live": (spot or {}).get("mid"), "trades": сделки},
+        ensure_ascii=False))
+    return len(сделки)
+
+
+def _сайт_файлове(out, exit_msgs, trade, доп, spot, now_utc, notes):
+    """Двата файла за приложението. Всеки е в свой try: срив → бележка,
+    рънът продължава. Връща False, когато лостът е 0."""
+    if not ФАЙЛОВЕ_ЗА_САЙТА:
+        return False
+    try:
+        _н = _сайт_сделки(out, exit_msgs, notes)
+        if _н:
+            notes.append("🗂 sdelki.json · +%d затворени" % _н)
+    except Exception as е:
+        notes.append("⚠️ sdelki.json не се записа (%s: %s)" % (type(е).__name__, str(е)[:80]))
+    try:
+        _сайт_отворени(out, trade, доп, spot, now_utc, notes)
+    except Exception as е:
+        notes.append("⚠️ otvoreni.json не се записа (%s: %s)" % (type(е).__name__, str(е)[:80]))
+    return True
 
 
 if __name__ == "__main__":
