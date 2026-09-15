@@ -34,7 +34,7 @@ import pandas as pd
 # v9.5–v9.8 — всеки ред в дневника твърдеше грешна версия, а дневникът е
 # единственият начин отвън да се види какво работи. П47 пада, ако VERSION не се
 # среща в темата на последния commit.
-VERSION = "v18.78"
+VERSION = "v18.79"
 
 
 def _env(ключ, подразб):
@@ -6963,7 +6963,10 @@ def _новина_прозорец(име):
                    "08:30": (8, 30), "10:00": (10, 0)}
 # «X*» = начало на дума; иначе цяла дума (след нормализиране на името)
 _КАЛ_НЕ = ("ADP", "MINUTES", "ПРОТОКОЛ*", "GDPNOW", "CLEVELAND", "SPEAK*",
-           "SPEECH", "TESTIF*", "ГОВОРИ*", "РЕЧ", "ECB", "BOE", "BOJ")
+           "SPEECH", "TESTIF*", "ГОВОРИ*", "РЕЧ", "ECB", "BOE", "BOJ",
+           # 🔴 15.09 · v18.79 · регионалните индекси на Фед не са публикациите
+           # на BEA/BLS: «Dallas Fed PCE» беше белязан по думата «PCE» (живо 10:03)
+           "DALLAS", "RICHMOND", "KANSAS", "ATLANTA", "TRIMMED")
 _КАЛ_ФЕД = ("FOMC", "FED", "ФРС", "FEDERAL FUNDS", "INTEREST RATE DECISION",
             "INTEREST RATE PROJECTION")
 _КАЛ_РЕШ = ("DECISION", "STATEMENT", "PROJECTION*", "FEDERAL FUNDS", "РЕШЕНИЕ*", "ЛИХВ*")
