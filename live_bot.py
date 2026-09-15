@@ -7849,8 +7849,24 @@ def _фон_изречение(macro, streak_n=None):
     return s[0].upper() + s[1:]
 
 
+# ══════════════════════════════════════════════════════════════════════
+# 🔴🔴 15.09 · T5 · «☀️ ДЕНЯТ» · НОЩТА, КРАИЩАТА, НОВИНИТЕ + live/den.json
+# Собственикът: «анализ на деня и потенциални покупки и продажби в началото
+# на деня». Мереното и законите са при `_ден_данни`.
+# ПЪТ НАЗАД: vars.MORNING_NEW = 0 → старата карта дословно и без den.json.
+# ══════════════════════════════════════════════════════════════════════
+ОБЗОР_НОВ = int(_env("ОБЗОР_НОВ", "1"))
+ДЕН_Т1 = 0.473      # долен терцил нощ/ATR14 · мерено 15.09 (47 дни GC 5м, meri_nosht_t5.py)
+ДЕН_Т2 = 0.654      # горен терцил · същото мерене
+ДЕН_ОБРАТ = 0.37    # под това — наблюдение «ден за обрат» (слабо: последните 4 такива дни −74 пипса)
+ДЕН_БАР_МИН = 60    # свещ по-стара от толкова минути = фийдът е стар → няма ясна идея
+ДЕН_МИН_ДНИ = 10    # по-малко дни петминутна история → няма ясна идея
+ДЕН_РЕДОВЕ = 10     # таванът на новата сутрешна карта (редове)
+ДЕН_ЗНАЦИ = 1000    # и знаци (пазачът на изхода само МЕРИ, не реже)
+
+
 def _обзор_msg(gold_d, board, macro, streak_n, price, cq, now_utc,
-               отворени=0, sym="XAUUSD", dxy_d=None):
+               отворени=0, sym="XAUUSD", dxy_d=None, ден=None):
     """🔴🔴🔴 05.09 · ОБЗОР НА ДЕНЯ · 7:00-8:00 софийско.
 
     Собственикът: «7:00-8:00 трябва да излезе едно обзор на деня — очаквания,
@@ -7862,6 +7878,11 @@ def _обзор_msg(gold_d, board, macro, streak_n, price, cq, now_utc,
     не смята нищо ново и затова не може да се разминава със сделките.
     Липсва ли парче (къс фийд, няма календар) — редът просто го няма.
     """
+    # 🔴🔴 15.09 · T5 · НОВАТА КАРТА: нощта, краищата, новините. Числата идват
+    # ГОТОВИ от `_ден_данни` — същите отиват и в live/den.json.
+    # ПЪТ НАЗАД: ОБЗОР_НОВ=0 или гръмнала сметка (ден=None) → старата дословно.
+    if ОБЗОР_НОВ and ден:
+        return _ден_msg(ден, отворени)
     L = []
     _ч = _sofia(now_utc)
     try:
@@ -8023,6 +8044,327 @@ def _обзор_msg(gold_d, board, macro, streak_n, price, cq, now_utc,
     # Прелее ли — `_сбий` СЛИВА два съседни фонови реда, не изхвърля нито
     # един. Нито едно число не изчезва.
     return "\n".join(_сбий(L, ОБЗОР_РЕДОВЕ))
+
+
+# ── T5 · «☀️ ДЕНЯТ» · сметката ──────────────────────────────────────────
+# ИЗМЕРЕНО (GC=F 5м, Yahoo, 47 дни 07.07–14.09; `scratchpad/meri_nosht_t5.py`,
+# пуснато отново на 15.09 — същите числа):
+#   · поне единият край на нощта (22:00–04:00 UTC) се пипа през деня: 46/47
+#     (горният поотделно 29/47, долният 27/47)
+#   · терцилите на нощ/ATR14 (14 ЗАВЪРШЕНИ дни): 0.473 · 0.654
+#   · вчерашният връх/дъно при докосване се ПРОБИВАТ 67–69% → на картата са
+#     ориентир «пробив 2 от 3», НИКОГА ниво за обрат
+#   · нощ/ATR14 < 0.37 → «ден за обрат от краищата» — СЛАБО (последните 4
+#     такива дни −74 пипса) → казва се «наблюдение, не обещание»
+#   · широка нощ → пробив: ОТХВЪРЛЕН. Не се казва.
+#   · пивот, вчерашно затваряне, ATR пояси ≈ случайното → ги няма
+#   · посоката НЕ се чете нито от дъската, нито от макрото → картата не гадае
+# ЗАКОНИТЕ: нивата са НАБЛЮДЕНИЯ, не входове — сигнал е само картата ВЛЕЗ
+# (един вход, без насрещна, докато има отворена). Стоп и цели — по
+# геометрията на бота (`_levels`): +50 / +130 (шорт +100) / +200, стоп −130.
+# СКАЛАТА: нивата на борсата минус разликата ОТ СЪЩИЯ МОМЕНТ (`basis_hist_g`,
+# ~25 ч памет); няма ли я — сегашната, и den.json го казва.
+# СТАР ФИЙД (свещ > 60 мин или отрязана жива цена): нивата с цели НЕ се
+# дават — нощта може да е непълна.
+import re as _re_ден
+_ДЕН_ГОЛЯМА = _re_ден.compile(
+    r"CPI|Consumer Price|NFP|Non-?farm|Payroll|Unemployment Rate|FOMC|Powell|"
+    r"Пауъл|Fed Chair|Press Conference|пресконференци|Interest Rate Decision|"
+    r"Interest Rate Projection|Решение за лихв|ФРС|ИНФЛАЦ|ЗАЕТОСТ", _re_ден.I)
+НОЩ_ОТ_UTC = 22     # нощта: 22:00 UTC вчера …
+НОЩ_ДО_UTC = 4      # … до 04:00 UTC днес (както е мерено)
+
+
+def _ден_utc(idx):
+    """Индекс → наивен UTC (Yahoo вече го дава така; синтетичен може да е със зона)."""
+    idx = pd.DatetimeIndex(idx)
+    if idx.tz is not None:
+        idx = idx.tz_convert("UTC").tz_localize(None)
+    return idx
+
+
+def _ден_atr14(gold_d, now_utc):
+    """Средният истински дневен ход за 14 ЗАВЪРШЕНИ дни (днешният ред не влиза)."""
+    try:
+        _днес = pd.Timestamp(str(now_utc)[:19]).normalize()
+        _д = gold_d[_ден_utc(gold_d.index) < _днес]
+        if len(_д) < 15:
+            return None
+        _пз = _д["Close"].shift(1)
+        _tr = pd.concat([_д["High"] - _д["Low"], (_д["High"] - _пз).abs(),
+                         (_д["Low"] - _пз).abs()], axis=1).max(axis=1)
+        _а = float(_tr.tail(14).mean())
+        return _а if np.isfinite(_а) and _а > 0 else None
+    except Exception:
+        return None
+
+
+def _ден_име(име):
+    """Кратко име на новината за картата (HTML-безопасно)."""
+    _и = str(име or "")
+    for _рег, _кр in ((r"Powell|Пауъл|Fed Chair", "Пауъл"),
+                      (r"Press Conference|пресконференци", "пресконференцията на ФРС"),
+                      (r"FOMC|Interest Rate|Решение за лихв|ФРС", "FOMC"),
+                      (r"CPI|Consumer Price|ИНФЛАЦ", "CPI"),
+                      (r"NFP|Non-?farm|Payroll|Unemployment Rate|ЗАЕТОСТ", "NFP")):
+        if _re_ден.search(_рег, _и, _re_ден.I):
+            return _кр
+    _к = (_и.split("—")[0].strip() or _и)[:24]
+    return _к.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
+
+def _ден_данни(gold_d, петминутни, price, now_utc, cq, базис=None, базис_ист=None,
+               бар_мин=None, жива_ок=True):
+    """Числата на сутрешната карта И на live/den.json — ЕДИН източник.
+
+    Връща речника по схемата на den.json (ключове на латиница) плюс `_карта`
+    (само за текста; не се записва). Всички цени са в скалата на картите.
+    """
+    _сега = pd.Timestamp(str(now_utc))
+    if _сега.tzinfo is not None:
+        _сега = _сега.tz_convert("UTC").tz_localize(None)
+    try:
+        _сф = _сега.to_pydatetime().replace(tzinfo=timezone.utc).astimezone(_tz("Europe/Sofia"))
+        _ден_ст = _сф.date().isoformat()
+        _ден_име_бг, _дата = ДНИ_БГ[_сф.weekday()], _сф.strftime("%d.%m")
+    except Exception:
+        _ден_ст, _ден_име_бг, _дата = str(now_utc)[:10], "", ""
+
+    # сегашната разлика борса − живо; няма ли — последното затваряне минус цената
+    try:
+        _б0 = float(базис) if базис is not None else float(gold_d["Close"].iloc[-1]) - float(price)
+        _б0 = _б0 if np.isfinite(_б0) else None
+    except Exception:
+        _б0 = None
+
+    def _в_спот(ниво, кога):
+        """(цена в скалата на картите, «момент»|«сегашен») — разликата от МОМЕНТА, ако я помня."""
+        _бм = _basis_v_moment(базис_ист, кога, None) if (кога is not None and базис_ист) else None
+        if _бм is not None:
+            return round(float(ниво) - float(_бм), 2), "момент"
+        if _б0 is not None:
+            return round(float(ниво) - _б0, 2), "сегашен"
+        return None, None
+
+    # петминутните свещи (или едноминутната резерва) в наивен UTC
+    _п, _дни = None, 0
+    try:
+        if петминутни is not None and len(петминутни):
+            _п = петминутни.copy()
+            _п.index = _ден_utc(_п.index)
+            _п = _п[_п.index <= _сега]
+            _дни = int(len(set(_п.index.normalize())))
+    except Exception:
+        _п, _дни = None, 0
+
+    # 1 · НОЩТА 22:00–04:00 UTC
+    _нач = _сега.normalize() - pd.Timedelta(hours=24 - НОЩ_ОТ_UTC)
+    _кр = min(_сега.normalize() + pd.Timedelta(hours=НОЩ_ДО_UTC), _сега)
+    нощ = {"ot": None, "do": None, "shirina": None, "atr": None, "dyal_atr": None,
+           "rezhim": "неясно"}
+    _изв = {}
+    _вр_ф = _дн_ф = None
+    if _п is not None:
+        _н = _п[(_п.index >= _нач) & (_п.index < _кр)]
+        if len(_н) >= 12:
+            _вр_ф, _дн_ф = float(_н["High"].max()), float(_н["Low"].min())
+            _do, _изв["do"] = _в_спот(_вр_ф, _н["High"].idxmax())
+            _ot, _изв["ot"] = _в_спот(_дн_ф, _н["Low"].idxmin())
+            if _do is not None and _ot is not None and _do < _ot and _б0 is not None:
+                # две разлики обърнаха краищата → една и съща (сегашната) за двата
+                _do, _ot = round(_вр_ф - _б0, 2), round(_дн_ф - _б0, 2)
+                _изв = {"do": "сегашен", "ot": "сегашен"}
+            if _do is not None and _ot is not None and _do >= _ot:
+                нощ["ot"], нощ["do"] = _ot, _do
+                нощ["shirina"] = round(_do - _ot, 2)
+            else:
+                _изв = {}
+    _atr = _ден_atr14(gold_d, now_utc)
+    нощ["atr"] = round(_atr, 2) if _atr else None
+    if нощ["ot"] is not None and _atr:
+        _дял = (_вр_ф - _дн_ф) / _atr          # мерено е върху борсовите свещи — и тук
+        нощ["dyal_atr"] = round(_дял, 3)
+        нощ["rezhim"] = ("тясна" if _дял < ДЕН_Т1 else
+                         ("широка" if _дял > ДЕН_Т2 else "средна"))
+
+    # 2 · ВЧЕРА (последният ЗАВЪРШЕН дневен бар) — ориентир, не обрат
+    вчера = {"vryh": None, "dyno": None, "zatvaryane": None}
+    try:
+        _вч = _вчерашен_бар(gold_d, now_utc)
+        _д_вч = pd.Timestamp(_вч.name).normalize()
+        _т = {"High": None, "Low": None, "Close": None}
+        if _п is not None:
+            # сесията на дневния бар D: от ~22:00 UTC на D−1 до ~21:00 UTC на D
+            _пр = _п[(_п.index >= _д_вч - pd.Timedelta(hours=3))
+                     & (_п.index < _д_вч + pd.Timedelta(hours=22))]
+            if len(_пр):
+                if abs(float(_пр["High"].max()) - float(_вч["High"])) <= 1.0:
+                    _т["High"] = _пр["High"].idxmax()
+                if abs(float(_пр["Low"].min()) - float(_вч["Low"])) <= 1.0:
+                    _т["Low"] = _пр["Low"].idxmin()
+                if abs(float(_пр["Close"].iloc[-1]) - float(_вч["Close"])) <= 1.0:
+                    _т["Close"] = _пр.index[-1]
+        вчера["vryh"], _ = _в_спот(float(_вч["High"]), _т["High"])
+        вчера["dyno"], _ = _в_спот(float(_вч["Low"]), _т["Low"])
+        вчера["zatvaryane"], _ = _в_спот(float(_вч["Close"]), _т["Close"])
+    except Exception:
+        pass
+
+    # 3 · НОВИНИТЕ ДНЕС (софийски ден) — прозорецът е този, по който съди щитът
+    _по_час = {}
+    for e in (cq or {}).get("events", []) or []:
+        try:
+            _t = _cq_evt_dt(e)
+            if _t is None:
+                continue
+            _им = str(e.get("name", "")).strip()
+            _пр_м, _сл_м = _новина_прозорец(_им)
+            if _t + pd.Timedelta(minutes=_сл_м) < _сега:
+                continue
+            _сд = _t.to_pydatetime().replace(tzinfo=timezone.utc) \
+                .astimezone(_tz("Europe/Sofia")).date().isoformat()
+            if _сд != _ден_ст:
+                continue
+            _сила = str(e.get("impact", "")).lower()
+            _з = {"ime": _им[:60], "utc": _t.strftime("%Y-%m-%dT%H:%M:%SZ"),
+                  "sila": _сила if _сила in ("critical", "high", "medium") else "high",
+                  "prozorec_min": [int(_пр_м), int(_сл_м)]}
+            _ст = _по_час.get(_з["utc"])
+            if (_ст is None or (_ДЕН_ГОЛЯМА.search(_з["ime"]) and not _ДЕН_ГОЛЯМА.search(_ст["ime"]))):
+                _по_час[_з["utc"]] = _з
+        except Exception:
+            continue
+    сабития = sorted(_по_час.values(), key=lambda x: x["utc"])
+    _големи = [x for x in сабития if _ДЕН_ГОЛЯМА.search(x["ime"])]
+
+    # 4 · ЧЕСТНОТО «днес няма ясна идея»
+    _защо, _стар = [], False
+    try:
+        if бар_мин is not None and float(бар_мин) > ДЕН_БАР_МИН:
+            _стар = True
+            _защо.append("свещите са стари (%d мин), нивата може да са непълни"
+                         % int(round(float(бар_мин))))
+    except (TypeError, ValueError):
+        pass
+    if not жива_ок:
+        _стар = True
+        _защо.append("живата цена не се чете")
+    if _дни < ДЕН_МИН_ДНИ:
+        _защо.append("историята е къса (%d дни)" % _дни)
+    if _големи:
+        _г = []
+        for x in _големи[:2]:
+            _t = pd.Timestamp(x["utc"][:19])
+            _г.append("%s в %s (%s–%s)" % (
+                _ден_име(x["ime"]), _sofia(_t.isoformat()),
+                _sofia((_t - pd.Timedelta(minutes=x["prozorec_min"][0])).isoformat()),
+                _sofia((_t + pd.Timedelta(minutes=x["prozorec_min"][1])).isoformat())))
+        _защо.append("денят е на новината: " + " и ".join(_г))
+    if нощ["rezhim"] == "средна":
+        _защо.append("нощта е средна, без измерен ръб")
+    elif нощ["ot"] is None:
+        _защо.append("нощта не се чете")
+    elif not _atr:
+        _защо.append("няма с какво да се сравни нощта (къса дневна история)")
+
+    # 5 · ИДЕИТЕ — наблюдения на краищата на нощта, по геометрията на бота.
+    # Стар фийд → без нива с цели (нощта може да е непълна).
+    try:
+        _цена = round(float(price), 2)
+        _цена = _цена if np.isfinite(_цена) else None
+    except (TypeError, ValueError):
+        _цена = None
+    идеи = []
+    if нощ["ot"] is not None and not _стар:
+        for _пос, _ниво, _изв_к, _извор in (("long", нощ["ot"], _изв.get("ot"), "нощно дъно"),
+                                             ("short", нощ["do"], _изв.get("do"), "нощен връх")):
+            _lv = _levels(_ниво, _пос)
+            _бел = ["наблюдение, не вход: сигнал е само картата ВЛЕЗ"]
+            if _цена is not None and _пос == "long" and _цена < _ниво:
+                _бел.append("цената вече е под нивото")
+            if _цена is not None and _пос == "short" and _цена > _ниво:
+                _бел.append("цената вече е над нивото")
+            _бел.append("нивото е с разликата към борсата от своя час" if _изв_к == "момент"
+                        else "нивото е със сегашната разлика към борсата")
+            идеи.append({"posoka": _пос, "nivo": round(float(_ниво), 2),
+                         "stop": round(float(_lv["sl"]), 2),
+                         "celi": [round(float(_lv[_к]), 2) for _к in ("tp1", "tp2", "tp3")],
+                         "izvor": _извор, "belezhka": " · ".join(_бел), "nablyudenie": True})
+
+    return {"den": _ден_ст, "sazdadeno_utc": _сега.strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "v": VERSION, "cena": _цена,
+            "bazis": (round(_б0, 2) if _б0 is not None else None),
+            "nosht": нощ, "vchera": вчера, "idei": идеи, "sabitiya": сабития,
+            "yasna_ideya": not _защо, "zashto_nyama": "; ".join(_защо),
+            "_карта": {"ден_име": _ден_име_бг, "дата": _дата, "час": _sofia(_сега.isoformat()),
+                       "нощ_от": _sofia(_нач.isoformat()), "нощ_до": _sofia(_кр.isoformat()),
+                       "обрат": bool(нощ["dyal_atr"] is not None and нощ["dyal_atr"] < ДЕН_ОБРАТ)}}
+
+
+def _ден_msg(ден, отворени=0):
+    """«☀️ ДЕНЯТ» — текстът от ГОТОВИТЕ числа на `_ден_данни` (до ДЕН_РЕДОВЕ реда)."""
+    к = ден.get("_карта") or {}
+    L = [f"☀️ <b>ДЕНЯТ</b> · {к.get('ден_име', '')} {к.get('дата', '')} · {к.get('час', '')}"
+         .replace("  ", " ")]
+    L.append(f"📈 Златото е <b>{_fmt(ден['cena'])}</b>." if ден.get("cena") is not None
+             else "📈 Живата цена не се чете.")
+    # нощта: краищата, обхватът и колко е спрямо обичайния ден
+    н = ден.get("nosht") or {}
+    _часове = f"{к.get('нощ_от', '')}–{к.get('нощ_до', '')}"
+    if н.get("ot") is not None:
+        _ред = f"🌙 Нощта ({_часове}): {_fmt(н['ot'])}–{_fmt(н['do'])}, обхват {_fmt(н['shirina'], 0)}$"
+        if н.get("rezhim") in ("тясна", "средна", "широка") and н.get("atr"):
+            _ред += f" — <b>{н['rezhim']}</b> срещу обичайния ден от {_fmt(н['atr'], 0)}$"
+        L.append(_ред + ".")
+    else:
+        L.append(f"🌙 Нощта ({_часове}) не се чете — няма свещи.")
+    # двете наблюдения — на краищата на нощта
+    for и in ден.get("idei") or []:
+        _гл = "🟢 <b>ПОКУПКА</b>" if и["posoka"] == "long" else "🔴 <b>ПРОДАЖБА</b>"
+        _ред = (f"{_гл} (наблюдение) при {_fmt(и['nivo'])} · стоп {_fmt(и['stop'])} · цели "
+                + " / ".join(_fmt(x) for x in и["celi"]))
+        if "цената вече е под" in и.get("belezhka", ""):
+            _ред += " (цената вече е под него)"
+        elif "цената вече е над" in и.get("belezhka", ""):
+            _ред += " (цената вече е над него)"
+        L.append(_ред)
+    if ден.get("idei"):
+        _ред = "↳ Поне единият край на нощта се пипа през деня в 46 от 47 дни."
+        if к.get("обрат"):
+            _ред += (" Много тясна нощ: ден за обрат от краищата — наблюдение, не обещание"
+                     " (последните 4 такива дни: −74 пипса).")
+        L.append(_ред)
+    # вчера — ориентир, НЕ ниво за обрат
+    в = ден.get("vchera") or {}
+    if в.get("vryh") is not None and в.get("dyno") is not None:
+        L.append(f"📍 Вчера: дъно {_fmt(в['dyno'])} · връх {_fmt(в['vryh'])} — ориентир: "
+                 f"при докосване пробив 2 от 3 пъти.")
+    # новините днес, в софийски час
+    _сб = ден.get("sabitiya") or []
+    if _сб:
+        _ч = [f"{_sofia(x['utc'][:19])} {_ден_име(x['ime'])}" for x in _сб[:3]]
+        _ощ = f" и още {len(_сб) - 3}" if len(_сб) > 3 else ""
+        L.append("📅 Днес: " + " · ".join(_ч) + _ощ
+                 + (" — около всяка входът идва с предупреждение." if НОВИНИ_ДАВАЙ
+                    else " — около всяка нов вход няма."))
+    # честното «няма ясна идея»
+    if not ден.get("yasna_ideya") and ден.get("zashto_nyama"):
+        L.append("📌 днес няма ясна идея — " + ден["zashto_nyama"] + ".")
+    # законите: сигнал е само ВЛЕЗ · един вход · без насрещна
+    _зак = "⚠️ Това са наблюдения, не входове: сигнал е само картата ВЛЕЗ."
+    if отворени and ЕДИН_ВХОД and БЕЗ_НАСРЕЩНИ:
+        _зак += (" Държиш 1 сделка — докато е отворена, нов вход няма." if отворени == 1 else
+                 " Държиш %d сделки — докато са отворени, нов вход няма." % отворени)
+    elif отворени:
+        _зак += " Държиш %d %s — следя ги." % (отворени, "сделка" if отворени == 1 else "сделки")
+    L.append(_зак)
+    return "\n".join(_сбий(L, ДЕН_РЕДОВЕ))
+
+
+def _ден_запиши(папка, ден):
+    """live/den.json за приложението — СЪЩИТЕ числа като картата, без `_карта`."""
+    _чист = {к: в for к, в in ден.items() if not str(к).startswith("_")}
+    _запиши_атомарно(папка / "den.json", json.dumps(_чист, ensure_ascii=False, indent=1))
 
 
 def _cq_msg(cq, now_utc, fng_live=None, отброяване=False):
@@ -8963,10 +9305,13 @@ def _outbox_flush(out_dir, new_msgs, statuses, dry=False):
             _чист = _reт.sub(r"</?[a-z]+>", "", str(m))
             _рд = [x for x in _чист.split("\n") if x.strip()]
             _нар = []
-            if len(_рд) > КАРТА_РЕДОВЕ:
+            # 🔴 15.09 · T5 · новата сутрешна карта има СВОЙ таван (до 10 реда)
+            _нова_т5 = bool(ОБЗОР_НОВ and str(t) == "обзор" and "🌙" in _чист)
+            if len(_рд) > (ДЕН_РЕДОВЕ if _нова_т5 else КАРТА_РЕДОВЕ):
                 _нар.append("%d реда" % len(_рд))
             # обзорът и седмичната са ТЕКСТ, не телеграма — свой таван.
-            _тз = (ОБЗОР_ЗНАЦИ if str(t) in ("обзор", "седмица")
+            _тз = (ДЕН_ЗНАЦИ if _нова_т5 else
+                   ОБЗОР_ЗНАЦИ if str(t) in ("обзор", "седмица")
                    else КАРТА_ЗНАЦИ)
             if len(_чист) > _тз:
                 _нар.append("%d знака" % len(_чист))
@@ -11082,10 +11427,32 @@ def main():
             notes.append("седмичната прогноза не се сглоби (%s)" % type(_есд).__name__)
     if _в_сутрин and meta.get("обзор") != ден_карти and not weekend:
         try:
+            # 🔴🔴 15.09 · T5 · числата на картата И на live/den.json са ЕДНИ И
+            # СЪЩИ (`_ден_т5`). Нивата на нощта се превеждат с разликата ОТ
+            # ТЕХНИЯ момент (`basis_hist_g`), иначе със сегашната.
+            # Гръмне ли сметката — старата карта, не мълчание. Лост 0 → нито
+            # сметка, нито файл.
+            _ден_т5 = None
+            if ОБЗОР_НОВ:
+                try:
+                    _ден_т5 = _ден_данни(gold_d, frames.get("5м"), price_user, now_utc, cq,
+                                         базис=basis_g, базис_ист=meta.get("basis_hist_g"),
+                                         бар_мин=bar_age_min, жива_ок=spot_g is not None)
+                except Exception as _еден:
+                    _ден_т5 = None
+                    notes.append("новата сутрешна карта не се сметна (%s) — пращам старата"
+                                 % type(_еден).__name__)
             new_msgs.append(("обзор", _обзор_msg(
                 gold_d=gold_d, board=board, macro=macro, streak_n=streak_n,
                 price=price_user, cq=cq, now_utc=now_utc,
-                отворени=(1 if trade else 0) + len(доп_сделки), dxy_d=dxy_d)))
+                отворени=(1 if trade else 0) + len(доп_сделки), dxy_d=dxy_d, ден=_ден_т5)))
+            if _ден_т5:
+                try:
+                    _ден_запиши(out, _ден_т5)
+                    notes.append("☀️ den.json · нощ %s · ясна идея: %s"
+                                 % (_ден_т5["nosht"]["rezhim"], "да" if _ден_т5["yasna_ideya"] else "не"))
+                except Exception as _едж:
+                    notes.append("den.json не се записа (%s)" % type(_едж).__name__)
             meta["обзор"] = ден_карти
             notes.append("☀️ обзор на деня")
         except Exception as _еоб:
