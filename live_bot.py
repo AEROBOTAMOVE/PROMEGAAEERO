@@ -5440,6 +5440,431 @@ def _shadow_exit_msg(kind, tr, price_hit, when, via, gap, spot=None, dec=2):
     _л.append("📌 не съм влизал · само да знаеш")
     return chr(10).join(_л)
 
+# ══════════════════════════════════════════════════════════════════════
+# 🔴🔴 15.09 · П181 · ЧЕСТНОТО ТАБЛО НА МОЗЪКА · ПРЕДВАРИТЕЛНО ЗАПИСАН ПРАГ
+# Собственикът: «довърши мозъка като хората». Над 150 учебникарски правила,
+# мерени на 22 години злато, не дадоха ръб след разходите, а мозъкът засега
+# не се различава от случаен вход. Затова мозъкът печели истински сигнали
+# САМО ако мине ПРЕДВАРИТЕЛНО записан праг, мерен автоматично.
+# Кантарът е честен от 2026-09-15T06:03 UTC (вход на живата цена от v18.72;
+# `стоп0`, `id`, `в`, `главна` от v18.75) — по-старите записи не се броят.
+# Мерене: веднъж на търговски ден (вечерният слот или понеделнишката карта).
+# Близнаци (рамка + посока + вход до 1$ + до 60 мин) = една идея. Всяка идея
+# се брои по торбата (`_мозък_цяло`: две позиции, цел 1 и цел 2) и се сравнява
+# със СЛУЧАЙНИ входове със СЪЩАТА геометрия, пуснати на всеки 5м бар ±2 ч
+# около нейния софийски час в ДРУГИТЕ дни от 5м историята, която рънът вече
+# има (без нито една нова заявка). Ръб = идеята − средното случайно.
+# НИЩО НЕ СЕ ПОВИШАВА САМО: истинските сделки остават ръчният лост
+# МОЗЪК_СДЕЛКИ. Таблото само докладва.
+# ПЪТ НАЗАД: vars.BRAIN_BOARD = 0 → нито сметка, нито файлове, нито ред в
+# седмичната карта, нито поле `повод` в записа на следенето.
+# ══════════════════════════════════════════════════════════════════════
+МОЗЪК_ТАБЛО = int(_env("МОЗЪК_ТАБЛО", "1"))
+МОЗЪК_ТАБЛО_ОТ = "2026-09-15T06:03"      # UTC · оттук кантарът е честен
+МОЗЪК_ХИПОТЕЗИ_ДАТА = "2026-09-15"       # денят, в който хипотезите са записани
+# (id, дословно на български, дословно както е поръчано)
+МОЗЪК_ХИПОТЕЗИ = (
+    ("H1", "Идеите, чийто повод споменава гап (гап / празнина / FVG), отворени "
+           "между 09:00 и 12:00 софийско време.",
+     "ideas whose повод/reason mentions a gap (гап / празнина / FVG) opened "
+     "09:00–12:00 Sofia"),
+    ("H2", "Шорт идеите на мозъка, докато главната сделка е лонг "
+           "(полето главна == \"long\").",
+     "brain SHORT ideas while the main trade is LONG (field главна == \"long\")"),
+    ("H3", "Идеите, чийто повод споменава структура (структура / structure).",
+     "ideas whose повод mentions структура/structure"),
+)
+МОЗЪК_ТАБЛО_N = 40            # от това n нататък се съди
+# 🔴 НЕ `МОЗЪК_ПРАГ` — това име е прагът на оценката на мозъка (BRAIN_THRESHOLD).
+# Първата версия го засенчи с този текст и selftest падна на П166.
+МОЗЪК_ТАБЛО_ПРАГ = ("МИНА прага: n ≥ 40 · 95% интервал на ръба изцяло над 0 · ръбът "
+                    "без най-добрия ден над 0 · поне половината дни в плюс. n < 40 → "
+                    "мери още; иначе → не мина.")
+МОЗЪК_ТАБЛО_СТАРТОВЕ = 600    # случайни старта на идея (равномерно подбрани)
+МОЗЪК_ТАБЛО_СЕМЕ = 181        # bootstrap-ът се повтаря бит по бит
+
+
+def _мт_софия(т):
+    """Наивно UTC → наивно софийско време (един момент)."""
+    try:
+        return pd.Timestamp(т).tz_localize("UTC").tz_convert("Europe/Sofia").tz_localize(None)
+    except Exception:
+        return pd.Timestamp(т) + pd.Timedelta(hours=3)
+
+
+def _мт_повод_от_журнала(път):
+    """brain_journal → {(utc, рамка, лонг): [редове]}. Нужно само за записите
+    отпреди полето `повод` в следенето."""
+    инд = {}
+    try:
+        with io.open(str(път), encoding="utf-8") as ф:
+            for ред in ф:
+                try:
+                    д = json.loads(ред)
+                except ValueError:
+                    continue
+                if isinstance(д, dict):
+                    инд.setdefault((str(д.get("utc")), str(д.get("рамка")),
+                                    bool(д.get("лонг"))), []).append(д)
+    except OSError:
+        pass
+    return инд
+
+
+def _мт_идеи(записи, журнал=None):
+    """Записите на НОВАТА скала → идеи, близнаците слети.
+
+    Нова скала = `отворен` ≥ МОЗЪК_ТАБЛО_ОТ и поле `в`. Близнак = същата рамка
+    и посока, вход до 1$ и до 60 мин след първата идея → брои се веднъж
+    (първата). Поводът: от записа; стар запис → от brain_journal.
+    Връща (идеи, брой_записи_на_новата_скала)."""
+    от = pd.Timestamp(МОЗЪК_ТАБЛО_ОТ)
+    нови = []
+    for р in записи or []:
+        try:
+            if not isinstance(р, dict) or not р.get("в") or not р.get("изход"):
+                continue
+            т = pd.Timestamp(str(р["отворен"]))
+            float(р["вход"]); float(р["цел1"]); float(р["цена_изход"])
+        except (KeyError, TypeError, ValueError):
+            continue
+        if т >= от:
+            нови.append((т, р))
+    нови.sort(key=lambda x: x[0])
+    идеи = []
+    for т, р in нови:
+        близнак = None
+        for и in reversed(идеи):
+            if (т - и["_т"]).total_seconds() > 3600:
+                break
+            if (и.get("рамка") == р.get("рамка") and и.get("посока") == р.get("посока")
+                    and abs(float(р["вход"]) - float(и["вход"])) <= 1.0):
+                близнак = и
+                break
+        if близнак is not None:
+            близнак["близнаци"] += 1
+            continue
+        повод = р.get("повод")
+        if повод is None and журнал:
+            try:
+                кан = журнал.get((str(р.get("отворен")), str(р.get("рамка")),
+                                  р.get("посока") == "long")) or []
+                if кан:
+                    _ви = float(р.get("вход_идея") or р["вход"])
+                    повод = min(кан, key=lambda д: (0 if д.get("праща") else 1,
+                                                    abs(float(д.get("живо_вход") or 0) - _ви))
+                                ).get("повод")
+            except (KeyError, TypeError, ValueError):
+                pass
+        идеи.append(dict(р, _т=т, близнаци=0, повод=повод))
+    return идеи, len(нови)
+
+
+def _мт_хипотези_на(идея):
+    """Кои от H1/H2/H3 важат за идеята — правилата на МОЗЪК_ХИПОТЕЗИ."""
+    п = str(идея.get("повод") or "").lower()
+    ч = _мт_софия(идея["_т"]).hour
+    хип = []
+    if any(д in п for д in ("гап", "празнин", "fvg")) and 9 <= ч < 12:
+        хип.append("H1")
+    if идея.get("посока") == "short" and идея.get("главна") == "long":
+        хип.append("H2")
+    if any(д in п for д in ("структур", "structure")):
+        хип.append("H3")
+    return хип
+
+
+def _мт_нс(и):
+    """Индексът в НАНОСЕКУНДИ. pandas 2+ пази своята единица (µs, s…) и `asi8`
+    я връща в нея, а всички прагове на линийката са в ns (както
+    `Timestamp.value`). Без това хоризонтът излиза 1000 пъти по-дълъг, а
+    собственият ден на идеята не се отделя от другите. Хванато от П181."""
+    try:
+        return и.as_unit("ns")
+    except AttributeError:          # стар pandas — винаги ns
+        return и
+
+
+def _мт_линийка(бари5):
+    """5м барове (наивни UTC) → масивите на симулацията. Дошла ли е само
+    1-минутната резерва, се сглобява в 5м (същите UTC граници)."""
+    if бари5 is None or len(бари5) < 50:
+        return None
+    б = бари5[["High", "Low", "Close"]].dropna().copy()
+    и = _мт_нс(pd.DatetimeIndex(б.index))
+    if и.tz is not None:
+        и = и.tz_convert("UTC").tz_localize(None)
+    б.index = и
+    if len(и) > 2 and float(np.median(np.diff(и.asi8[-500:]))) < 4.5 * 6e10:
+        б = б.resample("5min").agg({"High": "max", "Low": "min", "Close": "last"}).dropna()
+        и = _мт_нс(pd.DatetimeIndex(б.index))
+    try:
+        соф = и.tz_localize("UTC").tz_convert("Europe/Sofia").tz_localize(None)
+    except Exception:
+        соф = и + pd.Timedelta(hours=3)
+    return {"tt": np.asarray(и.asi8, dtype=np.int64),
+            "H": б["High"].to_numpy(dtype=float), "L": б["Low"].to_numpy(dtype=float),
+            "C": б["Close"].to_numpy(dtype=float),
+            "тод": np.asarray(соф.hour * 60 + соф.minute, dtype=np.int64),
+            "ден": np.asarray(соф.normalize().asi8, dtype=np.int64)}
+
+
+def _мт_геометрия(идея):
+    """(знак, (стоп, цел 1, цел 2) като разстояния от входа) или None."""
+    try:
+        зн = 1 if идея.get("посока") == "long" else -1
+        вх = float(идея["вход"])
+        ст0 = float(идея["стоп0"] if идея.get("стоп0") is not None else идея["стоп"])
+        д_ст = (вх - ст0) * зн
+        д1 = (float(идея["цел1"]) - вх) * зн
+        д2 = ((float(идея["цел2"]) - вх) * зн) if идея.get("цел2") is not None else None
+    except (KeyError, TypeError, ValueError):
+        return None
+    if д_ст <= 0 or д1 <= 0:
+        return None
+    return зн, (д_ст, д1, д2)
+
+
+def _мт_сим(лин, i, зн, геом, хор):
+    """Една идея от бар `i`: вход = затварянето му, после баровете до хоризонта.
+
+    Същият ред като `_мозък_следене`: стопът се проверява ПЪРВИ, после цел 2,
+    после цел 1; след цел 1 стопът отива на входа от СЛЕДВАЩИЯ бар
+    (МОЗЪК_БЕ_СЛЕД_ЦЕЛ1); хоризонтът → изход по време на затварянето.
+    Торбата — `_мозък_цяло`. Данните свършват преди хоризонта → None."""
+    tt = лин["tt"]
+    k = int(np.searchsorted(tt, tt[i] + хор, side="right"))
+    if k <= i + 1:
+        return None
+    д_ст, д1, д2 = геом
+    вх = float(лин["C"][i])
+    ст = вх - зн * д_ст
+    ц1 = вх + зн * д1
+    ц2 = (вх + зн * д2) if д2 is not None else None
+    срещу = (лин["L"] if зн > 0 else лин["H"])[i + 1:k]
+    за = (лин["H"] if зн > 0 else лин["L"])[i + 1:k]
+    уд_ст = (срещу - ст) * зн <= 0
+    уд_1 = (за - ц1) * зн >= 0
+    уд_2 = ((за - ц2) * зн >= 0) if ц2 is not None else np.zeros(len(за), dtype=bool)
+    т = {"вход": вх, "цел1": ц1, "цел2": ц2, "цел1_взета": False}
+    недовършена = k >= len(tt) and tt[-1] < tt[i] + хор - 6e11
+    ев = уд_ст | уд_1 | уд_2
+    if not ев.any():
+        return None if недовършена else _мозък_цяло(т, "време", float(лин["C"][k - 1]), зн)
+    а = int(np.argmax(ев))
+    if уд_ст[а]:
+        return _мозък_цяло(т, "стоп", ст, зн)
+    if уд_2[а]:
+        return _мозък_цяло(т, "цел2", ц2, зн)
+    т["цел1_взета"] = True
+    ст2 = вх if МОЗЪК_БЕ_СЛЕД_ЦЕЛ1 else ст
+    уд_ст2 = (срещу[а + 1:] - ст2) * зн <= 0
+    ев2 = уд_ст2 | уд_2[а + 1:]
+    if not ев2.any():
+        return None if недовършена else _мозък_цяло(т, "време", float(лин["C"][k - 1]), зн)
+    б = int(np.argmax(ев2))
+    if уд_ст2[б]:
+        return _мозък_цяло(т, "стоп", ст2, зн)
+    return _мозък_цяло(т, "цел2", ц2, зн)
+
+
+def _мт_случайно(идея, лин):
+    """СЛУЧАЙНИЯТ вход със същата геометрия: всеки 5м бар ±2 ч около
+    софийския час на идеята, в ДРУГИТЕ дни, същата посока, същият хоризонт.
+    Връща (средна торба в $/унция или None, брой старта)."""
+    г = _мт_геометрия(идея)
+    if лин is None or г is None:
+        return None, 0
+    зн, геом = г
+    соф = _мт_софия(идея["_т"])
+    тод = соф.hour * 60 + соф.minute
+    разл = np.abs(лин["тод"] - тод)
+    разл = np.minimum(разл, 1440 - разл)
+    кан = np.nonzero((разл <= 120) & (лин["ден"] != соф.normalize().value))[0]
+    if len(кан) > МОЗЪК_ТАБЛО_СТАРТОВЕ:
+        кан = кан[np.linspace(0, len(кан) - 1, МОЗЪК_ТАБЛО_СТАРТОВЕ).astype(int)]
+    хор = int(_мозък_хоризонт_часове(идея.get("рамка")) * 3.6e12)
+    рез = [р for р in (_мт_сим(лин, int(i), зн, геом, хор) for i in кан) if р is not None]
+    if len(рез) < 20:
+        return None, len(рез)
+    return float(np.mean(рез)), len(рез)
+
+
+def _мт_своя(идея, лин):
+    """Идеята, пусната на СЪЩАТА линийка от последния завършен 5м бар преди
+    входа — справка дали уредът на следенето и линийката мерят еднакво.
+    Присъдата стои на записа, не на това число."""
+    г = _мт_геометрия(идея)
+    if лин is None or г is None:
+        return None
+    т0 = int(pd.Timestamp(идея["_т"]).value - 3e11)
+    i = int(np.searchsorted(лин["tt"], т0, side="right")) - 1
+    if i < 0 or лин["tt"][i] < т0 - 6e11:
+        return None
+    return _мт_сим(лин, i, г[0], г[1], int(_мозък_хоризонт_часове(идея.get("рамка")) * 3.6e12))
+
+
+def _мт_оценка(редове):
+    """[(ден, торба, случайно)] в $/унция → числата на една хипотеза, в пипсове.
+
+    Ръб = торба − случайно, средно на идея. 95% интервал — bootstrap по идеи,
+    2000 пъти, фиксирано семе. Ден = софийската дата на входа."""
+    n = len(редове)
+    о = {"n": n, "torba_sr_pips": None, "sluchayno_sr_pips": None, "rab_pips": None,
+         "di95_pips": None, "rab_bez_nay_dobriya_den_pips": None,
+         "dni": 0, "dni_v_plyus": 0, "dni_v_plyus_dyal": None}
+    мина = False
+    if n:
+        т = np.array([р[1] for р in редове], dtype=float)
+        сл = np.array([р[2] for р in редове], dtype=float)
+        ръб = т - сл
+        бс = np.random.default_rng(МОЗЪК_ТАБЛО_СЕМЕ).choice(
+            ръб, size=(2000, n), replace=True).mean(axis=1)
+        до, го = np.percentile(бс, [2.5, 97.5])
+        дни = {}
+        for р, x in zip(редове, ръб):
+            дни[р[0]] = дни.get(р[0], 0.0) + float(x)
+        най = max(дни, key=дни.get)
+        без = [float(x) for р, x in zip(редове, ръб) if р[0] != най]
+        плюс = sum(1 for v in дни.values() if v > 0)
+        о.update(torba_sr_pips=round(float(т.mean()) / PIP, 1),
+                 sluchayno_sr_pips=round(float(сл.mean()) / PIP, 1),
+                 rab_pips=round(float(ръб.mean()) / PIP, 1),
+                 di95_pips=[round(float(до) / PIP, 1), round(float(го) / PIP, 1)],
+                 rab_bez_nay_dobriya_den_pips=(round(float(np.mean(без)) / PIP, 1)
+                                               if без else None),
+                 dni=len(дни), dni_v_plyus=плюс,
+                 dni_v_plyus_dyal=round(плюс / float(len(дни)), 3))
+        мина = (float(до) > 0 and bool(без) and float(np.mean(без)) > 0
+                and 2 * плюс >= len(дни))
+    if n < МОЗЪК_ТАБЛО_N:
+        о["prisada"] = "мери още"
+    else:
+        о["prisada"] = "МИНА прага" if мина else "не мина"
+    return о
+
+
+def _мозък_табло(записи, бари5, now_utc, журнал=None, кеш=None):
+    """ЧИСТАТА сметка на таблото — без файлове. Случайното на стара идея идва
+    от `кеш` (предишното табло), за да не се мени с плъзгащите се 60 дни."""
+    идеи, n_нови = _мт_идеи(записи, журнал)
+    лин = _мт_линийка(бари5)
+    кеш = кеш if isinstance(кеш, dict) else {}
+    детайл = {}
+    кош = {"H1": [], "H2": [], "H3": [], "vsichki": []}
+    свои = {"H1": [], "H2": [], "H3": [], "vsichki": []}
+    без_база = 0
+    for и in идеи:
+        ид = str(и.get("id") or "%s|%s|%s|%s" % (и.get("рамка"), и.get("посока"),
+                                                 и.get("вход"), и.get("отворен")))
+        зн = 1 if и.get("посока") == "long" else -1
+        торба = float(_мозък_цяло(и, str(и["изход"]), float(и["цена_изход"]), зн))
+        ст = кеш.get(ид) if isinstance(кеш.get(ид), dict) else {}
+        if ст.get("sluchayno_usd") is not None:
+            сл, бр = float(ст["sluchayno_usd"]), int(ст.get("starta") or 0)
+        else:
+            сл, бр = _мт_случайно(и, лин)
+        своя = _мт_своя(и, лин)
+        if своя is None and ст.get("svoya_usd") is not None:
+            своя = float(ст["svoya_usd"])
+        хип = _мт_хипотези_на(и)
+        ден = str(_мт_софия(и["_т"]).date())
+        детайл[ид] = {"den": ден, "otvoren_utc": str(и.get("отворен")),
+                      "ramka": и.get("рамка"), "posoka": и.get("посока"),
+                      "povod": и.get("повод"), "glavna": и.get("главна"),
+                      "izhod": и.get("изход"), "bliznaci": и["близнаци"],
+                      "hipotezi": хип, "torba_usd": round(торба, 2),
+                      "sluchayno_usd": (round(сл, 4) if сл is not None else None),
+                      "starta": бр,
+                      "svoya_usd": (round(своя, 2) if своя is not None else None)}
+        if сл is None:
+            без_база += 1
+            continue
+        for h in хип + ["vsichki"]:
+            кош[h].append((ден, торба, сл))
+            if своя is not None:
+                свои[h].append(своя - сл)
+    хипотези = {}
+    for h, текст, _ориг in МОЗЪК_ХИПОТЕЗИ:
+        о = _мт_оценка(кош[h])
+        о["tekst"] = текст
+        о["rab_sashta_lineyka_pips"] = (round(float(np.mean(свои[h])) / PIP, 1)
+                                        if свои[h] else None)
+        хипотези[h] = о
+    справка = _мт_оценка(кош["vsichki"])
+    справка.pop("prisada", None)
+    справка["belezhka"] = "справка — не е хипотеза и не се съди"
+    return {"data": str(_мт_софия(pd.Timestamp(str(now_utc))).date()),
+            "izchisleno_utc": str(now_utc), "ot_utc": МОЗЪК_ТАБЛО_ОТ,
+            "versiya": VERSION, "zapisi_nova_skala": n_нови, "idei": len(идеи),
+            "bliznaci_sleti": n_нови - len(идеи), "bez_baza": без_база,
+            "bari_5m": (0 if лин is None else int(len(лин["C"]))),
+            "prag": МОЗЪК_ТАБЛО_ПРАГ,
+            "povishavane": "ръчно (лостът МОЗЪК_СДЕЛКИ) — таблото само докладва",
+            "hipotezi": хипотези, "vsichki_spravka": справка,
+            "idei_detayl": детайл}
+
+
+def _мозък_табло_дневно(out, бари5, now_utc, ден, meta, бележки=None):
+    """Веднъж на търговски ден: сметката + live/brain_tablo.json, и ВЕДНЪЖ
+    ЗАВИНАГИ live/brain_hipotezi.json (предварителният запис не се пренаписва).
+    Същия ден → връща готовия файл. Лост 0 → None, нищо не се пише."""
+    if not МОЗЪК_ТАБЛО:
+        return None
+    ф = out / "brain_tablo.json"
+    стар = _load_state(ф, None)
+    if стар and meta.get("мозък_табло") == ден:
+        return стар
+    фх = out / "brain_hipotezi.json"
+    хип = [{"id": h, "tekst": т, "original": о} for h, т, о in МОЗЪК_ХИПОТЕЗИ]
+    if not фх.exists():
+        _запиши_атомарно(фх, json.dumps(
+            {"data": МОЗЪК_ХИПОТЕЗИ_ДАТА, "zapisano_utc": str(now_utc),
+             "ot_utc": МОЗЪК_ТАБЛО_ОТ, "hipotezi": хип, "prag": МОЗЪК_ТАБЛО_ПРАГ,
+             "povishavane": "ръчно (лостът МОЗЪК_СДЕЛКИ) — таблото само докладва"},
+            ensure_ascii=False, indent=1))
+    записи = []
+    try:
+        with io.open(str(out / "brain_result.jsonl"), encoding="utf-8") as ф_р:
+            for ред in ф_р:
+                try:
+                    записи.append(json.loads(ред))
+                except ValueError:
+                    continue
+    except OSError:
+        pass
+    журнал = (_мт_повод_от_журнала(out / "brain_journal.jsonl")
+              if any(isinstance(р, dict) and р.get("в") and р.get("повод") is None
+                     for р in записи) else None)
+    табло = _мозък_табло(записи, бари5, now_utc, журнал=журнал,
+                         кеш=(стар or {}).get("idei_detayl"))
+    табло["hipotezi_sapadat"] = ((_load_state(фх, None) or {}).get("hipotezi") == хип)
+    _запиши_атомарно(ф, json.dumps(табло, ensure_ascii=False, indent=1, default=str))
+    meta["мозък_табло"] = ден
+    if бележки is not None:
+        бележки.append("🧠 таблото на мозъка · " + " · ".join(
+            "%s n=%d %s" % (h, табло["hipotezi"][h]["n"], табло["hipotezi"][h]["prisada"])
+            for h, _т, _о in МОЗЪК_ХИПОТЕЗИ))
+    return табло
+
+
+def _мозък_табло_ред(табло):
+    """Един ред за седмичната карта. Няма табло или лост 0 → None."""
+    if not МОЗЪК_ТАБЛО or not табло:
+        return None
+    части = []
+    for h, _т, _о in МОЗЪК_ХИПОТЕЗИ:
+        х = (табло.get("hipotezi") or {}).get(h) or {}
+        с = "%s n=%d" % (h, int(х.get("n") or 0))
+        if х.get("rab_pips") is not None:
+            с += " ръб %s пипса" % _пп_част(float(х["rab_pips"]) * PIP)
+        с += " (%s)" % (х.get("prisada") or "мери още")
+        части.append(с)
+    return ("🧠 мозъкът, мерено честно от %s: "
+            % pd.Timestamp(МОЗЪК_ТАБЛО_ОТ).strftime("%d.%m")
+            + " · ".join(части) + " · сигнал става само ако мине прага")
+
+
 def _мозък_следене(файл, дневник, цена, now_utc, нов=None, бар=None, бележки=None,
                    главна=None):
     """ОДИТ-33 · хипотетично следене на мозъчен сетъп. Без пари, без лот.
@@ -5676,6 +6101,10 @@ def _мозък_следене(файл, дневник, цена, now_utc, но
             т["id"] = "%s|%s|%s|%s" % (т["рамка"], т["посока"], _вх_ид, now_utc)
             т["в"] = VERSION
             т["главна"] = главна
+            if МОЗЪК_ТАБЛО:
+                # 🔴 15.09 · П181 · поводът влиза в записа — H1/H3 го четат
+                # направо; старите записи го взимат от brain_journal.
+                т["повод"] = нов.get("повод")
             _запиши_атомарно(файл, json.dumps(т, ensure_ascii=False, default=str))
     return msgs
 
@@ -7692,7 +8121,8 @@ def _седм_ключ(now_utc):
 # `gold_d`, не от живия спот — мереното е върху затваряния и картата
 # трябва да ползва същото число. Мъртъв параметър е по-лош от липсващ;
 # П130 го хвана веднага, за втори път днес.
-def _седмица_msg(gold_d, board, macro, streak_n, cq, now_utc, sym="XAUUSD", торба=None):
+def _седмица_msg(gold_d, board, macro, streak_n, cq, now_utc, sym="XAUUSD", торба=None,
+                 мозък_ред=None):
     """🔴🔴🔴 05.09 · ПОНЕДЕЛНИШКА ПРОГНОЗА ЗА СЕДМИЦАТА.
 
     Собственикът: «трябва да има в понеделник сутрин прогноза за седмицата».
@@ -7791,6 +8221,10 @@ def _седмица_msg(gold_d, board, macro, streak_n, cq, now_utc, sym="XAUUSD
             L.append("📅 Големите новини: " + " · ".join(_сб[:3]) + ".")
     except Exception:
         pass
+    # 🔴 15.09 · П181 · таблото на мозъка — един ред, последен (`_сбий` не
+    # пипа последния ред). Няма табло → редът просто липсва.
+    if мозък_ред:
+        L.append(мозък_ред)
     # 05.09 · седмичната също СЛИВА, не реже (виж _сбий).
     return "\n".join(_сбий(L, ОБЗОР_РЕДОВЕ))
 
@@ -11357,6 +11791,13 @@ def main():
                                                                    spot_g, now_utc, "Днес", notes)
                                                       if РАВНОСМЕТКА_ВСИЧКИ else None))))
         # Д3: meta["digest"] се маркира СЛЕД потвърдено пращане (виж 7б)
+    # 🔴 15.09 · П181 · ЧЕСТНОТО ТАБЛО НА МОЗЪКА — веднъж на търговски ден, във
+    # вечерния слот (meta-ключът пази от второ смятане). Само докладва.
+    if want_digest and МОЗЪК_ТАБЛО:
+        try:
+            _мозък_табло_дневно(out, frames.get("5м"), now_utc, ден_карти, meta, notes)
+        except Exception as _емт:
+            notes.append("таблото на мозъка не се сметна (%s)" % type(_емт).__name__)
     # 🔴 01.09 · и когато СОБСТВЕНИКЪТ попита. Дотук картата беше достъпна
     # само с флаг от командния ред, тоест на практика недостъпна за него.
     if args.status or os.environ.get("STATUS_CARD") == "yes" or meta.get("питан"):
@@ -11414,13 +11855,22 @@ def main():
             # викаха функцията ПРЯКО и затова не виждаха извикването.
             # СЕГА С ИМЕНА: смени ли се подписът пак, Python ще гръмне ВЕДНАГА
             # с TypeError вместо да размести мълчаливо.
+            # 🔴 15.09 · П181 · таблото на мозъка (веднъж на ден по meta);
+            # гръмне ли, седмичната карта пак излиза — без реда.
+            _мт_ред = None
+            try:
+                _мт_ред = _мозък_табло_ред(_мозък_табло_дневно(
+                    out, frames.get("5м"), now_utc, ден_карти, meta, notes))
+            except Exception as _емт:
+                notes.append("таблото на мозъка не се сметна (%s)" % type(_емт).__name__)
             new_msgs.append(("седмица", _седмица_msg(
                 gold_d=gold_d, board=board, macro=macro, streak_n=streak_n,
                 cq=cq, now_utc=now_utc,
                 торба=(_равносметка(out, *_търг_седмица(now_utc),
                                     [trade] + list(доп_сделки or []),
                                     spot_g, now_utc, "Миналата седмица", notes)
-                       if РАВНОСМЕТКА_ВСИЧКИ else None))))
+                       if РАВНОСМЕТКА_ВСИЧКИ else None),
+                мозък_ред=_мт_ред)))
             meta["седмица"] = _седм_ключ(now_utc)
             notes.append("📅 прогноза за седмицата")
         except Exception as _есд:

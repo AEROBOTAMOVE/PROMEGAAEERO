@@ -249,6 +249,7 @@ jobs:
           # дялове». Картите пишат само това. НАЗАД: WHOLE_TARGETS=0.
           БРОЕНЕ_ЦЯЛО: ${{ vars.WHOLE_TARGETS || '' }}
           ФАЙЛОВЕ_ЗА_САЙТА: ${{ vars.SITE_FILES || '' }}
+          МОЗЪК_ТАБЛО: ${{ vars.BRAIN_BOARD || '' }}   # 15.09 · таблото на мозъка · назад: 0
           НОВИНИ_ВСИЧКИ: ${{ vars.NEWS_ALL_SLOTS || '' }}
           РАВНОСМЕТКА_ВСИЧКИ: ${{ vars.RECAP_ALL_SLOTS || '' }}
           НОВИНИ_FOMC_МИН: ${{ vars.NEWS_FOMC_MIN || '' }}
