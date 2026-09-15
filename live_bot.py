@@ -142,6 +142,19 @@ TPS = [("ТП1", 75, 7.5), ("ТП2", 120, 12.0), ("ТП3", 200, 20.0)]
 ]
 
 
+# 🔴🔴🔴 15.09 17:35 · СДЕЛКАТА = 2 ПОЗИЦИИ · законът на собственика (клик).
+# 2 позиции × лот 0.20. Цел 1 = +50 → прибери едната и стопа на входа ·
+# цел 2 = +130 покупка / +100 продажба → прибери другата → сделката е
+# ЗАТВОРЕНА. Сборът: +180 покупка / +150 продажба · цел 1, после стопът на
+# входа = +50 · стоп преди цел 1 = −260 (2 × −130). Цел 3 ПАДА — не се
+# показва, не се следи, не се брои. Всичко друго стои (един вход, никога
+# насрещна, стопът на нивото, часът на входа, без дроби).
+# Един източник: `_цели()` · `_цели_знаци()` · `_крайна_цел()` · `_затваря()`.
+# Старите записи (3 части) се преброяват по новия закон, когато се четат.
+# Назад: vars.TWO_POSITIONS = 0 → дословно v18.82 (3 позиции).
+ДВЕ_ПОЗИЦИИ = int(_env("ДВЕ_ПОЗИЦИИ", "1"))
+
+
 def _стълби_редове(entry, direction, dec=2, sym="XAUUSD"):
     """Трите информативни реда с по-късите стълби. Празен списък = изключено.
 
@@ -178,11 +191,32 @@ def _стълби_редове(entry, direction, dec=2, sym="XAUUSD"):
         # което важи за ТАЗИ стълба; съотношението «близка цел + ПЪЛЕН стоп
         # удря 77%/83%» е мерено и стои в коментара при СТЪЛБИ_ДОП горе.
         # И разделителят на хиляди пада — четирицифрено число се чете и без него.
-        _ч.append(f"{име.split('/')[0]}п <code>{lv['tp1']:.{dec}f}</code>|"
-                  f"<code>{lv['tp2']:.{dec}f}</code>|"
-                  f"<code>{lv['tp3']:.{dec}f}</code> "
-                  f"🛑<code>{lv['sl']:.{dec}f}</code> {удря:.0f}%")
+        _ч.append(f"{име.split('/')[0]}п "
+                  + "|".join(f"<code>{lv[_к]:.{dec}f}</code>" for _к in _цели())
+                  + f" 🛑<code>{lv['sl']:.{dec}f}</code> {удря:.0f}%")
     return ["🪜 " + " · ".join(_ч)]
+
+
+def _цели():
+    """Целите на сделката по закона: 2 позиции → (tp1, tp2); лост 0 → и tp3."""
+    return ("tp1", "tp2") if ДВЕ_ПОЗИЦИИ else ("tp1", "tp2", "tp3")
+
+
+def _цели_знаци():
+    """Целите с номерата им за картите: (("1️⃣", "tp1"), ("2️⃣", "tp2")[, 3️⃣])."""
+    return tuple(zip(("1️⃣", "2️⃣", "3️⃣"), _цели()))
+
+
+def _крайна_цел():
+    """Целта, която ЗАТВАРЯ сделката: tp2 при 2 позиции, tp3 при лост 0."""
+    return _цели()[-1]
+
+
+def _затваря():
+    """Видовете изход, които затварят сделката (крайна цел, стоп, време, обрат)."""
+    return (_крайна_цел(), "sl", "time", "flip")
+
+
 S_TPS = [0.20, 0.32, 0.54]; S_SL = 0.54                   # СРЕБРО $/oz
 TFS = [("1мин", "1m", "7d", None), ("5м", "5m", "60d", None), ("15м", "15m", "60d", None),
        ("30м", "30m", "60d", None), ("1час", "60m", "730d", None),
@@ -2396,7 +2430,7 @@ def _standing_msg(direction, best, age_h, spot, bar_price, price_user, board, ma
          # Кратката форма «(75п)» е заради тавана на реда: три цели наведнъж.
          " · ".join(f"{n} <code>{_fmt(lv[k], 2)}</code> "
                     f"({abs(lv[k] - price_user) / PIP:,.0f}п)"
-                    for n, k in (("1️⃣", "tp1"), ("2️⃣", "tp2"), ("3️⃣", "tp3")))]
+                    for n, k in _цели_знаци())]
     # ОДИТ-35 · `macro` се подаваше на функцията и НЕ се ползваше никъде.
     # Точно то решава дали сетъпът има шанс — картата мълчеше за него.
     _реш = [k for k in ("долар", "лихви") if k in (macro or {})]
@@ -2441,6 +2475,9 @@ def _demote_if_dead(resolved, health):
 
 def _levels_gen(entry, direction, tp1, tp2, tp3, sl, dec=2):
     s = 1 if direction == "long" else -1
+    if ДВЕ_ПОЗИЦИИ:                       # 15.09 · 2 позиции → без цел 3
+        return {"tp1": round(entry + s * tp1, dec), "tp2": round(entry + s * tp2, dec),
+                "sl": round(entry - s * sl, dec)}
     return {"tp1": round(entry + s * tp1, dec), "tp2": round(entry + s * tp2, dec),
             "tp3": round(entry + s * tp3, dec), "sl": round(entry - s * sl, dec)}
 
@@ -3317,7 +3354,7 @@ def _брои_ли_стоп(kind, hit, px, entry, доп=0.05):
     """
     if kind != "sl":
         return False
-    if any((hit or {}).get(k) for k in ("tp1", "tp2", "tp3")):
+    if any((hit or {}).get(k) for k in _цели()):
         return False                      # взета цел → безрисков изход, НЕ загуба
     try:
         return abs(float(px) - float(entry)) > float(доп)
@@ -4305,11 +4342,11 @@ def _късно_msg(direction, реф, цена, защо):
 def _ясна_карта(direction, entry, lv, advice_txt, новина, spot, now_utc):
     """v18.77 · ВХОДНАТА КАРТА, която не може да се пропусне · ≤6 реда.
 
-    Ред 1 заповед и час (София) · 2 вход и стоп · 3 трите цели в пипсове ·
+    Ред 1 заповед и час (София) · 2 вход и стоп · 3 целите в пипсове ·
     4 докъде да влиза · 5 как се държи · 6 само ако има: ЕДНО предупреждение.
     Степен, точки, макро, дъска, зона — не; сайтът ги показва.
     Пипсовете се смятат от НИВАТА, не се преписват (стоп −130; цели +50 ·
-    +130 · +200 при покупка, +50 · +100 · +200 при продажба)."""
+    +130 при покупка, +50 · +100 при продажба — 2 позиции; лост 0: и +200)."""
     зн = 1.0 if direction == "long" else -1.0
     ико, глагол = ("🟢", "КУПИ") if direction == "long" else ("🔴", "ПРОДАЙ")
     час = _sofia(now_utc) if now_utc else _sofia()
@@ -4317,10 +4354,13 @@ def _ясна_карта(direction, entry, lv, advice_txt, новина, spot, n
          "💵 вход <code>%s</code> · 🛑 стоп <code>%s</code> (%s)"
          % (_fmt(entry), _fmt(lv["sl"]), _пп_част(-abs(float(entry) - float(lv["sl"])))),
          "🎯 цели " + " · ".join("<code>%s</code> %s" % (_fmt(lv[k]), _пп_част(abs(float(lv[k]) - float(entry))))
-                                 for k in ("tp1", "tp2", "tp3")),
+                                 for k in _цели()),
          "⏳ влизай само ако цената е до <code>%s</code> — по-далеч НЕ гони"
          % _fmt(float(entry) + зн * НЕ_ГОНИ_ДОЛАРА),
          # закон 3 на собственика: лот 0.20 на позиция = 2$ на пипс на позиция
+         # 15.09 17:35 · сделката = 2 позиции (ДВЕ_ПОЗИЦИИ)
+         ("📦 2 позиции × лот 0.20 · цел 1 → прибери едната и стопа на входа"
+          " · цел 2 → прибери другата") if ДВЕ_ПОЗИЦИИ else
          "📦 3 позиции × лот 0.20 · цел 1 → прибери и стоп на входа"]
     import re as _reя          # `re` НЕ е на ниво модул в този файл
     пред = []
@@ -4370,7 +4410,7 @@ def _sig_msg(direction, score, agree_n, tier_name, spot, bar_price, bar_ts, lv, 
              " · ".join(f"{n} <code>{_fmt(ol[k], dec)}</code>"
                         + (" ✅" if hit.get(k) else
                            f" ({abs(ol[k] - open_trade['entry']) / (PIP if sym == 'XAUUSD' else 0.001):,.0f}п)")
-                        for n, k in (("1️⃣", "tp1"), ("2️⃣", "tp2"), ("3️⃣", "tp3")))]
+                        for n, k in _цели_знаци())]
         if spot:
             L.append(f"💵 сега <code>{_fmt(spot['mid'], dec)}</code>"
                      + (" ⚠️ от крипто-резерва, не от златния фийд"
@@ -4400,7 +4440,7 @@ def _sig_msg(direction, score, agree_n, tier_name, spot, bar_price, bar_ts, lv, 
              f"🛑 <code>{_fmt(lv['sl'], dec)}</code> · {_разст(entry, lv['sl'], sym, dec)}",
              " · ".join(f"{n} <code>{_fmt(lv[k], dec)}</code> "
                         f"({abs(lv[k] - entry) / (PIP if sym == 'XAUUSD' else 0.001):,.0f}п)"
-                        for n, k in (("1️⃣", "tp1"), ("2️⃣", "tp2"), ("3️⃣", "tp3")))]
+                        for n, k in _цели_знаци())]
         # 🪜 25.08 · И ТУК. Това е картата «не влизам, но ако решиш сам» — точно
         # мястото, където по-късите стълби вършат работа: ботът не влиза, а
         # собственикът може да открадне ТП1 на 38 пипса.
@@ -4561,7 +4601,7 @@ def _sig_msg(direction, score, agree_n, tier_name, spot, bar_price, bar_ts, lv, 
          # заедно със стария ред за стопа.
          " · ".join(f"{n} <code>{_fmt(lv[k], dec)}</code> "
                     f"({abs(lv[k] - entry) / (PIP if sym == 'XAUUSD' else 0.001):,.0f}п)"
-                    for n, k in (("1️⃣", "tp1"), ("2️⃣", "tp2"), ("3️⃣", "tp3")))
+                    for n, k in _цели_знаци())
          # 🔴🔴 02.09 · «по 1/3» БЕШЕ ЗАКОВАНО — и стана НЕВЯРНО в мига, в
          # който шортът получи свои дялове (½ ¼ ¼). Хванато при рендиране на
          # ЖИВАТА карта ПРЕДИ качване: «1️⃣ 4,295.00 (50п) … · по 1/3».
@@ -4759,7 +4799,7 @@ def _stignala_do(kind, hit, lv, entry, sign, hit_px=None):
     ако нито една цел не е взета — тогава няма какво да не се намалява.
     """
     най, име = None, None
-    for k2 in ("tp1", "tp2", "tp3"):
+    for k2 in _цели():
         взета = hit.get(k2) or (k2 == kind)
         if not взета or k2 not in lv:
             continue
@@ -4792,8 +4832,17 @@ def _торба(kind, hit, lv, entry, dol, сим="XAUUSD"):
         цел 1 + цел 2, после входът → 50 + 130 + 0   = +180
         стоп преди цел 1           → −130 × 3        = −390
     Огледално: печалбите се събират по позиции — загубата също.
-    Връща (сбор_в_долари, [част_на_цел1, част_на_цел2, част_на_цел3])."""
+    Връща (сбор_в_долари, [част_на_цел1, част_на_цел2, част_на_цел3]).
+
+    🔴 15.09 17:35 · ДВЕ_ПОЗИЦИИ · сделката е ДВЕ позиции (цел 1, цел 2):
+        цел 1 + цел 2 (затваря)    → 50 + 130 = +180 покупка / 50 + 100 = +150 продажба
+        цел 1, после стопът на входа → 50 + 0 = +50
+        стоп преди цел 1           → −130 × 2 = −260
+    Стар запис с 3 части се преброява тук: tp3 не се брои; стар изход «tp3»
+    значи, че и двете цели са взети → +180 / +150."""
     части = []
+    # стар изход «tp3» (или крайната цел tp2) → всички цели са взети
+    _край = bool(ДВЕ_ПОЗИЦИИ) and kind in ("tp2", "tp3")
     _стоп = None
     if СТОП_ПО_НИВО and kind == "sl" and lv.get("sl") is not None and lv.get("tp1") is not None:
         try:
@@ -4804,10 +4853,10 @@ def _торба(kind, hit, lv, entry, dol, сим="XAUUSD"):
         except (TypeError, ValueError):
             _стоп = None
     _ст = PIP if сим == "XAUUSD" else 0.001
-    for k in ("tp1", "tp2", "tp3"):
+    for k in _цели():
         if k not in lv or lv.get(k) is None:
             continue
-        if hit.get(k) or k == kind:
+        if hit.get(k) or k == kind or _край:
             части.append(round(abs(float(lv[k]) - float(entry)), 2))
         elif _стоп is not None:
             части.append(round(_стоп, 2))
@@ -4918,7 +4967,7 @@ def _прибрано(kind, hit, lv, entry, sign, dol, hit_px=None, dec=2, дя�
     _приб = 0.0
     _n = 0
     _зд = 0.0
-    for _i3, k2 in enumerate(("tp1", "tp2", "tp3")):
+    for _i3, k2 in enumerate(_цели()):
         if not hit.get(k2):
             continue
         _ц = (hit_px or {}).get(k2)
@@ -5018,12 +5067,12 @@ def _отворена_стълба(tr, spot, notes=None):
             # риск (стопът е на входа). Без цел — ходът на цялата позиция.
             _hit_o = tr.get("hit", {}) or {}
             _lv_o = tr.get("levels") or {}
-            _взети_o = [k for k in ("tp1", "tp2", "tp3")
+            _взети_o = [k for k in _цели()
                         if _hit_o.get(k) and _lv_o.get(k) is not None]
             if СМЕТКА_ТОРБА:
                 # 🔴 15.09 · v18.76 · всичко в торбата: взетите цели цели +
                 # останалите позиции по живата цена (по една позиция на цел)
-                _nп = len([k for k in ("tp1", "tp2", "tp3") if _lv_o.get(k) is not None]) or 3
+                _nп = len([k for k in _цели() if _lv_o.get(k) is not None]) or len(_цели())
                 return (round(sum(abs(float(_lv_o[k]) - float(tr["entry"])) for k in _взети_o)
                               + (_nп - len(_взети_o)) * ост, _dec_o), len(_взети_o))
             if _взети_o:
@@ -5138,6 +5187,8 @@ def _exit_msg(kind, tr, price_hit, when, via, gap, spot=None, next_line="", dec=
              "be": ("📌", "БЕЗ РИСК · стопът е на входа"),
              "trail": ("📌", "СТОПЪТ СЕ ПРИДВИЖИ"),
              "partial": ("📌", "ЧАСТ ПРИБРАНА")}
+    if ДВЕ_ПОЗИЦИИ:                       # 15.09 · цел 2 затваря сделката (2 позиции)
+        глави["tp2"] = глави.pop("tp3")
     # 🔴🔴 02.09 · ПОДРАЗБИРАНЕТО ПЕЧАТАШЕ ГОЛИЯ КОД-ЕТИКЕТ. `.get(kind, ("📌",
     # kind))` значи, че вид, който някой добави утре, отива в Телеграм като
     # «📌 be» или «📌 trail» — английска дума насред българска карта, точно
@@ -5290,11 +5341,16 @@ def _exit_msg(kind, tr, price_hit, when, via, gap, spot=None, next_line="", dec=
                          f"({_дял_знак(tr)} от позицията)")
         # 🔴 голи числа точно там, където се решава «държа ли още»
         _ст = PIP if _сим == "XAUUSD" else 0.001
-        L.append(f"🎯 остават 2️⃣ <code>{_fmt(lv['tp2'], dec)}</code> "
-                 f"({abs(lv['tp2'] - price_hit) / _ст:,.0f}п оттук) · "
-                 f"3️⃣ <code>{_fmt(lv['tp3'], dec)}</code> "
-                 f"({abs(lv['tp3'] - price_hit) / _ст:,.0f}п)")
-    elif kind == "tp2":
+        if ДВЕ_ПОЗИЦИИ:
+            # 15.09 · 2 позиции: остава само цел 2 — тя затваря сделката
+            L.append(f"🎯 остава 2️⃣ <code>{_fmt(lv['tp2'], dec)}</code> "
+                     f"({abs(lv['tp2'] - price_hit) / _ст:,.0f}п оттук)")
+        else:
+            L.append(f"🎯 остават 2️⃣ <code>{_fmt(lv['tp2'], dec)}</code> "
+                     f"({abs(lv['tp2'] - price_hit) / _ст:,.0f}п оттук) · "
+                     f"3️⃣ <code>{_fmt(lv['tp3'], dec)}</code> "
+                     f"({abs(lv['tp3'] - price_hit) / _ст:,.0f}п)")
+    elif kind == "tp2" and not ДВЕ_ПОЗИЦИИ:   # 2 позиции → цел 2 е крайният изход (долу)
         # ОДИТ-35: `_ladder_pnl` смята общата сметка безусловно, а картата не я
         # печаташе при ТП1/ТП2 — сянката я казваше, реалният изход не.
         # 🔴 26.08 · «дотук сделката носи» СМЕСВАШЕ прибрано с марка по цена.
@@ -5420,6 +5476,8 @@ def _shadow_exit_msg(kind, tr, price_hit, when, via, gap, spot=None, dec=2):
     какво = {"tp1": "щеше да хване ЦЕЛ 1", "tp2": "щеше да хване ЦЕЛ 2",
              "tp3": "щеше да мине докрай", "sl": "щеше да удари стоп",
              "flip": "посоката се обърна", "time": "щеше да излезе по време"}.get(kind, kind)
+    if ДВЕ_ПОЗИЦИИ and kind == "tp2":      # 15.09 · 2 позиции · цел 2 затваря
+        какво = "щеше да мине докрай"
     if kind == "sl" and взети > 0:
         # 🔴🔴 01.09 · БЛИЗНАКЪТ НА ПОПРАВКАТА ОТ 26.08, ПРОПУСНАТ 6 ДНИ.
         # Тогава собственикът каза «печалбата е голяма, всеки път я
@@ -6192,6 +6250,8 @@ def _мозък_повиши(набл, доп, главна, now_utc, date, бе
                      "tp3": round(ц2, 2), "sl": round(ст, 2)},
           "hit": {}, "status": "open", "v2": True, "ledger": "spot",
           "tier": "мозък:" + рм, "date": date, "мозък": рм}
+    if ДВЕ_ПОЗИЦИИ:                        # 15.09 · сделката е 2 позиции — точно двете цели
+        сд["levels"].pop("tp3", None)
     доп.append(сд)
     if бележки is not None:
         бележки.append("🧠→💰 мозък:%s стана СДЕЛКА · %s вход %.2f · стоп %.2f · "
@@ -6333,7 +6393,7 @@ def _shadow_cycle(shadow_file, bars, basis, price_user, now_utc, spot,
                                  скок_базис=скок_базис)
         cum = dict(sh_obj["hit"])
         for kind, px, when, via, gap in events:
-            if kind in ("tp1", "tp2", "tp3"):
+            if kind in _цели():
                 cum[kind] = True
             o = dict(sh_obj); o["hit"] = dict(cum)
             msgs.append(("sh-exit:" + kind, _shadow_exit_msg(kind, o, px, when, via, gap, spot=spot, dec=dec)))
@@ -6502,7 +6562,7 @@ def _торба_запис(out, exit_msgs, now_utc, notes=None):
         редове = [] if ф.exists() else [{"start": now_utc, "v": VERSION}]
         for tag, payload, kind, _посока in (exit_msgs or []):
             if (not str(tag).startswith(("exit:", "exit2:"))
-                    or kind not in ("tp3", "sl", "time", "flip")):
+                    or kind not in _затваря()):
                 continue
             k, tro, px, when, _през, _гап = payload
             _лв = tro.get("levels") or {}
@@ -6510,9 +6570,9 @@ def _торба_запис(out, exit_msgs, now_utc, notes=None):
                            "kind": k, "direction": tro["direction"],
                            "entry": float(tro["entry"]), "exit": float(px),
                            "opened": tro.get("opened"), "sym": tro.get("sym", "XAUUSD"),
-                           "levels": {x: float(_лв[x]) for x in ("tp1", "tp2", "tp3", "sl")
+                           "levels": {x: float(_лв[x]) for x in _цели() + ("sl",)
                                       if _лв.get(x) is not None},
-                           "hit": {x: True for x in ("tp1", "tp2", "tp3")
+                           "hit": {x: True for x in _цели()
                                    if (tro.get("hit") or {}).get(x)}})
         if редове:
             with ф.open("a", encoding="utf-8") as fh:
@@ -6670,7 +6730,7 @@ def _digest_msg(out, date, trade, s_trade, spot_g, spot_s, guard, weekly_part=Fa
         if _т177 and нм == "🥇":
             continue
         if tr:
-            прибр = [n for n, k in (("1️⃣", "tp1"), ("2️⃣", "tp2"), ("3️⃣", "tp3"))
+            прибр = [n for n, k in _цели_знаци()
                      if tr.get("hit", {}).get(k)]
             # 🔴 ОДИТ-61: ПО СТЪЛБАТА, не гола разлика. Редът над този изброява
             # прибраните трети — беше противоречие на едно и също място.
@@ -6727,7 +6787,7 @@ def _status_msg(board, new_dir, trade, s_trade, spot_g, spot_s, basis_g, basis_s
         L.append("⚠️ американски данни сега — продажбите чакат края им")
     for нм, tr, sp, dec in (("🥇", trade, spot_g, 2), ("🥈", s_trade, spot_s, 3)):
         if tr:
-            прибр = [n for n, k in (("1️⃣", "tp1"), ("2️⃣", "tp2"), ("3️⃣", "tp3"))
+            прибр = [n for n, k in _цели_знаци()
                      if tr.get("hit", {}).get(k)]
             # 🔴 ОДИТ-61: ПО СТЪЛБАТА, не гола разлика. Редът над този изброява
             # прибраните трети — беше противоречие на едно и също място.
@@ -6998,7 +7058,7 @@ def _pulse_msg(part, board, best, new_dir, advice_txt, adv_ok, trade, s_trade,
     for нм, tr, sp, dec in (("🥇", trade, spot_g, 2), ("🥈", s_trade, spot_s, 3)):
         if tr and not (_т177 and нм == "🥇"):
             има = True
-            прибр = [n for n, k in (("1️⃣", "tp1"), ("2️⃣", "tp2"), ("3️⃣", "tp3"))
+            прибр = [n for n, k in _цели_знаци()
                      if tr.get("hit", {}).get(k)]
             # 🔴 ОДИТ-61: ПО СТЪЛБАТА, не гола разлика. Редът над този изброява
             # прибраните трети — беше противоречие на едно и също място.
@@ -8748,7 +8808,7 @@ def _ден_данни(gold_d, петминутни, price, now_utc, cq, баз�
                         else "нивото е със сегашната разлика към борсата")
             идеи.append({"posoka": _пос, "nivo": round(float(_ниво), 2),
                          "stop": round(float(_lv["sl"]), 2),
-                         "celi": [round(float(_lv[_к]), 2) for _к in ("tp1", "tp2", "tp3")],
+                         "celi": [round(float(_lv[_к]), 2) for _к in _цели()],
                          "izvor": _извор, "belezhka": " · ".join(_бел), "nablyudenie": True})
 
     return {"den": _ден_ст, "sazdadeno_utc": _сега.strftime("%Y-%m-%dT%H:%M:%SZ"),
@@ -9110,6 +9170,20 @@ def track_trade(trade, bars, basis, now_price, now_utc, spot=None, скок_ба
         return None, events
     since = pd.Timestamp(trade.get("checked", trade["opened"]))
     lv = trade["levels"]; d = trade["direction"]
+    # 🔴 15.09 · ДВЕ_ПОЗИЦИИ · сделка отпреди закона, която ВЕЧЕ е взела цел 2
+    # (и чакаше цел 3). По закона цел 2 я затваря — затваря се сега, на цел 2.
+    # Иначе остава вечно отворена (цел 3 не се следи) и «един вход» спира
+    # всеки нов ВЛЕЗ. Назад: лост 0 → следи се до цел 3, както в v18.82.
+    if (ДВЕ_ПОЗИЦИИ and trade.get("status", "open") == "open"
+            and (trade.get("hit") or {}).get(_крайна_цел())):
+        _кц = _крайна_цел()
+        _пц = (trade.get("hit_px") or {}).get(_кц, lv.get(_кц))
+        events.append((_кц, _пц, now_utc, "закон", False))
+        trade["status"] = "closed_" + _кц
+        if notes is not None:
+            notes.append("🧺 сделката от %s вече беше взела цел 2 — по закона за 2 позиции е затворена"
+                         % trade.get("opened"))
+        return None, events
     idx = bars.index if bars is not None else []
     if скок_базис and len(idx):
         # 🔴 21.08, ВТОРА ВЕРСИЯ. Първата само пропускаше баровете ТОЗИ рън, но
@@ -9208,7 +9282,7 @@ def track_trade(trade, bars, basis, now_price, now_utc, spot=None, скок_ба
                         % (lv["sl"], _отвъд, _отвъд / PIP))
             events.append(("sl", px, str(ts), "бар", gap)); trade["status"] = "closed_sl"
             break
-        for k in ("tp1", "tp2", "tp3"):
+        for k in _цели():
             if not trade["hit"].get(k):
                 tp_hit = (hi >= lv[k]) if d == "long" else (lo <= lv[k])
                 if tp_hit:
@@ -9224,8 +9298,8 @@ def track_trade(trade, bars, basis, now_price, now_utc, spot=None, скок_ба
                     if k == "tp1":                        # картата обещава «стоп на входа» → ПРАВИМ го
                         lv["sl"] = trade["entry"]         # иначе изходната сметка лъже (безрисково ≠ −$20)
                         trade["be_since"] = str(ts)       # BE-стопът важи от СЛЕДВАЩ бар (не този)
-                    if k == "tp3":
-                        trade["status"] = "closed_tp3"
+                    if k == _крайна_цел():                # 2 позиции: цел 2 · лост 0: цел 3
+                        trade["status"] = "closed_" + k
         if trade.get("status", "open") != "open":
             break
     # 🔴 08.09 · КАЗВА СЕ КОЛКО е поправено, за да може да се мери, а не да
@@ -9296,7 +9370,7 @@ def track_trade(trade, bars, basis, now_price, now_utc, spot=None, скок_ба
                                now_utc, "спот", _отвъд > _спред))
             trade["status"] = "closed_sl"
         else:
-            for k in ("tp1", "tp2", "tp3"):
+            for k in _цели():
                 if not trade["hit"].get(k):
                     # 🔴 19.08 · СПУСЪКЪТ ПО СТРАНАТА, НА КОЯТО РЕАЛНО ТЪРГУВАШ.
                     # Дотук тук се съдеше по `p` = СРЕДАТА, а вчерашната поправка
@@ -9317,8 +9391,8 @@ def track_trade(trade, bars, basis, now_price, now_utc, spot=None, скок_ба
                         if k == "tp1":                    # стоп на входа (както картата казва)
                             lv["sl"] = trade["entry"]
                             trade["be_since"] = now_utc   # BE-стопът важи от следващ бар/тик
-                        if k == "tp3":
-                            trade["status"] = "closed_tp3"
+                        if k == _крайна_цел():            # 2 позиции: цел 2 затваря
+                            trade["status"] = "closed_" + k
     if trade.get("status", "open") == "open":
         age = (pd.Timestamp(now_utc) - pd.Timestamp(trade["opened"])).days
         if age >= ДНИ_МАКС:
@@ -10694,7 +10768,7 @@ def main():
         cum_hit = dict(trade_obj["hit"])                   # попадения от МИНАЛИ рънове
         cum_px = dict(trade_obj.get("hit_px") or {})       # О12: и цените им
         for kind, px, when, via, gap in events:
-            if kind in ("tp1", "tp2", "tp3"):              # това попадение стана ТОЗИ рън → трупай
+            if kind in _цели():                             # това попадение стана ТОЗИ рън → трупай
                 cum_hit[kind] = True
                 cum_px[kind] = px                          # О12: реалният фил, гап-съобразен
             # F3: брой само РЕАЛЕН стоп; безрисковият (на входа, след ТП1) е печеливш изход
@@ -10713,11 +10787,11 @@ def main():
             # взета цел НЕ Е загуба, защото стопът вече е бил на входа.
             # Ценовата проверка остава като ВТОРИ филтър за случая «стоп без
             # нито една цел, но филнат на самия вход» (гап нагоре при лонг).
-            _взета_цел = any(cum_hit.get(k) for k in ("tp1", "tp2", "tp3"))
+            _взета_цел = any(cum_hit.get(k) for k in _цели())
             if _брои_ли_стоп(kind, cum_hit, px, trade_obj["entry"]):
                 _пазач_плюс(guard, trade_obj["direction"], now_utc)
             elif kind == "sl" and _взета_цел:
-                notes.append(f"🛡 изходът по стоп е СЛЕД взета цел ({', '.join(sorted(k for k in ('tp1','tp2','tp3') if cum_hit.get(k)))}) "
+                notes.append(f"🛡 изходът по стоп е СЛЕД взета цел ({', '.join(sorted(k for k in _цели() if cum_hit.get(k)))}) "
                              f"— стопът е бил на входа, това НЕ е загуба и НЕ се брои от пазача")
             # краен-случай: подай снимка на КУМУЛАТИВНИТЕ попадения ДО този изход (не застоялата
             # отпреди ръна) → 1/3 сметката е вярна и при ТП1+ТП2+СТОП в ЕДИН рън (catch-up burst).
@@ -10757,10 +10831,10 @@ def main():
             _ch2 = dict(_сн2["hit"])
             _cp2 = dict(_сн2.get("hit_px") or {})
             for _вид, _цн, _кга, _през, _гап in _ев2:
-                if _вид in ("tp1", "tp2", "tp3"):
+                if _вид in _цели():
                     _ch2[_вид] = True
                     _cp2[_вид] = _цн
-                _вц2 = any(_ch2.get(k) for k in ("tp1", "tp2", "tp3"))
+                _вц2 = any(_ch2.get(k) for k in _цели())
                 if _брои_ли_стоп(_вид, _ch2, _цн, _сн2["entry"]):
                     _пазач_плюс(guard, _сн2["direction"], now_utc)
                 _об2 = dict(_сн2)
@@ -11100,7 +11174,7 @@ def main():
                          f"от_карта={('%.0fмин' % mins_since) if mins_since is not None else '?'} · "
                          f"cool_ok={cool_ok} · reoffer={reoffer}")
     # ре-влизане след приключена сделка — по F18 правилата
-    closed_kinds = [k for _, _, k, _ in exit_msgs if k in ("tp3", "sl", "time", "flip")]
+    closed_kinds = [k for _, _, k, _ in exit_msgs if k in _затваря()]
     reentry = False
     # 🔴 21.08 · ЧИСТЕНЕТО БЕШЕ ЗАКЛЮЧЕНО ПОД `closed_kinds`. И двете извиквания
     # на `_reentry_ban` са в блока долу, тоест в рън, в който нищо не се е
@@ -11565,7 +11639,7 @@ def main():
                                             basis_hist=meta.get("basis_hist_s"))
             s_cum = dict(s_obj["hit"])                      # попадения от МИНАЛИ рънове
             for kind, px, when, via, gap in s_events:
-                if kind in ("tp1", "tp2", "tp3"):          # това попадение стана ТОЗИ рън
+                if kind in _цели():                         # това попадение стана ТОЗИ рън
                     s_cum[kind] = True
                 gk = "s_" + s_obj["direction"]
                 # 🔴🔴 01.09 · ТУК ДЕФЕКТЪТ ОТ 25.08 ОЩЕ СТОЕШЕ. Златото беше
@@ -11602,7 +11676,7 @@ def main():
         s_tier_up = (s_actionable and s_dir != "short"
                      and rank.get(s_tk, 0) > rank.get(s_last.get("tier", "weak"), 0) and s_dir == s_last.get("dir"))
         s_cool = (s_mins is None or s_mins >= 45 or (s_dir != s_last.get("dir") and s_mins >= 15) or s_tier_up)
-        s_closed = any(k in ("tp3", "sl", "time", "flip") for k, *_ in s_exits)
+        s_closed = any(k in _затваря() for k, *_ in s_exits)
         s_guard_n = (_пазач_n(guard, "s_" + s_dir, now_utc)
                      if s_dir in ("long", "short") else 0)
         s_key_age_h = None
@@ -11635,7 +11709,7 @@ def main():
         # изходни съобщения за среброто (с решение за ново влизане)
         for kind, s_obj, px, when, via, gap in s_exits:
             nl = ""
-            if kind in ("tp3", "sl", "time", "flip"):
+            if kind in _затваря():
                 nl = "НЕ — среброто търгува само дневната карта (сутрин); ре-влизанията не издържаха теста (F19)."
             silver_new_msgs.append(("s-exit:" + kind, _exit_msg(kind, s_obj, px, when, via, gap, spot=spot_s, next_line=nl, dec=3)))
         # 🔴🔴 03.09 · ЗАМРАЗЕНА СРЕБЪРНА СЯНКА. `shadow_silver.json` се
@@ -11717,7 +11791,7 @@ def main():
     for tag, payload, kind, dirn in exit_msgs:
         k, tro, px, when, via, gap = payload
         nl = ""
-        if k in ("tp3", "sl", "time", "flip"):
+        if k in _затваря():
             if actionable and trade is None and new_dir:
                 ok_re, why_re = _reentry_verdict(
                     new_dir, regime["streaks"].get(new_dir, 0), shield,
@@ -12779,7 +12853,7 @@ def _сайт_основа(tr, slot):
             "direction": tr.get("direction"), "entry": tr.get("entry"), "opened": _о,
             "entry_sofia": (_sofia(_о) if _о else None), "slot": slot,
             "tier": tr.get("tier"),
-            "levels": {k: _lv.get(k) for k in ("tp1", "tp2", "tp3", "sl")}}
+            "levels": {k: _lv.get(k) for k in _цели() + ("sl",)}}
 
 
 def _сайт_сделка(tag, payload):
@@ -12799,7 +12873,7 @@ def _сайт_сделка(tag, payload):
         _кога = str(when)
     зап = _сайт_основа(tro, "main" if str(tag).startswith("exit:") else "extra")
     зап.update({"closed": _кога, "closed_sofia": _sofia(_кога),
-                "hit": {x: True for x in ("tp1", "tp2", "tp3") if _hit.get(x) or x == k},
+                "hit": {x: True for x in _цели() if _hit.get(x) or x == k},
                 "exit_kind": k, "exit_px": round(float(px), 3),
                 "parts": [_сайт_пипс(x, _сим) for x in _ч],
                 "sum_pips": _сайт_пипс(_сб, _сим), "v": VERSION})
@@ -12830,22 +12904,26 @@ def _сайт_сделки(out, exit_msgs, notes):
     Същият id (посока|вход|отворена) се ЗАМЕНЯ, не се дублира — повторен
     рън след срив не ражда втора сделка."""
     нови = []
+    # 15.09 · ДВЕ_ПОЗИЦИИ · крайният изход е цел 2 → `_затваря()` (лост 0 = _САЙТ_ЗАТВАРЯ)
+    _затв = _затваря() if ДВЕ_ПОЗИЦИИ else _САЙТ_ЗАТВАРЯ
     for tag, payload, kind, _посока in exit_msgs:
-        if kind not in _САЙТ_ЗАТВАРЯ:
+        if kind not in _затв:
             continue
         try:
             нови.append(_сайт_сделка(tag, payload))
         except Exception as е:
             notes.append("⚠️ sdelki.json · изходът %s не се описа (%s)" % (tag, type(е).__name__))
-    if not нови and not СТОП_ПО_НИВО:
+    _по_закона = СТОП_ПО_НИВО or ДВЕ_ПОЗИЦИИ
+    if not нови and not _по_закона:
         return 0
     f = Path(out) / "sdelki.json"
     стари = _load_state(f, [])
     if not isinstance(стари, list):
         стари = []
     # 🔴 v18.82 · старите записи се преброяват по закона (стопът на нивото)
+    # 🔴 15.09 · и по закона за 2 позиции: старите 3 части → 2 (tp3 не се брои)
     _преброени = 0
-    if СТОП_ПО_НИВО:
+    if _по_закона:
         for r in стари:
             if isinstance(r, dict) and _сайт_по_закона(r):
                 _преброени += 1
@@ -12855,7 +12933,9 @@ def _сайт_сделки(out, exit_msgs, notes):
     всички = [r for r in стари if isinstance(r, dict) and r.get("id") not in _ид] + нови
     _запиши_атомарно(f, json.dumps(всички[-САЙТ_СДЕЛКИ_ТАВАН:], ensure_ascii=False))
     if _преброени:
-        notes.append("🧺 sdelki.json · %d стари сделки преброени по закона (стопът на нивото)" % _преброени)
+        notes.append("🧺 sdelki.json · %d стари сделки преброени по закона (%s)"
+                     % (_преброени, "2 позиции · стопът на нивото" if ДВЕ_ПОЗИЦИИ
+                        else "стопът на нивото"))
     return len(нови)
 
 
@@ -12873,7 +12953,7 @@ def _сайт_отворени(out, trade, доп, spot, now_utc, notes):
         except (TypeError, ValueError):
             _на_входа = False
         зап = _сайт_основа(_т, _слот)
-        зап.update({"taken": [k for k in ("tp1", "tp2", "tp3") if _hit.get(k)],
+        зап.update({"taken": [k for k in _цели() if _hit.get(k)],
                     "stop_at_entry": bool(_на_входа),
                     "bag_pips": (None if _б is None else _сайт_пипс(_б, _т.get("sym", "XAUUSD")))})
         сделки.append(зап)
