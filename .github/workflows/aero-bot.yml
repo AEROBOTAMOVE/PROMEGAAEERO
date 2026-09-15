@@ -249,6 +249,7 @@ jobs:
           БРОЕНЕ_ЦЯЛО: ${{ vars.WHOLE_TARGETS || '' }}
           ФАЙЛОВЕ_ЗА_САЙТА: ${{ vars.SITE_FILES || '' }}
           НОВИНИ_ВСИЧКИ: ${{ vars.NEWS_ALL_SLOTS || '' }}
+          РАВНОСМЕТКА_ВСИЧКИ: ${{ vars.RECAP_ALL_SLOTS || '' }}
           НОВИНИ_FOMC_МИН: ${{ vars.NEWS_FOMC_MIN || '' }}
           КАЛЕНДАР_ПАЗАЧ: ${{ vars.CALENDAR_GUARD || '' }}
           СМЕТКА_ТОРБА: ${{ vars.BAG_SUM || '' }}

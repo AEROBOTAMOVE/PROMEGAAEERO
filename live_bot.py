@@ -5899,7 +5899,198 @@ def _event_shield(ctx, now_utc):
         return False, None
 
 
-def _digest_msg(out, date, trade, s_trade, spot_g, spot_s, guard, weekly_part=False):
+ТОРБА_ДНЕВНИК = "closed_trades.jsonl"   # live/ · един ред = една затворена златна сделка
+ТОРБА_ЛОТ = 0.20                          # лот на ПОЗИЦИЯ (закон 3) → 2$ на пипс на позиция
+# 🔴🔴 15.09 · РАВНОСМЕТКАТА БРОИ ВСИЧКИ СЛОТОВЕ. Вечерната карта, пулсът и
+# седмичната показваха САМО главната сделка (open_trade.json). Мерено в
+# live/sent_log.jsonl (изходите tp3/sl/time/flip): 06.09 22:00 → 11.09 21:00
+# UTC — 145 затворени, 96 от тях в допълнителните слотове (exit2:*);
+# 13.09 22:00 → 15.09 07:57 UTC — 60 затворени, 40 в exit2. Сега трите карти
+# четат ЕДИН дневник на затворените — писан от СЪЩИЯ запис, от който се
+# сглобява изходната карта — и броят всяка сделка по торбата (`_торба`).
+# Търговският ден е 22:00 → 21:00 UTC; седмицата — неделя 22:00 → петък 21:00.
+# Часът 21:00–22:00 (паузата) се брои към ИЗТЕКЛИЯ ден: мерено, 0 затваряния
+# в 21:xx UTC за цялото лято, но от 01.11 (САЩ сменя часа) пазарът работи до
+# 22:00 UTC и с «до 21:00» такава сделка нямаше да влезе в НИКОЯ карта.
+# ПЪТ НАЗАД: vars.RECAP_ALL_SLOTS=0 → трите карти дословно старите
+# (дневникът продължава да се пише — той е данни, не карта).
+РАВНОСМЕТКА_ВСИЧКИ = int(_env("РАВНОСМЕТКА_ВСИЧКИ", "1"))
+def _търг_ден(now_utc):
+    """Търговският ден на `now_utc`: вчера 22:00 UTC → днес 21:00 UTC, и
+    паузата до 22:00 към него — прозорецът е [вчера 22:00, днес 22:00), за
+    да няма час, който не влиза в никой ден. От 22:00 UTC нататък вече тече
+    утрешният. Връща (от, до) — наивни UTC."""
+    т = pd.Timestamp(str(now_utc))
+    if т.tzinfo is not None:
+        т = т.tz_convert("UTC").tz_localize(None)
+    д = т.normalize() + pd.Timedelta(days=1 if т.hour >= 22 else 0)
+    return д - pd.Timedelta(hours=2), д + pd.Timedelta(hours=22)
+
+
+def _търг_седмица(now_utc):
+    """Последната ЗАВЪРШЕНА търговска седмица — търговските дни пон–пет:
+    неделя 22:00 UTC → петък 21:00 UTC, и петъчната пауза до 22:00 (както
+    при деня). Прозорецът е [неделя 22:00, петък 22:00) — наивни UTC."""
+    т = pd.Timestamp(str(now_utc))
+    if т.tzinfo is not None:
+        т = т.tz_convert("UTC").tz_localize(None)
+    пет = т.normalize() - pd.Timedelta(days=(т.weekday() - 4) % 7) + pd.Timedelta(hours=22)
+    if пет > т:
+        пет -= pd.Timedelta(days=7)
+    return пет - pd.Timedelta(days=5), пет
+
+
+def _торба_запис(out, exit_msgs, now_utc, notes=None):
+    """Записва ЗАТВОРЕНИТЕ златни сделки — главната (`exit:`) и допълнителните
+    (`exit2:`) — от СЪЩИЯ запис, от който се сглобява изходната карта.
+    Първият ред на файла е белегът «start»: от този миг картите броят."""
+    try:
+        ф = Path(out) / ТОРБА_ДНЕВНИК
+        редове = [] if ф.exists() else [{"start": now_utc, "v": VERSION}]
+        for tag, payload, kind, _посока in (exit_msgs or []):
+            if (not str(tag).startswith(("exit:", "exit2:"))
+                    or kind not in ("tp3", "sl", "time", "flip")):
+                continue
+            k, tro, px, when, _през, _гап = payload
+            _лв = tro.get("levels") or {}
+            редове.append({"utc": str(when or now_utc), "run_utc": now_utc, "tag": tag,
+                           "kind": k, "direction": tro["direction"],
+                           "entry": float(tro["entry"]), "exit": float(px),
+                           "opened": tro.get("opened"), "sym": tro.get("sym", "XAUUSD"),
+                           "levels": {x: float(_лв[x]) for x in ("tp1", "tp2", "tp3", "sl")
+                                      if _лв.get(x) is not None},
+                           "hit": {x: True for x in ("tp1", "tp2", "tp3")
+                                   if (tro.get("hit") or {}).get(x)}})
+        if редове:
+            with ф.open("a", encoding="utf-8") as fh:
+                for р in редове:
+                    fh.write(json.dumps(р, ensure_ascii=False) + "\n")
+    except Exception as _е:
+        if notes is not None:
+            notes.append("🔴 дневникът на затворените не се записа (%s: %s) — "
+                         "равносметката ще е непълна" % (type(_е).__name__, str(_е)[:60]))
+
+
+def _торба_затворени(out, от, до):
+    """Затворените златни сделки с изход в [от, до) — всяка ВЕДНЪЖ (ключ
+    посока · вход · отворена), с торбата ѝ в пипсове по `_торба` и със
+    СЪЩИЯ праг за нула като изходната карта.
+    Връща (сделки, начало_на_записите_или_None, брой_нечетими_редове)."""
+    ф = Path(out) / ТОРБА_ДНЕВНИК
+    if not ф.exists():
+        return [], None, 0
+    начало, по_ключ, лоши = None, {}, 0
+    for ln in ф.read_text(encoding="utf-8").splitlines():
+        if not ln.strip():
+            continue
+        try:
+            р = json.loads(ln)
+            if "start" in р:
+                начало = начало or р["start"]
+                continue
+            т = pd.Timestamp(str(р["utc"]))
+            if т.tzinfo is not None:
+                т = т.tz_convert("UTC").tz_localize(None)
+            if not (от <= т < до) or р.get("sym", "XAUUSD") != "XAUUSD":
+                continue
+            зн = 1 if р["direction"] == "long" else -1
+            дол = (float(р["exit"]) - float(р["entry"])) * зн
+            if abs(дол) < 0.005:
+                дол = 0.0
+            сб, ч = _торба(р["kind"], р.get("hit") or {}, р["levels"], float(р["entry"]), дол)
+            по_ключ["%s|%s|%s" % (р["direction"], р["entry"], р.get("opened"))] = dict(
+                р, пипса=int(round(сб / PIP)), части=ч)
+        except Exception:
+            лоши += 1
+    return list(по_ключ.values()), начало, лоши
+
+
+def _равносметка(out, от, до, отворени, spot, спрямо, етикет, notes=None):
+    """Блокът «торба» за вечерната карта, пулса и седмичната — ВСИЧКИ слотове.
+    Затворените с изход в [от, до), всяка по торбата; отворените — взетите
+    цели цели + останалите позиции по живата цена. Лот 0.20 на позиция.
+    Връща речник с готовите редове или None (и бележка) при повреда."""
+    try:
+        затв, начало, лоши = _торба_затворени(out, от, до)
+        if лоши and notes is not None:
+            notes.append("🟡 дневникът на затворените има %d нечетими реда" % лоши)
+
+        def _пп(п):
+            return "0" if not п else "{:+,d}".format(п).replace("-", "−")
+
+        def _пос(т):
+            return "покупка" if т.get("direction") == "long" else "продажба"
+
+        def _кой(т):
+            ч = _вх_час(т, спрямо)
+            return _пос(т) + (", вход " + ч if ч else "")
+
+        _дпп = ТОРБА_ЛОТ * 100 * PIP                  # долари на пипс на позиция = 2$
+        _лот = "%.2f" % ТОРБА_ЛОТ
+        n = len(затв)
+        общо = sum(р["пипса"] for р in затв)
+        плюс = sum(1 for р in затв if р["пипса"] > 0)
+        _пари_л = "{}{:,.0f}$".format("+" if общо >= 0 else "−", abs(общо * _дпп))
+        _от_к = ""
+        if начало and pd.Timestamp(str(начало)) > от:
+            _от_к = " (броя от %s)" % _sofia_ако_друг_ден(начало, спрямо)
+        р = {"n": n, "плюс": плюс, "общо": общо, "крайни": None, "пари": None}
+        if n:
+            н_д = max(затв, key=lambda x: x["пипса"])
+            н_л = min(затв, key=lambda x: x["пипса"])
+            р["затв"] = ("🧺 %s: %d затворени · %d в плюс · общо <b>%s пипса</b>%s"
+                         % (етикет, n, плюс, _пп(общо), _от_к))
+            р["крайни"] = ("🏆 %s (%s)" % (_пп(н_д["пипса"]), _кой(н_д)) if n == 1 else
+                           "🏆 най-добра %s (%s) · най-лоша %s (%s)"
+                           % (_пп(н_д["пипса"]), _кой(н_д), _пп(н_л["пипса"]), _кой(н_л)))
+            р["пари"] = "💰 при лот %s на позиция: <b>%s</b>" % (_лот, _пари_л)
+            р["сбито"] = ("🧺 %s: %d затворени · %d в плюс · <b>%s пипса</b> (%s при лот %s)"
+                          % (етикет, n, плюс, _пп(общо), _пари_л, _лот)
+                          + ("" if n == 1 else " · най-добра %s · най-лоша %s"
+                             % (_пп(н_д["пипса"]), _пп(н_л["пипса"]))) + _от_к)
+        else:
+            р["затв"] = р["сбито"] = "🧺 %s: няма затворени сделки%s" % (етикет, _от_к)
+        отв = sorted((т for т in (отворени or []) if т and т.get("direction")),
+                     key=lambda т: str(т.get("opened") or ""))
+        _пълни, _къси, _сб, _знаем = [], [], 0, bool(spot)
+        for т in отв:
+            п = None
+            try:
+                if spot:
+                    зн = 1 if т["direction"] == "long" else -1
+                    ост = (float(spot["mid"]) - float(т["entry"])) * зн
+                    п = int(round(_торба("отворена", т.get("hit") or {}, т["levels"],
+                                         float(т["entry"]), ост)[0] / PIP))
+            except Exception:
+                п = None
+            if п is None:
+                _знаем = False
+            else:
+                _сб += п
+            ч = _вх_час(т, спрямо)
+            _пп_т = (" " + _пп(п)) if п is not None else ""
+            _пълни.append("%s от <code>%s</code>%s%s" % (
+                _пос(т), "{:,.2f}".format(float(т["entry"])), " (%s)" % ч if ч else "", _пп_т))
+            _къси.append(_пос(т) + (" " + ч if ч else "") + _пп_т)
+        р["брой_отв"] = len(отв)
+        if отв:
+            _гл = "🥇 отворени %d%s" % (len(отв), (" · в торбата сега <b>%s пипса</b>" % _пп(_сб))
+                                         if _знаем else "")
+            _още = (" · и още %d" % (len(отв) - 3)) if len(отв) > 3 else ""
+            р["отв"] = _гл + ": " + " · ".join(_пълни[:3]) + _още
+            р["отв_сбито"] = _гл + ": " + " · ".join(_къси[:3]) + _още
+        else:
+            р["отв"] = р["отв_сбито"] = "🥇 няма отворена сделка"
+        return р
+    except Exception as _е:
+        if notes is not None:
+            notes.append("🔴 равносметката по торбата гръмна (%s: %s) — картата е по старому"
+                         % (type(_е).__name__, str(_е)[:60]))
+        return None
+
+
+def _digest_msg(out, date, trade, s_trade, spot_g, spot_s, guard, weekly_part=False,
+                торба=None):
     """ОДИТ-29 · какво стана с парите днес. Пет реда."""
     def _редове(файл, условие):
         f = out / файл
@@ -5917,7 +6108,14 @@ def _digest_msg(out, date, trade, s_trade, spot_g, spot_s, guard, weekly_part=Fa
     рънове = _редове("live_journal.jsonl", lambda r: r.get("date") == date)
     пратени = _редове("sent_log.jsonl", lambda r: str(r.get("utc", ""))[:10] == date)
     L = [f"🌙 Как мина денят · {_sofia()}"]
+    # 🔴 15.09 · РАВНОСМЕТКА_ВСИЧКИ · денят по торбата, ВСИЧКИ слотове; редът
+    # за главната сделка се сменя с всички отворени (главна + допълнителни).
+    _т177 = торба if (РАВНОСМЕТКА_ВСИЧКИ and торба) else None
+    if _т177:
+        L += [x for x in (_т177["затв"], _т177["крайни"], _т177["пари"], _т177["отв"]) if x]
     for нм, tr, sp, dec in (("🥇", trade, spot_g, 2), ("🥈", s_trade, spot_s, 3)):
+        if _т177 and нм == "🥇":
+            continue
         if tr:
             прибр = [n for n, k in (("1️⃣", "tp1"), ("2️⃣", "tp2"), ("3️⃣", "tp3"))
                      if tr.get("hit", {}).get(k)]
@@ -6202,7 +6400,7 @@ def _съгласни(board, посока):
 
 def _pulse_msg(part, board, best, new_dir, advice_txt, adv_ok, trade, s_trade,
                spot_g, spot_s, macro, shield, weekend, macro_raw=None, streaks=None,
-               stats=None):
+               stats=None, торба=None):
     """ОДИТ-29 · 3× на ден: жив съм, това гледам, това чакам."""
     ико, кога = {"09": ("☀️", "добро утро"), "14": ("🌤️", "докъде сме"),
                  "22": ("🌙", "как мина денят")}.get(part, ("📌", "какво гледам"))
@@ -6237,8 +6435,15 @@ def _pulse_msg(part, board, best, new_dir, advice_txt, adv_ok, trade, s_trade,
     # трябва да се вижда, че е решение, а не повреда.
     L += _обясн
     има = False
+    # 🔴 15.09 · РАВНОСМЕТКА_ВСИЧКИ · денят досега и ВСИЧКИ отворени сделки
+    _т177 = торба if (РАВНОСМЕТКА_ВСИЧКИ and торба) else None
+    if _т177:
+        L.append(_т177["сбито"])
+        if _т177["брой_отв"]:
+            има = True
+            L.append(_т177["отв_сбито"])
     for нм, tr, sp, dec in (("🥇", trade, spot_g, 2), ("🥈", s_trade, spot_s, 3)):
-        if tr:
+        if tr and not (_т177 and нм == "🥇"):
             има = True
             прибр = [n for n, k in (("1️⃣", "tp1"), ("2️⃣", "tp2"), ("3️⃣", "tp3"))
                      if tr.get("hit", {}).get(k)]
@@ -6267,7 +6472,7 @@ def _pulse_msg(part, board, best, new_dir, advice_txt, adv_ok, trade, s_trade,
         # 🔴 05.09 · ЛЕПИ СЕ към реда за сделката, не добавя нов: пулсът беше
         # 9 реда при таван 7. Няма ли такъв ред (рядко) — стои самостоятелно.
         for _i_сл in range(len(L) - 1, -1, -1):
-            if "държим от" in L[_i_сл]:
+            if "държим от" in L[_i_сл] or L[_i_сл].startswith("🥇 отворени"):
                 L[_i_сл] += " · следя до целите ИЛИ до стопа"
                 break
         else:
@@ -7386,7 +7591,7 @@ def _седм_ключ(now_utc):
 # `gold_d`, не от живия спот — мереното е върху затваряния и картата
 # трябва да ползва същото число. Мъртъв параметър е по-лош от липсващ;
 # П130 го хвана веднага, за втори път днес.
-def _седмица_msg(gold_d, board, macro, streak_n, cq, now_utc, sym="XAUUSD"):
+def _седмица_msg(gold_d, board, macro, streak_n, cq, now_utc, sym="XAUUSD", торба=None):
     """🔴🔴🔴 05.09 · ПОНЕДЕЛНИШКА ПРОГНОЗА ЗА СЕДМИЦАТА.
 
     Собственикът: «трябва да има в понеделник сутрин прогноза за седмицата».
@@ -7458,6 +7663,15 @@ def _седмица_msg(gold_d, board, macro, streak_n, cq, now_utc, sym="XAUUSD
         L.append("🌡 " + _фон_изречение(macro, streak_n) + " — това е фонът.")
     except Exception:
         pass
+
+    # 🔴 15.09 · РАВНОСМЕТКА_ВСИЧКИ · миналата седмица на бота — ВСИЧКИ
+    # слотове, по торбата — и отворените сега.
+    if РАВНОСМЕТКА_ВСИЧКИ and торба:
+        L.append(торба["затв"] + ".")
+        if торба["крайни"]:
+            L.append(торба["крайни"] + " · " + торба["пари"] + ".")
+        if торба["брой_отв"]:
+            L.append(торба["отв"] + ".")
 
     # ГОЛЕМИТЕ СЪБИТИЯ ТАЗИ СЕДМИЦА — това е сърцевината на седмичната карта
     try:
@@ -10431,6 +10645,9 @@ def main():
     # съществува. Дотук се опитваше да влезе преди това и не влизаше никога.
     if _спряна_карта is not None:
         new_msgs.append(_спряна_карта)
+    # 🔴 15.09 · РАВНОСМЕТКА_ВСИЧКИ · затворените (главна + допълнителни) влизат
+    # в дневника от СЪЩИЯ запис, от който отдолу се сглобява изходната карта.
+    _торба_запис(out, exit_msgs, now_utc, notes)
     for tag, payload, kind, dirn in exit_msgs:
         k, tro, px, when, via, gap = payload
         nl = ""
@@ -10562,7 +10779,11 @@ def main():
     if want_digest:
         s_tr_now = _load_state(s_tr_f, None)
         new_msgs.append(("digest", _digest_msg(out, date, trade, s_tr_now, spot_g, spot_s, guard,
-                                               weekly_part=(sof_now.weekday() == 4))))
+                                               weekly_part=(sof_now.weekday() == 4),
+                                               торба=(_равносметка(out, *_търг_ден(now_utc),
+                                                                   [trade] + list(доп_сделки or []),
+                                                                   spot_g, now_utc, "Днес", notes)
+                                                      if РАВНОСМЕТКА_ВСИЧКИ else None))))
         # Д3: meta["digest"] се маркира СЛЕД потвърдено пращане (виж 7б)
     # 🔴 01.09 · и когато СОБСТВЕНИКЪТ попита. Дотук картата беше достъпна
     # само с флаг от командния ред, тоест на практика недостъпна за него.
@@ -10621,7 +10842,11 @@ def main():
             # с TypeError вместо да размести мълчаливо.
             new_msgs.append(("седмица", _седмица_msg(
                 gold_d=gold_d, board=board, macro=macro, streak_n=streak_n,
-                cq=cq, now_utc=now_utc)))
+                cq=cq, now_utc=now_utc,
+                торба=(_равносметка(out, *_търг_седмица(now_utc),
+                                    [trade] + list(доп_сделки or []),
+                                    spot_g, now_utc, "Миналата седмица", notes)
+                       if РАВНОСМЕТКА_ВСИЧКИ else None))))
             meta["седмица"] = _седм_ключ(now_utc)
             notes.append("📅 прогноза за седмицата")
         except Exception as _есд:
@@ -10688,7 +10913,11 @@ def main():
                                trade, s_tr_p, spot_g, spot_s, macro, shield, weekend,
                                macro_raw=macro_health,
                                streaks=regime.get("streaks"),
-                               stats=stats)
+                               stats=stats,
+                               торба=(_равносметка(out, *_търг_ден(now_utc),
+                                                   [trade] + list(доп_сделки or []),
+                                                   spot_g, now_utc, "Днес досега", notes)
+                                      if РАВНОСМЕТКА_ВСИЧКИ else None))
             # 🔴 01.09 · ДВЕТЕ СТРАНИ. Преди реда от канала, защото е за
             # СОБСТВЕНИЯ поглед на бота, а каналът е чужд.
             try:
