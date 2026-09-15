@@ -1,0 +1,425 @@
+{
+ "data": "2026-09-15",
+ "izchisleno_utc": "2026-09-15T18:03",
+ "ot_utc": "2026-09-15T06:03",
+ "versiya": "v18.82",
+ "zapisi_nova_skala": 23,
+ "idei": 21,
+ "bliznaci_sleti": 2,
+ "bez_baza": 0,
+ "bari_5m": 13597,
+ "prag": "МИНА прага: n ≥ 40 · 95% интервал на ръба изцяло над 0 · ръбът без най-добрия ден над 0 · поне половината дни в плюс. n < 40 → мери още; иначе → не мина.",
+ "povishavane": "ръчно (лостът МОЗЪК_СДЕЛКИ) — таблото само докладва",
+ "hipotezi": {
+  "H1": {
+   "n": 1,
+   "torba_sr_pips": -81.2,
+   "sluchayno_sr_pips": -6.5,
+   "rab_pips": -74.7,
+   "di95_pips": [
+    -74.7,
+    -74.7
+   ],
+   "rab_bez_nay_dobriya_den_pips": null,
+   "dni": 1,
+   "dni_v_plyus": 0,
+   "dni_v_plyus_dyal": 0.0,
+   "prisada": "мери още",
+   "tekst": "Идеите, чийто повод споменава гап (гап / празнина / FVG), отворени между 09:00 и 12:00 софийско време.",
+   "rab_sashta_lineyka_pips": -74.7
+  },
+  "H2": {
+   "n": 4,
+   "torba_sr_pips": -11.8,
+   "sluchayno_sr_pips": -0.9,
+   "rab_pips": -10.9,
+   "di95_pips": [
+    -197.7,
+    167.8
+   ],
+   "rab_bez_nay_dobriya_den_pips": null,
+   "dni": 1,
+   "dni_v_plyus": 0,
+   "dni_v_plyus_dyal": 0.0,
+   "prisada": "мери още",
+   "tekst": "Шорт идеите на мозъка, докато главната сделка е лонг (полето главна == \"long\").",
+   "rab_sashta_lineyka_pips": 72.6
+  },
+  "H3": {
+   "n": 8,
+   "torba_sr_pips": 4.1,
+   "sluchayno_sr_pips": 1.0,
+   "rab_pips": 3.1,
+   "di95_pips": [
+    -59.7,
+    73.1
+   ],
+   "rab_bez_nay_dobriya_den_pips": null,
+   "dni": 1,
+   "dni_v_plyus": 1,
+   "dni_v_plyus_dyal": 1.0,
+   "prisada": "мери още",
+   "tekst": "Идеите, чийто повод споменава структура (структура / structure).",
+   "rab_sashta_lineyka_pips": -61.9
+  }
+ },
+ "vsichki_spravka": {
+  "n": 21,
+  "torba_sr_pips": -24.7,
+  "sluchayno_sr_pips": -0.5,
+  "rab_pips": -24.2,
+  "di95_pips": [
+   -76.8,
+   28.7
+  ],
+  "rab_bez_nay_dobriya_den_pips": null,
+  "dni": 1,
+  "dni_v_plyus": 0,
+  "dni_v_plyus_dyal": 0.0,
+  "belezhka": "справка — не е хипотеза и не се съди"
+ },
+ "idei_detayl": {
+  "1мин|long|4284.59|2026-09-15T07:47": {
+   "den": "2026-09-15",
+   "otvoren_utc": "2026-09-15T07:47",
+   "ramka": "1мин",
+   "posoka": "long",
+   "povod": "свип",
+   "glavna": "short",
+   "izhod": "стоп",
+   "bliznaci": 0,
+   "hipotezi": [],
+   "torba_usd": -14.76,
+   "sluchayno_usd": -0.5008,
+   "starta": 600,
+   "svoya_usd": 9.82
+  },
+  "5м|long|4279.82|2026-09-15T07:52": {
+   "den": "2026-09-15",
+   "otvoren_utc": "2026-09-15T07:52",
+   "ramka": "5м",
+   "posoka": "long",
+   "povod": "гап",
+   "glavna": "short",
+   "izhod": "стоп",
+   "bliznaci": 1,
+   "hipotezi": [
+    "H1"
+   ],
+   "torba_usd": -8.12,
+   "sluchayno_usd": -0.6478,
+   "starta": 600,
+   "svoya_usd": -8.12
+  },
+  "15м|long|4279.88|2026-09-15T07:57": {
+   "den": "2026-09-15",
+   "otvoren_utc": "2026-09-15T07:57",
+   "ramka": "15м",
+   "posoka": "long",
+   "povod": "свип",
+   "glavna": "short",
+   "izhod": "стоп",
+   "bliznaci": 0,
+   "hipotezi": [],
+   "torba_usd": -12.3,
+   "sluchayno_usd": -0.9794,
+   "starta": 600,
+   "svoya_usd": -12.3
+  },
+  "1мин|short|4264.8|2026-09-15T08:12": {
+   "den": "2026-09-15",
+   "otvoren_utc": "2026-09-15T08:12",
+   "ramka": "1мин",
+   "posoka": "short",
+   "povod": "структура",
+   "glavna": null,
+   "izhod": "стоп",
+   "bliznaci": 0,
+   "hipotezi": [
+    "H3"
+   ],
+   "torba_usd": -12.04,
+   "sluchayno_usd": 0.8695,
+   "starta": 600,
+   "svoya_usd": -12.04
+  },
+  "1мин|long|4271.15|2026-09-15T08:47": {
+   "den": "2026-09-15",
+   "otvoren_utc": "2026-09-15T08:47",
+   "ramka": "1мин",
+   "posoka": "long",
+   "povod": "свип",
+   "glavna": "long",
+   "izhod": "стоп",
+   "bliznaci": 1,
+   "hipotezi": [],
+   "torba_usd": -5.08,
+   "sluchayno_usd": -0.4532,
+   "starta": 600,
+   "svoya_usd": -5.08
+  },
+  "1мин|long|4279.22|2026-09-15T10:52": {
+   "den": "2026-09-15",
+   "otvoren_utc": "2026-09-15T10:52",
+   "ramka": "1мин",
+   "posoka": "long",
+   "povod": "структура",
+   "glavna": null,
+   "izhod": "стоп",
+   "bliznaci": 0,
+   "hipotezi": [
+    "H3"
+   ],
+   "torba_usd": 1.78,
+   "sluchayno_usd": -0.1954,
+   "starta": 600,
+   "svoya_usd": 1.78
+  },
+  "5м|long|4283.09|2026-09-15T11:03": {
+   "den": "2026-09-15",
+   "otvoren_utc": "2026-09-15T11:03",
+   "ramka": "5м",
+   "posoka": "long",
+   "povod": "структура",
+   "glavna": null,
+   "izhod": "стоп",
+   "bliznaci": 0,
+   "hipotezi": [
+    "H3"
+   ],
+   "torba_usd": -5.64,
+   "sluchayno_usd": -0.3965,
+   "starta": 600,
+   "svoya_usd": -5.64
+  },
+  "15м|short|4283.45|2026-09-15T11:08": {
+   "den": "2026-09-15",
+   "otvoren_utc": "2026-09-15T11:08",
+   "ramka": "15м",
+   "posoka": "short",
+   "povod": "гап",
+   "glavna": null,
+   "izhod": "стоп",
+   "bliznaci": 0,
+   "hipotezi": [],
+   "torba_usd": 7.97,
+   "sluchayno_usd": 1.0292,
+   "starta": 600,
+   "svoya_usd": 7.97
+  },
+  "15м|short|4282.66|2026-09-15T11:12": {
+   "den": "2026-09-15",
+   "otvoren_utc": "2026-09-15T11:12",
+   "ramka": "15м",
+   "posoka": "short",
+   "povod": "структура",
+   "glavna": null,
+   "izhod": "стоп",
+   "bliznaci": 0,
+   "hipotezi": [
+    "H3"
+   ],
+   "torba_usd": 11.43,
+   "sluchayno_usd": 0.5232,
+   "starta": 600,
+   "svoya_usd": -15.1
+  },
+  "1мин|short|4284.87|2026-09-15T11:33": {
+   "den": "2026-09-15",
+   "otvoren_utc": "2026-09-15T11:33",
+   "ramka": "1мин",
+   "posoka": "short",
+   "povod": "свип",
+   "glavna": "long",
+   "izhod": "цел2",
+   "bliznaci": 0,
+   "hipotezi": [
+    "H2"
+   ],
+   "torba_usd": 11.28,
+   "sluchayno_usd": -0.9498,
+   "starta": 600,
+   "svoya_usd": 2.65
+  },
+  "1мин|long|4283.05|2026-09-15T11:47": {
+   "den": "2026-09-15",
+   "otvoren_utc": "2026-09-15T11:47",
+   "ramka": "1мин",
+   "posoka": "long",
+   "povod": "свип",
+   "glavna": "long",
+   "izhod": "стоп",
+   "bliznaci": 0,
+   "hipotezi": [],
+   "torba_usd": -14.56,
+   "sluchayno_usd": 0.2885,
+   "starta": 600,
+   "svoya_usd": -14.56
+  },
+  "1мин|long|4272.69|2026-09-15T12:27": {
+   "den": "2026-09-15",
+   "otvoren_utc": "2026-09-15T12:27",
+   "ramka": "1мин",
+   "posoka": "long",
+   "povod": "свип",
+   "glavna": "long",
+   "izhod": "цел2",
+   "bliznaci": 0,
+   "hipotezi": [],
+   "torba_usd": 13.51,
+   "sluchayno_usd": 0.0444,
+   "starta": 600,
+   "svoya_usd": 13.51
+  },
+  "5м|short|4288.51|2026-09-15T13:07": {
+   "den": "2026-09-15",
+   "otvoren_utc": "2026-09-15T13:07",
+   "ramka": "5м",
+   "posoka": "short",
+   "povod": "свип",
+   "glavna": "long",
+   "izhod": "стоп",
+   "bliznaci": 0,
+   "hipotezi": [
+    "H2"
+   ],
+   "torba_usd": -29.24,
+   "sluchayno_usd": 1.1918,
+   "starta": 600,
+   "svoya_usd": 12.78
+  },
+  "1мин|short|4291.09|2026-09-15T13:37": {
+   "den": "2026-09-15",
+   "otvoren_utc": "2026-09-15T13:37",
+   "ramka": "1мин",
+   "posoka": "short",
+   "povod": "свип",
+   "glavna": "long",
+   "izhod": "стоп",
+   "bliznaci": 0,
+   "hipotezi": [
+    "H2"
+   ],
+   "torba_usd": -7.88,
+   "sluchayno_usd": -0.3947,
+   "starta": 600,
+   "svoya_usd": -7.88
+  },
+  "1мин|short|4296.07|2026-09-15T13:57": {
+   "den": "2026-09-15",
+   "otvoren_utc": "2026-09-15T13:57",
+   "ramka": "1мин",
+   "posoka": "short",
+   "povod": "свип",
+   "glavna": "long",
+   "izhod": "цел2",
+   "bliznaci": 0,
+   "hipotezi": [
+    "H2"
+   ],
+   "torba_usd": 21.12,
+   "sluchayno_usd": -0.2089,
+   "starta": 600,
+   "svoya_usd": 21.12
+  },
+  "5м|long|4299.65|2026-09-15T14:12": {
+   "den": "2026-09-15",
+   "otvoren_utc": "2026-09-15T14:12",
+   "ramka": "5м",
+   "posoka": "long",
+   "povod": "структура",
+   "glavna": "long",
+   "izhod": "стоп",
+   "bliznaci": 0,
+   "hipotezi": [
+    "H3"
+   ],
+   "torba_usd": -3.36,
+   "sluchayno_usd": 0.401,
+   "starta": 600,
+   "svoya_usd": -3.36
+  },
+  "1мин|long|4281.7|2026-09-15T14:37": {
+   "den": "2026-09-15",
+   "otvoren_utc": "2026-09-15T14:37",
+   "ramka": "1мин",
+   "posoka": "long",
+   "povod": "свип",
+   "glavna": null,
+   "izhod": "стоп",
+   "bliznaci": 0,
+   "hipotezi": [],
+   "torba_usd": -8.0,
+   "sluchayno_usd": -0.0704,
+   "starta": 600,
+   "svoya_usd": -8.0
+  },
+  "5м|long|4282.1|2026-09-15T14:37": {
+   "den": "2026-09-15",
+   "otvoren_utc": "2026-09-15T14:37",
+   "ramka": "5м",
+   "posoka": "long",
+   "povod": "свип",
+   "glavna": null,
+   "izhod": "стоп",
+   "bliznaci": 0,
+   "hipotezi": [],
+   "torba_usd": -9.16,
+   "sluchayno_usd": -0.2904,
+   "starta": 600,
+   "svoya_usd": -9.16
+  },
+  "1мин|long|4288.65|2026-09-15T15:27": {
+   "den": "2026-09-15",
+   "otvoren_utc": "2026-09-15T15:27",
+   "ramka": "1мин",
+   "posoka": "long",
+   "povod": "структура",
+   "glavna": "short",
+   "izhod": "време",
+   "bliznaci": 0,
+   "hipotezi": [
+    "H3"
+   ],
+   "torba_usd": 19.58,
+   "sluchayno_usd": 0.1537,
+   "starta": 600,
+   "svoya_usd": -4.76
+  },
+  "1мин|long|4298.33|2026-09-15T16:43": {
+   "den": "2026-09-15",
+   "otvoren_utc": "2026-09-15T16:43",
+   "ramka": "1мин",
+   "posoka": "long",
+   "povod": "структура",
+   "glavna": "long",
+   "izhod": "стоп",
+   "bliznaci": 0,
+   "hipotezi": [
+    "H3"
+   ],
+   "torba_usd": -3.08,
+   "sluchayno_usd": -0.2161,
+   "starta": 600,
+   "svoya_usd": -3.08
+  },
+  "1мин|long|4297.48|2026-09-15T17:48": {
+   "den": "2026-09-15",
+   "otvoren_utc": "2026-09-15T17:48",
+   "ramka": "1мин",
+   "posoka": "long",
+   "povod": "структура",
+   "glavna": "long",
+   "izhod": "стоп",
+   "bliznaci": 0,
+   "hipotezi": [
+    "H3"
+   ],
+   "torba_usd": -5.36,
+   "sluchayno_usd": -0.3326,
+   "starta": 600,
+   "svoya_usd": null
+  }
+ },
+ "hipotezi_sapadat": true
+}
