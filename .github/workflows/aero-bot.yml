@@ -253,6 +253,9 @@ jobs:
           НОВИНИ_FOMC_МИН: ${{ vars.NEWS_FOMC_MIN || '' }}
           КАЛЕНДАР_ПАЗАЧ: ${{ vars.CALENDAR_GUARD || '' }}
           СМЕТКА_ТОРБА: ${{ vars.BAG_SUM || '' }}
+          СИГНАЛ_ЯСЕН: ${{ vars.SIGNAL_CLEAR || '' }}
+          КАНАЛ_САМО_ВАЖНОТО: ${{ vars.CHANNEL_ESSENTIAL || '' }}
+          НЕ_ГОНИ: ${{ vars.NO_CHASE || '' }}
           ЕДИН_ВХОД: ${{ vars.ONE_ENTRY || '' }}
           БЕЗ_НАСРЕЩНИ: ${{ vars.NO_OPPOSITE || '' }}
           ЗЛАТЕН_ПЪТ: ${{ vars.GOLD_PATH || '' }}
