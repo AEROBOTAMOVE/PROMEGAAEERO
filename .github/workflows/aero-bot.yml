@@ -249,6 +249,9 @@ jobs:
           БРОЕНЕ_ЦЯЛО: ${{ vars.WHOLE_TARGETS || '' }}
           НОВИНИ_ВСИЧКИ: ${{ vars.NEWS_ALL_SLOTS || '' }}
           НОВИНИ_FOMC_МИН: ${{ vars.NEWS_FOMC_MIN || '' }}
+          СМЕТКА_ТОРБА: ${{ vars.BAG_SUM || '' }}
+          ЕДИН_ВХОД: ${{ vars.ONE_ENTRY || '' }}
+          БЕЗ_НАСРЕЩНИ: ${{ vars.NO_OPPOSITE || '' }}
           ЗЛАТЕН_ПЪТ: ${{ vars.GOLD_PATH || '' }}
           ЗЛАТЕН_ПЪТ_МИН: ${{ vars.GOLD_PATH_MIN || '' }}
           ЗЛАТЕН_ПЪТ_ОТМ_МАКС: ${{ vars.GOLD_PATH_OFFSET_MAX || '' }}
