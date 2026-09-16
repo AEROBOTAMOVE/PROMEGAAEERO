@@ -1,34 +1,41 @@
 {
- "kogato": "2026-09-16T03:08:05Z",
- "sekundi": 0.92,
+ "kogato": "2026-09-16T03:38:20Z",
+ "sekundi": 8.47,
  "broi": 200,
- "novi_tozi_pyt": 4,
+ "novi_tozi_pyt": 0,
  "iztochnici_ok": [
-  "Fed политика",
   "Fed всички",
+  "Fed политика",
+  "Investing",
+  "Yahoo долар",
   "Yahoo злато",
   "MarketWatch",
-  "Yahoo долар",
-  "Investing",
-  "CNBC",
   "FT пазари",
-  "Google злато",
-  "Google Fed",
+  "CNBC",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google Fed",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  },
+  {
+   "ime": "Google злато",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.36с",
-  "новини · FT пазари · 25 бр. за 0.48с",
-  "новини · Fed всички · 20 бр. за 0.27с",
-  "новини · Fed политика · 15 бр. за 0.26с",
-  "новини · Google Fed · 40 бр. за 0.78с",
-  "новини · Google злато · 40 бр. за 0.61с",
-  "новини · Investing · 10 бр. за 0.3с",
-  "новини · MarketWatch · 10 бр. за 0.28с",
-  "новини · Mining.com · 36 бр. за 0.9с",
-  "новини · Yahoo долар · 16 бр. за 0.28с",
-  "новини · Yahoo злато · 18 бр. за 0.28с"
+  "новини · CNBC · 30 бр. за 0.45с",
+  "новини · FT пазари · 25 бр. за 0.44с",
+  "новини · Fed всички · 20 бр. за 0.17с",
+  "новини · Fed политика · 15 бр. за 0.17с",
+  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Investing · 10 бр. за 0.23с",
+  "новини · MarketWatch · 10 бр. за 0.38с",
+  "новини · Mining.com · 36 бр. за 0.92с",
+  "новини · Yahoo долар · 15 бр. за 0.31с",
+  "новини · Yahoo злато · 18 бр. за 0.32с"
  ],
  "novini": [
   {
@@ -176,18 +183,6 @@
    "zashto": null
   },
   {
-   "zaglavie": "Pantoro Gold extends Racetrack mineralisation to 900 metres with high-grade drilling",
-   "vryzka": "https://www.proactiveinvestors.com/companies/news/1098594/pantoro-gold-extends-racetrack-mineralisation-to-900-metres-with-high-grade-drilling-1098594.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-09-15T23:55:00Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото."
-  },
-  {
    "zaglavie": "Review & Preview: Walk the Walk",
    "vryzka": "https://finance.yahoo.com/m/dc3c353f-b879-38b6-9ad7-afe738b3baff/review-%26-preview%3A-walk-the.html?.tsrc=rss",
    "izvor": "Yahoo Finance",
@@ -198,6 +193,18 @@
    "chas_ot_iztochnika": true,
    "duma": "rate",
    "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече."
+  },
+  {
+   "zaglavie": "Pantoro Gold extends Racetrack mineralisation to 900 metres with high-grade drilling",
+   "vryzka": "https://www.proactiveinvestors.com/companies/news/1098594/pantoro-gold-extends-racetrack-mineralisation-to-900-metres-with-high-grade-drilling-1098594.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-09-15T23:55:00Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото."
   },
   {
    "zaglavie": "Fed to decide on interest rates",
@@ -542,7 +549,7 @@
    "chas": "2026-09-15T20:41:12Z",
    "vazhnost": 2,
    "za": "злато",
-   "emisiya": "Yahoo злато",
+   "emisiya": "Yahoo долар",
    "chas_ot_iztochnika": true,
    "duma": "gold",
    "zashto": "Пряко за златото."
