@@ -9686,6 +9686,16 @@ def _migrate_trade(trade, basis, dec=2, notes=None):
 #
 # ЛОСТ НАЗАД: ПОДДРЪЖКА=0 → нищо от това не се случва, ботът е дословно като
 # преди кръпката (и входящият път пише в kanal.jsonl само каквото е позволено).
+# 🔴 16.09 · ако отместването се е закачило напред (Телеграм връща «няма нови» вечно),
+# това е ръчката: един рън чете ОТ НАЧАЛОТО и пише какво е намерил. Върни я на 0 после.
+ВХОД_НУЛИРАЙ = int(_env("ВХОД_НУЛИРАЙ", "0"))
+# 🔴🔴 16.09 · ОТДЕЛЕН ЧАТ ЗА ПОДДРЪЖКАТА — НЕ каналът със сигналите.
+# Собственикът, като видя устройството: «не слагай някой като се свързва в главния канал».
+# Прав е и това е опасно: TELEGRAM_CHAT_ID е чатът, който при КАНАЛ_ПУБЛИЧЕН=1 СТАВА
+# публичният канал за клиенти. Шапка «Иван пита…» там значи въпросът на един клиент да
+# се види от всички. Затова поддръжката има СВОЙ чат и НИКОГА не пише в канала.
+# Празен ПОДДРЪЖКА_ЧАТ = поддръжката СПИ (а не «пиши в канала») — безопасното по подразбиране.
+ПОДДРЪЖКА_ЧАТ = _env("ПОДДРЪЖКА_ЧАТ", "")
 ПОДДРЪЖКА = int(_env("ПОДДРЪЖКА", "1"))
 # Най-много толкова ПРЕДАДЕНИ съобщения от ЕДИН клиент на рън. Не е изхвърляне:
 # щом таванът се напълни, отместването се задържа и остатъкът идва на следващия
@@ -9722,13 +9732,23 @@ def _migrate_trade(trade, basis, dec=2, notes=None):
     "<i>Няма нужда да пишете пак.</i>")
 
 
-def _tg_updates(tok, offset=None, timeout=10):
+def _tg_updates(tok, offset=None, timeout=10, диаг=None):
     """Новите съобщения до бота. Връща (списък, следващ_offset) или ([], offset).
 
     Защитено: всяка грешка → празен списък и НЕПРОМЕНЕН offset, тоест ботът
     не губи съобщения и не спира заради мрежата.
+
+    🔴 16.09 (след жива проба) · ДИАГНОСТИКА. Дотук при празен отговор функцията
+    мълчеше и отвън не личеше НИЩО: собственикът пише на бота, нищо не идва, а в
+    дневника няма ред. Три различни причини изглеждаха еднакво (мрежа · 409 от
+    активен webhook · наистина няма нови). Сега всяка се назовава в `диаг`.
+    Webhook-ът е особено коварен: getUpdates връща 409 и Телеграм НЕ дава нито
+    едно съобщение, докато не се махне — затова ботът го маха САМ (веднъж) и
+    записва, че го е направил.
     """
     if not tok:
+        if диаг is not None:
+            диаг.append("няма токен")
         return [], offset
     q = {"timeout": 0, "limit": max(1, ВХОД_ТАВАН),
          "allowed_updates": json.dumps(["message", "channel_post"])}
@@ -9736,17 +9756,43 @@ def _tg_updates(tok, offset=None, timeout=10):
         q["offset"] = int(offset)
     url = ("https://api.telegram.org/bot%s/getUpdates?%s"
            % (tok, urllib.parse.urlencode(q)))
+    b = None
     try:
         with urllib.request.urlopen(url, timeout=timeout) as r:
             b = json.loads(r.read().decode("utf-8", "replace"))
-    except Exception:
+    except Exception as _e:
+        _тяло = ""
+        try:                                   # HTTPError носи тялото с причината
+            _тяло = _e.read().decode("utf-8", "replace")[:200]
+        except Exception:
+            _тяло = ""
+        if "409" in _тяло or "Conflict" in _тяло or "webhook" in _тяло.lower():
+            # webhook-ът краде съобщенията · махаме го, БЕЗ да трием чакащите
+            try:
+                with urllib.request.urlopen(
+                        "https://api.telegram.org/bot%s/deleteWebhook?drop_pending_updates=false" % tok,
+                        timeout=timeout) as r2:
+                    r2.read()
+                if диаг is not None:
+                    диаг.append("имаше webhook — махнах го, съобщенията идват от следващия рън")
+            except Exception:
+                if диаг is not None:
+                    диаг.append("webhook пречи, но не се маха")
+        elif диаг is not None:
+            диаг.append("грешка %s%s" % (type(_e).__name__, (": " + _тяло[:80]) if _тяло else ""))
         return [], offset
     if not isinstance(b, dict) or b.get("ok") is not True:
+        if диаг is not None:
+            диаг.append("Телеграм отказа: %s" % str((b or {}).get("description") or "?")[:80])
         return [], offset
     up = b.get("result") or []
     if not up:
+        if диаг is not None:
+            диаг.append("няма нови съобщения (отместване %s)" % ("начало" if offset is None else str(offset)))
         return [], offset
     _нов = max(int(u.get("update_id", 0)) for u in up) + 1
+    if диаг is not None:
+        диаг.append("%d нови" % len(up))
     return up, _нов
 
 
@@ -9984,12 +10030,31 @@ def _поддръжка_път(редове, notes=None, dry=False, прати=N
            "провали": 0, "задържи": None, "вид": ""}
     if not ПОДДРЪЖКА or not редове:
         return _бр
-    _ч = str(os.environ.get("TELEGRAM_CHAT_ID") or "")
+    # 🔴 16.09 · «/id» · ЕДИНСТВЕНОТО, което работи и БЕЗ настроен чат: ботът казва номера
+    # на чата, в който е писано. Така собственикът взима номера на СВОЯ чат с една команда,
+    # вместо да го търси през чужди ботове. Отговорът отива САМО в същия чат.
+    if прати is None:
+        прати = _send_raw
+    for z in (редове or []):
+        if not isinstance(z, dict):
+            continue
+        if str(z.get("текст") or "").strip().split("@")[0] != "/id":
+            continue
+        _зч = str(z.get("чат") or "")
+        if not _зч or dry:
+            continue
+        try:
+            прати("🔑 Номерът на този чат е: <code>%s</code>" % _зч
+                  + chr(10)
+                  + "Дай го за ПОДДРЪЖКА_ЧАТ и въпросите на клиентите ще идват тук.",
+                  chat_id=_зч)
+        except Exception:
+            pass
+    # 🔴 СВОЯТ чат, не каналът със сигналите. Празно → спи (виж лоста горе).
+    _ч = str(ПОДДРЪЖКА_ЧАТ or "").strip()
     if not _ч:
-        # Без чат на собственика няма къде да отиде шапката. Мълчи, но се обажда:
-        # тиха поддръжка, която «работи», е по-лоша от изключена.
         if notes is not None:
-            notes.append("ℹ️ поддръжката спи: няма TELEGRAM_CHAT_ID")
+            notes.append("ℹ️ поддръжката спи: няма ПОДДРЪЖКА_ЧАТ (нарочно — да не пише в канала)")
         return _бр
     if прати is None:
         прати = _send_raw
@@ -10153,7 +10218,17 @@ def _вход_чети(out, meta, notes=None, dry=False):
     tok = os.environ.get("TELEGRAM_TOKEN")
     if not tok:
         return 0
-    up, нов = _tg_updates(tok, meta.get("вход_offset"))
+    # 🔴 16.09 (след жива проба) · ВХОДЯЩИЯТ ПЪТ ВЕЧЕ НЕ МЪЛЧИ. Собственикът писа на
+    # бота и нищо не дойде; в дневника нямаше НИТО ЕДИН ред за входа, защото при
+    # «няма нови» функцията се връщаше тихо. Сега всеки рън казва какво е видял —
+    # това е разликата между «търся на тъмно» и «чета причината».
+    _диаг = []
+    _отм = None if ВХОД_НУЛИРАЙ else meta.get("вход_offset")
+    if ВХОД_НУЛИРАЙ:
+        _диаг.append("чета ОТ НАЧАЛОТО (ВХОД_НУЛИРАЙ=1)")
+    up, нов = _tg_updates(tok, _отм, диаг=_диаг)
+    if notes is not None and _диаг:
+        notes.append("📥 вход: " + " · ".join(_диаг))
     if not up:
         return 0
     редове = [z for z in (_вход_запис(u) for u in up) if z]

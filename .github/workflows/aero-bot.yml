@@ -256,6 +256,8 @@ jobs:
           # шапка в този чат → отговор с reply → клиентът вижда поддръжка.
           # НАЗАД: SUPPORT_RELAY=0 → ботът е дословно като преди v18.84.
           ПОДДРЪЖКА: ${{ vars.SUPPORT_RELAY || '' }}
+          # 🔴 ОТДЕЛЕН чат за поддръжката · НИКОГА каналът със сигналите
+          ПОДДРЪЖКА_ЧАТ: ${{ vars.SUPPORT_CHAT || '' }}
           ПОДДРЪЖКА_ТАВАН: ${{ vars.SUPPORT_MAX_PER_RUN || '' }}
           ПОДДРЪЖКА_ЗНАЦИ: ${{ vars.SUPPORT_MAX_CHARS || '' }}
           ПОДДРЪЖКА_ОПИТИ: ${{ vars.SUPPORT_RETRIES || '' }}
@@ -265,6 +267,7 @@ jobs:
           ЗАПИС_РЕД: ${{ vars.RECORD_LINE || '' }}
           ЗАПИС_ОТ: ${{ vars.RECORD_FROM || '' }}
           ИМЕ_ДНИ: ${{ vars.BOT_NAME_DAYS || '' }}
+          ВХОД_НУЛИРАЙ: ${{ vars.INPUT_RESET || '' }}
           НОВИНИ_ВСИЧКИ: ${{ vars.NEWS_ALL_SLOTS || '' }}
           РАВНОСМЕТКА_ВСИЧКИ: ${{ vars.RECAP_ALL_SLOTS || '' }}
           НОВИНИ_FOMC_МИН: ${{ vars.NEWS_FOMC_MIN || '' }}
