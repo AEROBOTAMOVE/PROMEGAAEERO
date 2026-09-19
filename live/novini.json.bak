@@ -1,34 +1,41 @@
 {
- "kogato": "2026-09-19T21:57:00Z",
- "sekundi": 1.14,
+ "kogato": "2026-09-19T22:27:25Z",
+ "sekundi": 8.98,
  "broi": 200,
- "novi_tozi_pyt": 3,
+ "novi_tozi_pyt": 0,
  "iztochnici_ok": [
+  "MarketWatch",
+  "Investing",
   "Fed политика",
   "Fed всички",
-  "Investing",
-  "MarketWatch",
   "Yahoo долар",
   "Yahoo злато",
   "CNBC",
   "FT пазари",
-  "Google Fed",
-  "Google злато",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google Fed",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  },
+  {
+   "ime": "Google злато",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.47с",
-  "новини · FT пазари · 25 бр. за 0.59с",
+  "новини · CNBC · 30 бр. за 0.49с",
+  "новини · FT пазари · 25 бр. за 0.6с",
   "новини · Fed всички · 20 бр. за 0.27с",
-  "новини · Fed политика · 15 бр. за 0.24с",
-  "новини · Google Fed · 40 бр. за 0.69с",
-  "новини · Google злато · 40 бр. за 0.73с",
-  "новини · Investing · 10 бр. за 0.29с",
-  "новини · MarketWatch · 10 бр. за 0.31с",
-  "новини · Mining.com · 36 бр. за 1.13с",
-  "новини · Yahoo долар · 17 бр. за 0.38с",
-  "новини · Yahoo злато · 18 бр. за 0.41с"
+  "новини · Fed политика · 15 бр. за 0.25с",
+  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Investing · 10 бр. за 0.25с",
+  "новини · MarketWatch · 10 бр. за 0.22с",
+  "новини · Mining.com · 36 бр. за 1.04с",
+  "новини · Yahoo долар · 17 бр. за 0.45с",
+  "новини · Yahoo злато · 18 бр. за 0.45с"
  ],
  "novini": [
   {
