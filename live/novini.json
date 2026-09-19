@@ -1,36 +1,58 @@
 {
- "kogato": "2026-09-19T12:37:07Z",
- "sekundi": 1.28,
+ "kogato": "2026-09-19T13:07:23Z",
+ "sekundi": 8.84,
  "broi": 200,
- "novi_tozi_pyt": 7,
+ "novi_tozi_pyt": 1,
  "iztochnici_ok": [
-  "Fed всички",
   "Fed политика",
+  "MarketWatch",
   "Investing",
   "Yahoo долар",
-  "MarketWatch",
   "Yahoo злато",
-  "FT пазари",
   "CNBC",
-  "Google Fed",
-  "Google злато",
+  "FT пазари",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Fed всички",
+   "greshka": "HTTPError: HTTP Error 404: Not Found"
+  },
+  {
+   "ime": "Google злато",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  },
+  {
+   "ime": "Google Fed",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.48с",
-  "новини · FT пазари · 25 бр. за 0.45с",
-  "новини · Fed всички · 20 бр. за 0.17с",
-  "новини · Fed политика · 15 бр. за 0.2с",
-  "новини · Google Fed · 40 бр. за 0.64с",
-  "новини · Google злато · 40 бр. за 0.65с",
-  "новини · Investing · 10 бр. за 0.27с",
-  "новини · MarketWatch · 10 бр. за 0.29с",
-  "новини · Mining.com · 36 бр. за 1.26с",
-  "новини · Yahoo долар · 17 бр. за 0.29с",
-  "новини · Yahoo злато · 18 бр. за 0.31с"
+  "новини · CNBC · 30 бр. за 0.26с",
+  "новини · FT пазари · 25 бр. за 0.4с",
+  "новини · Fed всички · ПАДНА: HTTPError: HTTP Error 404: Not Found",
+  "новини · Fed политика · 15 бр. за 0.17с",
+  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Investing · 10 бр. за 0.19с",
+  "новини · MarketWatch · 10 бр. за 0.18с",
+  "новини · Mining.com · 36 бр. за 1.09с",
+  "новини · Yahoo долар · 17 бр. за 0.24с",
+  "новини · Yahoo злато · 18 бр. за 0.25с"
  ],
  "novini": [
+  {
+   "zaglavie": "Warsh’s Fed shows it’s serious about taming inflation. Why Wall Street now believes it.",
+   "vryzka": "https://www.marketwatch.com/story/warshs-fed-shows-its-serious-about-taming-inflation-why-wall-street-now-believes-it-55dc5af5?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-09-19T13:00:00Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото."
+  },
   {
    "zaglavie": "The old new thing: Cisco and retro tech are back and forming the AI buildout’s backbone",
    "vryzka": "https://www.marketwatch.com/story/the-old-new-thing-cisco-and-retro-tech-are-back-and-forming-the-ai-buildouts-backbone-cdffc0b7?mod=mw_rss_topstories",
@@ -2348,6 +2370,18 @@
    "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече."
   },
   {
+   "zaglavie": "BoJ Hikes Rates, More Cautious Approach Likely Ahead: ETFs in Focus",
+   "vryzka": "https://finance.yahoo.com/economy/policy/articles/boj-hikes-rates-more-cautious-150000363.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-09-18T15:00:00Z",
+   "vazhnost": 3,
+   "za": "долар",
+   "emisiya": "Yahoo долар",
+   "chas_ot_iztochnika": true,
+   "duma": "rates",
+   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече."
+  },
+  {
    "zaglavie": "Federal Reserve Board announces termination of enforcement action with SNB Bancshares and Bank of Eufaula",
    "vryzka": "https://www.federalreserve.gov/newsevents/pressreleases/enforcement20260918b.htm",
    "izvor": "Fed",
@@ -2370,18 +2404,6 @@
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null
-  },
-  {
-   "zaglavie": "BoJ Hikes Rates, More Cautious Approach Likely Ahead: ETFs in Focus",
-   "vryzka": "https://finance.yahoo.com/economy/policy/articles/boj-hikes-rates-more-cautious-150000363.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-09-18T15:00:00Z",
-   "vazhnost": 3,
-   "za": "долар",
-   "emisiya": "Yahoo долар",
-   "chas_ot_iztochnika": true,
-   "duma": "rates",
-   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече."
   },
   {
    "zaglavie": "What’s Ahead in 2027 and Beyond for Inflation, Fed Rate Cuts, and More",
@@ -2415,18 +2437,6 @@
    "vazhnost": 1,
    "za": "общо",
    "emisiya": "Investing",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null
-  },
-  {
-   "zaglavie": "Aya logs high-grade, shallow silver in Morocco",
-   "vryzka": "https://www.mining.com/aya-logs-high-grade-shallow-silver-in-morocco/",
-   "izvor": "Mining.com",
-   "chas": "2026-09-18T14:45:54Z",
-   "vazhnost": 1,
-   "za": "злато",
-   "emisiya": "Mining.com",
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null
