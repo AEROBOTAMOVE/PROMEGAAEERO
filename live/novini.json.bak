@@ -1,36 +1,79 @@
 {
- "kogato": "2026-09-20T12:37:25Z",
- "sekundi": 0.93,
+ "kogato": "2026-09-20T13:12:23Z",
+ "sekundi": 1.13,
  "broi": 200,
- "novi_tozi_pyt": 7,
+ "novi_tozi_pyt": 2,
  "iztochnici_ok": [
-  "MarketWatch",
-  "Fed политика",
   "Fed всички",
-  "Investing",
-  "CNBC",
+  "Fed политика",
   "Yahoo злато",
   "Yahoo долар",
+  "Investing",
+  "MarketWatch",
+  "CNBC",
   "FT пазари",
-  "Google злато",
-  "Google Fed",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google Fed",
+   "greshka": "HTTPError: HTTP Error 429: Too Many Requests"
+  },
+  {
+   "ime": "Google злато",
+   "greshka": "HTTPError: HTTP Error 429: Too Many Requests"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.36с",
-  "новини · FT пазари · 25 бр. за 0.51с",
-  "новини · Fed всички · 20 бр. за 0.34с",
-  "новини · Fed политика · 15 бр. за 0.28с",
-  "новини · Google Fed · 40 бр. за 0.64с",
-  "новини · Google злато · 40 бр. за 0.64с",
-  "новини · Investing · 10 бр. за 0.33с",
-  "новини · MarketWatch · 10 бр. за 0.22с",
-  "новини · Mining.com · 36 бр. за 0.91с",
-  "новини · Yahoo долар · 18 бр. за 0.42с",
-  "новини · Yahoo злато · 18 бр. за 0.41с"
+  "новини · CNBC · 30 бр. за 0.41с",
+  "новини · FT пазари · 25 бр. за 0.48с",
+  "новини · Fed всички · 20 бр. за 0.18с",
+  "новини · Fed политика · 15 бр. за 0.31с",
+  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 429: Too Many Requests",
+  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 429: Too Many Requests",
+  "новини · Investing · 10 бр. за 0.35с",
+  "новини · MarketWatch · 10 бр. за 0.4с",
+  "новини · Mining.com · 36 бр. за 1.11с",
+  "новини · Yahoo долар · 18 бр. за 0.35с",
+  "новини · Yahoo злато · 18 бр. за 0.32с"
  ],
  "novini": [
+  {
+   "zaglavie": "Record diesel prices are exposing pain points in the stock market and economy",
+   "vryzka": "https://www.marketwatch.com/story/record-diesel-prices-are-exposing-pain-points-in-the-stock-market-and-economy-a2079b04?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-09-20T13:00:00Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": "inflation",
+   "zashto": "Инфлацията е основната причина да се държи злато — то пази стойност, когато парите я губят."
+  },
+  {
+   "zaglavie": "‘It's awful’: How tariffs, soaring fuel costs and higher interest rates are squeezing American companies",
+   "vryzka": "https://www.cnbc.com/2026/09/20/tariffs-fuel-prices-and-interest-rates-squeeze-us-companies.html",
+   "izvor": "CNBC",
+   "chas": "2026-09-20T12:47:23Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "CNBC",
+   "chas_ot_iztochnika": true,
+   "duma": "tariffs",
+   "zashto": "Митата вдигат цените и карат страните да търсят убежище — и двете стигат до златото."
+  },
+  {
+   "zaglavie": "‘I’m burned out’: I’m constantly helping my cousin who is running out of money. Is it too much to expect his sister to help?",
+   "vryzka": "https://www.marketwatch.com/story/im-burned-out-im-constantly-helping-my-cousin-who-is-running-out-of-money-is-it-too-much-to-expect-his-sister-to-help-540def9a?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-09-20T12:46:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null
+  },
   {
    "zaglavie": "Midterm voters are overwhelmingly worried about the national debt. But only small fixes are expected this year.",
    "vryzka": "https://www.marketwatch.com/story/midterm-voters-are-overwhelmingly-worried-about-the-national-debt-but-only-small-fixes-are-expected-this-year-758d364e?mod=mw_rss_topstories",
@@ -80,16 +123,16 @@
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото."
   },
   {
-   "zaglavie": "‘It's awful’: How tariffs, soaring fuel costs and higher interest rates are squeezing American companies",
-   "vryzka": "https://www.cnbc.com/2026/09/20/tariffs-fuel-prices-and-interest-rates-squeeze-us-companies.html",
-   "izvor": "CNBC",
-   "chas": "2026-09-20T12:00:01Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "CNBC",
+   "zaglavie": "Chevron plans drilling spree as it overhauls oil and gas search",
+   "vryzka": "https://www.ft.com/content/bbf1d846-7d89-45f6-8c0f-1fba1e334b4b?syn-25a6b1a6=1",
+   "izvor": "Financial Times",
+   "chas": "2026-09-20T12:00:03Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "FT пазари",
    "chas_ot_iztochnika": true,
-   "duma": "tariffs",
-   "zashto": "Митата вдигат цените и карат страните да търсят убежище — и двете стигат до златото."
+   "duma": null,
+   "zashto": null
   },
   {
    "zaglavie": "China is chasing SpaceX and setting its sights on the global space economy",
@@ -1292,18 +1335,6 @@
    "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече."
   },
   {
-   "zaglavie": "‘I’m burned out’: I’m constantly helping my cousin who is running out of money. Is it too much to expect his sister to help?",
-   "vryzka": "https://www.marketwatch.com/story/im-burned-out-im-constantly-helping-my-cousin-who-is-running-out-of-money-is-it-too-much-to-expect-his-sister-to-help-540def9a?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-09-20T01:30:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null
-  },
-  {
    "zaglavie": "Fed Chair Kevin Warsh Defied President Donald Trump, and 17 Words From His Post-FOMC Meeting Press Conference Suggest He May Do So Again",
    "vryzka": "https://news.google.com/rss/articles/CBMikgFBVV95cUxQbXkxNU4zX0t1cTZfQjBqWktrV2luS2s3WnIzbTNHWXFmT242aGlyYjFxMy0yM1Z4Y2RUS2d6eUtjQURweEd4WnpiZ1lHRGIySTBhX2otWk8zWnh0RzJWaXRpYTNjcDZLS0lPNTdIZ0tJMTNLX1dZYnYwMEFIaWY2cGlFOFAyQ1IxQkZqUF84YWsyUQ?oc=5",
    "izvor": "The Motley Fool",
@@ -2400,30 +2431,6 @@
    "vryzka": "https://news.google.com/rss/articles/CBMia0FVX3lxTE9XeHE2SzdaZW90ZEc4RGp6NzFORTZYa1dfWXVBRlZUQ1FEMVhfQVRhZlRSOHpLTF9mU3pjNmUxeUY3NFZoU0dscFRqNTZLQTJhU0RlN1duSFpSYnFoRk1TRjJlOGZuUWs4N3Ew?oc=5",
    "izvor": "thestreet.com",
    "chas": "2026-09-19T14:17:00Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото."
-  },
-  {
-   "zaglavie": "Most workers would take a pay cut for job security right now: ‘I can’t deal with this stress anymore’",
-   "vryzka": "https://www.marketwatch.com/story/most-workers-would-take-a-pay-cut-for-job-security-right-now-i-cant-deal-with-this-stress-anymore-284aa87a?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-09-19T14:14:00Z",
-   "vazhnost": 1,
-   "za": "лихви",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null
-  },
-  {
-   "zaglavie": "Fed Chair Kevin Warsh and the FOMC Just Hiked Interest Rates, and 36 Years of History Make Clear What Comes Next for Stocks",
-   "vryzka": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxPYXRjRzloYTQzRlZIS2F5Vk5oYlk2VmQwalJvVWFBZWhjTnZaSmV1WVJUeHgwTjdKVnhYSE5QNGFiSHZoc3NaSWhxLUV4cl94UlhjT29oTmxsci15dUN3NkJ0RnJrMjFGRXNicXNtSDFOb3JLcTc5S29qLUwxQnR1US1vX0d5V3RLTnJ1ZVpHV0Vmc1FhZDFWVE02Ym11bUJ4VzBvLVpzREwtR3ZIQVBmV214VDBqTmhOdllLa2ZQOGROZDkybWpYR1hMdldiVTM1LTN3N0JR?oc=5",
-   "izvor": "The Motley Fool",
-   "chas": "2026-09-19T14:06:00Z",
    "vazhnost": 3,
    "za": "лихви",
    "emisiya": "Google Fed",
