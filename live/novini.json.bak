@@ -1,43 +1,72 @@
 {
- "kogato": "2026-09-20T13:12:23Z",
- "sekundi": 1.13,
+ "kogato": "2026-09-20T13:42:39Z",
+ "sekundi": 1.1,
  "broi": 200,
- "novi_tozi_pyt": 2,
+ "novi_tozi_pyt": 13,
  "iztochnici_ok": [
   "Fed всички",
+  "MarketWatch",
   "Fed политика",
+  "Investing",
+  "CNBC",
   "Yahoo злато",
   "Yahoo долар",
-  "Investing",
-  "MarketWatch",
-  "CNBC",
   "FT пазари",
+  "Google злато",
+  "Google Fed",
   "Mining.com"
  ],
- "iztochnici_padnali": [
-  {
-   "ime": "Google Fed",
-   "greshka": "HTTPError: HTTP Error 429: Too Many Requests"
-  },
-  {
-   "ime": "Google злато",
-   "greshka": "HTTPError: HTTP Error 429: Too Many Requests"
-  }
- ],
+ "iztochnici_padnali": [],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.41с",
-  "новини · FT пазари · 25 бр. за 0.48с",
-  "новини · Fed всички · 20 бр. за 0.18с",
-  "новини · Fed политика · 15 бр. за 0.31с",
-  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 429: Too Many Requests",
-  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 429: Too Many Requests",
-  "новини · Investing · 10 бр. за 0.35с",
-  "новини · MarketWatch · 10 бр. за 0.4с",
-  "новини · Mining.com · 36 бр. за 1.11с",
-  "новини · Yahoo долар · 18 бр. за 0.35с",
-  "новини · Yahoo злато · 18 бр. за 0.32с"
+  "новини · CNBC · 30 бр. за 0.31с",
+  "новини · FT пазари · 25 бр. за 0.5с",
+  "новини · Fed всички · 20 бр. за 0.16с",
+  "новини · Fed политика · 15 бр. за 0.25с",
+  "новини · Google Fed · 40 бр. за 0.57с",
+  "новини · Google злато · 40 бр. за 0.56с",
+  "новини · Investing · 10 бр. за 0.25с",
+  "новини · MarketWatch · 10 бр. за 0.23с",
+  "новини · Mining.com · 36 бр. за 1.09с",
+  "новини · Yahoo долар · 18 бр. за 0.46с",
+  "новини · Yahoo злато · 18 бр. за 0.44с"
  ],
  "novini": [
+  {
+   "zaglavie": "The Fed’s September Decision Could Change What You Pay for Your Next Car",
+   "vryzka": "https://news.google.com/rss/articles/CBMihgFBVV95cUxQOVJxVmVtTW4xZl8xZmFVV0ZCM2lobllJN2RmUHVVdUFlNnd1SFBkRi1yVEVGUjBjanJzQTd3NDNDMWtyV2wzSTRRY0k0a2JtaEdhVUJaRDFKWTFEMXFvLW9CemZCdnY3bGNxYm01elVnVjJPTDNvdktneXZiSlNIQ01EWURIZw?oc=5",
+   "izvor": "AOL.com",
+   "chas": "2026-09-20T13:28:59Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото."
+  },
+  {
+   "zaglavie": "‘There might be a silver lining’: My friend’s wife died at 60 after a high-earning career. Can he claim her Social Security?",
+   "vryzka": "https://www.marketwatch.com/story/there-might-be-a-silver-lining-my-friends-wife-died-at-60-after-a-high-earning-career-can-he-claim-her-social-security-eb95210a?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-09-20T13:16:00Z",
+   "vazhnost": 1,
+   "za": "злато",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null
+  },
+  {
+   "zaglavie": "Gold prices hold steady in Syrian market",
+   "vryzka": "https://news.google.com/rss/articles/CBMiTEFVX3lxTE5TaU9YQkJ5aFZIeWE0cnpzbWpNWTFjbzBVZVVmTktvMUpraXRkdk5lUy1FeE5PUGRmZlpqRG1Lb0g5YUxKUm5fajNXNXY?oc=5",
+   "izvor": "سانا",
+   "chas": "2026-09-20T13:11:02Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото."
+  },
   {
    "zaglavie": "Record diesel prices are exposing pain points in the stock market and economy",
    "vryzka": "https://www.marketwatch.com/story/record-diesel-prices-are-exposing-pain-points-in-the-stock-market-and-economy-a2079b04?mod=mw_rss_topstories",
@@ -49,6 +78,30 @@
    "chas_ot_iztochnika": true,
    "duma": "inflation",
    "zashto": "Инфлацията е основната причина да се държи злато — то пази стойност, когато парите я губят."
+  },
+  {
+   "zaglavie": "Can the Fed pass Kevin Warsh’s trend test?",
+   "vryzka": "https://news.google.com/rss/articles/CBMimgFBVV95cUxOb3ViOGFnRzBmdlJiMExLZ1AzaGRkeEhVcGN6bm1kTDJJN19pM293NDBmaDRjWWFVVzk2Tl9icVByOFREMFFfdlV0WUFNZi1KUkZfOWZkSWRLZVpnWGpMd2xqdjA4RU42ckQ3bkdjRV9mb1QyYk9VemF4azg1dXlVQzBwSDRMYkNFVW5rVHpEdHpCSUExSFMtYWNR?oc=5",
+   "izvor": "washingtonexaminer.com",
+   "chas": "2026-09-20T13:00:00Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото."
+  },
+  {
+   "zaglavie": "Trump Criticizes Fed Rate Hike as Economists See Era of Higher Rates, Inflation - News and Statistics",
+   "vryzka": "https://news.google.com/rss/articles/CBMivgFBVV95cUxOZ3k5U19kZ04xd0tlT1MzSEM2TEJ0M2VNU1N2NG5hZDAyb3VOdjlnWEZzZ1psNGswNmc0OVVtWUpHeFhRWkEtZC1oMGotV3dFc1RONnVfMHJiMDZIcUJpNkRZSDJHYmp4VEdRcjJnLUktUGIzTGppZkhZcDlfVmpBVUR6MFBIRUJoREJrblpsZkhWQ2RCVVk4b2VLd0FXUXhiSktoZVlMcGRfR0dSUU8zOGlWeVFOcXh4cHBHRVhR?oc=5",
+   "izvor": "IndexBox",
+   "chas": "2026-09-20T12:50:26Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото."
   },
   {
    "zaglavie": "‘It's awful’: How tariffs, soaring fuel costs and higher interest rates are squeezing American companies",
@@ -75,6 +128,30 @@
    "zashto": null
   },
   {
+   "zaglavie": "The Fed Rate Hike Won’t Fix The Inflation It Targets",
+   "vryzka": "https://news.google.com/rss/articles/CBMijAFBVV95cUxNelJrSkkyZ3FaQ1BpRkFzZWpRQjgtakZFaGtHMEY4TGdqdVRxSkFxQWhQeUtjVFZhOFAtUmhtTkpqZm8tcWFGWnh1bEd3T21aRjRVblpTRlc3RkpUeGxrUzl6Sl84ZGh5enVaa29UVEhMNmZvbTV1WlduZjlnSUI4ZHY5VzFycFByanBUVw?oc=5",
+   "izvor": "Seeking Alpha",
+   "chas": "2026-09-20T12:40:00Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото."
+  },
+  {
+   "zaglavie": "'This could be something more substantial': Wall Street braces for more Fed rate hikes",
+   "vryzka": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxPeE9wSllIWU5VT0tBNzhndHVoSFJ2b0l6UVd3VVhNQ3RaNDhTRmV0Q0tCYUVUb3F6YnQ5ZDdIcXVYdWZKdmhNZEN1MHFMUDJmeDlzVE1XLUhGUW1QckJoeDR0bW85OEZIdkhxRWJpcG9ranBSVkF2NDI1d0hwVUxJeXROU2x4NnVmc2tNM29mRkJ6VEVHTXlfcW1fVWFDT1V4MzVnay1MT0U4Qk9hVDhIR0dtUndsZ2p3ZXBLRHExbGZ3SW5SWHBSdFI1NkJ3bkhBRlN4bUgwVnJNMm01LUZBdQ?oc=5",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-09-20T12:34:00Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото."
+  },
+  {
    "zaglavie": "Midterm voters are overwhelmingly worried about the national debt. But only small fixes are expected this year.",
    "vryzka": "https://www.marketwatch.com/story/midterm-voters-are-overwhelmingly-worried-about-the-national-debt-but-only-small-fixes-are-expected-this-year-758d364e?mod=mw_rss_topstories",
    "izvor": "MarketWatch",
@@ -99,22 +176,22 @@
    "zashto": null
   },
   {
-   "zaglavie": "Where and how to buy gold safely in 2026",
-   "vryzka": "https://news.google.com/rss/articles/CBMilwFBVV95cUxNSVBPWGJrQjdJRFAzRXdXSDBaN19yWkJZU294ZFV4aG9JOUlHenRPa2JERm95ZW5RdG4wN3drQUJOa0RIX3Q2aHU5V05CV2VKd1FlV1F6bkphdS1rNWtabmZXN3BOajcxMC1JVmVSY09GYUwzU0FSWDlrbnBjT3ZHMUpwc1dTNDRWaWtqbDQzUFpBbHZmTkdr?oc=5",
-   "izvor": "USA Today",
-   "chas": "2026-09-20T12:04:00Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото."
-  },
-  {
    "zaglavie": "3 AI Stocks to Buy Before the Next Fed Rate Decision",
    "vryzka": "https://news.google.com/rss/articles/CBMimAFBVV95cUxPMkpIZnQxNi1oa2ltaEZBTzV0VlR5ZzJuU1NTZlhfS1k2eHdLMmNfeFRRWVlDc2dya1lnY284VmFKYkVyTUZjeDhUOTFZa3JyNHhVT0N6MGZ1UHZJRnMxMTNiMHpRX2ZGOE5UaU5HbUFGNWZTdEJvYi1uVVYweG14VHcyNS0xUklxVGJOUFpwX19xT3lUSXRKUw?oc=5",
    "izvor": "fool.com",
    "chas": "2026-09-20T12:02:13Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото."
+  },
+  {
+   "zaglavie": "The ripple effect of US Fed’s rate hike",
+   "vryzka": "https://news.google.com/rss/articles/CBMihgFBVV95cUxNVDBrbXM4NDNWVEU0cVhwTXo5NWROcmliV19tMGhuSmc4Szk0RGViRUd6UUlKUnoxNTdLVHFwd0ZaSW5Dd1BnU1daTEExMjEwLW45TElFLThETUZhSkRSN1ZhZE9rQ1pvNTZyV2xoWk93TVFaeS1PY0FKb3dHWWxLUkZfN0lVUQ?oc=5",
+   "izvor": "Arab News",
+   "chas": "2026-09-20T12:01:28Z",
    "vazhnost": 3,
    "za": "лихви",
    "emisiya": "Google Fed",
@@ -148,8 +225,8 @@
   },
   {
    "zaglavie": "Federal Reserve rate hike reflects new world of sticky inflation and faster growth",
-   "vryzka": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxNMXhFdHQyRDIzY0dkOEk2YjF6bUpfVHJOWEowVVVWSEkzRU9nTG84X1NCZGJsWlc3bXFjUUJlbmJBeDFDZ3pUdmVFMTRMZ3dvTEJxMG5RR0NoM2ZDVUY5Z3hOdlVSVXI2TjNJVjZJZS1SSGw1Sk95emxZelBfWEhtZ0tVR3FCek1JNkZFcnRIN25jSjNGd3ZjczRySWM4MV9qVFVkZEV6U0JpRlN4bGk4blZYalV5bHdCWC1LZVF1VHU?oc=5",
-   "izvor": "MyNorthwest.com",
+   "vryzka": "https://news.google.com/rss/articles/CBMiiAJBVV95cUxOejVmUGNkSld2Q1JGT2kzNENRdi1fZ2hYbERZTUdRUHFuQTAweEZVcWtGTzk5Rk1pbXpqTElVUzBVMmJYbzFxRmJROGppVGh0R0NRVGVZVFlDamp1MndoeGs0VWh3TUV2aDhObEJUNWU0YVE2di1ZcDBNbnV5TVBqd1JrRHF0T0N2dUpwS0t5NGpIblh6VHpOZUtxYWVPWEZjYkQ3MVZGRzNaRnp5ck9aTFJvTklhcmN4YUNiY1NXTGt3V3J3Q29QVlJaS0g1enhycjQ1NUNIcXpjaDZIbzFjWTJDdEJNNU9qMDEzT0ItcnEyRmpGWk92YkFYeExqdEd5dFNfMkdDTUU?oc=5",
+   "izvor": "Ottumwa Courier",
    "chas": "2026-09-20T11:59:42Z",
    "vazhnost": 3,
    "za": "лихви",
@@ -169,6 +246,18 @@
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null
+  },
+  {
+   "zaglavie": "World gold price today 20. 9: Overwhelming increase expectation after weekend surge",
+   "vryzka": "https://news.google.com/rss/articles/CBMitAFBVV95cUxNcG9kRWhJVmd6b2RnZVEwQXFtZ24wYUc2NC1NNFkzQUNFWFFqa1R3VHFVMkpYWjZ1Q2NkQlQ5OWVpTkpzekUyUjM5clhRNWF3b3JhbEZlNFNlVGl3ZGxfd3ltVnlfU0xqQk9ZdFhxXzJvM2NVVDU3WlRHZ0thZkZHal9tZlFxS3o4clNaTW1Gb1pDMld5TG1FZVNudDlIbjNYQUl0dnh5b2RKMlo0WFh4amROZVo?oc=5",
+   "izvor": "Laodong.vn",
+   "chas": "2026-09-20T11:34:38Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото."
   },
   {
    "zaglavie": "Inflation Bites US Households: Mortgage Rates Jump 7% At 19-Month High Following Fed Rate Hike",
@@ -207,6 +296,18 @@
    "zashto": "Пряко за златото."
   },
   {
+   "zaglavie": "Gold Rate Today in West Bengal 20th September 2026 : 22 & 24 Carat, Todays Gold Price in West Bengal",
+   "vryzka": "https://news.google.com/rss/articles/CBMieEFVX3lxTFBwVnU5VEh6RV9mOUd3MERpOVhZZlg5aFAzWkVzZ0x0V2lIZnhuZHB6RndiUXV6X0Y4LXpfWll6QUtjVGVKcnhDZGdZRGRRUlY4SVBjT3hhelc1YnBFSzJ1S0Y1RldGZDV0YktNUDRPRUZ3Zm1tdXl1OA?oc=5",
+   "izvor": "Business Today",
+   "chas": "2026-09-20T11:25:52Z",
+   "vazhnost": 3,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "rate",
+   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече."
+  },
+  {
    "zaglavie": "DRDGOLD stock edges lower as gold price rally tests margins",
    "vryzka": "https://news.google.com/rss/articles/CBMiugFBVV95cUxOamFVcW9uY0VpblZSWERoUkh2ZlpqMFZpY1NTY1RCNTVwUlY3ejlIT2FtRDdqazFLZ1lTSVNaS2p0ZDBjM2NEMUFWRDNmZGtZQndIbDlOUFU1bFlVNk9YTWFrLUQ5NXk1azI4aHRDNmE0X05vV2piR1JqcGFiN2pOSVhyLTlrRko4ZFFKODVOeUppVXFpSE1FVXZzMUN4czVObldrTE1yT0t3b2ZaQlF1YlAyVmtpYlgzSEE?oc=5",
    "izvor": "AD HOC NEWS",
@@ -223,6 +324,30 @@
    "vryzka": "https://news.google.com/rss/articles/CBMigAJBVV95cUxNVWZYN3ZZbE9pZWJISzdyNXpxdXczWGc2aXlQWERLajZHTmMxYmdwVmNUNkM2OGliRG1kRkxqYXpzYUVsZUczTkhYRk5KLUhLbWpDcDI2NVI5UXRTUkZ0dXdZTEJyTjRCSDQ4TzFsYnh1b2w4VlNWYk81RHYwUjZFOGZodHF0YmxYNXdGekFlZklncDNWbEVCbEJycGxxZGYySFhSRHN2aHV5cmtwSFUtamdkWndzVUFoQW9zSE9TUVJ1LVc3SGY3QjRZQmREaHdLZjctbUQ5QmpOYW1Fdmp1bjJiVXFCbFFNVFZnV0xSNVJMTU03TGNtTlZXdUVEellu0gGGAkFVX3lxTE01UHRKZFBXTXM3S2dmTUtJdkZYZWgxeW9VRW5nNFNQWGRvQ2Rfa2p2Ymk3cWN1OF9qaG1RV0E4LXJkMDczQjJMd2dLTTVZOVROc0lFa2xzZnlnSmJqMjdLMUh4RmJVeklEYU9wc3ZZTGpSZnVraVVuOWREZ1lDVzRMd0lHbFBlel9XdThDN1lxZFRoamhQV0V6R2NEN1h",
    "izvor": "The Economic Times",
    "chas": "2026-09-20T11:12:00Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото."
+  },
+  {
+   "zaglavie": "Gold Rate Today in Greater Mumbai 20th September 2026 : 22 & 24 Carat, Todays Gold Price in Greater Mumbai",
+   "vryzka": "https://news.google.com/rss/articles/CBMifEFVX3lxTFB1b2xKS29ZcnRCVWx2WS1PR2piMjZ6cXlXM3JKVUZsQnJfVnpPb00tdGl4bjh2Y3YyeGJJT3E0MHU1U2l2VDdLdEVkUWdSZElMRjk4VFlJcWptWk9zME1NLUZfdlhxZkxrQzNoT0F0bFIwT3VTNF9KeWlUTVc?oc=5",
+   "izvor": "Business Today",
+   "chas": "2026-09-20T11:04:26Z",
+   "vazhnost": 3,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "rate",
+   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече."
+  },
+  {
+   "zaglavie": "Where and how to buy gold safely in 2026",
+   "vryzka": "https://news.google.com/rss/articles/CBMilwFBVV95cUxNc1NBVmtUdFpoYUhTV1JMZUV0VlhzVzcyWWNRdHRsakFxaGdLaDFsUy1aT0l0dlg4aFdfRzFOSXlOaXRqZXY5V1VpQ1NrdXI3UzN4UUdicno3cVBQOVhTeEZQSk5QTWJEbVFYdFhuMU1UU3c1Vkdma2Nvd1ozRFd2U2FkWmYxN3dHNHd1cHhmeTNfa2dmNUU0?oc=5",
+   "izvor": "azcentral.com and The Arizona Republic",
+   "chas": "2026-09-20T11:04:00Z",
    "vazhnost": 2,
    "za": "злато",
    "emisiya": "Google злато",
@@ -293,7 +418,7 @@
   {
    "zaglavie": "US stocks slip after the Fed hikes interest rates and hints more increases may be on the way",
    "vryzka": "https://news.google.com/rss/articles/CBMi8gFBVV95cUxOQmNWNk50YWxza1NoTHU5SExpcGgtZ0pLQ2RfZXVmU1A5aXM3ekxxbGRrUFVRNURkTGdhUFY4aC1OSlJGaUM4SjFZWG85b3ZjUUdsNzV3Uk1iSGVMOGVGMmZPVUh4S0UzNlZOb0xZRUNrNmxGYUo1NHZadDFqNElTZ2lMQ3NtNTRYVWllQnNxdmRCckxEYzNZMUtsQU5vWTZGQkVDY0VPWVgwUmdJN19xckpFczVTZ2xaMkE0M2RjVXRGa1ozUC1jNFhWbXBwQ2V1Zy1ieU1GRXRrcldDSDRwaGIwWHE1VW1CNzFZeWprSEVWdw?oc=5",
-   "izvor": "mankatofreepress.com",
+   "izvor": "Mankato Free Press",
    "chas": "2026-09-20T10:39:44Z",
    "vazhnost": 3,
    "za": "лихви",
@@ -387,6 +512,18 @@
    "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече."
   },
   {
+   "zaglavie": "Gold Rate Today in Mangalore 20th September 2026 : 22 & 24 Carat, Todays Gold Price in Mangalore",
+   "vryzka": "https://news.google.com/rss/articles/CBMidkFVX3lxTE9NeHBEOGNNYzZtT3lmZ2NhWXNSeHdLNkl4UnVPWEZ6blpzTlV6bXJLRnZ6dVNONTJQckg1aGhvaE5lZVNpOFM0MnRVSmpzakxHdlhUUGU1SzdJUkxzcnJ6aUJiNllNUEZwbnAtZk5aeTNFaWdsenc?oc=5",
+   "izvor": "Business Today",
+   "chas": "2026-09-20T09:47:15Z",
+   "vazhnost": 3,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "rate",
+   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече."
+  },
+  {
    "zaglavie": "Gold Rate Today in Vadodara 20th September 2026 : 22 & 24 Carat, Todays Gold Price in Vadodara",
    "vryzka": "https://news.google.com/rss/articles/CBMidEFVX3lxTE1nWEtqMFBqRTczVHZRYjNvU2c0OHNjR2plNnFSYS1GTUlYMUlLak5MQ013Tnp3dzFzUi10YmRjVWRidS1UVVhSYVV1Y1F0OHVGRVl3Y1ptX094ekVDR2lpZ28wV2RTSVoyNW9TTnhLc2V5bmpu?oc=5",
    "izvor": "Business Today",
@@ -394,6 +531,42 @@
    "vazhnost": 3,
    "za": "злато",
    "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "rate",
+   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече."
+  },
+  {
+   "zaglavie": "Gold Rate Today in Nashik 20th September 2026 : 22 & 24 Carat, Todays Gold Price in Nashik",
+   "vryzka": "https://news.google.com/rss/articles/CBMickFVX3lxTE9XS1BUSmFQWFJUNkoxRkhSQmxwbUZwUDU1aXRHOFFralRKdFVLTkh1eGFCSXVEZ3BaNlAyZEdoNkFwczdFZXlWcDRXYVJvRFZUUHhCWTU3U3dTWDVCSV9fY0tHckZFNkZDam9xOVhYNDNzZw?oc=5",
+   "izvor": "Business Today",
+   "chas": "2026-09-20T09:47:14Z",
+   "vazhnost": 3,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "rate",
+   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече."
+  },
+  {
+   "zaglavie": "Gold Rate Today in Chennai 20th September 2026 : 22 & 24 Carat, Todays Gold Price in Chennai",
+   "vryzka": "https://news.google.com/rss/articles/CBMic0FVX3lxTE9WWHI3aTBUVm1saEZzbmRDMTRSdzloNkZHSlVueWFoNjNZZGV6eHBxMW5uTTZlUzB4b0lTOTNINU96QkRFdkU1eWVyelhxZ1ZPMFprUTg1MWdHdVRuVlpHRTczeU5PbmhXclNoR2JIUTBDR3M?oc=5",
+   "izvor": "Business Today",
+   "chas": "2026-09-20T09:47:13Z",
+   "vazhnost": 3,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "rate",
+   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече."
+  },
+  {
+   "zaglavie": "USD/JPY weekly forecast: Suspected rate check revives intervention threat",
+   "vryzka": "https://news.google.com/rss/articles/CBMivAFBVV95cUxQOWVfYS0zRUhhQVNYMWJPSVJ6X1pDRmFURWxRSG54NUtudl9ZUC1rVDVzZjVsR2duRGFzazl4Nk9RbDlUY00yNUtPdjlKVDRPanFIT3ItMW5xaDl2M1BnMnhOMC0yLWxEY2tVUndvTU5LYm82X1QzN096WEJLaExOMDhIdjFVMURmamlOcmllUEtNbUpMdDAxdkpqdDF3VjZjRk8zakZNSU8wZ2w2aE10aG5vUGVxTHp5b3dzeA?oc=5",
+   "izvor": "stonex.com",
+   "chas": "2026-09-20T09:35:18Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
    "chas_ot_iztochnika": true,
    "duma": "rate",
    "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече."
@@ -411,18 +584,6 @@
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото."
   },
   {
-   "zaglavie": "Stock Market Investors Just Got Bad News From the Federal Reserve. History Says This Will Happen Next.",
-   "vryzka": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxNbmNaam0teWVpa28wWWVQUm1sT2o4eWdUUjQ4QTZ4NWstbXRmLWhSMFBRMTY5bVJBMkNMVXZzNi05QXhINXgtT0JpclRfcjdhS2tfcVdZUmpVemNtS095Rm9Ta2xwUWNJLWU2RnVwOXBOYVNjZGlDNC1mZEFxeUFNS0JiejN5R2g2RHVxRDNxdTBLMTVQakc4LU1SZ1dORFFXenZ6TldzTHFQQQ?oc=5",
-   "izvor": "fool.com",
-   "chas": "2026-09-20T09:14:09Z",
-   "vazhnost": 1,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null
-  },
-  {
    "zaglavie": "Bitcoin's Correlation with Gold Surges to 99.5th Percentile",
    "vryzka": "https://news.google.com/rss/articles/CBMimAFBVV95cUxONUd4OFRGVWdYQVk3bmtWWDlHdnp3d0NlbGZwSGl5c2x2aUE0REROWjMxWWNnanlGN1ZjelA2X0xxUGxOMkJfWVBwR3ZzNXNOU1pHa3Ruc0pUNUZ3OGZoc0FhQ0NUZGUxbkFsaXZVM2U0VXNtNGZCczNvUWF2c0lwdThCc0pSWW9UYWs5bUNkVENkQjZ3WUgyQw?oc=5",
    "izvor": "KuCoin",
@@ -435,8 +596,20 @@
    "zashto": "Пряко за златото."
   },
   {
+   "zaglavie": "Stock Market Investors Just Got Bad News From the Federal Reserve. History Says This Will Happen Next.",
+   "vryzka": "https://news.google.com/rss/articles/CBMinAFBVV95cUxNNVFmTDEyZGdmOW9nNl9ra0tsc2dOTmNiSkNvZXBjSFR6bUVHTjBRS1ljVjBHZndyNjRMUWJHdXVGeHh1Z3JmVXIxQlNBbEV2T0NLVEFua1ltLTJwT1BwdGFvUElGUjQ2TDZlVU5NX2ZnT1ZTTDJ1WmpBWGt3Ym0xR0hPOHd6RzFyYkRxTnQyMXZobExpamhpakZZZHA?oc=5",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-09-20T09:08:01Z",
+   "vazhnost": 1,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null
+  },
+  {
    "zaglavie": "For Seattle housing market, will Fed’s rate hike hurt or cure?",
-   "vryzka": "https://news.google.com/rss/articles/CBMiogFBVV95cUxOZDVRREdGdk5EOTdtOFNlWEJYMW1lTFBZNTRiTlVYXzdnZUlFejlFUWpaMVp3bHNUWUZRQ2lidFlPeWtNb3ZyeFBFNkZLRUlRdU5fSThST0g1d3VjRkRMYmVXZTN2c3BaX0M4RDBKa1J2QXBremVBWVN2bjl3N0t0dUhzN1k0WURNWWNTM3daaWtBeGNDY2JXRTI1RHdkMDBQaEE?oc=5",
+   "vryzka": "https://news.google.com/rss/articles/CBMiowFBVV95cUxPLXJpVjg2Z2dRRE9NNkFQYWxIUGxnX3EzUXlJSkV0QnJBaXVLRG5aa08zWi1mQm55UW10ckpXazZfQWlwQjVXLUhPNWFjVjd1QzZjWXNmVEk4aHBCZ0ZKbWVQOTN3bG5vRDZ3RGxTMk02UFlkaGtiU1lIN1l5eUlFTno3dmJrME9Kbm9EbF9DSVVBbnJNbjFVQlc3WExySjZHRWcw?oc=5",
    "izvor": "The Daily Chronicle",
    "chas": "2026-09-20T09:06:28Z",
    "vazhnost": 3,
@@ -507,6 +680,18 @@
    "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече."
   },
   {
+   "zaglavie": "Trumpflation Just Hit 3.4%. The Fed Just Raised Rates. The Stock Market Has Been This Expensive Only Once Before. Is a Crash Inevitable?",
+   "vryzka": "https://news.google.com/rss/articles/CBMihAJBVV95cUxPdkNkNTNMZjg4cXFXUHlkTzlIZjlYWkV2Z2oxR2toU2ZyeTFFMHowQU9haGxlS0lGUm95eElxNVE2R0NqVHhGTkx6VV81elhDWDg2UmRmS3VHcHpscnpIQWlrQXEwRnlpSUdVNGtXN3lmWUNwR3M0RVBBTXgwal9tYlRkQmctQm5rQk8yRjBMbXl6dXNxQk05d1FoU0RwTklwb050R1hWUktWay1nbkl3M3VRYnBnSXBJVXhOTU5zUFZYM0Q4WGMtZUZleV9jdXZEQVdOZXEzOVc1RXVPdHBOZXRha0dZV3pkWXIxM3hDR0hGTkxPWWQ4UTZMdWdyLWNQLUtkbA?oc=5",
+   "izvor": "fool.com",
+   "chas": "2026-09-20T08:53:00Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото."
+  },
+  {
    "zaglavie": "The double-whammy that's about to hit the US economy — and put a big squeeze on your wallet",
    "vryzka": "https://news.google.com/rss/articles/CBMisgFBVV95cUxPRkR0eVRZX1Vzb1ExZTladU55NjNZYnFaU0s4Z1Q3dHBOMS1LREs2Y3ZzQlM4LWZjSGFYamRyNkE5cndZdEFKVjZuNUlpdU5jY1hSbU12eDZ5dzVKOXBzd253NklDRnJyeWNIMGM2OTV6Y20wRXpubVJYaGRpQVFrMFBsYkk2Wkhhc09pdWhBb1NTNzAxNWlNaktJREVYRVNmUF9GX0pJdjVfdWU1bzVqWDBR?oc=5",
    "izvor": "Business Insider",
@@ -567,18 +752,6 @@
    "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече."
   },
   {
-   "zaglavie": "Trumpflation Just Hit 3.4%. The Fed Just Raised Rates. The Stock Market Has Been This Expensive Only Once Before. Is a Crash Inevitable?",
-   "vryzka": "https://news.google.com/rss/articles/CBMilAFBVV95cUxQVURvMUpnV3NqYVdialhiZVNDZnRJN0hvTWU1ZnVrbW9GNUEtR2VVTnVFWFNSbXl6MWt3bHVta2Y1TzdBbzZQbVI1S1NfUTFEejlpMXJSZHgyei1ON3AtS1pyUFg2ZjAwRy1kWXQzZG00dnc5eV9tTm45cGFTS1JKNm03Wkhpcjk5SkxMRnBKWmE2enRS?oc=5",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-09-20T08:13:01Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото."
-  },
-  {
    "zaglavie": "Solid Economic Data Show U.S. Economy Running Hot Ahead of Fed Decision",
    "vryzka": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxPUllxQzMyRkk0Q2JWXzlkS0lNS2xqZkFuRUl1c01TYlMzd0JyeFhzUkZSYlBXY0hCdllwek1MVnNDOVozY0FGZnpSa1AzWHV2eWVZbGozRWlxdEloZjJCRE1Ha1VuaFNvaU43c2pGQlVLMThvM1BBMGdYUEEyZWNLMWVGT1llUGpqUTVETVBNLVpmNHRxTTRHLXZoVTRUUEJ1TlVJTXJKUzAySUVNNEFISzZQZzFpVnZsTHo3UzRIR3o?oc=5",
    "izvor": "WSJ",
@@ -605,7 +778,7 @@
   {
    "zaglavie": "Gold prices near $4,378 per ounce",
    "vryzka": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE0yZFpjUEZQcXYxZzlpNHQ4ZHVvQlNpVy1KX3VFalFEbjE3Qno5U1ZVTWpFQ0pNYTJERVBlaExRTWZ6Z04zZm5XdjQ1dDVkOGwxb01qOG1B?oc=5",
-   "izvor": "sadanews.ps",
+   "izvor": "وكالة صدى نيوز",
    "chas": "2026-09-20T07:48:50Z",
    "vazhnost": 2,
    "za": "злато",
@@ -675,6 +848,18 @@
    "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече."
   },
   {
+   "zaglavie": "Gold ends three-week slide at the $4,400 line — eight straight days of ETF inflows vs a 5% 10-year and a 100 dollar",
+   "vryzka": "https://news.google.com/rss/articles/CBMipwFBVV95cUxNd3YydExKbnA4LUx1OF9tSHB5RHA2WFdCYWlTb3hzOHdEXzVBd0R2QzB2QjJmQi1mWG5tbnFkeVhpM1RxOENoMmxpczY3T1RJNHd6a2dzd08ya1FoZWJjTnF4cHl0T3ZMS3RrLVdFSV9KWnAyLUpuVUhGMDRKZ1QxV0stZngyUXZmWWc3aFBWUTQ0NThsaGpkRDYxZXREZzMtOGlDdzJhSQ?oc=5",
+   "izvor": "Mitrade",
+   "chas": "2026-09-20T06:22:02Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото."
+  },
+  {
    "zaglavie": "USD/JPY weekly outlook: Fed, BOJ and the energy wildcard",
    "vryzka": "https://news.google.com/rss/articles/CBMipAFBVV95cUxPYXdMXzZxY0ZYQmJacG8wUlJCYm44dGJSdWJrSkYtMGNLR0JqMG5vVVZ2alZ2VmE3VnllQVJ0bnhKU29Va01ZMEJEZV9oUmxGLUlNdFRLazhNR1JYUHczRTlEel9Oak9QUXg1TnAzX092Um1Ea2JmSmVfZzNuUWZSSjRIa1JUUUVibGhWb0hsWEoySlBKZndENm5WcnF1MWxJT25jSg?oc=5",
    "izvor": "stonex.com",
@@ -687,9 +872,21 @@
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото."
   },
   {
+   "zaglavie": "A Fed Rate Hold Would Be ‘Unprecedented’ With Rate Hike Odds Above 90%, Says BofA's Mark Cabana",
+   "vryzka": "https://news.google.com/rss/articles/CBMiywFBVV95cUxQc3pEdXVFWVBaYW96emw2QkRFQi0tWTQ0WHFjaF9tZ0RiNERlWkJ1bG9TdDZkaUhpdzhZX1RzUU96QlMyRG9Gd2k0akhYNldOd0pzU1BKX3BHUzFzMFFJVDVXaC1rZnIzSTJtdFV0TjBWR01zdmR6YWlEaFBRTFN6VFFtTEI4aTN3RDJYbG0yM2VaUzd1alBwS0JvdDVBN2FWV3BoUWxwaDlQSUJKamxGeTFHWFZoWlpZbTZiWDBKamIxRG9IRF96c3JkVQ?oc=5",
+   "izvor": "Stocktwits",
+   "chas": "2026-09-20T06:17:16Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото."
+  },
+  {
    "zaglavie": "Gold Rate Today in Andhra Pradesh 20th September 2026 : 22 & 24 Carat, Todays Gold Price in Andhra Pradesh",
    "vryzka": "https://news.google.com/rss/articles/CBMifEFVX3lxTE9BU3luaE41cllLNlEtYTVST05OMkJZMW5ScGV4dnhHQ0xEQUg5ZWZSUXpZU1NMc3RUQkdhckNEU1NkZElwRjZzM3libXBPMGozOTU2V0Qydm9ZbXJnZjk5ZlJoZ0FFelAwc2pqcjRRdklqN2xyMXI0UXBHd2w?oc=5",
-   "izvor": "businesstoday.in",
+   "izvor": "Business Today",
    "chas": "2026-09-20T06:08:10Z",
    "vazhnost": 3,
    "za": "злато",
@@ -829,6 +1026,18 @@
    "chas_ot_iztochnika": true,
    "duma": "gold",
    "zashto": "Пряко за златото."
+  },
+  {
+   "zaglavie": "Will The Fed Hike Interest Rates In Its July Meeting? Here’s What The Market Thinks",
+   "vryzka": "https://news.google.com/rss/articles/CBMitwFBVV95cUxPdnBEcU5sNTcwUEVsTVAwcnNWeURVVWYtdDVtS2NTbWx6Y0Z1VVZaOUtpdnJfTjdxUnB2RTRNa1praXE0WTROZEVsMzRiUksxYjFaeVl4bGJWTW9VNEZWVVZFdlRGcDNlYUZGLURqOUF3Um1QV3p2Uk9yNEY0a3p1WGdCeFVmSEdFRnJwZmhjekdwU2hNa2hsTkpfWFpLN05LZmtPLW5KTmFCM2M3NlhiYnFNeE5CT0E?oc=5",
+   "izvor": "Stocktwits",
+   "chas": "2026-09-20T05:20:09Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото."
   },
   {
    "zaglavie": "Buyers lose up to 3 million VND/tael even though gold prices jumped up last week",
@@ -1011,18 +1220,6 @@
    "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече."
   },
   {
-   "zaglavie": "Gold Rate Today in Chennai 20th September 2026 : 22 & 24 Carat, Todays Gold Price in Chennai",
-   "vryzka": "https://news.google.com/rss/articles/CBMic0FVX3lxTE9WWHI3aTBUVm1saEZzbmRDMTRSdzloNkZHSlVueWFoNjNZZGV6eHBxMW5uTTZlUzB4b0lTOTNINU96QkRFdkU1eWVyelhxZ1ZPMFprUTg1MWdHdVRuVlpHRTczeU5PbmhXclNoR2JIUTBDR3M?oc=5",
-   "izvor": "businesstoday.in",
-   "chas": "2026-09-20T03:50:54Z",
-   "vazhnost": 3,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "rate",
-   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече."
-  },
-  {
    "zaglavie": "Gold Rate Today in Gaya 20th September 2026 : 22 & 24 Carat, Todays Gold Price in Gaya",
    "vryzka": "https://news.google.com/rss/articles/CBMib0FVX3lxTE1JWkVxWW8xTWRlQU4ydFI5VUVndk5tMk5JSFJ5REpPUm1MNWVZbWgwUDNvazZySG1JM241T3B1V0JYRUxtZkxpS01WRUt4S3ZsX3o5Ym9tbUhTUGk1Z2dMYmJNbkVJZHRXbGtlc3BiVQ?oc=5",
    "izvor": "Business Today",
@@ -1181,7 +1378,7 @@
   {
    "zaglavie": "Trump Demands 1% Or Lower Interest Rate After First Fed Hike Under Warsh",
    "vryzka": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxPTENrVXBabU5aQTZNYWxpbnQ2eC1NRnRWSktCSEJseUc4ZlBFVVpvSHJCM3hHV3k2RUNUdGtoeUdBOVV5aG1JMHNyckdSZVU5dU1HM21VWVd3Y0ZGV2hPV3BRZEF6SFdOY2w3QjJNdVY1OW9nVDBudEdjTzB0SG1vRUdDT0l3QzN2dEIxUHBpaEVOdlRIclFINnVPR0U1WFB5R1ZwdTFuQ0RzZ0hCS0tVQTFkaEwzdTRRVXJQTEdFdElJdDR1b0tNeXh3X2xzQldV?oc=5",
-   "izvor": "stocktwits.com",
+   "izvor": "Stocktwits",
    "chas": "2026-09-20T02:24:04Z",
    "vazhnost": 3,
    "za": "лихви",
@@ -1287,18 +1484,6 @@
    "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече."
   },
   {
-   "zaglavie": "Gold Rate Today in Greater Mumbai 20th September 2026 : 22 & 24 Carat, Todays Gold Price in Greater Mumbai",
-   "vryzka": "https://news.google.com/rss/articles/CBMifEFVX3lxTFB1b2xKS29ZcnRCVWx2WS1PR2piMjZ6cXlXM3JKVUZsQnJfVnpPb00tdGl4bjh2Y3YyeGJJT3E0MHU1U2l2VDdLdEVkUWdSZElMRjk4VFlJcWptWk9zME1NLUZfdlhxZkxrQzNoT0F0bFIwT3VTNF9KeWlUTVc?oc=5",
-   "izvor": "Business Today",
-   "chas": "2026-09-20T01:46:01Z",
-   "vazhnost": 3,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "rate",
-   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече."
-  },
-  {
    "zaglavie": "‘My total balance should be $20 million’: I invested $1.1 million in a crypto platform. Have I lost it all?",
    "vryzka": "https://www.marketwatch.com/story/my-total-balance-should-be-worth-20-million-i-invested-1-1-million-in-a-crypto-platform-have-i-lost-it-all-d22da562?mod=mw_rss_topstories",
    "izvor": "MarketWatch",
@@ -1337,7 +1522,7 @@
   {
    "zaglavie": "Fed Chair Kevin Warsh Defied President Donald Trump, and 17 Words From His Post-FOMC Meeting Press Conference Suggest He May Do So Again",
    "vryzka": "https://news.google.com/rss/articles/CBMikgFBVV95cUxQbXkxNU4zX0t1cTZfQjBqWktrV2luS2s3WnIzbTNHWXFmT242aGlyYjFxMy0yM1Z4Y2RUS2d6eUtjQURweEd4WnpiZ1lHRGIySTBhX2otWk8zWnh0RzJWaXRpYTNjcDZLS0lPNTdIZ0tJMTNLX1dZYnYwMEFIaWY2cGlFOFAyQ1IxQkZqUF84YWsyUQ?oc=5",
-   "izvor": "The Motley Fool",
+   "izvor": "fool.com",
    "chas": "2026-09-20T01:30:00Z",
    "vazhnost": 3,
    "za": "лихви",
@@ -1369,18 +1554,6 @@
    "chas_ot_iztochnika": true,
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото."
-  },
-  {
-   "zaglavie": "Gold Rate Today in Nashik 20th September 2026 : 22 & 24 Carat, Todays Gold Price in Nashik",
-   "vryzka": "https://news.google.com/rss/articles/CBMickFVX3lxTE9XS1BUSmFQWFJUNkoxRkhSQmxwbUZwUDU1aXRHOFFralRKdFVLTkh1eGFCSXVEZ3BaNlAyZEdoNkFwczdFZXlWcDRXYVJvRFZUUHhCWTU3U3dTWDVCSV9fY0tHckZFNkZDam9xOVhYNDNzZw?oc=5",
-   "izvor": "Business Today",
-   "chas": "2026-09-20T00:56:22Z",
-   "vazhnost": 3,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "rate",
-   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече."
   },
   {
    "zaglavie": "Gold price falls - The Nation (Pakistan )",
@@ -1531,18 +1704,6 @@
    "vryzka": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9GdlFXeXdNVHFTdThnd0VUc2syclJaSXNQcW9ESlVPSEdIbTNEZzdpNUxnU1gxM2R2Y1NhWFlLYTBTeHozcnZuWVRLNUc2WUUzQTNjRmFtcmhXbVVQYkNGWEpCTlZVVV9tYkgzN0Mtenc?oc=5",
    "izvor": "Business Today",
    "chas": "2026-09-19T21:42:09Z",
-   "vazhnost": 3,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "rate",
-   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече."
-  },
-  {
-   "zaglavie": "Gold Rate Today in West Bengal 20th September 2026 : 22 & 24 Carat, Todays Gold Price in West Bengal",
-   "vryzka": "https://news.google.com/rss/articles/CBMieEFVX3lxTFBwVnU5VEh6RV9mOUd3MERpOVhZZlg5aFAzWkVzZ0x0V2lIZnhuZHB6RndiUXV6X0Y4LXpfWll6QUtjVGVKcnhDZGdZRGRRUlY4SVBjT3hhelc1YnBFSzJ1S0Y1RldGZDV0YktNUDRPRUZ3Zm1tdXl1OA?oc=5",
-   "izvor": "Business Today",
-   "chas": "2026-09-19T21:41:08Z",
    "vazhnost": 3,
    "za": "злато",
    "emisiya": "Google злато",
@@ -2175,18 +2336,6 @@
    "zashto": "Пряко за златото."
   },
   {
-   "zaglavie": "‘There might be a silver lining’: My friend’s wife died at 60 after a high-earning career. Can he claim her Social Security?",
-   "vryzka": "https://www.marketwatch.com/story/there-might-be-a-silver-lining-my-friends-wife-died-at-60-after-a-high-earning-career-can-he-claim-her-social-security-eb95210a?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-09-19T16:15:00Z",
-   "vazhnost": 1,
-   "za": "злато",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null
-  },
-  {
    "zaglavie": "Following rate hike, US Fed raises global cost of capital",
    "vryzka": "https://news.google.com/rss/articles/CBMioAFBVV95cUxPbmVsQnNSVk10bXA5Q3RuLUlLTjc4bVR4QUtXV2VJTGZYRk5BcnNiWU81NEhDRUw3QTRlOGxPaFFyaHk4S2ZZMnZUc2IzckcxZU1oMEpGQUVXa25kODd3dDFTQTJDSHUwMzZJb2dWdUowY1RMMklXTEs2Z0N1bzBLVFJkR1o0TzJtN2FSU1VuOGRDek1VbE1xblpaRkZfdlE5?oc=5",
    "izvor": "Dailynewsegypt",
@@ -2275,162 +2424,6 @@
    "vryzka": "https://news.google.com/rss/articles/CBMiugFBVV95cUxQUl9LbEpSa0RiSkFaZUltUGs2WnVmc0dRMXUzS2NyYkk0RmM1QUFxNzZ3TmtpLXRGSHg5MnR0LXlCY0hwN1lZM19oeXFONG9aX20xQWliZTI1aHNnTi1xNzhuUTRRTkNzd195UjdJNEtOUnZNazN2VXV2OC1NZExTajlVVzlTbEpCQ1hzemlEaUNodGp5QzNUbl9DcXNIVDFmVHJvLUdSU09KSmVCMkVyNWdfLUtubHQ4TEE?oc=5",
    "izvor": "News On 6",
    "chas": "2026-09-19T15:39:36Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото."
-  },
-  {
-   "zaglavie": "3 Gold Mining Stocks Retail Investors Are Watching As Safe Haven Demand Returns",
-   "vryzka": "https://news.google.com/rss/articles/CBMizwFBVV95cUxPVXNyQlBpVlJHdUloV281aVBWbnRkRzNtUXBVSW8zU2J0MnpPVXFXX3Zra2ZvcWZmRjZwNmVGdnBPb3NFeDd4MGxVMFlwMTdTTml6T1NESUlxUFZwYl80bkc3dmxuVzEyV2c3MkxxTllkNnRvSmRzczAwdndPREFyZzNzeXBFUFVoQ2JqY3ZKWGxRTjAyeEoxd1pWY1lvaHI5S2lsWVlLVXRRbXpfWjhpOWt6NFQxeml2WUZkOHRYZ1RDTlY3X1E3MUM0ODVFRGPSAdQBQVVfeXFMTkxEem5RZUNURGtJZTU1d2VnZVBKbGNZSVdtU0FHdVZVeTRDQm4tbkxXVmg4UFpzblFzUG1peEdST3N6RUJWVGpaSDdPMlZzZ0pCc1RNYTd4S194VjdsWEJNY1hQYXNxNFVNRmFySHloNE5XTlhfbmFxN0Q5V1Q2ZGVVTUZkYXpoZU94VXVldWkzbUpud0RIdTNRekI3REV2N2Q5Ql83T3NJLU1ZTHc0eE9JTUhoRjRYako5STNfWGJDMHlsTnU4Q0xqYTRWZ3N",
-   "izvor": "simplywall.st",
-   "chas": "2026-09-19T15:38:13Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото."
-  },
-  {
-   "zaglavie": "Detroit Free Press. . \"The board is very hostile. They're very political.\" President Trump stood behind Fed Chair Kevin Warsh and attacked the board after Warsh announced an interest rate hike.",
-   "vryzka": "https://news.google.com/rss/articles/CBMi3wFBVV95cUxPbUJvcEx0S08wOGxlODgxTmFxcjVxb1IyMXZTZWNRUk9kTW9VM0NIM0xEdWpwY0RfRndMRUUwdmRQWWVmVm83akdkX1huc3gzeFRGRjBSVzBvVVZhRi1uT1d3Q1BSRkFEdEdVd3JiMTd3NzVVZWpudXdSVlptYm00VUQ2b3V2TkVwbGpWMkdHdVJiUDBzYm9zdHllMnBFZTJmX0tpTExCXzNOT1JBU1c5VEl0YTh4N21SZnRfT0x1VkJsOFZIcWJRbGFSTTVGZ2FwRkxNSm12TnlITlRWN3Iw?oc=5",
-   "izvor": "facebook.com",
-   "chas": "2026-09-19T15:30:08Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото."
-  },
-  {
-   "zaglavie": "Want to land more job interviews? Stop letting AI write your résumé.",
-   "vryzka": "https://www.marketwatch.com/story/are-ai-written-resumes-more-likely-to-get-you-a-job-the-answer-may-surprise-you-ae408827?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-09-19T15:20:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null
-  },
-  {
-   "zaglavie": "How to create a ‘forever paycheck’ without paying for an annuity",
-   "vryzka": "https://www.marketwatch.com/story/how-to-create-a-forever-paycheck-without-paying-for-an-annuity-e5d171d3?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-09-19T15:14:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null
-  },
-  {
-   "zaglavie": "15 stocks that have grown dividends the most — and nearly all have beaten the S&P 500",
-   "vryzka": "https://www.marketwatch.com/story/15-stocks-that-have-grown-dividends-the-most-and-nearly-all-have-beaten-the-s-p-500-6d8923fc?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-09-19T14:57:00Z",
-   "vazhnost": 2,
-   "za": "лихви",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": "yield",
-   "zashto": "Доходността другаде е цената, която златото плаща — то самò не плаща лихва."
-  },
-  {
-   "zaglavie": "Gold forecast: XAU/USD struggles as dollar debasement narrative fades",
-   "vryzka": "https://news.google.com/rss/articles/CBMitgFBVV95cUxNQWRHTFlCelpqS2ZockpKRHdfSlB0VEw4Z2doSi1WMGVMSFRod1lIcndoYjlJOERJVXV2RnlKWGtyQkRsQThOQlFxZGZOY1pFRXl1ZUlVODhuQVVTMTRkQ3ltSUlFOHZMM0swQTlwTGRIaHNXa1pFYVFRQ05iY3ppZkdxeFM1QWxxaVRMa0NQeFFVSW9HTWlYQWw5TEpCOWh1M1BGQ1RRV0N5eHpGcEdydVZJY1pCZw?oc=5",
-   "izvor": "FOREX.com",
-   "chas": "2026-09-19T14:49:08Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото."
-  },
-  {
-   "zaglavie": "Maybe the snowbirds are right? One state dominates this list of best places to retire.",
-   "vryzka": "https://www.marketwatch.com/story/maybe-the-snowbirds-are-right-one-state-dominates-this-list-of-best-places-to-retire-ab506160?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-09-19T14:40:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null
-  },
-  {
-   "zaglavie": "Saudi Arabia sounds air-raid alerts as missile and drone assault intensifies",
-   "vryzka": "https://www.ft.com/content/07fd42b5-0610-470c-8fb8-4840b5401271?syn-25a6b1a6=1",
-   "izvor": "Financial Times",
-   "chas": "2026-09-19T14:36:06Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "FT пазари",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null
-  },
-  {
-   "zaglavie": "Classic budgeting rules don’t work anymore — even if your household makes $100,000. Here’s what does.",
-   "vryzka": "https://www.marketwatch.com/story/classic-budgeting-rules-dont-work-anymore-even-if-your-household-makes-100-000-heres-what-does-cfb235a8?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-09-19T14:31:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null
-  },
-  {
-   "zaglavie": "The repurchase of U.S. Treasuries instead rai...",
-   "vryzka": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFBVcWhka1hTYXhtc3J0Nk1QMFIwaWs0bWxvVmh6Qk5ZYjZ2YlR1QWRad2VVa3lSd19HV3ZISEZKSURxSkwyTy1hcGNyYWplQ2dvdDI3NGFtd2V6MlE?oc=5",
-   "izvor": "ChainCatcher",
-   "chas": "2026-09-19T14:23:29Z",
-   "vazhnost": 2,
-   "za": "лихви",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "treasuries",
-   "zashto": "Доходността на американския дълг е прякото сравнение за златото — качи ли се тя, златото обикновено пада."
-  },
-  {
-   "zaglavie": "Traditional bond investors have lost money for years. These five-star portfolio managers show a better way.",
-   "vryzka": "https://www.marketwatch.com/story/heres-the-best-way-to-invest-in-bonds-for-the-long-term-according-to-these-five-star-portfolio-managers-bbf0d5e3?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-09-19T14:23:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null
-  },
-  {
-   "zaglavie": "The Fed Is Setting Financials Up For Another 2022 (NYSEARCA:XLF)",
-   "vryzka": "https://news.google.com/rss/articles/CBMijwFBVV95cUxOMDdHdjliVUVBWXFoSG9BTXlHWWdPWU1YUDVpT2ZMSkRZSmdEVXZTMWE5SmhtX2w0blFRcGR6SlBTLWNMUWE2bUlVSnBIUlh2UjZwcGpjeW9BMlZjSGlLeGE5ODRqOUdYdjlBMEc3QUQ3YUJqUFNtUUNXdzdhMWtXNklKZ2NycXRTMXRoaFVWcw?oc=5",
-   "izvor": "Seeking Alpha",
-   "chas": "2026-09-19T14:20:00Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото."
-  },
-  {
-   "zaglavie": "BofA drops stunning warning about Fed rate hikes",
-   "vryzka": "https://news.google.com/rss/articles/CBMia0FVX3lxTE9XeHE2SzdaZW90ZEc4RGp6NzFORTZYa1dfWXVBRlZUQ1FEMVhfQVRhZlRSOHpLTF9mU3pjNmUxeUY3NFZoU0dscFRqNTZLQTJhU0RlN1duSFpSYnFoRk1TRjJlOGZuUWs4N3Ew?oc=5",
-   "izvor": "thestreet.com",
-   "chas": "2026-09-19T14:17:00Z",
    "vazhnost": 3,
    "za": "лихви",
    "emisiya": "Google Fed",
