@@ -1,30 +1,30 @@
 {
- "den": "2026-09-18",
- "sazdadeno_utc": "2026-09-18T04:03:00Z",
+ "den": "2026-09-21",
+ "sazdadeno_utc": "2026-09-21T04:03:00Z",
  "v": "v18.84",
- "cena": 4358.31,
- "bazis": 36.09,
+ "cena": 4359.59,
+ "bazis": 39.12,
  "nosht": {
-  "ot": 4339.38,
-  "do": 4368.43,
-  "shirina": 29.05,
-  "atr": 120.43,
-  "dyal_atr": 0.218,
+  "ot": 4353.95,
+  "do": 4388.07,
+  "shirina": 34.12,
+  "atr": 111.47,
+  "dyal_atr": 0.231,
   "rezhim": "тясна"
  },
  "vchera": {
-  "vryh": 4394.42,
-  "dyno": 4258.41,
-  "zatvaryane": 4363.61
+  "vryh": 4400.58,
+  "dyno": 4328.83,
+  "zatvaryane": 4385.19
  },
  "idei": [
   {
    "posoka": "long",
-   "nivo": 4339.38,
-   "stop": 4326.38,
+   "nivo": 4353.95,
+   "stop": 4340.95,
    "celi": [
-    4344.38,
-    4352.38
+    4358.95,
+    4366.95
    ],
    "izvor": "нощно дъно",
    "belezhka": "наблюдение, не вход: сигнал е само картата ВЛЕЗ · нивото е с разликата към борсата от своя час",
@@ -32,37 +32,18 @@
   },
   {
    "posoka": "short",
-   "nivo": 4368.43,
-   "stop": 4381.43,
+   "nivo": 4388.07,
+   "stop": 4401.07,
    "celi": [
-    4363.43,
-    4358.43
+    4383.07,
+    4378.07
    ],
    "izvor": "нощен връх",
    "belezhka": "наблюдение, не вход: сигнал е само картата ВЛЕЗ · нивото е с разликата към борсата от своя час",
    "nablyudenie": true
   }
  ],
- "sabitiya": [
-  {
-   "ime": "Industrial Production",
-   "utc": "2026-09-18T13:15:00Z",
-   "sila": "high",
-   "prozorec_min": [
-    20,
-    40
-   ]
-  },
-  {
-   "ime": "FOMC Member Bowman Speaks",
-   "utc": "2026-09-18T18:00:00Z",
-   "sila": "critical",
-   "prozorec_min": [
-    20,
-    150
-   ]
-  }
- ],
- "yasna_ideya": false,
- "zashto_nyama": "денят е на новината: FOMC в 21:00 (20:40–23:30)"
+ "sabitiya": [],
+ "yasna_ideya": true,
+ "zashto_nyama": ""
 }
