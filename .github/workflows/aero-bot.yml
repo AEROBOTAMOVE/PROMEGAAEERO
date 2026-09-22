@@ -45,8 +45,16 @@ jobs:
         # meta), може да прати пак изход, а записът му пада 3 от 3 на rebase
         # (проверяващият на «състоянието»: 41 от 2153 рънa за 7.3 дни). СЕГА се
         # тегли върхът на main в мига на старта. НАЗАД: CHECKOUT_TIP=0 (github.sha).
-        with:
-          ref: ${{ vars.CHECKOUT_TIP == '0' && github.sha || 'main' }}
+        # 🔴 22.09 · v18.88a · `ref: main` остави рънa БЕЗ КЛОН (detached HEAD) → save state
+        # падаше «You are not currently on a branch» 3 от 3 и състоянието НЕ се записваше.
+        # Затова checkout е пак по подразбиране (на клона main), а към върха се стига
+        # със следващата стъпка (--ff-only: само напред, никога не пренаписва).
+      - name: sync to tip
+        if: ${{ vars.CHECKOUT_TIP != '0' }}
+        run: |
+          git fetch -q origin main && git merge -q --ff-only origin/main || echo "::warning::sync to tip не успя — продължавам от събитието"
+          git rev-parse --abbrev-ref HEAD
+          git log --oneline -1
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'

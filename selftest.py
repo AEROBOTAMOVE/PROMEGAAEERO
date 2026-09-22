@@ -18578,12 +18578,16 @@ def _п194_12():
 
 # ══ 13 · vars.CHECKOUT_TIP · застоялият рън ════════════════════════════
 def _п194_13():
-    _реф = "ref: ${{ vars.CHECKOUT_TIP == '0' && github.sha || 'main' }}"
+    # 🔴 22.09 · v18.88a · `ref: main` даде detached HEAD и save state падаше 3/3 → checkout е
+    # пак по подразбиране (на клона), а стъпката «sync to tip» превърта --ff-only към върха.
     _и = _yml194.find("- uses: actions/checkout@v4")
-    ck("П194 13 · checkout тегли върха на main (НАЗАД: CHECKOUT_TIP=0 → github.sha)",
-       _и >= 0 and _yml194.find(_реф, _и) > _и
-       and _yml194.find(_реф, _и) < _yml194.find("- uses: actions/setup-python", _и)
-       and "НАЗАД: CHECKOUT_TIP=0" in _yml194)
+    _сн = _yml194.find("- name: sync to tip", _и)
+    _пс = _yml194.find("- uses: actions/setup-python", _и)
+    ck("П194 13 · checkout е на клона (без ref), а «sync to tip» превърта --ff-only преди python",
+       _и >= 0 and _и < _сн < _пс
+       and "ref:" not in _yml194[_и:_сн].split("# ")[0]
+       and "git merge -q --ff-only origin/main" in _yml194[_сн:_пс]
+       and "vars.CHECKOUT_TIP != '0'" in _yml194[_сн:_пс])
     _сс = _yml194[_yml194.find("- name: save state"):_yml194.find("- name: wake the audit robot")]
     ck("П194 13 · save state: неуспешен rebase се абортира преди следващия опит",
        'git rebase --abort 2>/dev/null || true' in _сс
@@ -18601,10 +18605,11 @@ def _п194_13():
     _ст = _д["jobs"][list(_д["jobs"])[0]]["steps"]
     _ко = [_x for _x in _ст if str(_x.get("uses", "")).startswith("actions/checkout")]
     _зп = [_x for _x in _ст if _x.get("name") == "save state"]
-    ck("П194 13 · YAML: checkout има with.ref, различен от голото github.sha, по подразбиране main",
-       len(_ко) == 1 and isinstance(_ко[0].get("with"), dict)
-       and str(_ко[0]["with"].get("ref", "")).strip() not in ("", "${{ github.sha }}")
-       and "'main'" in str(_ко[0]["with"].get("ref")))
+    _сн2 = [_x for _x in _ст if _x.get("name") == "sync to tip"]
+    ck("П194 13 · YAML: checkout без ref (на клона) + стъпка «sync to tip» с --ff-only",
+       len(_ко) == 1 and not (isinstance(_ко[0].get("with"), dict) and _ко[0]["with"].get("ref"))
+       and len(_сн2) == 1 and "--ff-only" in str(_сн2[0].get("run", ""))
+       and _ст.index(_сн2[0]) == _ст.index(_ко[0]) + 1)
     ck("П194 13 · YAML: скриптът на save state съдържа `git rebase --abort`",
        len(_зп) == 1 and "git rebase --abort" in str(_зп[0].get("run", "")))
 
