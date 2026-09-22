@@ -548,7 +548,12 @@ def check_accuracy(live: Path, code_dir: Path, lb, bars5):
         for k in ("tp1", "tp2", "tp3"):
             if tr["hit"].get(k):
                 continue
-            lvl = tr["levels"][k]
+            # 🔴 22.09 · от 15.09 сделката НЯМА цел 3 (законът без трета цел). Тук се четеше
+            # tr["levels"]["tp3"] направо → KeyError в 76 от 102 рънa (74.5%) — одитът падаше
+            # точно когато има отворена сделка, т.е. когато е нужен. Липсваща цел = не се проверява.
+            lvl = (tr.get("levels") or {}).get(k)
+            if lvl is None:
+                continue
             hit = ((w["Low"] - b) <= lvl).any() if tr["direction"] == "short" else ((w["High"] - b) >= lvl).any()
             if hit:
                 missed.append(k)
