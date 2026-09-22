@@ -757,7 +757,13 @@ def check_integrity(live: Path, code_dir: Path, repo: Path, skip_selftest=False)
     try:
         import base64 as _b64
         _api = "https://api.github.com/repos/AEROBOTAMOVE/PROMEGAAEERO/contents/live_bot.py?ref=main"
-        rtxt = _b64.b64decode(json.loads(http(_api, 12))["content"]).decode("utf-8")
+        # 🔴 22.09 · над 1 MB GitHub връща «content» ПРАЗНО (encoding "none") → хешът на
+        # празния текст ≠ местния → лъжлива тревога «живата версия е различна» (live_bot.py
+        # е 1.09 MB). С Accept: raw идва целият файл (до 100 MB), без base64.
+        rtxt = http(_api, 20, headers={"User-Agent": "Mozilla/5.0",
+                                       "Accept": "application/vnd.github.raw"})
+        if not rtxt.strip():
+            raise ValueError("празен отговор от GitHub")
     except Exception as e:
         if rf.exists() and not same_file:
             rtxt = rf.read_text(encoding="utf-8", errors="ignore"); src = "repo-папка"
