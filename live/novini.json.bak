@@ -1,36 +1,67 @@
 {
- "kogato": "2026-09-22T06:43:28Z",
- "sekundi": 1.3,
+ "kogato": "2026-09-22T07:18:55Z",
+ "sekundi": 9.2,
  "broi": 200,
- "novi_tozi_pyt": 7,
+ "novi_tozi_pyt": 8,
  "iztochnici_ok": [
-  "MarketWatch",
-  "Fed всички",
   "Fed политика",
+  "Fed всички",
+  "MarketWatch",
   "Investing",
-  "Yahoo долар",
   "Yahoo злато",
+  "Yahoo долар",
   "CNBC",
   "FT пазари",
-  "Google злато",
-  "Google Fed",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google злато",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  },
+  {
+   "ime": "Google Fed",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.28с",
-  "новини · FT пазари · 25 бр. за 0.34с",
-  "новини · Fed всички · 20 бр. за 0.16с",
-  "новини · Fed политика · 15 бр. за 0.16с",
-  "новини · Google Fed · 40 бр. за 0.56с",
-  "новини · Google злато · 40 бр. за 0.53с",
-  "новини · Investing · 10 бр. за 0.16с",
-  "новини · MarketWatch · 10 бр. за 0.13с",
-  "новини · Mining.com · 36 бр. за 1.28с",
-  "новини · Yahoo долар · 15 бр. за 0.21с",
-  "новини · Yahoo злато · 18 бр. за 0.26с"
+  "новини · CNBC · 30 бр. за 0.3с",
+  "новини · FT пазари · 25 бр. за 0.47с",
+  "новини · Fed всички · 20 бр. за 0.2с",
+  "новини · Fed политика · 15 бр. за 0.19с",
+  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Investing · 10 бр. за 0.26с",
+  "новини · MarketWatch · 10 бр. за 0.22с",
+  "новини · Mining.com · 36 бр. за 0.94с",
+  "новини · Yahoo долар · 15 бр. за 0.3с",
+  "новини · Yahoo злато · 18 бр. за 0.27с"
  ],
  "novini": [
+  {
+   "zaglavie": "Gold Is Finally Starting to Respect the Price of Money",
+   "vryzka": "https://www.investing.com/analysis/gold-is-finally-starting-to-respect-the-price-of-money-200688121",
+   "izvor": "Investing.com",
+   "chas": "2026-09-22T06:54:00Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Investing",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото."
+  },
+  {
+   "zaglavie": "AI optimism lifts Asian stocks after Nasdaq ends at record high",
+   "vryzka": "https://www.ft.com/content/2c60812b-77b4-4de5-a276-5e3eb2ceb5c3?syn-25a6b1a6=1",
+   "izvor": "Financial Times",
+   "chas": "2026-09-22T06:45:16Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "FT пазари",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null
+  },
   {
    "zaglavie": "Gold prices drop - e.vnexpress.net",
    "vryzka": "https://news.google.com/rss/articles/CBMigAFBVV95cUxQUkR3dWhaclFfbnJSRWVtY3BxdFB2RDZWdy1ScWpZSHE1SWRGb2VSSTVhdUROc0JGQm14TWE5aUI0VzFvSnJ0ajktVmR2Ui1aQzlIQ3pUZ1VZeHdTOHd4bm5keU9SX2EtTS1ZUXhESU8tX3QxMlRSTXRBV3BLdVJYZw?oc=5",
@@ -63,6 +94,66 @@
    "vazhnost": 2,
    "za": "злато",
    "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото."
+  },
+  {
+   "zaglavie": "UK government borrowing surges in blow to Healey ahead of Budget",
+   "vryzka": "https://www.ft.com/content/a17b2217-e49f-432c-8fdb-31e9bc3a4361?syn-25a6b1a6=1",
+   "izvor": "Financial Times",
+   "chas": "2026-09-22T06:09:53Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "FT пазари",
+   "chas_ot_iztochnika": true,
+   "duma": "inflation",
+   "zashto": "Инфлацията е основната причина да се държи злато — то пази стойност, когато парите я губят."
+  },
+  {
+   "zaglavie": "Global Refinery Crunch Pushes Diesel Prices to New Records",
+   "vryzka": "https://www.investing.com/analysis/global-refinery-crunch-pushes-diesel-prices-to-new-records-200688117",
+   "izvor": "Investing.com",
+   "chas": "2026-09-22T06:08:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "Investing",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null
+  },
+  {
+   "zaglavie": "Oil Prices Reverse Course as Traders Watch US-Iran Diplomacy",
+   "vryzka": "https://www.investing.com/analysis/oil-prices-reverse-course-as-traders-watch-usiran-diplomacy-200688116",
+   "izvor": "Investing.com",
+   "chas": "2026-09-22T06:05:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "Investing",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null
+  },
+  {
+   "zaglavie": "New US Sanctions Law Threatens India’s Huge Russian Oil Trade",
+   "vryzka": "https://www.investing.com/analysis/new-us-sanctions-law-threatens-indias-huge-russian-oil-trade-200688115",
+   "izvor": "Investing.com",
+   "chas": "2026-09-22T06:03:00Z",
+   "vazhnost": 3,
+   "za": "общо",
+   "emisiya": "Investing",
+   "chas_ot_iztochnika": true,
+   "duma": "sanctions",
+   "zashto": "Санкциите разбъркват търговията и валутите; златото е убежището при такова."
+  },
+  {
+   "zaglavie": "Gold: $4,362 Breakdown Could Accelerate the Selling Pressure",
+   "vryzka": "https://www.investing.com/analysis/gold-4362-breakdown-could-accelerate-the-selling-pressure-200688111",
+   "izvor": "Investing.com",
+   "chas": "2026-09-22T05:46:00Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Investing",
    "chas_ot_iztochnika": true,
    "duma": "gold",
    "zashto": "Пряко за златото."
@@ -114,6 +205,18 @@
    "chas_ot_iztochnika": true,
    "duma": "rates",
    "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече."
+  },
+  {
+   "zaglavie": "Oil Market Daily: More Saudi Barrels on the Water Are Pulling Crude Lower",
+   "vryzka": "https://www.investing.com/analysis/oil-market-daily-more-saudi-barrels-on-the-water-are-pulling-crude-lower-200688106",
+   "izvor": "Investing.com",
+   "chas": "2026-09-22T04:57:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "Investing",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null
   },
   {
    "zaglavie": "Gold Futures Market Structure: VC PMI, Square 9 and Cycle Timing",
@@ -824,18 +927,6 @@
    "zashto": null
   },
   {
-   "zaglavie": "Will Rising Interest Rates Send Gold Back to Its Highs?",
-   "vryzka": "https://news.google.com/rss/articles/CBMingFBVV95cUxQdEl3WnNtWkpkTExGeU9SZkhVbXRpMnBlSEdESDNJNW1LNW5lbVZnY05DSDJwMUJGSHdsOGl0Qy1xaFluUXNXV3UzTWNfTloydllwdERzb1lBN1NCWUdhcmhVSGRMekpiU1drNWQwTnRVTWFWVGVTdFVGZDNsdWNwVGxLREw3aGJPS2hDU0R0MkVKMUxPLUxQTVdRQWNTZw?oc=5",
-   "izvor": "The Motley Fool",
-   "chas": "2026-09-21T21:24:00Z",
-   "vazhnost": 3,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "rates",
-   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече."
-  },
-  {
    "zaglavie": "Stock Market Today, Sept. 21: Tech Strength Powers Nasdaq to Record Close",
    "vryzka": "https://www.fool.com/coverage/stock-market-today/2026/09/21/stock-market-today-sept-21-tech-strength-powers-nasdaq-to-record-close/?.tsrc=rss",
    "izvor": "Yahoo Finance",
@@ -930,6 +1021,18 @@
    "chas_ot_iztochnika": true,
    "duma": "gold",
    "zashto": "Пряко за златото."
+  },
+  {
+   "zaglavie": "Will Rising Interest Rates Send Gold Back to Its Highs?",
+   "vryzka": "https://www.fool.com/investing/2026/09/21/will-rising-interest-rates-send-gold-back-to-its-highs/?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-09-21T20:44:20Z",
+   "vazhnost": 3,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": "rates",
+   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече."
   },
   {
    "zaglavie": "Meta leads tech rally as oil prices fall",
@@ -2042,7 +2145,7 @@
    "chas": "2026-09-21T14:33:51Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Yahoo долар",
+   "emisiya": "Yahoo злато",
    "chas_ot_iztochnika": true,
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото."
@@ -2114,7 +2217,7 @@
    "chas": "2026-09-21T14:15:00Z",
    "vazhnost": 2,
    "za": "злато",
-   "emisiya": "Yahoo долар",
+   "emisiya": "Yahoo злато",
    "chas_ot_iztochnika": true,
    "duma": "gold",
    "zashto": "Пряко за златото."
@@ -2331,102 +2434,6 @@
    "vazhnost": 1,
    "za": "злато",
    "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null
-  },
-  {
-   "zaglavie": "Nutrien (NTR) Dropped 15.4% in Q2: Why the Fertilizer Stock Could Be a Bargain",
-   "vryzka": "https://finance.yahoo.com/markets/stocks/articles/nutrien-ntr-dropped-15-4-134545047.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-09-21T13:45:45Z",
-   "vazhnost": 1,
-   "za": "злато",
-   "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null
-  },
-  {
-   "zaglavie": "NovaGold Resources (NG) Plunged 36.9%: Is the Gold Stock Now Undervalued?",
-   "vryzka": "https://finance.yahoo.com/markets/stocks/articles/novagold-resources-ng-plunged-36-134533396.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-09-21T13:45:33Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото."
-  },
-  {
-   "zaglavie": "Sibanye Stillwater Ltd. (SBSW) Fell 29.3% in Q2: Why the Stock Could Be Worth Watching",
-   "vryzka": "https://finance.yahoo.com/markets/stocks/articles/sibanye-stillwater-ltd-sbsw-fell-134516978.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-09-21T13:45:16Z",
-   "vazhnost": 1,
-   "za": "злато",
-   "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null
-  },
-  {
-   "zaglavie": "Why The Stock Market Is Up After The Fed Rate Hike",
-   "vryzka": "https://news.google.com/rss/articles/CBMinAFBVV95cUxOaEpHV3dpSC1hcHJxUklTUXJ4STVHY1J0dU50T09DMEFVZmN6dXNRLTdmZVo4RC1Ldmd5cERBWGg2T1R0aTJCYTlUR1ZCRWloank1QU5HWV85MXZCUldUS3JWQnFPT3c5U2tjejRTMnI1OXpSNlJoOXJSTzhsM3hSQ0wzUWhwYW1PTmgyZndQdl9ZeUY0TzBNT0dVOHo?oc=5",
-   "izvor": "roanoke.com",
-   "chas": "2026-09-21T13:43:51Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото."
-  },
-  {
-   "zaglavie": "Tungsten Price Shock Signals Deeper Supply Crisis",
-   "vryzka": "https://www.investing.com/analysis/tungsten-price-shock-signals-deeper-supply-crisis-200688073",
-   "izvor": "Investing.com",
-   "chas": "2026-09-21T13:40:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "Investing",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null
-  },
-  {
-   "zaglavie": "Goolsbee rejects idea of Fed cutting rates to help US finance its debt",
-   "vryzka": "https://news.google.com/rss/articles/CBMirgFBVV95cUxQTVJQSF9lWXNmVTFmcEhDTk5aNHZUSXpGaHVvdURFQi1OeTdpU1ZlTGZIVk1HaDlIcWVkeVJENXhTRjVhT2xfanE3a1diNk81aUVxekgzLUN1VHVHWnE2WTVNS3ZLaWh6ZXg1T0l1WVY0NFRweGpYOTBwVXNCeTg1MHZIWmFOenN6dWhUTHl0X1ZrNEUxeTViRFRXUnU3RzBhMjJJcmZVNjhVbjhTdmc?oc=5",
-   "izvor": "Reuters",
-   "chas": "2026-09-21T13:36:04Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото."
-  },
-  {
-   "zaglavie": "Gold prices today, Monday, September 21, 2026: Gold prices slip on Middle East tensions",
-   "vryzka": "https://news.google.com/rss/articles/CBMi8AFBVV95cUxNZkpVazM2eS1aeS1OZ0ZIQ1hicl94WUZnZlQ1cl9sc3EzdEhpUWo4LTh6Qkl5c05VeTh2TGNnanczN2ctSDNqZTNvWXFUX3ZfcV9XMklqUFV2Z0F1X2VMYWx4VGZ0czlvTHo1Rk1ORUZ1R0haRGF2Q2VhaVJkVWJYUUJqRzMtcTVRLU9qdkRxajdxdER0Y1VZd3JPWFRtMno2NWpqQzJQcUx6ZXZ0bnhYQl9YYXBtaldjd2ZLNnJBTFVwbWpud1ZtNFhKUHYzZnpudTVieE10MC1PV2tfM1V0eThrd0tNNGRmem1VZFRMQm8?oc=5",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-09-21T13:35:31Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото."
-  },
-  {
-   "zaglavie": "Novo Nordisk’s stock tumbles as doubts persist about Ozempic maker’s goals for 2030",
-   "vryzka": "https://www.marketwatch.com/story/novo-nordisk-stock-tumbles-as-ozempic-maker-sets-out-2030-goals-8a5a8d2d?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-09-21T13:32:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null
