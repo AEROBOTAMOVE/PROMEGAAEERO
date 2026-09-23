@@ -56,6 +56,7 @@ jobs:
           git rev-parse --abbrev-ref HEAD
           git log --oneline -1
       - uses: actions/setup-python@v5
+        id: py
         with:
           python-version: '3.12'
           cache: 'pip'
@@ -64,8 +65,38 @@ jobs:
         run: |
           python -c "import re,io;print('AERO', re.search(r'VERSION = \"([^\"]+)\"', io.open('live_bot.py',encoding='utf-8').read()).group(1))"
           git log --oneline -1
+      # 🔴🔴 22.09 · v18.89 · ГЕЙТЪТ ЧАКАШЕ ЕДНО И СЪЩО. Стъпката «selftest gate»
+      # стигна 317 с ПРЕДИ ВСЕКИ рън (беше ~150 с), а ботът върви на 5 минути —
+      # сигналите излизаха ~5 минути късно. Селфтестът НЕ е напълно детерминистичен:
+      # 16 от 23 стенда пускат main() по ИСТИНСКИЯ часовник. Затова кешът важи само
+      # за ЕДИН UTC ден, а живата част (часовникът) се пуска при ВСЕКИ рън. Затова: щом ТОЧНО този код (хеш на всички .py,
+      # brain/**, yml-ите, requirements и данните, които тестовете четат — БЕЗ
+      # live/, което се мени всеки рън) ВЕЧЕ е минал ЦЕЛИЯ selftest ЗЕЛЕН, той не
+      # се пуска пак; пуска се само живата част (`selftest_zhivo.py`: версията
+      # срещу последния комит + един истински main() по ИСТИНСКИЯ часовник).
+      # В ключа влиза и ДАТАТА (UTC) — всеки нов ден първият рън пуска ЦЕЛИЯ
+      # тест, за да не може проверка, зависеща от календара, да се скрие зад кеша.
+      # БЕЛЕГЪТ СЕ ЗАПИСВА САМО СЛЕД ЗЕЛЕН ПЪЛЕН РЪН (виж `full=1` отдолу), а
+      # ключът е ТОЧЕН (без restore-keys) и съдържанието му се сверява с ключа —
+      # червен selftest не може да се скрие зад кеша.
+      # НАЗАД: vars.SELFTEST_CACHE=0 → всеки рън пуска целия selftest, както досега.
+      - name: selftest ключ
+        id: st_key
+        if: ${{ vars.SELFTEST_CACHE != '0' }}
+        continue-on-error: true            # празен ключ води към ПЪЛНИЯ тест — стъпката не бива да вали рънa
+        run: |
+          echo "key=selftest-v1-$(date -u +%Y-%m-%d)-py${{ steps.py.outputs.python-version }}-${{ hashFiles('**/*.py', 'brain/**', '.github/workflows/*.yml', 'requirements.txt', '*.json', '*.md', '*.txt', '*.pine', 'tradingview/**') }}" >> "$GITHUB_OUTPUT"
+      - name: selftest кеш · четене
+        id: st_cache
+        if: ${{ vars.SELFTEST_CACHE != '0' && steps.st_key.outputs.key != '' }}
+        continue-on-error: true            # кешът НИКОГА не бива да вали рънa
+        uses: actions/cache/restore@v4
+        with:
+          path: .selftest_ok
+          key: ${{ steps.st_key.outputs.key }}
       - name: selftest gate                             # W1: счупен код НЕ праща сигнали
         id: selftest_gate
+        shell: bash                        # ← `bash -eo pipefail`: падне ли python, пада и стъпката ПРЕЗ `tee`
         # 🔴 25.08 · таванът беше 5 мин. МЕРЕНО от живото Actions: стъпката трае
         # 59-71с и при падане, И при минаване — тоест НЕ Е таймаут, а истински
         # провал на тест. Таванът се вдига все пак: селфтестът расте с всеки нов
@@ -77,7 +108,30 @@ jobs:
         # този файл и НАЗОВАВА проверката, вместо да казва «нещо се счупи».
         # `tee` не мени изхода: обвивката е `bash -eo pipefail`, тоест кодът
         # на python се разпространява през тръбата (проверено в П154).
-        run: python selftest.py 2>&1 | tee selftest_izhod.txt
+        env:
+          SELFTEST_CACHE: ${{ vars.SELFTEST_CACHE || '' }}
+          ST_KEY: ${{ steps.st_key.outputs.key }}
+          ST_HIT: ${{ steps.st_cache.outputs.cache-hit }}
+        run: |
+          set -eo pipefail   # -e: падне ли python, пада и стъпката; -o pipefail: и през tee
+          if [ "${SELFTEST_CACHE:-1}" != "0" ] && [ "$ST_HIT" = "true" ] && [ -n "$ST_KEY" ] \
+             && [ -f .selftest_ok ] && [ "$(head -n 1 .selftest_ok)" = "$ST_KEY" ]; then
+            echo "full=0" >> "$GITHUB_OUTPUT"
+            echo "::notice::selftest: СЪЩИЯТ код вече мина ЦЕЛИЯ selftest зелен — пускам само живата част"
+            python selftest_zhivo.py 2>&1 | tee selftest_izhod.txt
+          else
+            echo "full=1" >> "$GITHUB_OUTPUT"
+            rm -f .selftest_ok
+            python selftest.py 2>&1 | tee selftest_izhod.txt
+            if [ -n "$ST_KEY" ]; then printf '%s\n' "$ST_KEY" > .selftest_ok; fi
+          fi
+      - name: selftest кеш · запис                      # САМО след ЗЕЛЕН ПЪЛЕН рън
+        if: ${{ vars.SELFTEST_CACHE != '0' && steps.selftest_gate.outputs.full == '1' && steps.st_key.outputs.key != '' }}
+        continue-on-error: true            # зает ключ (друг рън) е предупреждение, не провал
+        uses: actions/cache/save@v4
+        with:
+          path: .selftest_ok
+          key: ${{ steps.st_key.outputs.key }}
       - name: run bot
         id: run_bot
         # 🔴 ОДИТ-5: без таван един увиснал yfinance-разговор държи concurrency групата
@@ -367,6 +421,40 @@ jobs:
           # на минутния път се съди по 5-минутните барове (стоп там не остава
           # невидян). НАЗАД: PATH_FROM_CHECKED=0.
           ПЪТ_ОТ_CHECKED: ${{ vars.PATH_FROM_CHECKED || '' }}
+          # 🔴 22.09 · v18.89 · ЕДНО НЕЩО — ЕДНО ЧИСЛО, ЕДНА ДУМА. Десет лоста по
+          # текста и истината в канала; нито един не спира сигнал. Всеки назад = 0.
+          # 1 · седмичната карта в СПОТ цени (беше GC=F: 4,424.90 при спот 4,359.59
+          # на 21.09 · 390-720 пипса разлика). НАЗАД: WEEKLY_SPOT=0.
+          СЕДМИЦА_СПОТ: ${{ vars.WEEKLY_SPOT || '' }}
+          # 2 · петъчната вечерна казва докога следи · ВЛЕЗ след нея носи реда за
+          # уикенда и гапа · уикенд-картичката при отворена позиция казва коя е тя,
+          # вместо «не загуби пари». НАЗАД: WEEKEND_TRUTH=0.
+          УИКЕНД_ИСТИНА: ${{ vars.WEEKEND_TRUTH || '' }}
+          # 3 · «♻️ ново влизане: НЕ — N стопа в тази посока» назовава посоката,
+          # когато новата е ДРУГА (13 от 29 карти). НАЗАД: EXIT_REENTRY_DIR_WORD=0.
+          ИЗХОД_ПОСОКА_ДУМА: ${{ vars.EXIT_REENTRY_DIR_WORD || '' }}
+          # 4 · два изхода на една сделка в един рън: първата карта губи заповедите,
+          # които вече не важат (9 двойки за 7 дни). НАЗАД: EXIT_SAME_RUN_MERGE=0.
+          ИЗХОДИ_ЕДИН_РЪН: ${{ vars.EXIT_SAME_RUN_MERGE || '' }}
+          # 5 · «Големите новини» в седмичната: цели имена на български, данните
+          # преди речите, всяко име веднъж, «и още N». НАЗАД: WEEKLY_NEWS_PICK=0.
+          СЕДМИЦА_НОВИНИ: ${{ vars.WEEKLY_NEWS_PICK || '' }}
+          СЕДМИЦА_НОВИНИ_ЗНАЦИ: ${{ vars.WEEKLY_NEWS_CHARS || '' }}
+          # 6 · «☀️ ДЕНЯТ»: «мерено 07.07-14.09: 4 такива дни, -74 пипса» вместо
+          # «последните 4 такива дни». НАЗАД: DAY_REVERSAL_DATED=0.
+          ДЕН_ОБРАТ_ДАТА: ${{ vars.DAY_REVERSAL_DATED || '' }}
+          # 7 · лотът на равносметката идва от MONEY_LOT (беше закован 0.20 на второ
+          # място). НАЗАД: BAG_LOT_FROM_MONEY=0.
+          ТОРБА_ЛОТ_ОТ_ПАРИ: ${{ vars.BAG_LOT_FROM_MONEY || '' }}
+          # 8 · повторената («↻ ПОВТОРНО») карта влиза в sent_log с белег и не се
+          # брои за втора позиция. НАЗАД: RESEND_MARK=0.
+          ПОВТОРНО_БЕЛЕГ: ${{ vars.RESEND_MARK || '' }}
+          # 9 · «(разбъркано макро)» само когато наистина е разбъркано; иначе
+          # «макрото е против» (както гейта). НАЗАД: BUCKET_WORD_TRUE=0.
+          КОФА_ДУМА_ВЯРНА: ${{ vars.BUCKET_WORD_TRUE || '' }}
+          # 10 · «📌 ПАЗАРЕН ФОН / 📅 ИДВА» казва името на новината на български
+          # (същият речник като отброяването). НАЗАД: CQ_NAME_BG=0.
+          CQ_ИМЕ_БГ: ${{ vars.CQ_NAME_BG || '' }}
           # 🔴 22.09 · v18.85 · МОЗЪКЪТ (одитът MOZAK_DOKLAD) · всеки лост назад = 0:
           # картите «🧠 мисъл на бота — НЕ е сигнал» · падналата хипотеза спира ·
           # присъдата се заключва · досието е по честната скала · мълчи и в паузата ·
