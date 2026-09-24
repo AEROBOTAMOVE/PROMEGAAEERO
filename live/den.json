@@ -1,24 +1,77 @@
 {
- "den": "2026-09-23",
- "sazdadeno_utc": "2026-09-23T04:00:00Z",
- "v": "v18.88",
- "cena": 4343.89,
- "bazis": 35.8,
+ "den": "2026-09-24",
+ "sazdadeno_utc": "2026-09-24T04:04:00Z",
+ "v": "v18.89",
+ "cena": 4284.15,
+ "bazis": 35.1,
  "nosht": {
-  "ot": null,
-  "do": null,
-  "shirina": null,
-  "atr": 106.19,
-  "dyal_atr": null,
-  "rezhim": "неясно"
+  "ot": 4282.44,
+  "do": 4295.63,
+  "shirina": 13.19,
+  "atr": 104.87,
+  "dyal_atr": 0.097,
+  "rezhim": "тясна"
  },
  "vchera": {
-  "vryh": 4378.71,
-  "dyno": 4291.8,
-  "zatvaryane": 4340.6
+  "vryh": 4370.28,
+  "dyno": 4274.09,
+  "zatvaryane": 4283.29
  },
- "idei": [],
- "sabitiya": [],
- "yasna_ideya": false,
- "zashto_nyama": "нощта не се чете"
+ "idei": [
+  {
+   "posoka": "long",
+   "nivo": 4282.44,
+   "stop": 4269.44,
+   "celi": [
+    4287.44,
+    4295.44
+   ],
+   "izvor": "нощно дъно",
+   "belezhka": "наблюдение, не вход: сигнал е само картата ВЛЕЗ · нивото е с разликата към борсата от своя час",
+   "nablyudenie": true
+  },
+  {
+   "posoka": "short",
+   "nivo": 4295.63,
+   "stop": 4308.63,
+   "celi": [
+    4290.63,
+    4285.63
+   ],
+   "izvor": "нощен връх",
+   "belezhka": "наблюдение, не вход: сигнал е само картата ВЛЕЗ · нивото е с разликата към борсата от своя час",
+   "nablyudenie": true
+  }
+ ],
+ "sabitiya": [
+  {
+   "ime": "FOMC Member Williams Speaks",
+   "utc": "2026-09-24T08:10:00Z",
+   "sila": "high",
+   "prozorec_min": [
+    20,
+    40
+   ]
+  },
+  {
+   "ime": "FOMC Member Barkin Speaks",
+   "utc": "2026-09-24T12:00:00Z",
+   "sila": "high",
+   "prozorec_min": [
+    20,
+    40
+   ]
+  },
+  {
+   "ime": "Initial Jobless Claims",
+   "utc": "2026-09-24T12:30:00Z",
+   "sila": "high",
+   "prozorec_min": [
+    20,
+    40
+   ]
+  }
+ ],
+ "yasna_ideya": true,
+ "zashto_nyama": ""
 }
