@@ -18654,7 +18654,10 @@ def _п194_13():
        _и >= 0 and _и < _сн < _пс
        and "ref:" not in _yml194[_и:_сн].split("# ")[0]
        and "git merge -q --ff-only origin/main" in _yml194[_сн:_пс]
-       and "vars.CHECKOUT_TIP != '0'" in _yml194[_сн:_пс])
+       # 🔴 23.09 · МЕРЕНО: `if: ${{ vars.X }}` се ПРОПУСКА тук (стъпката излизаше
+       # skipped при несъществуваща променлива) → лостът минава през env на работата.
+       and "env.CHECKOUT_TIP != '0'" in _yml194[_сн:_пс]
+       and "CHECKOUT_TIP: ${{ vars.CHECKOUT_TIP || '' }}" in _yml194)
     _сс = _yml194[_yml194.find("- name: save state"):_yml194.find("- name: wake the audit robot")]
     ck("П194 13 · save state: неуспешен rebase се абортира преди следващия опит",
        'git rebase --abort 2>/dev/null || true' in _сс
@@ -19103,9 +19106,20 @@ def _п195_11():
     ck("П195 11 · ключът НЕ хешира live/ (състоянието се мени всеки рън)",
        "live/" not in _г.split("hashFiles(")[1].split(")")[0])
     ck("П195 11 · лостът е SELFTEST_CACHE и на трите стъпки (назад: 0 = както досега)",
-       _г.count("vars.SELFTEST_CACHE != '0'") == 3
-       and "SELFTEST_CACHE: ${{ vars.SELFTEST_CACHE || '' }}" in _г
+       _г.count("env.SELFTEST_CACHE != '0'") == 3
+       and "SELFTEST_CACHE: ${{ vars.SELFTEST_CACHE || '' }}" in _yml195
        and "НАЗАД: vars.SELFTEST_CACHE=0" in _yml195)
+    # 🔴 23.09 · МЕРЕНО НА ЖИВО (jobs API): стъпка с `if: ${{ vars.X != '0' }}` се
+    # ПРОПУСКА в това хранилище — «sync to tip» и трите стъпки на кеша излизаха
+    # "skipped" при несъществуваща променлива. Условията четат `env`, което се
+    # пълни веднъж на нивото на работата. Този пазач пази точно това.
+    _vars_if = [_р for _р in _yml195.splitlines()
+                if _re195.search(r"if: .{0,6}\{\{ *vars\.", _р) and not _р.strip().startswith("#")]
+    ck("П195 11 · НИТО ЕДНО условие не виси на `vars` (те не стигат до if тук): %s" % (_vars_if or "чисто"),
+       _vars_if == [])
+    ck("П195 11 · стойностите идват веднъж в env на работата (там vars работят)",
+       "    env:" in _yml195 and "CHECKOUT_TIP: ${{ vars.CHECKOUT_TIP || '' }}" in _yml195
+       and "vars до условията: cache=" in _yml195)
     _стъпка = _г[_г.find("- name: selftest gate"):_г.find("- name: selftest кеш · запис")]
     ck("П195 11 · `shell: bash` е В САМАТА стъпка «selftest gate», не някъде в блока",
        "shell: bash" in _стъпка and "shell: bash" not in _г[:_г.find("- name: selftest gate")])

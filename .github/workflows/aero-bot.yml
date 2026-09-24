@@ -37,6 +37,16 @@ concurrency:
 jobs:
   signal:
     runs-on: ubuntu-latest
+    # 🔴🔴 23.09 · МЕРЕНО НА ЖИВО: стъпка с `if: ${{ vars.X != '0' }}` се ПРОПУСКА
+    # в това хранилище — «sync to tip» е skipped във ВСЕКИ рън от 22.09, а трите
+    # стъпки на кеша — от качването на v18.89 (проверено в jobs API: conclusion
+    # "skipped", при положение че такава променлива изобщо няма). Тоест контекстът
+    # `vars` не стига до УСЛОВИЯТА при workflow_dispatch тук. Затова стойностите се
+    # вземат ВЕДНЪЖ в `env` (там работят — така се подават и лостовете на бота), а
+    # условията четат `env`. Празно env = включено, както беше замислено.
+    env:
+      CHECKOUT_TIP: ${{ vars.CHECKOUT_TIP || '' }}
+      SELFTEST_CACHE: ${{ vars.SELFTEST_CACHE || '' }}
     steps:
       - uses: actions/checkout@v4
         # 🔴🔴 22.09 · v18.88 · ЗАСТОЯЛ РЪН. Без `ref` checkout тегли SHA-то от
@@ -50,7 +60,7 @@ jobs:
         # Затова checkout е пак по подразбиране (на клона main), а към върха се стига
         # със следващата стъпка (--ff-only: само напред, никога не пренаписва).
       - name: sync to tip
-        if: ${{ vars.CHECKOUT_TIP != '0' }}
+        if: ${{ env.CHECKOUT_TIP != '0' }}
         run: |
           git fetch -q origin main && git merge -q --ff-only origin/main || echo "::warning::sync to tip не успя — продължавам от събитието"
           git rev-parse --abbrev-ref HEAD
@@ -65,6 +75,7 @@ jobs:
         run: |
           python -c "import re,io;print('AERO', re.search(r'VERSION = \"([^\"]+)\"', io.open('live_bot.py',encoding='utf-8').read()).group(1))"
           git log --oneline -1
+          echo "vars до условията: cache=[${{ vars.SELFTEST_CACHE }}] tip=[${{ vars.CHECKOUT_TIP }}] nochase=[${{ vars.NO_CHASE }}]"
       # 🔴🔴 22.09 · v18.89 · ГЕЙТЪТ ЧАКАШЕ ЕДНО И СЪЩО. Стъпката «selftest gate»
       # стигна 317 с ПРЕДИ ВСЕКИ рън (беше ~150 с), а ботът върви на 5 минути —
       # сигналите излизаха ~5 минути късно. Селфтестът НЕ е напълно детерминистичен:
@@ -82,13 +93,13 @@ jobs:
       # НАЗАД: vars.SELFTEST_CACHE=0 → всеки рън пуска целия selftest, както досега.
       - name: selftest ключ
         id: st_key
-        if: ${{ vars.SELFTEST_CACHE != '0' }}
+        if: ${{ env.SELFTEST_CACHE != '0' }}
         continue-on-error: true            # празен ключ води към ПЪЛНИЯ тест — стъпката не бива да вали рънa
         run: |
           echo "key=selftest-v1-$(date -u +%Y-%m-%d)-py${{ steps.py.outputs.python-version }}-${{ hashFiles('**/*.py', 'brain/**', '.github/workflows/*.yml', 'requirements.txt', '*.json', '*.md', '*.txt', '*.pine', 'tradingview/**') }}" >> "$GITHUB_OUTPUT"
       - name: selftest кеш · четене
         id: st_cache
-        if: ${{ vars.SELFTEST_CACHE != '0' && steps.st_key.outputs.key != '' }}
+        if: ${{ env.SELFTEST_CACHE != '0' && steps.st_key.outputs.key != '' }}
         continue-on-error: true            # кешът НИКОГА не бива да вали рънa
         uses: actions/cache/restore@v4
         with:
@@ -126,7 +137,7 @@ jobs:
             if [ -n "$ST_KEY" ]; then printf '%s\n' "$ST_KEY" > .selftest_ok; fi
           fi
       - name: selftest кеш · запис                      # САМО след ЗЕЛЕН ПЪЛЕН рън
-        if: ${{ vars.SELFTEST_CACHE != '0' && steps.selftest_gate.outputs.full == '1' && steps.st_key.outputs.key != '' }}
+        if: ${{ env.SELFTEST_CACHE != '0' && steps.selftest_gate.outputs.full == '1' && steps.st_key.outputs.key != '' }}
         continue-on-error: true            # зает ключ (друг рън) е предупреждение, не провал
         uses: actions/cache/save@v4
         with:
