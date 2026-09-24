@@ -1,7 +1,7 @@
 name: AERO Selftest
 on:
   push:
-    paths: ['live_bot.py', 'selftest.py', 'requirements.txt']
+    paths: ['live_bot.py', 'selftest.py', 'requirements.txt', 'platforma/**']
   workflow_dispatch:
 # О10 · няколко бързи качвания едно след друго вдигаха успоредни тестове.
 concurrency:
