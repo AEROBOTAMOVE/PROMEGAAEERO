@@ -36,7 +36,7 @@ const IZVORI = {
   data: {
     pat: "netlify/functions/_lib/data.mjs", snimka: "snimka_data.js",
     imena: ["RE_CENI", "RE_VHOD", "golo", "chislo", "isoUtc", "celiOt", "ZAKON_BROENE",
-      "ZAKON_POZICII", "hodPips", "sdelkiOtKarti", "RE_OBSHTO", "RE_KRAEN", "poziciiOtKarti"],
+      "ZAKON_POZICII", "hodPips", "ZAPIS_D", "dOt", "sdelkiOtKarti", "RE_OBSHTO", "RE_KRAEN", "poziciiOtKarti"],
     vrashta: ["sdelkiOtKarti", "poziciiOtKarti"],
   },
   app: {

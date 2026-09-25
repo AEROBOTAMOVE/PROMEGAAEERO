@@ -1,4 +1,4 @@
-// СНИМКА · netlify/functions/_lib/data.mjs на AERO_КЛИЕНТ · 2026-09-25T07:43 UTC · sha256 3c3003c09c4347fd
+// СНИМКА · netlify/functions/_lib/data.mjs на AERO_КЛИЕНТ · 2026-09-25T09:45 UTC · sha256 285c2b4714598cb4
 // СНИМКА · дословни извадки, НЕ СЕ ПИШАТ НА РЪКА: node platforma/proba_karti.mjs snimka <AERO_КЛИЕНТ>
 const RE_CENI = /([\d,]+\.\d+)\s*(?:\([^)]*\))?\s*→\s*([\d,]+\.\d+)/;
 const RE_VHOD = /вход\s+<?c?o?d?e?>?\s*([\d,]+\.\d+)/;
@@ -24,6 +24,19 @@ function celiOt(g) {
 const ZAKON_BROENE = "sdelka";
 const ZAKON_POZICII = 1;
 const hodPips = (vhod, izhod, dir) => Math.round(Number((((izhod - vhod) * dir) / 0.1).toFixed(6)));
+const ZAPIS_D = true;
+function dOt(k, ev) {
+  const d = ZAPIS_D && k ? k.d : null;
+  if (!d || typeof d !== "object" || d.v !== 1 || d.ev !== ev) return null;
+  const dir = d.dir === "long" ? 1 : d.dir === "short" ? -1 : 0;
+  const entry = Number(d.entry);
+  if (!dir || d.entry === null || d.entry === undefined || !Number.isFinite(entry)) return null;
+  const n = (x) => (x === null || x === undefined || x === "" || !Number.isFinite(Number(x)) ? null : Number(x));
+  const lv = d.levels && typeof d.levels === "object" ? d.levels : {};
+  const celi = n(lv.tp1) === null && n(lv.tp2) === null ? [] : [n(lv.tp1), n(lv.tp2)];
+  return { dir, entry, sl: n(lv.sl), celi, kind: String(d.kind || ""), px: n(d.exit_px),
+    pips: n(d.pips), closes: !!d.closes, be: !!d.be };
+}
 function sdelkiOtKarti(text, zakonBroene = ZAKON_BROENE, pozicii = ZAKON_POZICII) {
   const poKarti = zakonBroene === "karta";
   const dvePoz = pozicii === 2;                               // пътят назад · старото броене
@@ -81,6 +94,8 @@ function sdelkiOtKarti(text, zakonBroene = ZAKON_BROENE, pozicii = ZAKON_POZICII
     const g = golo(k.text);
 
     if (k.tag === "signal") {
+      const ds = dOt(k, "signal");            // 25.09 · Н-08 · от данните, ако ги има
+      if (ds) { spis.push({ dir: ds.dir, entry: ds.entry, otv: t, sl: ds.sl, celi: ds.celi, cel: 0, zatv: null }); continue; }
       /* картата ВЛЕЗ. До 14.09 ботът е писал «🟢 КУПИ ЗЛАТО · ПРЕМИУМ 7/8» без думата ВЛЕЗ —
          затова се хваща по «КУПИ/ПРОДАЙ ЗЛАТО» + «вход». «📌 СДЕЛКАТА ТЕЧЕ» и «⏸ БЕЗ ВХОД»
          пишат «ЗЛАТО покупка» / «ЗЛАТО нагоре» и не минават оттук. */
@@ -101,6 +116,15 @@ function sdelkiOtKarti(text, zakonBroene = ZAKON_BROENE, pozicii = ZAKON_POZICII
        за да се знае после, че стопът е бил на входа → стоп след нея е 0, не −130. Сделката се намира
        по посока + «премести стопа на X» (= входа), а ако входът не съвпадне — по цел 1 от картата. */
     if (/^exit-be\b/.test(k.tag)) {
+      const db = dOt(k, "be");                // 25.09 · Н-08 · от данните: посоката и входът
+      if (db) {
+        for (let i = spis.length - 1; i >= 0; i--) {
+          const x = spis[i];
+          if (x.dir !== db.dir || x.otv > t || x.zatv) continue;
+          if (Math.abs(x.entry - db.entry) <= 0.006) { x.be40 = true; break; }
+        }
+        continue;
+      }
       /* 25.09 · Н-07 · «⏩ в същата проверка дойде и цел 1» (23.09 11:35, 24.09 05:05) е без цени по
          замисъл — следващата карта е цел 1 и тя слага стопа на входа. Не е неразчетена. */
       if (/дойде\s+и\s+цел\s*1/.test(g)) continue;
@@ -122,10 +146,11 @@ function sdelkiOtKarti(text, zakonBroene = ZAKON_BROENE, pozicii = ZAKON_POZICII
       continue;
     }
     if (k.tag.split(":")[0] !== "exit") continue;           // само главният слот
-    const vid = (k.tag.split(":")[1] || "").split("#")[0];
-    const m = g.match(/ЗЛАТО\s+(покупка|продажба)/);
-    const f = g.match(RE_CENI);
-    const entry = f ? chislo(f[1]) : null;
+    const dx = dOt(k, "exit");                // 25.09 · Н-08 · от данните, ако ги има
+    const vid = dx && dx.kind ? dx.kind : (k.tag.split(":")[1] || "").split("#")[0];
+    const m = dx ? [null, dx.dir === 1 ? "покупка" : "продажба"] : g.match(/ЗЛАТО\s+(покупка|продажба)/);
+    const f = dx ? [null, null, null] : g.match(RE_CENI);
+    const entry = dx ? dx.entry : f ? chislo(f[1]) : null;
     if (!m || entry === null) {
       /* Н-07 · сребърна карта не е «неразчетена» — тя просто не е за нашия инструмент */
       if (!m && /СРЕБРО/.test(g)) continue;
@@ -134,7 +159,7 @@ function sdelkiOtKarti(text, zakonBroene = ZAKON_BROENE, pozicii = ZAKON_POZICII
       continue;
     }
     const dir = m[1] === "покупка" ? 1 : -1;
-    const izhod = chislo(f[2]);
+    const izhod = dx ? dx.px : chislo(f[2]);
     let v = null;
     for (let i = spis.length - 1; i >= 0; i--) {
       const x = spis[i];
@@ -157,12 +182,12 @@ function sdelkiOtKarti(text, zakonBroene = ZAKON_BROENE, pozicii = ZAKON_POZICII
          е −48 (гап през стопа на входа), но цел 1 Е взета — по закона на собственика след цел 1
          няма минус, значи 0 (стопът е на входа). Това е единствената карта, в която двете четения
          се различават. */
-      const naVhoda = /^✅/.test(g.trim()) || v.cel >= 1 || !!v.be40;   // be40 · стопът на входа при +40 (v18.85)
+      const naVhoda = (dx ? dx.be : /^✅/.test(g.trim())) || v.cel >= 1 || !!v.be40;   // be40 · стопът на входа при +40 (v18.85) · Н-08: `be` от данните
       v.zatv = { t, vid: "sl", px: izhod, naVhoda };
       continue;
     }
-    const sb = g.match(/сделката донесе\s*([+−\-]?\d+)\s*пипса/i);
-    v.zatv = { t, vid, px: izhod, sbor: sb ? Number(String(sb[1]).replace("−", "-")) : 0, karta: k };
+    const sb = dx ? null : g.match(/сделката донесе\s*([+−\-]?\d+)\s*пипса/i);
+    v.zatv = { t, vid, px: izhod, sbor: dx ? (dx.pips === null ? 0 : dx.pips) : sb ? Number(String(sb[1]).replace("−", "-")) : 0, karta: k };
   }
 
   /* 15.09 14:12 софийско · от тогава картите са по закона с целите 50 / 100–130 и стопа 130.
@@ -236,6 +261,12 @@ function poziciiOtKarti(text) {
     try { k = JSON.parse(l); } catch (e) { continue; }
     if (!k || typeof k.tag !== "string" || typeof k.text !== "string") continue;
     if (k.tag === "signal") {
+      const ds = dOt(k, "signal");            // 25.09 · Н-08 · от данните, ако ги има
+      if (ds) {
+        const td = Date.parse(/(Z|[+\-]\d\d:?\d\d)$/i.test(k.utc || "") ? k.utc : (k.utc || "") + "Z");
+        if (Number.isFinite(td)) vhodove.push({ dir: ds.dir === 1 ? "long" : "short", cena: ds.entry, t: td });
+        continue;
+      }
       /* обявен вход · «🟢🟢 ВЛЕЗ · КУПИ ЗЛАТО … вход 4,432.81». «⏸ ВИЖДАМ … но не я давам»
          (таг «спряна:*») и мислите на мозъка НЕ минават оттук — те не са дадени сигнали. */
       const gs = golo(k.text);
@@ -253,23 +284,24 @@ function poziciiOtKarti(text) {
     const t = Date.parse(/(Z|[+\-]\d\d:?\d\d)$/i.test(k.utc || "") ? k.utc : (k.utc || "") + "Z");
     if (!Number.isFinite(t)) continue;
     const g = golo(k.text);
-    const m = g.match(/ЗЛАТО\s+(покупка|продажба)/);
-    const f = g.match(RE_CENI);
+    const dx = koren === "exit" ? dOt(k, "exit") : null;   // 25.09 · Н-08 · от данните, ако ги има
+    const m = dx ? [null, dx.dir === 1 ? "покупка" : "продажба"] : g.match(/ЗЛАТО\s+(покупка|продажба)/);
+    const f = dx ? [""] : g.match(RE_CENI);
     if (!m || !f) { neprochetni += 1; continue; }
-    const vhod = chislo(f[1]);
+    const vhod = dx ? dx.entry : chislo(f[1]);
     if (vhod === null) { neprochetni += 1; continue; }
-    const vid = (k.tag.split(":")[1] || "").split("#")[0];
+    const vid = dx && dx.kind ? dx.kind : (k.tag.split(":")[1] || "").split("#")[0];
     const slot = Number((k.tag.match(/#(\d+)/) || [, "1"])[1]);
     /* ходът за тази карта · числото веднага след реда с двете нива */
-    const sled = g.slice(g.indexOf(f[0]) + f[0].length);
-    const hod = chislo((sled.match(/([+−–\-]?[\d.,]+)\s*пипса/) || [])[1]);
+    const sled = dx ? "" : g.slice(g.indexOf(f[0]) + f[0].length);
+    const hod = dx ? dx.pips : chislo((sled.match(/([+−–\-]?[\d.,]+)\s*пипса/) || [])[1]);
     /* сметката на сделката · както ботът я е написал */
-    const so = g.match(RE_OBSHTO) || null;
-    const kr = so ? null : g.match(RE_KRAEN);
+    const so = dx ? null : g.match(RE_OBSHTO) || null;
+    const kr = dx || so ? null : g.match(RE_KRAEN);
     /* 22.09 · бот v18.85 · «✅ стопът беше на входа · 0 пипса · без загуба» (след exit-be при +40) —
        числото стои в самия първи ред, дори картата да няма «сделката донесе» */
-    const nula = !so && !kr && /стопът беше на входа\s*·\s*0\s*пипса/.test(g);
-    const sbor = so ? chislo(so[1]) : kr ? chislo(kr[2]) * (/ЗАГУБА/i.test(kr[1]) && chislo(kr[2]) > 0 ? -1 : 1) : nula ? 0 : null;
+    const nula = !dx && !so && !kr && /стопът беше на входа\s*·\s*0\s*пипса/.test(g);
+    const sbor = dx ? dx.pips : so ? chislo(so[1]) : kr ? chislo(kr[2]) * (/ЗАГУБА/i.test(kr[1]) && chislo(kr[2]) > 0 ? -1 : 1) : nula ? 0 : null;
     const kluch = slot + "|" + m[1] + "|" + vhod.toFixed(2);
     let p = zhivi.get(kluch);
     if (!p) {
@@ -281,7 +313,7 @@ function poziciiOtKarti(text) {
     if (vid === "tp2") p.celi = Math.max(p.celi, 2);
     if (vid === "tp3") p.celi = 3;
     if (hod !== null && (p.hod_max === null || Math.abs(hod) > Math.abs(p.hod_max) || hod > p.hod_max)) p.hod_max = hod;
-    if (!/затворена/.test(g)) continue;
+    if (dx ? !dx.closes : !/затворена/.test(g)) continue;
     p.closed = isoUtc(t);
     p.kraj = vid;
     p.pipsove = sbor;

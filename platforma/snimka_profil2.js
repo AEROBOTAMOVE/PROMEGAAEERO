@@ -1,4 +1,4 @@
-// СНИМКА · profil2.js на AERO_КЛИЕНТ · 2026-09-25T07:43 UTC · sha256 173b08d909bc41b9
+// СНИМКА · profil2.js на AERO_КЛИЕНТ · 2026-09-25T09:45 UTC · sha256 173b08d909bc41b9
 // СНИМКА · дословни извадки, НЕ СЕ ПИШАТ НА РЪКА: node platforma/proba_karti.mjs snimka <AERO_КЛИЕНТ>
 const PIP = 0.1;
   const BR_CELI = 2;
