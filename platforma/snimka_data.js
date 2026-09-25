@@ -1,4 +1,4 @@
-// СНИМКА · netlify/functions/_lib/data.mjs на AERO_КЛИЕНТ · 2026-09-24T16:51 UTC · sha256 26a1b2805589bf53
+// СНИМКА · netlify/functions/_lib/data.mjs на AERO_КЛИЕНТ · 2026-09-25T07:43 UTC · sha256 3c3003c09c4347fd
 // СНИМКА · дословни извадки, НЕ СЕ ПИШАТ НА РЪКА: node platforma/proba_karti.mjs snimka <AERO_КЛИЕНТ>
 const RE_CENI = /([\d,]+\.\d+)\s*(?:\([^)]*\))?\s*→\s*([\d,]+\.\d+)/;
 const RE_VHOD = /вход\s+<?c?o?d?e?>?\s*([\d,]+\.\d+)/;
@@ -36,6 +36,40 @@ function sdelkiOtKarti(text, zakonBroene = ZAKON_BROENE, pozicii = ZAKON_POZICII
      Сделката ѝ не получава число — по-добре празно, отколкото тихо сгрешено число (никога 0). */
   const neprochetni = [];
   const neprochetena = (k, zashto) => neprochetni.push({ utc: String(k.utc || ""), tag: String(k.tag || ""), zashto });
+  /* 25.09 · Н-07 · враждебната проба (всяка от 354-те изходни карти счупена поотделно): да се
+     прескочи непрочетената карта НЕ стига. Следващата карта на същия вход затваря сделката с
+     ГРЕШНО число — цел 2 без цена → стопът «на входа» след нея даваше 0 вместо +130 (20 карти);
+     цел 1 без цена → стопът даваше −130 вместо 0 (01.09 12:47). Затова и СДЕЛКАТА на картата
+     се бележи nechetim и не получава число (изходният цикъл по-долу я прескача).
+     Коя е сделката — точно както я търси редовният път (посока + вход ±0.006, последната):
+       · входът се чете («X (hh:mm) →», «стопа на X», «на входа X» — мерено 25.09: 354/354,
+         119/119, 6/6 съвпадат с входа) → тази сделка, ако е отворена; ако е затворена, картата
+         е остатък и числото не зависи от нея; ако я няма → входът е отпреди записа: слага се
+         празна сделка без вход (nechetim), за да се закачат за нея следващите карти, а не да я
+         родят наново без цел 1;
+       · входът не се чете → ВСИЧКИ отворени сделки в тази посока (в двете, ако и посоката не се
+         чете). Не само последната: при две отворени коя е — не се знае, а празното е по-добро
+         от грешното число. */
+  const vhodOtKarta = (g) => {
+    const a = g.match(/([\d,]+\.\d+)\s*(?:\([^)]*\))?\s*→/) || g.match(/стопа\s+на\s+([\d,]+\.\d+)/) || g.match(/на\s+входа\s+([\d,]+\.\d+)/);
+    return a ? chislo(a[1]) : null;
+  };
+  const oznachiNechetimi = (dir, vhod, t) => {
+    const posoki = dir ? [dir] : [1, -1];
+    if (vhod === null) {
+      for (const x of spis) if (x.otv <= t && !x.zatv && posoki.includes(x.dir)) x.nechetim = true;
+      return;
+    }
+    for (const d of posoki) {
+      let v = null;
+      for (let i = spis.length - 1; i >= 0; i--) {
+        const x = spis[i];
+        if (x.dir === d && x.otv <= t && Math.abs(x.entry - vhod) <= 0.006) { v = x; break; }
+      }
+      if (!v) spis.push({ dir: d, entry: vhod, otv: t, sl: null, celi: [], cel: 0, zatv: null, bezVhod: true, nechetim: true });
+      else if (!v.zatv) v.nechetim = true;
+    }
+  };
   for (const red of redove) {
     const l = red.trim();
     if (!l) continue;
@@ -67,13 +101,18 @@ function sdelkiOtKarti(text, zakonBroene = ZAKON_BROENE, pozicii = ZAKON_POZICII
        за да се знае после, че стопът е бил на входа → стоп след нея е 0, не −130. Сделката се намира
        по посока + «премести стопа на X» (= входа), а ако входът не съвпадне — по цел 1 от картата. */
     if (/^exit-be\b/.test(k.tag)) {
+      /* 25.09 · Н-07 · «⏩ в същата проверка дойде и цел 1» (23.09 11:35, 24.09 05:05) е без цени по
+         замисъл — следващата карта е цел 1 и тя слага стопа на входа. Не е неразчетена. */
+      if (/дойде\s+и\s+цел\s*1/.test(g)) continue;
       const mb = g.match(/ЗЛАТО\s+(покупка|продажба)/);
-      if (!mb) continue;
+      /* 25.09 · Н-07 · непрочетена «стопът на входа» → без нея стоп след нея би бил −130 вместо 0 */
+      if (!mb) { if (!/СРЕБРО/.test(g)) { neprochetena(k, "без посока"); oznachiNechetimi(0, vhodOtKarta(g), t); } continue; }
       const dirB = mb[1] === "покупка" ? 1 : -1;
       const sb = g.match(/стопа\s+на\s+([\d,]+\.\d+)/);
       const cb = g.match(/1️?⃣\s*([\d,]+\.\d+)/);
       const stopB = sb ? chislo(sb[1]) : null;
       const cel1B = cb ? chislo(cb[1]) : null;
+      if (stopB === null && cel1B === null) { neprochetena(k, "без цена"); oznachiNechetimi(dirB, null, t); continue; }
       for (let i = spis.length - 1; i >= 0; i--) {
         const x = spis[i];
         if (x.dir !== dirB || x.otv > t || x.zatv) continue;
@@ -86,12 +125,16 @@ function sdelkiOtKarti(text, zakonBroene = ZAKON_BROENE, pozicii = ZAKON_POZICII
     const vid = (k.tag.split(":")[1] || "").split("#")[0];
     const m = g.match(/ЗЛАТО\s+(покупка|продажба)/);
     const f = g.match(RE_CENI);
-    /* Н-07 · сребърна карта не е «неразчетена» — тя просто не е за нашия инструмент */
-    if (!m || !f) { if (!/СРЕБРО/.test(g)) neprochetena(k, !m ? "без посока" : "без цена"); continue; }
+    const entry = f ? chislo(f[1]) : null;
+    if (!m || entry === null) {
+      /* Н-07 · сребърна карта не е «неразчетена» — тя просто не е за нашия инструмент */
+      if (!m && /СРЕБРО/.test(g)) continue;
+      neprochetena(k, !m ? "без посока" : "без цена");
+      oznachiNechetimi(m ? (m[1] === "покупка" ? 1 : -1) : 0, vhodOtKarta(g), t);   // 25.09 · и сделката ѝ остава без число
+      continue;
+    }
     const dir = m[1] === "покупка" ? 1 : -1;
-    const entry = chislo(f[1]);
     const izhod = chislo(f[2]);
-    if (entry === null) { neprochetena(k, "без цена"); continue; }
     let v = null;
     for (let i = spis.length - 1; i >= 0; i--) {
       const x = spis[i];
@@ -103,7 +146,7 @@ function sdelkiOtKarti(text, zakonBroene = ZAKON_BROENE, pozicii = ZAKON_POZICII
       ostatak++;
       if (!poKarti) continue;                                // остатък от старите три позиции
       /* законът "karta": остатъкът се брои за отделна сделка · същият вход, свое затваряне */
-      v = { dir: v.dir, entry: v.entry, otv: v.zatv.t, sl: v.sl, celi: v.celi, cel: v.cel >= 2 ? 1 : v.cel, zatv: null, ostatak: true };
+      v = { dir: v.dir, entry: v.entry, otv: v.zatv.t, sl: v.sl, celi: v.celi, cel: v.cel >= 2 ? 1 : v.cel, zatv: null, ostatak: true, nechetim: !!v.nechetim };   // 25.09 · Н-07 · остатъкът наследява непрочетеното
       spis.push(v);
     }
     if (vid === "tp1") { v.cel = Math.max(v.cel, 1); continue; }
@@ -128,6 +171,9 @@ function sdelkiOtKarti(text, zakonBroene = ZAKON_BROENE, pozicii = ZAKON_POZICII
   const out = [];
   for (const v of spis) {
     if (!v.zatv) continue;
+    /* 25.09 · Н-07 · сделка с непрочетена карта няма число — нито 0, нито числото от по-късна карта.
+       Картата ѝ вече е в neprochetni, затова тук не се брои втори път. */
+    if (v.nechetim) continue;
     const z = v.zatv;
     /* Н-07 · обрат / по време без цена на изхода → числото не се знае. Дотук ставаше 0 (тихо
        сгрешено число); сега сделката не влиза в списъка, а картата ѝ — в neprochetni. */

@@ -1,4 +1,4 @@
-// СНИМКА · app.js на AERO_КЛИЕНТ · 2026-09-24T16:51 UTC · sha256 3e67c7cbebf0c30c
+// СНИМКА · app.js на AERO_КЛИЕНТ · 2026-09-25T07:43 UTC · sha256 c128661999dc594f
 // СНИМКА · дословни извадки, НЕ СЕ ПИШАТ НА РЪКА: node platforma/proba_karti.mjs snimka <AERO_КЛИЕНТ>
 const PIP = 0.1;                 // 1 пипс = 0.10 $ на унция
   const BR_CELI = 2;
