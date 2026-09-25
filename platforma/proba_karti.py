@@ -113,83 +113,101 @@ def начало_след(база_текст):
 def рендирай_урок(lb, урок, начало, цена0):
     """Картите на 11-те сделки за ЕДИН урок → (записи за sent_log, очаквани)."""
     записи, очаквани = [], []
-    _бр = [0]
 
     def _запис(таг, текст, t):
         _к = bool(lb._канал(таг, текст)[0])      # `_канал` съди ПРЕДИ `_глас`, както в пощата
-        записи.append({"utc": _utc(t), "tag": таг,
-                       "text": lb._глас(таг, текст, ключ=_utc(t)), "kanal": _к})
+        _з = {"utc": _utc(t), "tag": таг, "text": lb._глас(таг, текст, ключ=_utc(t)), "kanal": _к}
+        # v18.93 · Н-08 · записът `d` на картата — както го пише пощата (`_outbox_flush`)
+        _д = (lb._д_на(текст) if getattr(lb, "_д_за_таг", None) and lb._д_за_таг(таг) else None)
+        if _д is not None:
+            _з["d"] = _д
+        записи.append(_з)
 
-    for _j, (_име, _d, _рънове, _сбор, _вид, _бе) in enumerate(СЦЕНАРИИ):
-        _t0 = начало + timedelta(minutes=6 * _j)
-        _е = round(цена0 + 1.13 * _j, 2)
-        _зн = 1.0 if _d == "long" else -1.0
-        lv = dict(lb._levels(_е, _d))
-        _сиг = lb._ясна_карта(_d, _е, dict(lv), "бърз ±$10/10мин" if _j % 3 == 0 else "", None,
-                              {"mid": _е}, _t0.strftime("%Y-%m-%dT%H:%M"))
-        _запис("signal", _сиг, _t0)
-        тр = {"direction": _d, "entry": _е, "opened": _t0.strftime("%Y-%m-%dT%H:%M"),
-              "checked": _t0.strftime("%Y-%m-%dT%H:%M"), "levels": dict(lv), "hit": {},
-              "status": "open", "v2": True, "ledger": "spot", "tier": "strong",
-              "date": _t0.strftime("%Y-%m-%d"), "sym": "XAUUSD"}
-        for _р, _рън in enumerate(_рънове):
-            _t = _t0 + timedelta(minutes=_р + 1)
-            _кога = _t.strftime("%Y-%m-%dT%H:%M")
-            _през = "бар" if (_j + _р) % 2 == 0 else "спот"
-            # ── дословно main(): снимка на сделката в началото на рън-а ──
-            _сн = copy.deepcopy(тр)
-            _хит = dict(_сн["hit"])
-            _бе_к = _сн.get("be_rano")
-            _изх = []
-            for _к, _къде in _рън:
-                if isinstance(_къде, str):
-                    _px = _е if _къде == "вход" else float(lv[_къде])
-                else:
-                    _px = round(_е + _зн * float(_къде), 2)
-                _гап = bool(_име.endswith("с гап"))
-                if _к == "be":
-                    _бе_к = _кога
-                    _об = dict(_сн)
-                    _об["hit"] = dict(_хит)
-                    _об["levels"] = dict(_сн["levels"])
-                    _об["levels"]["sl"] = _сн["entry"]
-                    _об["be_rano"] = _кога
-                    _изх.append(("exit-be", ("be", _об, _px, _кога, _през, _гап), "be", _d))
-                    continue
-                if _к in lb._цели():
-                    _хит[_к] = True
+    for _j, _сц in enumerate(СЦЕНАРИИ):
+        _рн, _оч = рънове_на_сделка(lb, _j, _сц, начало, цена0, урок)
+        for _t, _карти in _рн:
+            for _таг, _текст in _карти:
+                _запис(_таг, _текст, _t)
+        очаквани.append(_оч)
+    return записи, очаквани
+
+
+def рънове_на_сделка(lb, _j, сценарий, начало, цена0, урок=None):
+    """Картите на ЕДНА сделка от СЦЕНАРИИ, сглобени дословно както в main():
+    → (рънове [(час, [(таг, карта)])], очаквано). Картата е тази, която дава
+    строителят (след `_карта_без_остаряло`) — ПРЕДИ пощата и `_глас` (v18.93:
+    П199 я прекарва и през истинската поща)."""
+    _име, _d, _рънове, _сбор, _вид, _бе = сценарий
+    _t0 = начало + timedelta(minutes=6 * _j)
+    _е = round(цена0 + 1.13 * _j, 2)
+    _зн = 1.0 if _d == "long" else -1.0
+    lv = dict(lb._levels(_е, _d))
+    _сиг = lb._ясна_карта(_d, _е, dict(lv), "бърз ±$10/10мин" if _j % 3 == 0 else "", None,
+                          {"mid": _е}, _t0.strftime("%Y-%m-%dT%H:%M"))
+    рънове = [(_t0, [("signal", _сиг)])]
+    тр = {"direction": _d, "entry": _е, "opened": _t0.strftime("%Y-%m-%dT%H:%M"),
+          "checked": _t0.strftime("%Y-%m-%dT%H:%M"), "levels": dict(lv), "hit": {},
+          "status": "open", "v2": True, "ledger": "spot", "tier": "strong",
+          "date": _t0.strftime("%Y-%m-%d"), "sym": "XAUUSD"}
+    for _р, _рън in enumerate(_рънове):
+        _t = _t0 + timedelta(minutes=_р + 1)
+        _кога = _t.strftime("%Y-%m-%dT%H:%M")
+        _през = "бар" if (_j + _р) % 2 == 0 else "спот"
+        # ── дословно main(): снимка на сделката в началото на рън-а ──
+        _сн = copy.deepcopy(тр)
+        _хит = dict(_сн["hit"])
+        _бе_к = _сн.get("be_rano")
+        _изх = []
+        for _к, _къде in _рън:
+            if isinstance(_къде, str):
+                _px = _е if _къде == "вход" else float(lv[_къде])
+            else:
+                _px = round(_е + _зн * float(_къде), 2)
+            _гап = bool(_име.endswith("с гап"))
+            if _к == "be":
+                _бе_к = _кога
                 _об = dict(_сн)
                 _об["hit"] = dict(_хит)
                 _об["levels"] = dict(_сн["levels"])
-                if _хит.get("tp1"):
-                    _об["levels"]["sl"] = _сн["entry"]
-                if _бе_к:
-                    _об["levels"]["sl"] = _сн["entry"]
-                    _об["be_rano"] = _бе_к
-                _изх.append(("exit:" + _к, (_к, _об, _px, _кога, _през, _гап), _к, _d))
-            for _i, (_таг, _пл, _к, _) in enumerate(_изх):
-                _k, _тро, _px, _w, _via, _gap = _пл
-                _сл = lb._следващ_изход(_изх, _i)
-                if _k == "be":
-                    _текст = lb._карта_без_остаряло(lb._бе_msg(_тро, _w, _via), _сл)
-                else:
-                    _nl = НОВО_ВЛИЗАНЕ[(_j + _р) % len(НОВО_ВЛИЗАНЕ)] if _k in lb._затваря() else ""
-                    _nl = lb._ред_ново_влизане(_nl, None, _тро.get("direction"))
-                    _текст = lb._карта_без_остаряло(
-                        lb._exit_msg(_k, _тро, _px, _w, _via, _gap, spot={"mid": _px},
-                                     next_line=_nl, оставащи=0), _сл)
-                _запис(_таг, _текст, _t)
-            # ── след рън-а: каквото `track_trade` оставя в сделката ──
-            тр["hit"] = _хит
+                _об["levels"]["sl"] = _сн["entry"]
+                _об["be_rano"] = _кога
+                _изх.append(("exit-be", ("be", _об, _px, _кога, _през, _гап), "be", _d))
+                continue
+            if _к in lb._цели():
+                _хит[_к] = True
+            _об = dict(_сн)
+            _об["hit"] = dict(_хит)
+            _об["levels"] = dict(_сн["levels"])
+            if _хит.get("tp1"):
+                _об["levels"]["sl"] = _сн["entry"]
             if _бе_к:
-                тр["be_rano"] = _бе_к
-            if _хит.get("tp1") or _бе_к:
-                тр["levels"]["sl"] = тр["entry"]
-        _бр[0] += 1
-        очаквани.append({"име": _име, "урок": урок, "dir": _d, "entry": _е,
-                         "tp1": round(float(lv["tp1"]), 2), "tp2": round(float(lv["tp2"]), 2),
-                         "sl": round(float(lv["sl"]), 2), "сбор": _сбор, "вид": _вид, "бе": _бе})
-    return записи, очаквани
+                _об["levels"]["sl"] = _сн["entry"]
+                _об["be_rano"] = _бе_к
+            _изх.append(("exit:" + _к, (_к, _об, _px, _кога, _през, _гап), _к, _d))
+        _карти = []
+        for _i, (_таг, _пл, _к, _) in enumerate(_изх):
+            _k, _тро, _px, _w, _via, _gap = _пл
+            _сл = lb._следващ_изход(_изх, _i)
+            if _k == "be":
+                _текст = lb._карта_без_остаряло(lb._бе_msg(_тро, _w, _via), _сл)
+            else:
+                _nl = НОВО_ВЛИЗАНЕ[(_j + _р) % len(НОВО_ВЛИЗАНЕ)] if _k in lb._затваря() else ""
+                _nl = lb._ред_ново_влизане(_nl, None, _тро.get("direction"))
+                _текст = lb._карта_без_остаряло(
+                    lb._exit_msg(_k, _тро, _px, _w, _via, _gap, spot={"mid": _px},
+                                 next_line=_nl, оставащи=0), _сл)
+            _карти.append((_таг, _текст))
+        рънове.append((_t, _карти))
+        # ── след рън-а: каквото `track_trade` оставя в сделката ──
+        тр["hit"] = _хит
+        if _бе_к:
+            тр["be_rano"] = _бе_к
+        if _хит.get("tp1") or _бе_к:
+            тр["levels"]["sl"] = тр["entry"]
+    очаквано = {"име": _име, "урок": урок, "dir": _d, "entry": _е,
+                "tp1": round(float(lv["tp1"]), 2), "tp2": round(float(lv["tp2"]), 2),
+                "sl": round(float(lv["sl"]), 2), "сбор": _сбор, "вид": _вид, "бе": _бе}
+    return рънове, очаквано
 
 
 def рендирай_всички(lb, начало, уроци=None):
