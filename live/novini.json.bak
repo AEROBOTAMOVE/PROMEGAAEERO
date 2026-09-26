@@ -1,36 +1,55 @@
 {
- "kogato": "2026-09-26T16:01:20Z",
- "sekundi": 0.81,
+ "kogato": "2026-09-26T16:35:51Z",
+ "sekundi": 9.09,
  "broi": 200,
- "novi_tozi_pyt": 5,
+ "novi_tozi_pyt": 0,
  "iztochnici_ok": [
-  "Investing",
-  "Fed политика",
   "Fed всички",
+  "Fed политика",
+  "Investing",
   "MarketWatch",
   "Yahoo злато",
-  "Yahoo долар",
   "CNBC",
-  "Google Fed",
-  "Mining.com",
+  "Yahoo долар",
   "FT пазари",
-  "Google злато"
+  "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google Fed",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  },
+  {
+   "ime": "Google злато",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.56с",
-  "новини · FT пазари · 25 бр. за 0.78с",
-  "новини · Fed всички · 20 бр. за 0.3с",
-  "новини · Fed политика · 15 бр. за 0.3с",
-  "новини · Google Fed · 40 бр. за 0.64с",
-  "новини · Google злато · 40 бр. за 0.79с",
-  "новини · Investing · 10 бр. за 0.28с",
-  "новини · MarketWatch · 10 бр. за 0.31с",
-  "новини · Mining.com · 36 бр. за 0.79с",
-  "новини · Yahoo долар · 17 бр. за 0.37с",
-  "новини · Yahoo злато · 15 бр. за 0.32с"
+  "новини · CNBC · 30 бр. за 0.38с",
+  "новини · FT пазари · 25 бр. за 0.62с",
+  "новини · Fed всички · 20 бр. за 0.25с",
+  "новини · Fed политика · 15 бр. за 0.25с",
+  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Investing · 10 бр. за 0.31с",
+  "новини · MarketWatch · 10 бр. за 0.35с",
+  "новини · Mining.com · 36 бр. за 0.71с",
+  "новини · Yahoo долар · 17 бр. за 0.43с",
+  "новини · Yahoo злато · 15 бр. за 0.38с"
  ],
  "novini": [
+  {
+   "zaglavie": "Choosing these AI-exposed college majors could dent your job prospects — and lower your pay",
+   "vryzka": "https://www.marketwatch.com/story/choosing-these-ai-exposed-college-majors-could-dent-your-job-prospects-and-lower-your-pay-b80576cb?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-09-26T16:22:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null
+  },
   {
    "zaglavie": "Tax-free bond yields are in a sweet spot. Get in before it’s too late.",
    "vryzka": "https://www.marketwatch.com/story/tax-free-bond-yields-are-in-a-sweet-spot-get-in-before-its-too-late-94b8adac?mod=mw_rss_topstories",
@@ -1962,18 +1981,6 @@
    "chas_ot_iztochnika": true,
    "duma": "rates",
    "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече."
-  },
-  {
-   "zaglavie": "Choosing these AI-exposed college majors could dent your job prospects — and lower your pay",
-   "vryzka": "https://www.marketwatch.com/story/choosing-these-ai-exposed-college-majors-could-dent-your-job-prospects-and-lower-your-pay-b80576cb?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-09-25T17:11:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null
   },
   {
    "zaglavie": "Gold keeps falling until the Fed stops raising rate forecasts",
