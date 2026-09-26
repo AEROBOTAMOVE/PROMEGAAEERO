@@ -1,40 +1,91 @@
 {
- "kogato": "2026-09-26T13:45:54Z",
- "sekundi": 0.63,
+ "kogato": "2026-09-26T14:21:09Z",
+ "sekundi": 9.76,
  "broi": 200,
- "novi_tozi_pyt": 5,
+ "novi_tozi_pyt": 0,
  "iztochnici_ok": [
-  "MarketWatch",
-  "Google злато",
-  "Investing",
+  "Fed всички",
   "Fed политика",
-  "CNBC",
   "Yahoo злато",
+  "MarketWatch",
   "Yahoo долар",
+  "Investing",
+  "CNBC",
   "FT пазари",
-  "Google Fed",
   "Mining.com"
  ],
  "iztochnici_padnali": [
   {
-   "ime": "Fed всички",
-   "greshka": "HTTPError: HTTP Error 404: Not Found"
+   "ime": "Google злато",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  },
+  {
+   "ime": "Google Fed",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
   }
  ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.32с",
+  "новини · CNBC · 30 бр. за 0.4с",
   "новини · FT пазари · 25 бр. за 0.47с",
-  "новини · Fed всички · ПАДНА: HTTPError: HTTP Error 404: Not Found",
-  "новини · Fed политика · 15 бр. за 0.26с",
-  "новини · Google Fed · 40 бр. за 0.53с",
-  "новини · Google злато · 40 бр. за 0.18с",
-  "новини · Investing · 10 бр. за 0.21с",
-  "новини · MarketWatch · 10 бр. за 0.12с",
-  "новини · Mining.com · 36 бр. за 0.61с",
-  "новини · Yahoo долар · 17 бр. за 0.36с",
-  "новини · Yahoo злато · 15 бр. за 0.35с"
+  "новини · Fed всички · 20 бр. за 0.16с",
+  "новини · Fed политика · 15 бр. за 0.17с",
+  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Investing · 10 бр. за 0.24с",
+  "новини · MarketWatch · 10 бр. за 0.23с",
+  "новини · Mining.com · 36 бр. за 0.72с",
+  "новини · Yahoo долар · 17 бр. за 0.23с",
+  "новини · Yahoo злато · 15 бр. за 0.21с"
  ],
  "novini": [
+  {
+   "zaglavie": "A new bill in Congress would lower the retirement age to 60. See who would qualify.",
+   "vryzka": "https://www.marketwatch.com/story/a-new-bill-in-congress-would-lower-the-retirement-age-to-60-see-who-would-qualify-10563052?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-09-26T14:19:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null
+  },
+  {
+   "zaglavie": "My friend grosses $300,000 a year with her pet-sitting business. She pays herself $50,000. Should I do the same?",
+   "vryzka": "https://www.marketwatch.com/story/my-friend-grosses-300-000-a-year-with-her-pet-sitting-business-she-pays-herself-50-000-should-i-do-the-same-8ab5cba3?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-09-26T14:15:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null
+  },
+  {
+   "zaglavie": "‘We made a bad, bad decision’: I learned the hard way how to manage my aging father’s money",
+   "vryzka": "https://www.marketwatch.com/story/we-made-a-bad-bad-decision-i-learned-the-hard-way-how-to-manage-my-aging-fathers-money-c87cabed?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-09-26T14:00:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null
+  },
+  {
+   "zaglavie": "These Gen Z-ers are choosing ETFs over sports bets. How younger investors told us they’re building wealth.",
+   "vryzka": "https://www.marketwatch.com/story/how-is-gen-z-investing-their-money-over-a-dozen-share-their-strategies-for-todays-market-c8a418da?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-09-26T13:59:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null
+  },
   {
    "zaglavie": "How to keep profiting from AI while shielding your portfolio against the risk of a slowdown",
    "vryzka": "https://www.marketwatch.com/story/how-to-keep-profiting-from-ai-while-shielding-your-portfolio-against-the-risk-of-a-slowdown-a5801291?mod=mw_rss_topstories",
@@ -901,12 +952,12 @@
   },
   {
    "zaglavie": "A ‘death cross’ is coming for the dollar. Why Trump will be happy.",
-   "vryzka": "https://www.marketwatch.com/story/a-death-cross-is-coming-for-the-dollar-why-trump-will-be-happy-0766303d?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
+   "vryzka": "https://www.marketwatch.com/story/a-death-cross-is-coming-for-the-dollar-why-trump-will-be-happy-0766303d?.tsrc=rss",
+   "izvor": "Yahoo Finance",
    "chas": "2026-09-25T21:57:00Z",
    "vazhnost": 2,
    "za": "долар",
-   "emisiya": "MarketWatch",
+   "emisiya": "Yahoo долар",
    "chas_ot_iztochnika": true,
    "duma": "dollar",
    "zashto": "Златото се мери в долари: по-силен долар обикновено значи по-евтино злато."
@@ -1512,18 +1563,6 @@
    "zashto": null
   },
   {
-   "zaglavie": "My friend grosses $300,000 a year with her pet-sitting business. She pays herself $50,000. Should I do the same?",
-   "vryzka": "https://www.marketwatch.com/story/my-friend-grosses-300-000-a-year-with-her-pet-sitting-business-she-pays-herself-50-000-should-i-do-the-same-8ab5cba3?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-09-25T18:15:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null
-  },
-  {
    "zaglavie": "Gold Price September 28 2026",
    "vryzka": "https://news.google.com/rss/articles/CBMipAFBVV95cUxQTy1kWWY4d3VwMmRGM3otTUhVdnEtQjF1cU93MWFwMkRPN2QxcGZfVktzRkN1Wmw3YzN4MWZyaWxhSk1LcTJxRDZVRlZoa2ZtRU9FSTZTejVadmt6VE1sb2pYSFBOX216RHdYOXhhQmt1MDh1VzVKSGQ2ZlVWdDZCN3k3TncyX3R3RTlyNHhTYzNtTzRqeVVzRWJZMXFDTDF0a3NwMw?oc=5",
    "izvor": "Robinhood",
@@ -1594,18 +1633,6 @@
    "chas_ot_iztochnika": true,
    "duma": "gold",
    "zashto": "Пряко за златото."
-  },
-  {
-   "zaglavie": "‘We made a bad, bad decision’: I learned the hard way how to manage my aging father’s money",
-   "vryzka": "https://www.marketwatch.com/story/we-made-a-bad-bad-decision-i-learned-the-hard-way-how-to-manage-my-aging-fathers-money-c87cabed?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-09-25T17:45:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null
   },
   {
    "zaglavie": "Swiss Franc remains under pressure as Fed-SNB interest rate gap widens",
@@ -2256,18 +2283,6 @@
    "zashto": null
   },
   {
-   "zaglavie": "A new bill in Congress would lower the retirement age to 60. See who would qualify.",
-   "vryzka": "https://www.marketwatch.com/story/a-new-bill-in-congress-would-lower-the-retirement-age-to-60-see-who-would-qualify-10563052?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-09-25T14:39:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null
-  },
-  {
    "zaglavie": "Canadian dollar holds near recent lows as U.S. dollar rally keeps pressure",
    "vryzka": "https://finance.yahoo.com/markets/currencies/articles/canadian-dollar-holds-near-recent-143609393.html?.tsrc=rss",
    "izvor": "Yahoo Finance",
@@ -2350,18 +2365,6 @@
    "chas_ot_iztochnika": true,
    "duma": "rate",
    "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече."
-  },
-  {
-   "zaglavie": "These Gen Z-ers are choosing ETFs over sports bets. How younger investors told us they’re building wealth.",
-   "vryzka": "https://www.marketwatch.com/story/how-is-gen-z-investing-their-money-over-a-dozen-share-their-strategies-for-todays-market-c8a418da?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-09-25T14:27:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null
   },
   {
    "zaglavie": "Gold price hits low of $4,254/oz after final Consumer Sentiment rises to 48.1, inflation expectations spike",
