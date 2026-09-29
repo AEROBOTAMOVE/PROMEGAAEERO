@@ -54,10 +54,23 @@
        "emisiya": "Google Fed",             # коя емисия го донесе (за мен)
        "chas_ot_iztochnika": true,          # false = емисията не даде час
        "duma": "fed",                       # ДОКАЗАТЕЛСТВОТО за важността
-       "zashto": "Fed решава каква да е..." # защо това мести златото
+       "zashto": "Fed решава каква да е...", # защо това мести златото
+       "bg": "Реч на член на Фед (Barr)"    # 29.09 · българският ред · null = правилата мълчат
      }, ...
    ]
  }
+
+ 🟢 29.09 · БЪЛГАРСКИЯТ РЕД · "bg" (правилата са в novini_bg.py, без модел)
+ Мерено 29.09: 0 от 200 заглавия с кирилица. Всяка новина получава "bg" — едно
+ кратко изречение, строено по правила от заглавието и емисията («Данни за
+ свободните работни места в САЩ (JOLTS)», «Златото поевтинява на фона на
+ очакванията за по-висока лихва от Фед»). Непознатото остава "bg": null —
+ празно е по-добре от грешно. Оригиналът в "zaglavie" НЕ се пипа.
+ Новини от издания на друг език (не английски, не български) не влизат —
+ в live/novini.json на 29.09 бяха 6 от 200 (корейски, китайски, арабски имена).
+ Редът се смята наново при всяко записване, и за старите редове — поправка
+ в правилата стига до целия файл веднага.
+ ПЪТ НАЗАД: BG_RED = 0 → ключът "bg" изчезва и езиковото сито спира.
  Панелът чете само първите шест. Останалите не му пречат — той си взима
  по име това, което му трябва, и подминава всичко друго. Държа ги, защото
  «важност 3» без думата, която я е вдигнала, е число на доверие.
@@ -90,6 +103,17 @@ import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta, timezone
 from email.utils import parsedate_to_datetime
 from urllib.request import Request, urlopen
+
+# ── 29.09 · БЪЛГАРСКИЯТ РЕД · novini_bg.py до този файл ───────────────────
+# Липсва ли или гърми при внасяне — новините вървят както преди, без "bg", и
+# причината влиза в бележките на файла (не мълчи).
+BG_RED = 1            # ПЪТ НАЗАД: 0 → без "bg" и без езиковото сито
+try:
+    import novini_bg as _BG
+    _BG_GRESHKA = None
+except Exception as _e:
+    _BG = None
+    _BG_GRESHKA = type(_e).__name__ + ": " + str(_e)[:120]
 
 # ── източниците ───────────────────────────────────────────────────────────
 # Тук нарочно НЯМА ECB, BLS, Treasury, Kitco, Reuters, FRED, Finnhub — те
@@ -699,6 +723,18 @@ def dryp_novini(out_dir, notes=None):
     # Един и същ надслов от три издания е ЕДНА новина.
     starite = _stari(pyt)                     # чете се ВЕДНЪЖ
     stari_klyuchove = set(_klyuch(x.get("zaglavie", "")) for x in starite)
+
+    # 🔴 29.09 · ЕЗИКЪТ · преди дублирането и преди рязането на 200 — махнатата
+    # новина не бива да заема място. И старите редове минават през ситото, иначе
+    # корейското заглавие отпреди час стоеше, докато не изпадне от само себе си.
+    mahnati_ezik = 0
+    if BG_RED and _BG is not None:
+        predi = len(svezhi) + len(starite)
+        svezhi = [n for n in svezhi if _BG.ezik_ok(n.get("zaglavie"), n.get("izvor"))]
+        starite = [n for n in starite if isinstance(n, dict) and _BG.ezik_ok(n.get("zaglavie"), n.get("izvor"))]
+        mahnati_ezik = predi - len(svezhi) - len(starite)
+    elif BG_RED:
+        _belezhka(notes, "новини · БЪЛГАРСКИЯТ РЕД НЕ РАБОТИ: " + str(_BG_GRESHKA))
     vidyani = set()
     spisyk = []
     for n in svezhi + starite:
@@ -723,6 +759,20 @@ def dryp_novini(out_dir, notes=None):
     # описва файла, не намерението.
     novi = sum(1 for n in spisyk if _klyuch(n.get("zaglavie", "")) not in stari_klyuchove)
 
+    # 🔴 29.09 · БЪЛГАРСКИЯТ РЕД · за ВСЕКИ ред, и за старите — смята се наново,
+    # за да стигне поправка в правилата до целия файл още при следващото писане.
+    # Грешка в едно заглавие НЕ вали файла: редът става null.
+    s_bg = 0
+    for n in spisyk:
+        if BG_RED and _BG is not None:
+            try:
+                n["bg"] = _BG.bg_red(n.get("zaglavie"), n.get("emisiya"), n.get("izvor"))
+            except Exception:
+                n["bg"] = None
+            s_bg += 1 if n["bg"] else 0
+        else:
+            n.pop("bg", None)                 # лост 0 → дословно старият вид
+
     dannite = {
         "kogato": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "sekundi": round(time.time() - zapochna, 2),
@@ -733,6 +783,11 @@ def dryp_novini(out_dir, notes=None):
         "belezhki": (notes if isinstance(notes, list) else []),
         "novini": spisyk,
     }
+    if BG_RED and _BG is not None:
+        dannite["s_bg_red"] = s_bg                  # колко реда имат български ред
+        dannite["mahnati_ezik"] = mahnati_ezik      # колко не влязоха заради езика
+        _belezhka(notes, "новини · български ред: " + str(s_bg) + " от " + str(len(spisyk))
+                  + " · махнати по език: " + str(mahnati_ezik))
     _pishi_atomarno(pyt, dannite)
     _belezhka(notes, "новини · записани " + str(len(spisyk)) + " ("
               + str(novi) + " нови) в " + pyt)
@@ -740,7 +795,96 @@ def dryp_novini(out_dir, notes=None):
 
 
 # ══════════════════════════════════════════════════════════════════════════
+#  29.09 · СОБСТВЕНАТА ПРОВЕРКА · python -X utf8 novini_sbirach.py --proveri
+# ══════════════════════════════════════════════════════════════════════════
+# Без мрежа: тегленето се подменя с готови емисии, събирачът пише във ВРЕМЕННА
+# папка (никога в live/). Проверява правилата (novini_bg.proveri) и целия път:
+# езиковото сито, "bg" на новите И на старите редове, имената, които панелът
+# чете, и лоста BG_RED = 0.
+_PROBA_RSS = """<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel>%s</channel></rss>"""
+_PROBA_ED = "<item><title>%s</title><link>%s</link><pubDate>%s</pubDate>%s</item>"
+
+
+def _proba_emisiya(url):
+    ch = "Tue, 29 Sep 2026 %02d:00:00 GMT"
+    if "speeches" in url:
+        red = [("Barr, Economic Conditions and Monetary Policy", "https://www.federalreserve.gov/r1", ch % 16, "")]
+    elif "gold+price" in url:
+        red = [("Gold near seven-week low as Fed rate-hike fears mount - qz.com", "https://qz.com/g1", ch % 15,
+                "<source>qz.com</source>"),
+               ("Gold Prices Fall to 680,000 Won per Hondon - 조선일보", "https://chosun.com/g2", ch % 14,
+                "<source>조선일보</source>"),
+               ("Золото дешевеет после решения ФРС", "https://rbc.ru/g3", ch % 13, "<source>РБК</source>")]
+    elif "mw_topstories" in url:
+        red = [("Here's what Netflix skeptics are getting wrong about the stock", "https://mw.com/n1", ch % 12, "")]
+    else:
+        red = []
+    return _PROBA_RSS % "".join(_PROBA_ED % (html.escape(z), v, c, s) for z, v, c, s in red)
+
+
+def _proveri():
+    greshki, redove = [], []
+    if _BG is None:
+        return ["novini_bg.py не се внася: " + str(_BG_GRESHKA)], redove
+    pyt_live = os.path.join(os.path.dirname(os.path.abspath(__file__)), "live", "novini.json")
+    g, iz = _BG.proveri(pyt_live if os.path.exists(pyt_live) else None)
+    greshki += g
+    redove += ["правилата · " + r for r in iz]
+
+    global _svali, BG_RED
+    istinsko, lost = _svali, BG_RED
+    papka = tempfile.mkdtemp(prefix="novini_proba_")
+    try:
+        _svali = lambda url, tajmaut=TAJMAUT: _proba_emisiya(url)          # noqa: E731
+        # старият файл: един ред без "bg" (като всички редове до 29.09)
+        with open(os.path.join(papka, "novini.json"), "w", encoding="utf-8") as f:
+            json.dump({"kogato": "2026-09-29T10:00:00Z", "novini": [{
+                "zaglavie": "Fed's Lisa Cook Says AI Is Fueling Inflation", "vryzka": "https://x/c",
+                "izvor": "TradingView", "chas": "2026-09-29T09:00:00Z", "vazhnost": 3, "za": "лихви",
+                "emisiya": "Google Fed", "chas_ot_iztochnika": True, "duma": "fed", "zashto": None}]}, f)
+        BG_RED = 1
+        dryp_novini(papka)
+        with open(os.path.join(papka, "novini.json"), "r", encoding="utf-8") as f:
+            d = json.load(f)
+        po = {x["zaglavie"]: x for x in d["novini"]}
+        def ck(ime, uslovie):
+            (redove if uslovie else greshki).append(("✓ " if uslovie else "✗ ") + ime)
+        ck("корейското издание е махнато", not any("Won per Hondon" in z for z in po))
+        ck("руското заглавие е махнато", not any("Золото" in z for z in po))
+        ck("махнатите са преброени", d.get("mahnati_ezik") == 2)
+        ck("речта на Фед има ред", (po.get("Barr, Economic Conditions and Monetary Policy") or {}).get("bg")
+           == "Реч на член на Фед (Barr) за паричната политика и икономиката")
+        ck("заглавието е НЕпипнато (опашката на изданието е махната както преди)",
+           "Gold near seven-week low as Fed rate-hike fears mount" in po)
+        ck("старият ред получи ред при презаписа", (po.get("Fed's Lisa Cook Says AI Is Fueling Inflation") or {}).get("bg")
+           == "Изказване на член на Фед (Cook) за инфлацията и изкуствения интелект")
+        ck("непознатото е null, не догадка", "bg" in po.get("Here's what Netflix skeptics are getting wrong about the stock", {})
+           and po["Here's what Netflix skeptics are getting wrong about the stock"]["bg"] is None)
+        ck("имената, които панелът чете, са на място",
+           all(all(k in x for k in ("zaglavie", "vryzka", "izvor", "chas", "vazhnost", "za")) for x in d["novini"]))
+        ck("броят с ред е във файла", d.get("s_bg_red") == sum(1 for x in d["novini"] if x.get("bg")))
+        # лост 0 → дословно старият вид
+        BG_RED = 0
+        dryp_novini(papka)
+        with open(os.path.join(papka, "novini.json"), "r", encoding="utf-8") as f:
+            d0 = json.load(f)
+        ck("BG_RED = 0 → няма ключ \"bg\" и няма s_bg_red", not any("bg" in x for x in d0["novini"]) and "s_bg_red" not in d0)
+    finally:
+        _svali, BG_RED = istinsko, lost
+        shutil.rmtree(papka, ignore_errors=True)
+    return greshki, redove
+
+
+# ══════════════════════════════════════════════════════════════════════════
 if __name__ == "__main__":
+    if "--proveri" in sys.argv:
+        g, r = _proveri()
+        for red in r:
+            print(red)
+        for red in g:
+            print(red if red.startswith("✗") else "✗ " + red)
+        print("ПРОВЕРКАТА НА СЪБИРАЧА:", "ЗЕЛЕНО" if not g else "ЧЕРВЕНО · %d" % len(g))
+        sys.exit(0 if not g else 1)
     # Ползване:  python ЗА_БОТА_novini.py <папка> [--na-vseki <минути>]
     dovodi = [a for a in sys.argv[1:]]
     na_vseki = 0
@@ -799,10 +943,13 @@ if __name__ == "__main__":
         print("във файла:", d["broi"], "новини ·",
               sum(1 for x in d["novini"] if x["vazhnost"] == 3), "важни(3) ·",
               sum(1 for x in d["novini"] if not x["chas_ot_iztochnika"]), "без час ·",
-              sum(1 for x in d["novini"] if x.get("zashto")), "с обяснение")
+              sum(1 for x in d["novini"] if x.get("zashto")), "с обяснение ·",
+              sum(1 for x in d["novini"] if x.get("bg")), "с български ред")
         for x in d["novini"][:5]:
             print("  [{}] {} · {} · {}".format(x["vazhnost"], x["za"],
                                                x["izvor"], x["zaglavie"][:70]))
+            if x.get("bg"):
+                print("        → " + x["bg"])
     # 🔴 Изходът е 0/1, а НЕ True/False: bool е int в Python и sys.exit(True)
     # излиза с код 1, тоест «успях» се чете като провал.
     sys.exit(0 if ok else 1)
