@@ -87,7 +87,7 @@ import sys
 import tempfile
 import time
 import xml.etree.ElementTree as ET
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from email.utils import parsedate_to_datetime
 from urllib.request import Request, urlopen
 
@@ -121,6 +121,10 @@ IZTOCHNICI = (
      "url": "https://www.federalreserve.gov/feeds/press_all.xml"},
     {"ime": "Fed политика",  "ekran": "Fed",             "za_ako_nyama": "лихви",
      "url": "https://www.federalreserve.gov/feeds/press_monetary.xml"},
+    # 29.09 · собственикът: «federalreserve.gov е с важни новини — включи го». Речите
+    # на управителите местят очакванията за лихвата. Мерено 29.09: 200 · 9.7 KB.
+    {"ime": "Fed речи",      "ekran": "Fed",             "za_ako_nyama": "лихви",
+     "url": "https://www.federalreserve.gov/feeds/speeches.xml"},
     {"ime": "MarketWatch",   "ekran": "MarketWatch",     "za_ako_nyama": "общо",
      "url": "https://feeds.content.dowjones.io/public/rss/mw_topstories"},
     {"ime": "Investing",     "ekran": "Investing.com",   "za_ako_nyama": "общо",
@@ -152,6 +156,24 @@ OBSHT_TAJMAUT = 40    # цялото тегляне; паралелно е, зн
 # няма как да се появи между последните 12 при НИКАКЪВ праг.
 PAZI = 200            # колко новини се пазят във файла
 MAX_OT_IZTOCHNIK = 40 # една емисия да не изяде целия файл (FT и MW дават по 30-40)
+# 🔴 29.09 · ФЕД ИМА ЗАПАЗЕНО МЯСТО. Мерено 29.09: двете емисии на Фед дават 20 + 15
+# единици и минават в Actions, но в live/novini.json от тях няма НИТО ЕДНА — файлът
+# пази 200-те най-нови по час, а Google/Mining/FT дават по 40–100 на ден, така
+# 200-те покриват само ~17 часа и редките съобщения и речи на Фед винаги изпадат.
+# Сега последните FED_PAZI от Фед (до FED_DNI дни назад) стоят винаги, с важност 3.
+# Надзорните съобщения (одобрения на банкови сделки, наказания) са шум за златото и
+# не влизат. ПЪТ НАЗАД: FED_PAZI = 0 → дословно старото поведение.
+FED_EMISII = ("Fed всички", "Fed политика", "Fed речи")
+FED_PAZI = 12
+FED_DNI = 21
+FED_SHUM = re.compile(r"\b(approv\w*|application|enforcement|termination|penalt\w*|civil money|"
+                      r"agreement with|bank holding|merger|acquisition|order to cease|public comment|seek comment|"
+                      r"proposal|proposed|guidance|regulatory burden|community bank)\b", re.IGNORECASE)
+FED_ZASHTO = {
+    "Fed политика": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
+    "Fed речи": "Реч на член на Фед — думите им местят очакванията за лихвата, а с тях и златото.",
+    "Fed всички": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
+}
 
 # Подпис на обикновен браузър. НЕ е маскировка на друг сайт — това е UA,
 # без който FT и Investing връщат 403 на голото „Python-urllib".
@@ -520,6 +542,11 @@ def _edin_iztochnik(iz):
         # цял абзац дава думата „rate" почти винаги и всичко става тройка.
         za_dumi = zaglavie + " " + _chist_tekst(opis)[:180]
         vazhnost, duma = _vazhnost(za_dumi)
+        _fed = iz["ime"] in FED_EMISII and FED_PAZI > 0
+        if _fed and iz["ime"] == "Fed всички" and FED_SHUM.search(zaglavie):
+            continue                      # надзор над банки — не е новина за златото
+        if _fed:
+            vazhnost, duma = 3, (duma or "fed")
         utc = _utc_ot(chas)
         novini.append({
             # 🔴 Имената `zaglavie · vryzka · izvor · chas · vazhnost · za` НЕ
@@ -535,7 +562,7 @@ def _edin_iztochnik(iz):
             "emisiya": iz["ime"],
             "chas_ot_iztochnika": utc is not None,
             "duma": duma,
-            "zashto": ZASHTO.get(duma),
+            "zashto": (FED_ZASHTO.get(iz["ime"]) if _fed else None) or ZASHTO.get(duma),
         })
     return {"ime": iz["ime"], "ok": True, "greshka": None, "nachin": nachin,
             "sek": round(time.time() - zapochna, 2), "novini": novini}
@@ -682,7 +709,14 @@ def dryp_novini(out_dir, notes=None):
         spisyk.append(n)
 
     spisyk.sort(key=_red, reverse=True)
-    spisyk = spisyk[:PAZI]
+    if FED_PAZI > 0:
+        _gr = (datetime.now(timezone.utc) - timedelta(days=FED_DNI)).strftime("%Y-%m-%dT%H:%M:%SZ")
+        _fed = [n for n in spisyk if n.get("emisiya") in FED_EMISII and (n.get("chas") or "") >= _gr][:FED_PAZI]
+        _idf = set(id(n) for n in _fed)
+        spisyk = _fed + [n for n in spisyk if id(n) not in _idf][:max(0, PAZI - len(_fed))]
+        spisyk.sort(key=_red, reverse=True)
+    else:
+        spisyk = spisyk[:PAZI]
     # 🔴 „Нови" се брои СЛЕД рязането на 200. Мерено на първото пускане:
     # 244 непознати заглавия, но във файла влизат 200 — да върна 244 значи
     # да обещая 44 новини, които никой няма да види. Числото трябва да
