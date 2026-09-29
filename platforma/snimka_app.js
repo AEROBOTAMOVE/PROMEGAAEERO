@@ -1,4 +1,4 @@
-// СНИМКА · app.js на AERO_КЛИЕНТ · 2026-09-25T09:45 UTC · sha256 06e42bef577fb5c7
+// СНИМКА · app.js на AERO_КЛИЕНТ · 2026-09-29T09:36 UTC · sha256 98c592239d7c4b10
 // СНИМКА · дословни извадки, НЕ СЕ ПИШАТ НА РЪКА: node platforma/proba_karti.mjs snimka <AERO_КЛИЕНТ>
 const PIP = 0.1;                 // 1 пипс = 0.10 $ на унция
   const BR_CELI = 2;
@@ -81,7 +81,9 @@ const PIP = 0.1;                 // 1 пипс = 0.10 $ на унция
          накрая · мерено 22.09 в live/sdelki.json: 64 от 64 записа — стоп = вход ⇔ стопът е бил преместен). */
       const slL = num(Lv.sl);
       const naVh = !!(hit.be || hit.be40 || x.stop_at_entry === true || (entry !== null && slL !== null && Math.abs(slL - entry) < 0.01));
-      const sbor = ednaPoz(ch, nv, vid, dir, naVh);
+      /* 29.09 · бот v18.95 · сделка на ДВЕ ПОЛОВИНИ ("mode":"polovin" в sdelki.json и в сглобеното от сървъра):
+         числото е на СДЕЛКАТА — sum_pips (средното на половините: +90/+75/+25/0/−130…), не законът за една позиция */
+      const sbor = x.mode === 'polovin' && num(x.sum_pips) !== null ? num(x.sum_pips) : ednaPoz(ch, nv, vid, dir, naVh);
       out.push({
         dir, entry, d: utcDate(x.opened || x.otvoreno || x.vhod_utc || x.opened_utc),
         zatvD, chasti: [sbor], sbor,
@@ -126,7 +128,10 @@ const PIP = 0.1;                 // 1 пипс = 0.10 $ на унция
     }
     if (!tp.length) return null;
     tp.splice(BR_CELI);                                  // цел 3 няма · двете цели са за ЕДНАТА позиция
-    return { d: k.d, dir, entry, sl, slPips, tp, maxCel: 0, zatv: null };
+    const v = { d: k.d, dir, entry, sl, slPips, tp, maxCel: 0, zatv: null };
+    /* 29.09 · бот v18.95 · ВЛЕЗ на сделка на две половини: «1 сделка · 2 половини × лот 0.10» */
+    if (/2\s+половини/.test(g)) v.polovin = true;
+    return v;
   }
   function izhodOt(k) {
     const g = gol(k.text);
@@ -184,12 +189,24 @@ const PIP = 0.1;                 // 1 пипс = 0.10 $ на унция
       if (!t) { bezVhod++; return; }
       const n = /^tp(\d)$/.exec(x.vid);
       if (n) t.maxCel = Math.max(t.maxCel, +n[1]);
-      if (x.zatvarya) t.zatv = { d: x.d, vid: x.vid, to: x.to, parts: x.parts, naVhoda: x.naVhoda };
+      /* 29.09 · бот v18.95 · сделка на ДВЕ ПОЛОВИНИ (ВЛЕЗ «2 половини» или думите на изхода): числото на
+         СДЕЛКАТА е «сделката донесе N пипса» на затварящата карта (средното на половините, и с .5) */
+      const gx = gol(k.text);
+      if (/прибери половината|половина\s+1:|ЦЕЛ 1 беше прибрана/.test(gx)) t.polovin = true;
+      if (x.zatvarya) {
+        t.zatv = { d: x.d, vid: x.vid, to: x.to, parts: x.parts, naVhoda: x.naVhoda };
+        if (t.polovin) {
+          const sb = gx.match(/сделката\s+донесе\s*([+−–\-]?[\d.,]+)\s*пипса/i);
+          t.zatv.sbor = sb ? num(sb[1]) : null;
+        }
+      }
     });
     return { vhodove, bezVhod };
   }
   function chastiZatvorena(v) {
     const z = v.zatv;
+    /* 29.09 · бот v18.95 · сделка на две половини → числото, което ботът е написал за СДЕЛКАТА */
+    if (v.polovin && Number.isFinite(z.sbor)) return { ch: [z.sbor], otBota: false };
     const k = Math.min(v.maxCel, v.tp.length);
     const vid = z.vid === 'tp3' ? 'tp2' : z.vid;
     const hod = Number.isFinite(z.to) ? [hodP(v.entry, z.to, v.dir)] : (z.parts && z.parts.length ? z.parts : [0]);

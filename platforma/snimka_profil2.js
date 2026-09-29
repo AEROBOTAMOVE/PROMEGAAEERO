@@ -1,4 +1,4 @@
-// СНИМКА · profil2.js на AERO_КЛИЕНТ · 2026-09-25T09:45 UTC · sha256 173b08d909bc41b9
+// СНИМКА · profil2.js на AERO_КЛИЕНТ · 2026-09-29T09:36 UTC · sha256 01fb343ab9e6206c
 // СНИМКА · дословни извадки, НЕ СЕ ПИШАТ НА РЪКА: node platforma/proba_karti.mjs snimka <AERO_КЛИЕНТ>
 const PIP = 0.1;
   const BR_CELI = 2;
@@ -45,7 +45,10 @@ const PIP = 0.1;
     if (!tp.length) return null;
     const tri = tp.length > BR_CELI;                  // старата карта с три цели
     tp.splice(BR_CELI);
-    return { d: k.d, dir, entry, sl, slPips, tp, maxCel: 0, zatv: null, tri };
+    const v = { d: k.d, dir, entry, sl, slPips, tp, maxCel: 0, zatv: null, tri };
+    /* 29.09 · бот v18.95 · ВЛЕЗ на сделка на две половини: «1 сделка · 2 половини × лот 0.10» (като app.js) */
+    if (/2\s+половини/.test(g)) v.polovin = true;
+    return v;
   }
   function izhodOt(k) {
     const g = gol(k.text);
@@ -103,12 +106,24 @@ const PIP = 0.1;
       if (!t) return;
       const n = /^tp(\d)$/.exec(x.vid);
       if (n) t.maxCel = Math.max(t.maxCel, +n[1]);
-      if (x.zatvarya) t.zatv = { d: x.d, vid: x.vid, to: x.to, parts: x.parts, naVhoda: x.naVhoda };
+      /* 29.09 · бот v18.95 · сделка на ДВЕ ПОЛОВИНИ (като app.js): числото на СДЕЛКАТА е «сделката донесе N
+         пипса» на затварящата карта (средното на половините, и с .5) */
+      const gx = gol(k.text);
+      if (/прибери половината|половина\s+1:|ЦЕЛ 1 беше прибрана/.test(gx)) t.polovin = true;
+      if (x.zatvarya) {
+        t.zatv = { d: x.d, vid: x.vid, to: x.to, parts: x.parts, naVhoda: x.naVhoda };
+        if (t.polovin) {
+          const sb = gx.match(/сделката\s+донесе\s*([+−–\-]?[\d.,]+)\s*пипса/i);
+          t.zatv.sbor = sb ? num(sb[1]) : null;
+        }
+      }
     });
     return { vhodove };
   }
   function chastiZatvorena(v) {
     const z = v.zatv;
+    /* 29.09 · бот v18.95 · сделка на две половини → числото, което ботът е написал за СДЕЛКАТА */
+    if (v.polovin && Number.isFinite(z.sbor)) return { ch: [z.sbor], otBota: false };
     const k = Math.min(v.maxCel, v.tp.length);
     const vid = z.vid === 'tp3' ? 'tp2' : z.vid;
     const hod = Number.isFinite(z.to) ? [hodP(v.entry, z.to, v.dir)] : (z.parts && z.parts.length ? z.parts : [0]);
@@ -125,4 +140,70 @@ const PIP = 0.1;
     if (z.vid === 'flip') return pred + 'затворена · посоката се обърна';
     if (z.vid === 'time') return pred + 'затворена по време';
     return pred + 'затворена';
+  }
+  const CELI_K = ['tp1', 'tp2'];
+  function utcDate(s) {
+    if (!s) return null;
+    if (s instanceof Date) return isNaN(+s) ? null : s;
+    let t = String(s).trim().replace(' ', 'T');
+    if (/^\d{4}-\d\d-\d\dT\d\d:\d\d$/.test(t)) t += ':00';
+    if (!/(Z|[+\-]\d\d:?\d\d)$/i.test(t)) t += 'Z';
+    const d = new Date(t);
+    return isNaN(+d) ? null : d;
+  }
+  const ZHARGON = [
+    [/макрото мълчи/gi, 'доларът и лихвите не дават посока'],
+    [/\b\d{1,3}(?:,\d{3})+\.\d+\b/g, (m) => cena(num(m))],   // «4,302.87» → «4 302,87»
+    [/\bshort\b/gi, 'продажба'], [/\blong\b/gi, 'покупка'], [/\bTP\s?([123])\b/gi, 'цел $1'], [/\bSL\b/gi, 'стоп'], [/\s*\(по бар\)/g, ''],
+  ];
+  const bezZhargon = (t) => ZHARGON.reduce((s, z) => s.replace(z[0], z[1]), String(t));
+  function prichinaLedger(vid, k, n, naVh) {
+    if (n && k >= n) return 'всички цели взети';
+    if (vid === 'sl') return k ? imeCeli(k) + ', после стоп на входа' : naVh ? 'стоп на входа след +40' : 'стоп преди цел 1';
+    const pred = k ? imeCeli(k) + ', после ' : naVh ? 'стоп на входа след +40, после ' : '';
+    if (vid === 'flip') return pred + 'затворена · посоката се обърна';
+    if (vid === 'time') return pred + 'затворена по време';
+    return pred + 'затворена';
+  }
+  function ledgerOt(j) {
+    const a = Array.isArray(j) ? j : (j && Array.isArray(j.sdelki)) ? j.sdelki : (j && Array.isArray(j.trades)) ? j.trades : null;
+    if (!a) return null;
+    const out = [];
+    a.forEach((x) => {
+      if (!x || typeof x !== 'object') return;
+      const pos = String(x.direction || x.posoka || x.dir || '').toLowerCase();
+      const dir = /long|buy|куп|нагоре/.test(pos) ? 1 : /short|sell|прод|надолу/.test(pos) ? -1 : 0;
+      const parts = x.parts || x.chasti || x.pozicii || x['части'];
+      if (!dir || !Array.isArray(parts) || !parts.length) return;
+      const ch = parts.map(num);
+      if (ch.some((v) => v === null)) return;
+      const zatvD = utcDate(x.closed || x.zatvoreno || x.izhod_utc || x.closed_utc);
+      if (!zatvD) return;
+      /* 22.09 · една част (новият закон) или две / три (старите) → ЕДНО число по закона */
+      const star = ch.length > 2;
+      const entry = num(x.entry || x.vhod);
+      const Lv = x.levels || {};
+      const hit = x.hit || {};
+      const kl = CELI_K.filter((k) => num(Lv[k]) !== null);
+      let nv = 0;
+      kl.forEach((k, i) => { if (hit[k]) nv = i + 1; });
+      const vid0 = String(x.exit_kind || x.vid || '').toLowerCase();
+      const vid = vid0 === 'tp3' ? 'tp2' : vid0;       // цел 3 няма → затваря се на цел 2
+      const mv = /^tp(\d)$/.exec(vid);
+      if (mv) nv = Math.max(nv, Math.min(+mv[1], kl.length || BR_CELI));
+      const tp = entry !== null ? kl.map((k, i) => ({ px: num(Lv[k]), pips: Math.round(Math.abs(num(Lv[k]) - entry) / PIP), vzeta: i < nv })) : [];
+      /* 22.09 · бот v18.85: стопът на входа при +40 → hit.be (data.mjs), stop_at_entry или стоп = вход (като app.js) */
+      const slL = num(Lv.sl);
+      const naVh = !!(hit.be || hit.be40 || x.stop_at_entry === true || (entry !== null && slL !== null && Math.abs(slL - entry) < 0.01));
+      /* 29.09 · бот v18.95 · сделка на ДВЕ ПОЛОВИНИ ("mode":"polovin") → числото на СДЕЛКАТА е sum_pips (като app.js) */
+      const sbor = x.mode === 'polovin' && num(x.sum_pips) !== null ? num(x.sum_pips) : ednaPoz(ch, nv, vid, dir, naVh);
+      out.push({
+        dir, entry, d: utcDate(x.opened || x.otvoreno || x.vhod_utc || x.opened_utc),
+        zatvD, chasti: [sbor], sbor,
+        tp, vzeti: nv, sl: slL, vid, izhodPx: vid0 === 'tp3' ? null : num(x.exit_px), be40: naVh && nv < 1,
+        prichina: (x.prichina || x.reason) ? bezZhargon(String(x.prichina || x.reason)) : prichinaLedger(vid, nv, tp.length, naVh),
+        tri: star || num(Lv.tp3) !== null || !!x.prebroeno,
+      });
+    });
+    return out.length ? out.sort((p, q) => p.zatvD - q.zatvD) : null;
   }

@@ -49,10 +49,11 @@ const IZVORI = {
   },
   profil2: {
     pat: "profil2.js", snimka: "snimka_profil2.js",
+    /* 29.09 · v18.95 · и ledgerOt на профила (сделките на половини носят "mode" и sum_pips) */
     imena: ["PIP", "BR_CELI", "STOP_P", "CEL2_P", "ednaPoz", "hodP", "num", "ENT", "razEnt", "gol",
       "RE_CEL", "vhodOt", "izhodOt", "beOt", "sglobiSdelki", "chastiZatvorena", "imeCeli",
-      "prichinaZatv"],
-    vrashta: ["vhodOt", "sglobiSdelki", "chastiZatvorena", "prichinaZatv"],
+      "prichinaZatv", "CELI_K", "utcDate", "ZHARGON", "bezZhargon", "prichinaLedger", "ledgerOt"],
+    vrashta: ["vhodOt", "sglobiSdelki", "chastiZatvorena", "prichinaZatv", "ledgerOt"],
   },
 };
 
@@ -162,13 +163,17 @@ async function cheti(izvor, bazaP, pylenP, ot) {
     stari_nepipnati: JSON.stringify(s0.sdelki) === JSON.stringify(s1.sdelki.filter((x) => String(x.closed) < ot)),
     neprochetni_novi: s1.neprochetni.filter((n) => String(n.utc) >= ot),
     sdelki: noviS.map((x) => ({ direction: x.direction, entry: r2(x.entry), tp1: r2(x.levels.tp1),
-      tp2: r2(x.levels.tp2), sl: r2(x.levels.sl), hit: x.hit, exit_kind: x.exit_kind, sum: x.sum_pips })),
+      tp2: r2(x.levels.tp2), sl: r2(x.levels.sl), hit: x.hit, exit_kind: x.exit_kind, sum: x.sum_pips,
+      mode: x.mode || null })),                  // 29.09 · v18.95 · сделката на половини
     pozicii: p1.pozicii.filter((p) => String(p.closed) >= ot).map((p) => ({ slot: p.slot,
       direction: p.direction, entry: r2(p.entry), kraj: p.kraj, pipsove: p.pipsove, daden: p.daden })),
     vhod_app: vhod(C.app.vhodOt),
     vhod_profil2: vhod(C.profil2.vhodOt),
     ledger: L.map((x) => ({ dir: x.dir, entry: r2(x.entry), vid: x.vid, sbor: x.sbor, be40: !!x.be40,
       vzeti: x.vzeti, tp: x.tp.map((t) => r2(t.px)), prichina: x.prichina })),
+    /* 29.09 · v18.95 · и дневникът на профила (profil2.js · ledgerOt) върху сделките на сървъра */
+    ledger_profil2: (C.profil2.ledgerOt(noviS) || []).map((x) => ({ dir: x.dir, entry: r2(x.entry), vid: x.vid,
+      sbor: x.sbor })),
     app_karti: vhodoveOt(C.app.sglobiSdelki, C.app.chastiZatvorena, C.app.prichinaZatv, karti, otMs),
     profil2_karti: vhodoveOt(C.profil2.sglobiSdelki, C.profil2.chastiZatvorena, C.profil2.prichinaZatv, karti, otMs),
   };

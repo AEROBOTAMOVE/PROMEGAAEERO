@@ -1,4 +1,4 @@
-// СНИМКА · netlify/functions/_lib/data.mjs на AERO_КЛИЕНТ · 2026-09-25T09:45 UTC · sha256 285c2b4714598cb4
+// СНИМКА · netlify/functions/_lib/data.mjs на AERO_КЛИЕНТ · 2026-09-29T09:36 UTC · sha256 40032587074ee052
 // СНИМКА · дословни извадки, НЕ СЕ ПИШАТ НА РЪКА: node platforma/proba_karti.mjs snimka <AERO_КЛИЕНТ>
 const RE_CENI = /([\d,]+\.\d+)\s*(?:\([^)]*\))?\s*→\s*([\d,]+\.\d+)/;
 const RE_VHOD = /вход\s+<?c?o?d?e?>?\s*([\d,]+\.\d+)/;
@@ -34,8 +34,14 @@ function dOt(k, ev) {
   const n = (x) => (x === null || x === undefined || x === "" || !Number.isFinite(Number(x)) ? null : Number(x));
   const lv = d.levels && typeof d.levels === "object" ? d.levels : {};
   const celi = n(lv.tp1) === null && n(lv.tp2) === null ? [] : [n(lv.tp1), n(lv.tp2)];
+  /* 29.09 · бот v18.95 · «ПОЛОВИНАТА НА +50» · записът на сделка на две половини носи
+     "mode":"polovin"; на затварящата pips е ЦЯЛАТА сделка (средното на половините: +90/+75/+25/0/−130…),
+     halves — двете половини. Без "mode" (старите записи) — досегашното значение, дословно. */
+  const pol = d.mode === "polovin";
+  const halves = pol && Array.isArray(d.halves) && d.halves.length === 2 && d.halves.every((x) => n(x) !== null)
+    ? d.halves.map(n) : null;
   return { dir, entry, sl: n(lv.sl), celi, kind: String(d.kind || ""), px: n(d.exit_px),
-    pips: n(d.pips), closes: !!d.closes, be: !!d.be };
+    pips: n(d.pips), closes: !!d.closes, be: !!d.be, pol, halves };
 }
 function sdelkiOtKarti(text, zakonBroene = ZAKON_BROENE, pozicii = ZAKON_POZICII) {
   const poKarti = zakonBroene === "karta";
@@ -95,7 +101,7 @@ function sdelkiOtKarti(text, zakonBroene = ZAKON_BROENE, pozicii = ZAKON_POZICII
 
     if (k.tag === "signal") {
       const ds = dOt(k, "signal");            // 25.09 · Н-08 · от данните, ако ги има
-      if (ds) { spis.push({ dir: ds.dir, entry: ds.entry, otv: t, sl: ds.sl, celi: ds.celi, cel: 0, zatv: null }); continue; }
+      if (ds) { spis.push(Object.assign({ dir: ds.dir, entry: ds.entry, otv: t, sl: ds.sl, celi: ds.celi, cel: 0, zatv: null }, ds.pol ? { pol: true } : {})); continue; }
       /* картата ВЛЕЗ. До 14.09 ботът е писал «🟢 КУПИ ЗЛАТО · ПРЕМИУМ 7/8» без думата ВЛЕЗ —
          затова се хваща по «КУПИ/ПРОДАЙ ЗЛАТО» + «вход». «📌 СДЕЛКАТА ТЕЧЕ» и «⏸ БЕЗ ВХОД»
          пишат «ЗЛАТО покупка» / «ЗЛАТО нагоре» и не минават оттук. */
@@ -109,6 +115,8 @@ function sdelkiOtKarti(text, zakonBroene = ZAKON_BROENE, pozicii = ZAKON_POZICII
         dir: m[1] === "КУПИ" ? 1 : -1, entry, otv: t, sl: s ? chislo(s[1]) : null,
         celi: celiOt(g), cel: 0, zatv: null,
       });
+      /* 29.09 · бот v18.95 · ВЛЕЗ на сделка на половини казва «1 сделка · 2 половини × лот 0.10» */
+      if (/2\s+половини/.test(g)) spis[spis.length - 1].pol = true;
       continue;
     }
     /* 22.09 · бот v18.85 · картата «🛡 стопът на входа» (таг exit-be) идва при +40 пипса, ПРЕДИ цел 1.
@@ -174,7 +182,28 @@ function sdelkiOtKarti(text, zakonBroene = ZAKON_BROENE, pozicii = ZAKON_POZICII
       v = { dir: v.dir, entry: v.entry, otv: v.zatv.t, sl: v.sl, celi: v.celi, cel: v.cel >= 2 ? 1 : v.cel, zatv: null, ostatak: true, nechetim: !!v.nechetim };   // 25.09 · Н-07 · остатъкът наследява непрочетеното
       spis.push(v);
     }
+    /* 29.09 · бот v18.95 · «ПОЛОВИНАТА НА +50» · сделка на ДВЕ ПОЛОВИНИ по 0.10 лота: цел 1 прибира
+       първата, цел 2 затваря втората. Сделката е СРЕДНОТО на половините и ботът го пише: от записа `d`
+       ("mode":"polovin", pips на затварящата) или от «сделката донесе N пипса» на ВСЯКА затваряща карта
+       (и «✅ ЦЕЛ 1 беше прибрана · втората половина на входа»). Коя сделка е на половини: `d`, картата ВЛЕЗ
+       («2 половини») или думите на изходите («прибери половината», «половина 1:», «ЦЕЛ 1 беше прибрана»).
+       Сделките отпреди включването нямат нищо от това и остават по закона за една позиция. */
+    if ((dx && dx.pol) || /прибери половината|половина\s+1:|ЦЕЛ 1 беше прибрана/.test(g)) v.pol = true;
     if (vid === "tp1") { v.cel = Math.max(v.cel, 1); continue; }
+    if (v.pol) {
+      const vidP = vid === "tp3" ? "tp2" : vid;
+      const sbP = dx ? dx.pips : chislo((g.match(/сделката\s+донесе\s*([+−–\-]?[\d.,]+)\s*пипса/i) || [])[1]);
+      const hm = dx ? null : g.match(/половина\s+1:\s*([+−–\-]?[\d.,]+)\s*·\s*половина\s+2:\s*([+−–\-]?[\d.,]+)/);
+      const halvesP = dx ? dx.halves : (hm && chislo(hm[1]) !== null && chislo(hm[2]) !== null ? [chislo(hm[1]), chislo(hm[2])] : null);
+      if (vidP === "tp2") v.cel = 2;
+      /* цел 1 е взета и когато картата ѝ е отпреди записа: половините се различават само след цел 1 */
+      else if (/ЦЕЛ 1 беше прибрана/.test(g) || (halvesP && halvesP[0] !== halvesP[1])) v.cel = Math.max(v.cel, 1);
+      v.zatv = { t, vid: vidP, px: izhod, pol: true, sbor: sbP, halves: halvesP, karta: k,
+        naVhoda: vidP === "sl" && ((dx ? dx.be : /^✅/.test(g.trim())) || v.cel >= 1 || !!v.be40) };
+      /* числото на сделката не се чете → без число (никога 0, никога числото по другия закон) */
+      if (sbP === null) { neprochetena(k, "без число на сделката"); v.nechetim = true; }
+      continue;
+    }
     if (vid === "tp2" || vid === "tp3") { v.cel = 2; v.zatv = { t, vid: "tp2", px: izhod }; continue; }
     if (vid === "sl") {
       /* «стопът беше на входа» се познава по ✅ в началото ИЛИ по това, че цел 1 вече е взета.
@@ -200,6 +229,22 @@ function sdelkiOtKarti(text, zakonBroene = ZAKON_BROENE, pozicii = ZAKON_POZICII
        Картата ѝ вече е в neprochetni, затова тук не се брои втори път. */
     if (v.nechetim) continue;
     const z = v.zatv;
+    if (z.pol) {
+      /* 29.09 · бот v18.95 · сделка на половини → числото е на СДЕЛКАТА, както ботът го е написал
+         (+90/+75 цел 2 · +25 цел 1, после входът · 0 · −130 · обрат/време — средното). Не се преизчислява. */
+      const be40p = !!v.be40 && v.cel < 1;
+      out.push({
+        id: (v.dir === 1 ? "long" : "short") + "|" + v.entry.toFixed(2) + "|" + isoUtc(v.otv).slice(0, 16),
+        direction: v.dir === 1 ? "long" : "short", entry: v.entry, opened: v.bezVhod ? null : isoUtc(v.otv), slot: "main",
+        levels: { tp1: v.celi[0] !== undefined ? v.celi[0] : null, tp2: v.celi[1] !== undefined ? v.celi[1] : null, sl: v.sl },
+        closed: isoUtc(z.t),
+        hit: z.vid === "tp2" ? { tp1: true, tp2: true } : v.cel >= 1 ? { tp1: true } : (be40p || (z.vid === "sl" && z.naVhoda)) ? { be: true } : {},
+        exit_kind: z.vid, exit_px: Number.isFinite(z.px) ? z.px : null,
+        parts: z.halves ? z.halves.slice() : [z.sbor], sum_pips: z.sbor, izvor_zapis: "karti",
+        zakon: v.otv < NOV_ZAKON ? "star" : "nov", mode: "polovin",
+      });
+      continue;
+    }
     /* Н-07 · обрат / по време без цена на изхода → числото не се знае. Дотук ставаше 0 (тихо
        сгрешено число); сега сделката не влиза в списъка, а картата ѝ — в neprochetni. */
     if (z.vid !== "tp2" && z.vid !== "sl" && !Number.isFinite(z.px)) { neprochetena(z.karta || {}, "без цена на изхода"); continue; }
