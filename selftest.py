@@ -74,6 +74,12 @@ lb.ПОЛОВИНИ = 0
 # тя пази ПЪТЯ НАЗАД (SIZE_SHADOW=0). Живият път и пътят назад байт по байт пази
 # П202 (свеж live_bot.py) в края; П198–П201 (свежи модули) закачат лоста на 0 сами.
 lb.СЯНКА_РАЗМЕР = 0
+# 🔴 29.09 · v18.97 · ИСТОРИЯ_ПОЛОВИНИ · живото е 1 — ВСЯКА минала сделка се брои по закона
+# на половините (вечерната, седмичната, пулсът, sdelki.json), а картата ВЛЕЗ казва новината на
+# български и «цялата сделка +75 пипса (+150$)». Старата батерия П1…П202 е писана за v18.96 и пази
+# ПЪТЯ НАЗАД (HISTORY_HALVES=0). Живият път и пътят назад байт по байт пази П203 (свеж live_bot.py)
+# в края; П198–П202 (свежи модули) закачат лоста на 0 сами.
+lb.ИСТОРИЯ_ПОЛОВИНИ = 0
 
 _ИЗХОД = open("live_bot.py", encoding="utf-8").read()
 _РЕДОВЕ_ИЗХОД = len(_ИЗХОД.splitlines())
@@ -13090,7 +13096,7 @@ try:
         lb.МОЗЪК_ВХОД_ЖИВ = _ст170ж
 finally:
     _sh170.rmtree(_д170, ignore_errors=True)
-ck("П170 версията е поне v18.72", lb.VERSION in ("v18.72", "v18.73", "v18.74", "v18.75", "v18.76", "v18.77", "v18.78", "v18.79", "v18.80", "v18.81", "v18.82", "v18.83", "v18.84", "v18.85", "v18.86", "v18.87", "v18.88", "v18.89", "v18.90", "v18.91", "v18.92", "v18.93", "v18.94", "v18.95", "v18.96"))
+ck("П170 версията е поне v18.72", lb.VERSION in ("v18.72", "v18.73", "v18.74", "v18.75", "v18.76", "v18.77", "v18.78", "v18.79", "v18.80", "v18.81", "v18.82", "v18.83", "v18.84", "v18.85", "v18.86", "v18.87", "v18.88", "v18.89", "v18.90", "v18.91", "v18.92", "v18.93", "v18.94", "v18.95", "v18.96", "v18.97"))
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -13847,7 +13853,7 @@ finally:
 ck("П182 лостът по подразбиране е 1 (живото)", 'СТОП_ПО_НИВО = int(_env("СТОП_ПО_НИВО", "1"))' in _ИЗХОД)
 ck("П182 yml · лостът е вързан (STOP_AT_LEVEL)",
    "СТОП_ПО_НИВО: ${{ vars.STOP_AT_LEVEL" in _io182.open(".github/workflows/aero-bot.yml", encoding="utf-8").read())
-ck("П182 версията е поне v18.82", lb.VERSION in ("v18.82", "v18.83", "v18.84", "v18.85", "v18.86", "v18.87", "v18.88", "v18.89", "v18.90", "v18.91", "v18.92", "v18.93", "v18.94", "v18.95", "v18.96"))
+ck("П182 версията е поне v18.82", lb.VERSION in ("v18.82", "v18.83", "v18.84", "v18.85", "v18.86", "v18.87", "v18.88", "v18.89", "v18.90", "v18.91", "v18.92", "v18.93", "v18.94", "v18.95", "v18.96", "v18.97"))
 
 # П171 · v18.73 · Б0 · ТОЧНИТЕ ПИПСОВЕ НА ВЗЕТАТА ЦЕЛ (живият път, лост 1)
 # Собственикът, 15.09: «имаш 50 пипса таргет — прибираш, имаш 100 пипса —
@@ -13983,7 +13989,7 @@ ck("П171 yml · опашките за платформата се пишат",
 _върни90(_гл179)
 ck("П171/П179/П183 · петте лоста по думите са върнати",
    all(getattr(lb, _л) == _гл179[_л] for _л in _ГЛАС90))
-ck("П171 версията е поне v18.73", lb.VERSION in ("v18.73", "v18.74", "v18.75", "v18.76", "v18.77", "v18.78", "v18.79", "v18.80", "v18.81", "v18.82", "v18.83", "v18.84", "v18.85", "v18.86", "v18.87", "v18.88", "v18.89", "v18.90", "v18.91", "v18.92", "v18.93", "v18.94", "v18.95", "v18.96"))
+ck("П171 версията е поне v18.73", lb.VERSION in ("v18.73", "v18.74", "v18.75", "v18.76", "v18.77", "v18.78", "v18.79", "v18.80", "v18.81", "v18.82", "v18.83", "v18.84", "v18.85", "v18.86", "v18.87", "v18.88", "v18.89", "v18.90", "v18.91", "v18.92", "v18.93", "v18.94", "v18.95", "v18.96", "v18.97"))
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -14529,7 +14535,7 @@ _ЯМЛ172 = open(".github/workflows/aero-bot.yml", encoding="utf-8").read()
 ck("П172 yml · двата лоста са вързани",
    "НОВИНИ_ВСИЧКИ: ${{ vars.NEWS_ALL_SLOTS" in _ЯМЛ172
    and "НОВИНИ_FOMC_МИН: ${{ vars.NEWS_FOMC_MIN" in _ЯМЛ172)
-ck("П172 версията е поне v18.74", lb.VERSION in ("v18.74", "v18.75", "v18.76", "v18.77", "v18.78", "v18.79", "v18.80", "v18.81", "v18.82", "v18.83", "v18.84", "v18.85", "v18.86", "v18.87", "v18.88", "v18.89", "v18.90", "v18.91", "v18.92", "v18.93", "v18.94", "v18.95", "v18.96"))
+ck("П172 версията е поне v18.74", lb.VERSION in ("v18.74", "v18.75", "v18.76", "v18.77", "v18.78", "v18.79", "v18.80", "v18.81", "v18.82", "v18.83", "v18.84", "v18.85", "v18.86", "v18.87", "v18.88", "v18.89", "v18.90", "v18.91", "v18.92", "v18.93", "v18.94", "v18.95", "v18.96", "v18.97"))
 
 
 # 🔴🔴 23.09 · v18.90 · ОТТУК ДО КРАЯ НА П195 · ПАЗАЧЪТ НА ПЪТЯ НАЗАД.
@@ -15035,7 +15041,7 @@ finally:
     _sh173.rmtree(_д173, ignore_errors=True)
 ck("П173 извикването подава главната (не мъртъв параметър)",
    'главна=(trade.get("direction") if trade else None)' in _ИЗХОД)
-ck("П173 версията е поне v18.75", lb.VERSION in ("v18.75", "v18.76", "v18.77", "v18.78", "v18.79", "v18.80", "v18.81", "v18.82", "v18.83", "v18.84", "v18.85", "v18.86", "v18.87", "v18.88", "v18.89", "v18.90", "v18.91", "v18.92", "v18.93", "v18.94", "v18.95", "v18.96"))
+ck("П173 версията е поне v18.75", lb.VERSION in ("v18.75", "v18.76", "v18.77", "v18.78", "v18.79", "v18.80", "v18.81", "v18.82", "v18.83", "v18.84", "v18.85", "v18.86", "v18.87", "v18.88", "v18.89", "v18.90", "v18.91", "v18.92", "v18.93", "v18.94", "v18.95", "v18.96", "v18.97"))
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -15276,7 +15282,7 @@ _ЯМЛ174 = open(".github/workflows/aero-bot.yml", encoding="utf-8").read()
 ck("П174 yml · трите лоста са вързани",
    "СМЕТКА_ТОРБА: ${{ vars.BAG_SUM" in _ЯМЛ174 and "ЕДИН_ВХОД: ${{ vars.ONE_ENTRY" in _ЯМЛ174
    and "БЕЗ_НАСРЕЩНИ: ${{ vars.NO_OPPOSITE" in _ЯМЛ174)
-ck("П174 версията е v18.76", lb.VERSION in ("v18.76", "v18.77", "v18.78", "v18.79", "v18.80", "v18.81", "v18.82", "v18.83", "v18.84", "v18.85", "v18.86", "v18.87", "v18.88", "v18.89", "v18.90", "v18.91", "v18.92", "v18.93", "v18.94", "v18.95", "v18.96"))
+ck("П174 версията е v18.76", lb.VERSION in ("v18.76", "v18.77", "v18.78", "v18.79", "v18.80", "v18.81", "v18.82", "v18.83", "v18.84", "v18.85", "v18.86", "v18.87", "v18.88", "v18.89", "v18.90", "v18.91", "v18.92", "v18.93", "v18.94", "v18.95", "v18.96", "v18.97"))
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -15311,7 +15317,7 @@ try:
        "пипса" in [_r for _r in _к0.split("\n") if _r.startswith("💵")][0])
 finally:
     lb.БРОЕНЕ_ЦЯЛО, lb.СМЕТКА_ТОРБА = _ст174б
-ck("П174б версията е v18.77", lb.VERSION in ("v18.77", "v18.78", "v18.79", "v18.80", "v18.81", "v18.82", "v18.83", "v18.84", "v18.85", "v18.86", "v18.87", "v18.88", "v18.89", "v18.90", "v18.91", "v18.92", "v18.93", "v18.94", "v18.95", "v18.96"))
+ck("П174б версията е v18.77", lb.VERSION in ("v18.77", "v18.78", "v18.79", "v18.80", "v18.81", "v18.82", "v18.83", "v18.84", "v18.85", "v18.86", "v18.87", "v18.88", "v18.89", "v18.90", "v18.91", "v18.92", "v18.93", "v18.94", "v18.95", "v18.96", "v18.97"))
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -15643,7 +15649,7 @@ ck("П184 сухият рън не праща поддръжка (dry стига
 ck("П184 поддръжката НЕ пипа пощата, гейта и сделките",
    "_outbox_flush" not in _ИЗХОД[_ИЗХОД.index("def _поддръжка_път"):
                                  _ИЗХОД.index("def _вход_за_диска")])
-ck("П184 версията е v18.84", lb.VERSION in ("v18.84", "v18.85", "v18.86", "v18.87", "v18.88", "v18.89", "v18.90", "v18.91", "v18.92", "v18.93", "v18.94", "v18.95", "v18.96"))
+ck("П184 версията е v18.84", lb.VERSION in ("v18.84", "v18.85", "v18.86", "v18.87", "v18.88", "v18.89", "v18.90", "v18.91", "v18.92", "v18.93", "v18.94", "v18.95", "v18.96", "v18.97"))
 
 # 🔴🔴 П184б · 16.09 · ВТОРАТА ДУПКА НА БЕЛИЯ СПИСЪК, намерена от враждебна проверка.
 # Първият бял списък пускаше «препратен» БЕЗ да гледа ОТКЪДЕ. Клиент, който просто
@@ -16851,7 +16857,7 @@ ck("П190 лостовете са върнати (старата батерия 
    all(getattr(lb, _и) == _в for _и, _в in _ст190.items()))
 ck("П190 старата батерия е на пътя назад: ВХОД_ПРИ=50, честна скала 0, «не е сигнал» 0",
    lb.ВХОД_ПРИ == 50 and lb.МОЗЪК_ЧЕСТНА_СКАЛА == 0 and lb.МОЗЪК_НЕ_СИГНАЛ == 0)
-ck("П190 версията е v18.85", lb.VERSION in ("v18.85", "v18.86", "v18.87", "v18.88", "v18.89", "v18.90", "v18.91", "v18.92", "v18.93", "v18.94", "v18.95", "v18.96"))
+ck("П190 версията е v18.85", lb.VERSION in ("v18.85", "v18.86", "v18.87", "v18.88", "v18.89", "v18.90", "v18.91", "v18.92", "v18.93", "v18.94", "v18.95", "v18.96", "v18.97"))
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -17230,7 +17236,7 @@ finally:
 ck("П192 лостовете са върнати (старата батерия остава на пътя назад: ДЪРЖИ_СЛЕД_ЦЕЛ2=0)",
    all(getattr(lb, _и) is _в or getattr(lb, _и) == _в for _и, _в in _ст192.items())
    and lb.ДЪРЖИ_СЛЕД_ЦЕЛ2 == 0)
-ck("П192 версията е v18.86", lb.VERSION in ("v18.86", "v18.87", "v18.88", "v18.89", "v18.90", "v18.91", "v18.92", "v18.93", "v18.94", "v18.95", "v18.96"))
+ck("П192 версията е v18.86", lb.VERSION in ("v18.86", "v18.87", "v18.88", "v18.89", "v18.90", "v18.91", "v18.92", "v18.93", "v18.94", "v18.95", "v18.96", "v18.97"))
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -17943,7 +17949,7 @@ finally:
         setattr(lb, _и193, _в193)
 ck("П193 лостовете и подменените функции са върнати",
    all(getattr(lb, _и) is _в or getattr(lb, _и) == _в for _и, _в in _ст193.items()))
-ck("П193 версията е v18.87", lb.VERSION in ("v18.87", "v18.88", "v18.89", "v18.90", "v18.91", "v18.92", "v18.93", "v18.94", "v18.95", "v18.96"))
+ck("П193 версията е v18.87", lb.VERSION in ("v18.87", "v18.88", "v18.89", "v18.90", "v18.91", "v18.92", "v18.93", "v18.94", "v18.95", "v18.96", "v18.97"))
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -18871,7 +18877,7 @@ finally:
         setattr(lb, _и194, _в194)
 ck("П194 лостовете и подменените функции са върнати",
    all(getattr(lb, _и) is _в or getattr(lb, _и) == _в for _и, _в in _ст194.items()))
-ck("П194 версията е v18.88", lb.VERSION in ("v18.88", "v18.89", "v18.90", "v18.91", "v18.92", "v18.93", "v18.94", "v18.95", "v18.96"))
+ck("П194 версията е v18.88", lb.VERSION in ("v18.88", "v18.89", "v18.90", "v18.91", "v18.92", "v18.93", "v18.94", "v18.95", "v18.96", "v18.97"))
 
 # ══════════════════════════════════════════════════════════════════════
 # П195 · 22.09 · v18.89 · ЕДНО НЕЩО — ЕДНО ЧИСЛО, ЕДНА ДУМА · десет лоста
@@ -19371,7 +19377,7 @@ finally:
         setattr(lb, _и195, _в195)
 ck("П195 лостовете и подменените функции са върнати",
    all(getattr(lb, _и) is _в or getattr(lb, _и) == _в for _и, _в in _ст195.items()))
-ck("П195 версията е v18.90", lb.VERSION in ("v18.90", "v18.91", "v18.92", "v18.93", "v18.94", "v18.95", "v18.96"))
+ck("П195 версията е v18.90", lb.VERSION in ("v18.90", "v18.91", "v18.92", "v18.93", "v18.94", "v18.95", "v18.96", "v18.97"))
 _върни90(_гл180)
 ck("П180…П195 · петте лоста по думите са върнати на живото",
    all(getattr(lb, _л) == _гл180[_л] for _л in _ГЛАС90))
@@ -20035,7 +20041,7 @@ try:
         setattr(lb, _и197, _жв197)
     for _и197, _в197 in _ЖИВО197.items():
         setattr(lb, _и197, _в197)
-    ck("П197 версията е v18.91", lb.VERSION in ("v18.91", "v18.92", "v18.93", "v18.94", "v18.95", "v18.96"))
+    ck("П197 версията е v18.91", lb.VERSION in ("v18.91", "v18.92", "v18.93", "v18.94", "v18.95", "v18.96", "v18.97"))
 
     def _голо197(т):
         return _re197.sub(r"</?(code|b|i)>", "", str(т))
@@ -20348,6 +20354,9 @@ _НАЗАД198["ПОЛОВИНИ"] = 0
 # 🔴 29.09 · v18.96 · СЯНКА_РАЗМЕР (vars.SIZE_SHADOW, живо 1) · книгите на сянката пишат два
 # нови файла в папката на стенда. Пътят назад на П198 е и СЯНКА_РАЗМЕР=0 (лоста пази П202).
 _НАЗАД198["СЯНКА_РАЗМЕР"] = 0
+# 🔴 29.09 · v18.97 · ИСТОРИЯ_ПОЛОВИНИ (vars.HISTORY_HALVES, живо 1) · отпечатъците отдолу са на
+# v18.91 · пътят назад на П198 е и ИСТОРИЯ_ПОЛОВИНИ=0 (лоста пази П203).
+_НАЗАД198["ИСТОРИЯ_ПОЛОВИНИ"] = 0
 # живата настройка на лостовете, които `track_trade` чете (изрично — не зависи
 # от това какво са оставили блоковете преди този)
 _ЖИВО198 = {"ДВЕ_ПОЗИЦИИ": 1, "ЕДНА_ПОЗИЦИЯ": 1, "ВХОД_ПРИ": 40, "ПЛИТЪК_СТОП_ПОВТОРИ": 1,
@@ -20700,6 +20709,7 @@ try:
     lb = _свеж198()
     lb.ПОЛОВИНИ = 0          # v18.95 · пътят назад: блокът е писан за ЕДНА позиция (живото пази П201)
     lb.СЯНКА_РАЗМЕР = 0      # v18.96 · пътят назад: без книгите на сянката (живото пази П202)
+    lb.ИСТОРИЯ_ПОЛОВИНИ = 0  # v18.97 · пътят назад: историята както v18.96 (живото пази П203)
     # ══ А · лостовете ═════════════════════════════════════════════════
     for _и198, (_жв198, _нз198, _вр198) in _ЛОСТ198.items():
         ck("П198 А · %s е %d по подразбиране (живото) — и в изворa, и в свежия модул"
@@ -20986,7 +20996,7 @@ try:
     ck("П198 · нито една вътрешна дума и нищо от сянката в %d карти от стендовете %s"
        % (len(_КАРТИ198), _лоши198[:2]),
        len(_КАРТИ198) >= 5 and not _лоши198 and not any("🔭" in _т for _т in _КАРТИ198))
-    ck("П198 версията е v18.92", lb.VERSION in ("v18.92", "v18.93", "v18.94", "v18.95", "v18.96"))
+    ck("П198 версията е v18.92", lb.VERSION in ("v18.92", "v18.93", "v18.94", "v18.95", "v18.96", "v18.97"))
 except Exception as _е198:
     import traceback as _tb198
     _tb198.print_exc()
@@ -21347,6 +21357,7 @@ try:
     lb = _свеж198()
     lb.ПОЛОВИНИ = 0          # v18.95 · пътят назад: блокът е писан за ЕДНА позиция (живото пази П201)
     lb.СЯНКА_РАЗМЕР = 0      # v18.96 · пътят назад: без книгите на сянката (живото пази П202)
+    lb.ИСТОРИЯ_ПОЛОВИНИ = 0  # v18.97 · пътят назад: историята както v18.96 (живото пази П203)
     _пк_сп199 = _ilu199.spec_from_file_location("proba_karti199", "platforma/proba_karti.py")
     _пк199 = _ilu199.module_from_spec(_пк_сп199)
     _пк_сп199.loader.exec_module(_пк199)
@@ -21706,7 +21717,7 @@ try:
     ck("П199 И · подправен запис → червено: +1 пипс в едно затваряне · изгубено closes · изгубен щит",
        all(_м is not None and (bool(_сверка199(_от_д199(_м)[0], _оч0_199)) or bool(_от_д199(_м)[1]))
            for _м in _подпр199))
-    ck("П199 версията е v18.93", lb.VERSION in ("v18.93", "v18.94", "v18.95", "v18.96"))
+    ck("П199 версията е v18.93", lb.VERSION in ("v18.93", "v18.94", "v18.95", "v18.96", "v18.97"))
 except Exception as _е199:
     import traceback as _tb199
     _tb199.print_exc()
@@ -21935,6 +21946,7 @@ try:
     # половините е 0 в целия блок (редовете на сделката на половини пази П201).
     lb.ПОЛОВИНИ = 0
     lb.СЯНКА_РАЗМЕР = 0      # v18.96 · пътят назад: без книгите на сянката (живото пази П202)
+    lb.ИСТОРИЯ_ПОЛОВИНИ = 0  # v18.97 · пътят назад: историята както v18.96 (живото пази П203)
 
     # ══ А · лостът ══════════════════════════════════════════════════════
     ck("П200 А · ЗАПИС_ЦЕНА е 1 по подразбиране (живото) — и в извора, и в свежия модул; файлът "
@@ -22168,7 +22180,7 @@ try:
        and _нм200["текст"].startswith(_СТАР_РЕД200) and _нм200["ред"][0] == _j200.loads(_СТАР_РЕД200)
        and _нм200["ред"][1:] == [_вх200("2026-09-23T10:05:00", "long", 4079.5, _SP199Л, "2026-09-23T10:05:00")]
        and 'for fn in ("live_journal.jsonl", "sent_log.jsonl"):' in _ИЗХ200)
-    ck("П200 версията е v18.94", lb.VERSION in ("v18.94", "v18.95", "v18.96"))
+    ck("П200 версията е v18.94", lb.VERSION in ("v18.94", "v18.95", "v18.96", "v18.97"))
 except Exception as _е200:
     import traceback as _tb200
     _tb200.print_exc()
@@ -22385,6 +22397,9 @@ try:
     # 🔴 29.09 · v18.96 · СЯНКА_РАЗМЕР · отпечатъците на П201 са на v18.94 и броят всички
     # файлове на стенда — пътят назад е и без книгите на сянката (живото пази П202)
     lb.СЯНКА_РАЗМЕР = 0
+    # 🔴 29.09 · v18.97 · ИСТОРИЯ_ПОЛОВИНИ · П201 пази старите записи ЗА ЕДНА позиция (пътят назад;
+    # живото — всичко по половините — пази П203)
+    lb.ИСТОРИЯ_ПОЛОВИНИ = 0
     _пк_сп201 = _ilu201.spec_from_file_location("proba_karti201", "platforma/proba_karti.py")
     _пк201 = _ilu201.module_from_spec(_пк_сп201)
     _пк_сп201.loader.exec_module(_пк201)
@@ -22724,7 +22739,7 @@ try:
     ck("П201 · стендовете не оставят лостовете си: пак е живото (ПОЛОВИНИ 1 · ЗАПИС_Д 1 · КАНАЛ_РЕЖИМ 0 · "
        "ЧИСТ_КАНАЛ 1 · ЕДНА_ПОЗИЦИЯ 1)",
        (lb.ПОЛОВИНИ, lb.ЗАПИС_Д, lb.КАНАЛ_РЕЖИМ, lb.ЧИСТ_КАНАЛ, lb.ЕДНА_ПОЗИЦИЯ) == (1, 1, 0, 1, 1))
-    ck("П201 версията е v18.95", lb.VERSION in ("v18.95", "v18.96"))
+    ck("П201 версията е v18.95", lb.VERSION in ("v18.95", "v18.96", "v18.97"))
 except Exception as _е201:
     import traceback as _tb201
     _tb201.print_exc()
@@ -23092,6 +23107,9 @@ _ЗЛАТО202 = {
 }
 try:
     lb = _свеж198()
+    # 🔴 29.09 · v18.97 · ИСТОРИЯ_ПОЛОВИНИ · отпечатъците на П202 са на v18.95 (картата ВЛЕЗ и
+    # sdelki.json по старому) — пътят назад е ИСТОРИЯ_ПОЛОВИНИ=0 (живото пази П203)
+    lb.ИСТОРИЯ_ПОЛОВИНИ = 0
 
     # ══ А · лостът ══════════════════════════════════════════════════════
     ck("П202 А · СЯНКА_РАЗМЕР е 1 по подразбиране (живото) — и в извора, и в свежия модул; файловете "
@@ -23502,7 +23520,7 @@ try:
        "ЗАПИС_ЦЕНА 1 · КАНАЛ_РЕЖИМ 0 · ПРЕМИУМ_ОБРАТ_ЗАТВАРЯ 0)",
        (lb.СЯНКА_РАЗМЕР, lb.ПОЛОВИНИ, lb.ЗАПИС_Д, lb.ЗАПИС_ЦЕНА, lb.КАНАЛ_РЕЖИМ, lb.ПРЕМИУМ_ОБРАТ_ЗАТВАРЯ)
        == (1, 1, 1, 1, 0, 0))
-    ck("П202 версията е v18.96", lb.VERSION == "v18.96")
+    ck("П202 версията е v18.96", lb.VERSION in ("v18.96", "v18.97"))
 except Exception as _е202:
     import traceback as _tb202
     _tb202.print_exc()
@@ -23523,6 +23541,957 @@ ck("П202 общото `lb` не е пипнато (лостовете и фун
 #   в допълнителния слот (1) · М18 ATR от 13 дни (4) · М19 книгата без баровете (5) ·
 #   М20 целта на сянката 20 $, не S·20/13 (1). 20 от 20 хванати.
 # ── П202 · КРАЙ ──
+
+
+# ══════════════════════════════════════════════════════════════════════
+# П203 · 29.09 · v18.97 · «ЦЯЛАТА ИСТОРИЯ ПО ПОЛОВИНИТЕ» · ИСТОРИЯ_ПОЛОВИНИ (vars.HISTORY_HALVES)
+# Решението на собственика (29.09, писмено): ВСЯКА минала сделка се брои по закона
+# на половините — СЪЩИЯТ списък, СЪЩИТЕ изходи, мени се само колко носи изходът:
+# цел 2 → +90 покупка / +75 продажба · цел 1, после входът → +25 · +40, после
+# входът → 0 · стоп → −130 (и при гап през стопа) · обрат/време → средното на
+# половините. Одитът: ЛОЦО/ИСТОРИЯТА_НА_ПОЛОВИНИ_29-09.md и ПЪЛНОТА_БОТ_29-09.md
+# (P0 1–2, P1 5–6). Проверките:
+#   А · лостът: 1 по подразбиране, вързан в yml през job `env` с пътя назад; иска
+#       и половините (`_половини_вкл`); закачен на местата си; сянката на размера
+#       (`_размер_пари`) НЕ е пипната
+#   Б · законът направо — очакваното е от ТАБЛИЦАТА на собственика (`_закон203`
+#       отдолу), не от бота: `_торба` на половини с гапа на нивото, видът по
+#       закона, лост 0 = старото
+#   В · ЛОСТ 0 = v18.96 БАЙТ ПО БАЙТ на истинския main(): 19 стенда — 17-те на
+#       П202 при живите лостове (и сянката на размера) и двата на П203 върху
+#       ЗАМРАЗЕНОТО състояние be13e2a8 (вечерната и седмичната). Отпечатъците са
+#       сметнати от v18.96 (92cf6fe7) със СЪЩИТЕ помощници в отделен процес
+#   Г · ЛОСТ 1 на истинския main(): 17-те стенда без «· цялата сделка …» и без
+#       преброяването на sdelki.json са ЛОСТ 0 байт по байт; ВЛЕЗ носи парите на
+#       цялата сделка; вечерната и седмичната — числата и видовете по закона;
+#       sdelki.json — всеки запис по закона; лост 0 после → старият файл байт по байт
+#   Д · функциите направо върху замразеното състояние и проби: торбата (вечерта
+#       −55 → −45, седмицата 21–27.09 +40 → +100, денят), sdelki.json (−598 →
+#       −850, покупка 4282.95 от 15.09 → +90, гапът 18.09 → −130), записът на
+#       половини не се пипа, гапът на жива сделка, картата ВЛЕЗ ред по ред (лост 0 =
+#       ПРАТЕНИТЕ карти от 29.09), имената на новините
+#   Е · платформата: четците (снимките и живите, ако са на диска) четат новия ред
+#   Ж · думите: нищо от машината и нищо на латиница извън скобите в новите карти
+# Блокът съди СВЕЖО зареден live_bot.py; общото `lb` се връща накрая.
+# Старата батерия (П1…П202) пази пътя назад: ИСТОРИЯ_ПОЛОВИНИ=0 горе и в П198–П202.
+# ══════════════════════════════════════════════════════════════════════
+# ── П203 · ПОМОЩНИЦИ (начало) ──
+import json as _j203, shutil as _sh203, io as _io203, re as _re203, zlib as _z203, base64 as _b64_203
+import hashlib as _х203, importlib.util as _ilu203, copy as _cp203
+import pandas as _pd203
+_ИЗХ203 = _io203.open("live_bot.py", encoding="utf-8").read()
+_yml203 = _io203.open(".github/workflows/aero-bot.yml", encoding="utf-8").read()
+# ЗАМРАЗЕНОТО СЪСТОЯНИЕ · live/closed_trades.jsonl и live/sdelki.json на това repo при
+# be13e2a8 (29.09 17:01 UTC · одитът ИСТОРИЯТА_НА_ПОЛОВИНИ и ПЪЛНОТА_БОТ): 116 сделки
+# от 15.09 10:17 до 29.09 15:23. zlib + base64 на ИСТИНСКИТЕ байтове; sha256 се
+# проверява долу и е на самите файлове: git show be13e2a8:live/sdelki.json | sha256sum
+_ЗАМР_SHA203 = {"closed_trades.jsonl": "c1a332722fd4e188b78a4f7bb2625020c0b47ee1e702876a20b07ad7be140d9c", "sdelki.json": "e78f0562cb6ec3a1a411742be3e96fbb284e4436fb596beb7ae296fbc338aa9b"}
+_ЗАМР_B64_203 = {
+    "closed_trades.jsonl": (
+        "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"
+    ),
+    "sdelki.json": (
+        "eNq1nd2O5SiSgF+lldfTFgT/5znqrjVq9Uzn7qS2qrJUld2aUZ959+XXSfgQTgz2TUn4FBDmyyCCIAy//PX08vvT7aenH/96/f52"
+        "l6DFAvYODPTPzP3M1Sfmbkw8/e2np99fvj//8+3l9ev638PT569v3//jn+Sa/snrt+evz7HNVivx///64/V/Xn4L/4VDfv7j8+tb"
+        "ePDlt5evofz28vw9dvT2/fXr/4Ynn5//fP78wz/76+ntG49dKpu6fPsGqSxKWcSyzOUfn2PRaF/8ry//8/PrjwcRObsJ/bT+Wsko"
+        "8g//egki/hVaeP73y9uv//fyNY3d56fy6Nu/S08KhH/47bfvb0HmX37mgv09iPLHl1+/vXwLz8Ij/+TP0MSf3C7GhWa+fX/+x/fX"
+        "56+v5bGVT77HwumzHw2PycLiVI2J8xuHB0yf89i9U4oVKUprI1tKMj8fomRN6rJQcqqUIyXBskiZUpSQpiRvApqUTP4hU8rdv33/"
+        "43ntOxQ66JUxWuE9stugs9CBrqiYZQtgdv6dTI+KxZokvNLKFp7Jz4fgGZW6LPAMK+WkYjqXC7xQpOGpG+NNeDb/8Aivh1eWYeW1"
+        "pTXBChbG75tXkF2sQk2SVWlly8rm52OsTOpyZQWlnFnlcmbl9ZBxmpW+gWyycvmH/ukw9nRwNuzClGdDZxbt7lh40TMbxookpNLI"
+        "FpLLz0cghdkudpkhCc5SuUAJEtFQ7E01FQh4/uHo7Bd+wrRWiQ5Mf6KblWBiMYBYedfAfMwqVSRZlUY2rADy8zFWNnW5stKpXFgx"
+        "XyRZ+a6VbbFiPP9wQIFY6viQAokj85xeJLJJIG7cds1zoSaFZW1lg4VBfj7mUPDU5TrPZRGKDQpFAov+5EefiyYWmX8Ys0FZhk4b"
+        "dIiNWoy+b16hz18INdtsqla2bGR+TrH58vz7yx9fKDYsdbmyySIUlfEapWk2cIOmC85U/uGAytjU8ekqk+cxIRdjERVxg555LFYk"
+        "oZRGtlB0fj4CRQiXuizzmDSpnKAI4L5IQ5E36ZpQTP6hG0royf9z4UQmQC3CISz6JnsmslST5FJa2XJx+fmQfQGWulztSxYhcxHW"
+        "F2kujrAvHI7al9TTUSyyX1n8QpzXUPxau2FdHnUl1KOQrG1s3TMxYVuEtEvlQgull3ePOYpD8uCc4iExj0OGpQxBp105wgS8LiIo"
+        "0Ir0NKCEiiQVIAI9aiLQEyas2OWKRaVy4RIkosEAYfG9TOMWfx2GS8hw2JDpU5dQcYdMW1/UlL6Y1GVFhgMiw4EmIygymiRzeDlT"
+        "JDqwnDnASvHF4qlN3ESPFsWKJKvSyJaVzs+HWPnJzNaTm5ap/G5uLN9jpYBgpeCwubH8CnNTvADJFo6pyJvo8gJiTRJLaaURYhtX"
+        "IaFSlwWLyCJkLMobgB0s3rgwIh6afujHEnu6EAsYsWCLY2+qa28hVCShlEa2S3+en1NQvNBf6IWMtktlccLuhqh2EnyJRuIF0lSQ"
+        "Rp8zqxV53ic19jCpsXFQFjagejeBQkUSFLEHBFN7QMYgTgZqTkEcmpPLwdYHTpB/OIFTluciTsr/kaJFKLCW9WmAijUpUmsrW1Ji"
+        "wvyE3TlR79bJLELRKe6LJCyvO9CMfDKWfziwOycGQgMHfALGFlUFbMynNeL3UYgzVGxDqRp5jNeocePDVOpyXYKKVC4KZHyRgGJC"
+        "vIYzIl7Djxmf0BPHuzhnWx/rFubuG/H7YpyhJsmF8KuZmopxytTlOq9lEQqXUNzjogTBRYmzZja7OBzyPNkGsUUCwiV6jVCoSeIS"
+        "bSvE9JQVUqnLaptU1jsFwhdpXOImm651iDrBwbCnSB1fNrdZtNVmiPhaY26z5FabuSi85ucytNUGvN5qSxLRUMyNt/eqWf7hhLVp"
+        "keiatamQC2ANMn2sYkWSlWmz8uMywUq41GUVogZAIWrYUSCb81MeWJWElgMharaIS+1QiPJyjMXeAHoWp1yR8Z2qlS0Xnp8PbR1w"
+        "huM7DMd3okQ0F3cTjAhRC3aSDrGH+M6ZZkgwhzJA0kt1hRJiTZKWI0IJ8EEoYZcWkzgDxLk640MA0BkfJgTU215DCP2Ig1oEy+H8"
+        "tyNTm1YLQzrkx012ZHykihSUtZHHEKkcz/jwvgCrVcg7TqxSoSgRDWUgRNrBpwzD+cFrDSi7rXqDj8gAmdxWNfIYEOXjAVFtUHKb"
+        "KMluhQzQyWxRJMkIMpKNk4FDyWxHyHgbKjdkZBeZUHGHjCTIyAkyOnW5kpGpXMgEiWgyMif9NGKi6YcTzI6XyBzNEj0Ay3CUhx1f"
+        "qkuNYkUSliTUyMyoUcyrrmD5tWuVdi1ilvYerHZ6AT+eXqCMZ2Ku9N3CFopAWFQLS8MbiDVJLorgYme4hC2metdUZhGKEjlfpLlo"
+        "KlfX4VzdDi7hb/LSValUC/LRQo5q14apWkgPbW3jMVwN4+scxXB+gUX5BYrML7CfGCMy35kYzHxvbZZanG1wzpy2ao9beGWB0jv1"
+        "aU+o2SZVtbKNHnwUrt71pZVMXa7ak0Uos1oo0rA4oT1MTmS6r8NwgXMg0DInvgF0OdSCXOVUjTzGrGHcodYWrXKC/alXOV7FGN8j"
+        "IxVBJv3QP6/5CdVIi+c1LR7mNS3GN7K97dxi6doyTTV3uDT3TMNewrjGhM+t0EZ2FqHMbqFIcylpW40gKLcnTW9FootiBWED3d7x"
+        "S/XFCmJNkpZoxwr8yIi5TDeUFJpFKN6B9kWalqS0yBzWIt+T1Fd6B05vzY7uW/jEiiQV3V74hJj1sM8mGUdWRzJsdazYtTruJhwV"
+        "bzvoS1tYLvWkwyeSpobCWd/2TqpJUVlbecwKncg/9A5s7HLNnMoiZCpRIpKKH/z21rX3+uGsnQQtFwfm0qkNkA61gwftqQ1IJbom"
+        "ehAsjcRTWx09iBLRuASVx6vJPN7DuIpE19HaKJfsVK5Yk6QlCeUyHyjXvttgsXJJgZQrSkTTktQ2nSG36fpS4ZQ519EubLRfAboN"
+        "mz6XLtbcYaMINmoihKBSl+t6NYtQnIRQpNkoio09bwu1SHSdJlmsSapzsy7WJGkpYrPOzmzWeU2yG02yBrl0dkeT9A0Y9cHvwUxS"
+        "bRau1YUunWULWhbxziwEyxZyUcSJJAQ+lYRgFQr4OFEHfII4NBBDHEgBDB9IMaM+TlwR8CmUuH+OMDUTfhuYQkWS02jC7z4nnbpc"
+        "QclULroTXrGNClgQSQgi5Vcc3DqNPV3qeas6scpLHyKafZ63ohKr6la26yGen49untaJVWHjskqsShIRWHgIDBLf+orzvi8pEl1k"
+        "gLRb3LsBSi/VFzONNdu0+HjMdD8yJ1OXq7uQRXjfcXCGpsVvjFEx04kN1SzDBa6cX/dpfcevIHrXsFqTbDjBRs6w8WtYrfEaVmu0"
+        "htWaZgNUdE6dF50rEp2sSSXC7Rfp7t56p48i3KEiyeqK7N8Yb6jdbuNS+d2RU26PleQEKzm+JCrDcMHeg1mY2JDpS0wIFXfItONz"
+        "aia0EM7UqfdUvQfHqj1VJX2RJkMtiNhmQdS3QnVGXLrX7RaNLY/q9BNiTZKLIvwEO+Mn+IHXBu/WaYN26/SO5aGWPmyz9JkK+WSJ"
+        "LvIT/NrP8PvmpXp3igwnaWmClpuh5RemZrNTZPBOkeE0LUPlKTLy64aezbwswwV+gm9aw731Ch1sNJBsDBHyYZO7eBowGw2Ijd7x"
+        "uO2NOSITm7kZNhquYaNYfQxCeoXOjB5GnYNQt/KYjc0n2Ch8DoJk6ByEKBHJZt0aaeT3snG9KcNwDRs8p4VXMJ1s6DltbaWxRzR+"
+        "WJhng+Y0ydCcFiWi2fg/C00cHsL1DJur5jTvfzB137xC7143UyQbTpxSIT/wpz8KjDKFA6NMIX+aqT020hBspDm8182suTIxXi9C"
+        "3lvSf7zKEXKHijRtKtLMrHKExKscgbfphKSpQD4Rq7WrepCKgsXYS31pqes8niC+6vUANJXHU7fyuI0wEQqVfJPHo3EejybzeIJI"
+        "3gOgTj9g4zNZGYYrvDO3GLTOCa/QZWViTZKNJY6k5FNWRqYuVzZZhMImFGk2jtAZAKwzB9lkGa7xADiezpqZvW0PgNPz2SW5vSF9"
+        "V2IPAGWMMjJ3x4sEVHovnJjeWyS6aA0qXJ0dX7/UR7RiTYrW2krjOIrxLFIhcXY8OJQdL+js+CCSN4iSOI5CyrO+Ds4SXRUxgEUg"
+        "Dw6gM0kk1iRpESfAhfD+uE0SJnW5zntZhKJbyhdpWkBlK/LD2Yq+J2WvdOAE2p3j8Qxd05eILclQwdpI4yBeM5OIjTbnwkG89ZeN"
+        "9KkHAHFzzlCbc+PGSG8PQDjzy0ZZ+QnpDWzfl42ScBOqRh434iY2ELRJXVZfNkrsJkizR6b9ZSMT+MvGPt9AWLjUtRaLUggL3FSf"
+        "+xZqklxKK4/bB2riJF6bulynsSzC+wGjStFc1I0BsX3AYOaEUaUucq3FwjEb1WtiQk2SjSJMjJ0yMTZ1WbHhmA3fZQOCYANnpRp4"
+        "iZi1Rz2ClqPGFgsbLn0b17HmDhdBcJn4EAtU6nJ11LIIxVELxT0uQhFchDrLUcsSnYCF6w0W1YuF6x0sisAyESXwWLjGWLhGWLim"
+        "sWji7D3mTjt7T3C3KKNO4OJ/kHga053qEmuSXDShLm5GXbhAtyOEY46q2xGSRDQXQ1wwEvaUzkrZLRIdwKKaR7Nw74ojLLYzOBBr"
+        "klhsOzgQDtIZP9DN6dTlejRLFqEcRhWKNBZL3U3GyVTQDstfhqHT8rchaP/DBkLn+Tih5g4EQUCY+ObNv7BFV5FlEYpu+AW32oMg"
+        "qVOm5MApU4e3ARQVIUPjH+KOrDdCRo7/2kojeslm9i+RiyUZcrH0rou13rvUiF6Kg+Ovs293aPxt+1AVjuagsNJWfYeqcHIKWhtp"
+        "LNfVzKEq6ItPI/EXn5z84hNEWBQCtSiEiezMPAydU1ALQTiCvvKaRLzZpuv0B0M6TVUjjetxJo5/AOw06Y3TJGmnScSjKznxifTR"
+        "Izn8UsLYKQVY13jePXdo+DuvM0w1yfEnrjNkM9cZhgnH1omVIovwfgCHdfT4q2x7WmuJ0z5RzxIdcI4scRGOwVphbtx1XoRjaLUo"
+        "rTzmHKXnoxfhGI0vwqlujUoS0Vi8XZDUV8+nrSXU5szoj7E4wl3iSFuCQ8M63SVOasvayuMGvRg31+FjdIfdpfrrvygRiYVTB23w"
+        "zUEbB31Wvfneb99gUBDg3hK1gwHsIJCKyJFQMwgAEwAEAOjxB+IagpA0cOwytfLeI2NeLiyWi7NozPUNXM+FxaEiOealkcdP9sCN"
+        "n73tUpfroJtULmdvB4noYbe560b+A7jx+wXzMEz82Yc2sKX2skrWdaK23LHUayuPSwXJxk/UdshSg5G1pQ5MSEstg7OqqL0lZQ5f"
+        "JAji8FqhqQNmMdVSTUYfR/boQKjYHv6qkYajNH6XsIPU5RpFYqn8fi+AUfTwKyKbMWTF6nEdyMMwpQNmUXDfyOq6dCDUJCGotlsU"
+        "XnhiIoLU5aoDWYTqcgagIejsKDdCrMKcdQlAlmjSLYLwEaVEWGzLPDSwxJokFkvYB/6Bfdi949Qv2mSV5wMqi5CxRIloLC4v4Rve"
+        "Kj9pQ2KV6HQsYeDYNJa1lUdXCcYtxhSWcHujo25vHDfbegtiYMqKH4QjCP4vpesO+vIpeRtCaaVxH+C43dACfUYf7hmqPqOH+GE/"
+        "DeE8lxXKEQLzVhsWptHw950eliqSo0+cHsZnTg8LFoHVty87lcpFBZwv0qNviPQCYDi9oOfv3qWOx0d/vTOOo68Qk5iq69I4Tn6F"
+        "WLWydVpZfj7216/RV4igef0VYpJob/xBEuMPZ91HViSatQzeHa9uHgvS25vgXVgkdfNY3crjWiI9H8Pi8M1jWuKbxyR581gWyVJn"
+        "ewzf67sOQ59lcKwJAVDmuuxf0MWaOxDGFnT7XpNBmeugoc5cTxLREPyCXlGZ6+rg9W9wJF2dGHm/HL+35Ov463fkuJdGGlnpauaP"
+        "3+G/fYf+9OlVNDDi0AcQpx36UOTpn48wkGKkRX0fCKj3A5g/MtKCug+kbuRxD4iNz0bWovtAQkyP1as6Qd4HEkQC4r7XkOTDxpfW"
+        "4sh9IG2dCEch8HtL1o4L24gzpOtWGomYbObCNnRTjmH1GdJJIhqCJL5yZob8yvm4Yni9dWJCNdZLQg1KkFWf1tsZP7wk1JAJslUr"
+        "jZDHuJVQgBJkQZo6QTZgIhNko0jtnaCwQScPWgm2yYrt8GCbU5N3+qTdDH9DLR6nplhxZ/QVMfr7WrF/63HI4K89JStT+d2BlZYe"
+        "/uK8tbKUTkoeg3CeHhy7d8VB6yJDtWikFeH+up7EjViRwrI28vhpuRxP3OAsdbluj9pULttAQSKSyro12IhsiPHEjTIMnRZDtBEY"
+        "d9+IyvsQGEci4O0lRHhdPoPAOIzA1NsR3qd0NAJBfd2vcTy8ZzsC0gW9h+Yl0bILji3IZQon5nb5sKEiOfqmnbkUfMlxH9Yrfe0x"
+        "WbbUl6uyhfaX1gNVW9txw99MlCEY+eOvriOWeAKynWuIWJMEYIlFBJ9ZRAQ7oPB1xFKh64jJpGITvwhkxOd3jJ21E+GOJhW3sYRD"
+        "cqtoa5S+M+StyWhr1UrjdMyJNTXfRFs1irZGiQgs8docRmX0nYalSDSLRdh6wZ3u/OkKN4WKbShVI41DMPkwFCHQghtsveAO4uwR"
+        "EdR5pWL4hJ4yBDOTlYCFmc3490WaYs0dAM1I0/qh4RAAMKnLlUAWoSAIRZrBwM1Nh7WiSDSrFZwv4o6F76MSKpJQOAFFzuRzML1U"
+        "X9sDSwJkJEGcPSKKIqKOpb2W955RBd9EvXBI8vUOOrVyqFppXMk0rgp+1OuVQxj2auWQJKIHHqjpSB091Xp995mRZ2YR2AhA5597"
+        "rEmOPBB/72pmEmKQuswjz10WIY98lGhv5JWionwnJQmsEk1OQtzaRWDboPoc2VSTxKLajiyzE44styJ1WbCYLELCkiSisWjKY3Kn"
+        "eUyrRLNYtNh4TDr/6XxERYsdj6k08vjJohpOcuXK1h4TV6LymKI4NBFLXY/NTzvhvcgzC0Ta7fRl+9KOU00SiSVCTnwi5MSlwNOX"
+        "sPX0lSSiqTgi9Sxk5A8f7bEOw4QNCW1YbL1dnw1JNUkIrm1DOEz4TAFC/bligFB9rsjD6o+23r5rpohkGnZsyzT1dEbQiQPbLCRC"
+        "CKxr/GNNavzXVh7Tafj4+HOFFhKcs3ohwcNxDLSxCLnp1AXKcMxtTT1NjX8KuXKB7/5Il950bEakijujL4nRn/nrx1d/BAWsThdK"
+        "EtGjX75TaiTT8OF8vnUYxqPeXMhFaYTAtRKaGghkivy2ETginwkm8pm4cKnLFYFJ5YwAuC+SCICKL8EmvtQx7qEnfs4EJNDRJy6G"
+        "wWTXBCTIo0+qVh4jGUyOT0AWHX3CuaiPPkkSEeMfRSJ2QwX5XVwPCrE57GTACoNXI72BILpcoVhzB4JQRDxvXAm84ZG1EvAsQoEQ"
+        "ijQEnrNpG8ELPgEhyzAJAcR9I2svBBAkBE58uy4ndoACBBAYAggEAcQeBKBuFoKjM1HueHbk1b0lYM/Iq52RByKENJ5WH0debUa+"
+        "ckLDldqKHnnv/zrqLhp30Amy3gac4gVJtSiJxr/phD6a4FiRHH7CB2VTPqhiqct1cWxTuSzEgkTk8IdVMHV0OTdnLY+zRAcSMtoB"
+        "C41uyXDxutm+iIUmb8moWmlcWjs+H4U86toyK13fkpEkCoP35fX355h28/r59c/UfpuUpA5eMkeD3OtwvE9Rf/tpf5ZSBA8wGx6q"
+        "lweYHR6K4KGmeIDBPMAgHmAO8aDO8+Pnnee3CrmCUh7LY3QpfvT4Dks//ffv/w8q4eXL"
+    ),
+}
+
+
+def _замр203(име):
+    return _z203.decompress(_b64_203.b64decode("".join(_ЗАМР_B64_203[име])))
+
+
+def _замр_кт203():
+    """Редовете на замразения closed_trades.jsonl (без белега «start»)."""
+    return [_j203.loads(_x) for _x in _замр203("closed_trades.jsonl").decode("utf-8").splitlines()
+            if _x.strip() and '"start"' not in _x]
+
+
+def _замр_сд203():
+    return _j203.loads(_замр203("sdelki.json").decode("utf-8"))
+
+
+# ── ЗАКОНЪТ (таблицата на собственика — НЕ функциите на бота) ──
+def _закон203(вид, hit, посока, стоп_пипса, ход=None):
+    """Пипсовете на ЦЯЛАТА сделка (0.20 лота, 1 пипс = 2 $) по закона на половините.
+    `стоп_пипса` — стопът от входа в пипсове (0 = на входа, −130 = истинският);
+    `ход` — ходът при изхода в цели пипсове (само обрат/време)."""
+    hit = hit or {}
+    if вид in ("tp2", "tp3") or hit.get("tp2"):
+        return 90 if посока == "long" else 75          # (50 + 130) / 2 · (50 + 100) / 2
+    if вид == "sl":
+        if hit.get("tp1"):
+            return 25                                   # (50 + 0) / 2
+        return 0 if стоп_пипса == 0 else -130           # +40 → входът · стоп (и гапът)
+    if вид in ("flip", "time"):
+        # първата: +50, ако цел 1 е взета, иначе ходът · втората: ходът; след цел 1 или +40
+        # стопът е на входа → половина не е под нулата (законът на v18.95)
+        _в = bool(hit.get("tp1")) or стоп_пипса == 0
+        _п1 = 50 if hit.get("tp1") else (max(ход, 0) if _в else ход)
+        _п2 = max(ход, 0) if _в else ход
+        _с = (_п1 + _п2) / 2.0
+        return int(_с) if _с == int(_с) else _с
+    raise ValueError("непознат вид: %r" % (вид,))
+
+
+def _стоп_пипса203(р):
+    _з = 1 if р["direction"] == "long" else -1
+    return int(round((float(р["levels"]["sl"]) - float(р["entry"])) * _з / 0.10))
+
+
+def _закон_р203(р, кл="kind"):
+    """Законът за един запис (closed_trades · «kind» и «exit»; sdelki.json · «exit_kind» и
+    «exit_px»); ходът — в цели пипсове от входа (само за обрат/време)."""
+    _х = р.get("exit_px", р.get("exit"))
+    _з = 1 if р["direction"] == "long" else -1
+    _ход = int(round((float(_х) - float(р["entry"])) * _з / 0.10)) if _х is not None else None
+    return _закон203(р[кл], р.get("hit"), р["direction"], _стоп_пипса203(р), _ход)
+
+
+def _видове_закон203(редове, кл="kind"):
+    """Видовете по закона (ключовете на картите): цел 2 е главна, после цел 1 + вход."""
+    в = {"цел2": 0, "цел1вход": 0, "нула": 0, "стоп": 0, "друг": 0}
+    for р in редове:
+        _к, _h = р[кл], р.get("hit") or {}
+        _п = _закон_р203(р, кл)
+        if _к in ("tp2", "tp3") or _h.get("tp2"):
+            в["цел2"] += 1
+        elif _к == "sl" and _h.get("tp1"):
+            в["цел1вход"] += 1
+        elif _к == "sl" and _п < 0:
+            в["стоп"] += 1
+        elif _п == 0:
+            в["нула"] += 1
+        else:
+            в["друг"] += 1
+    return в
+
+
+def _ред_закон203(етикет, редове, кл="kind"):
+    """Двата реда на чистата карта по закона: «<етикет> — N затворени сделки: …» и
+    «общо <b>X пипса</b> · Y$ при лот 0.20» (1 пипс = 2 $)."""
+    _в = _видове_закон203(редове, кл)
+    _ч = ["%d × %s" % (_в[_к], _и) for _к, _и in (("цел2", "цел 2"), ("цел1вход", "цел 1 + вход"),
+                                                   ("нула", "нула"), ("стоп", "стоп"), ("друг", "друг изход"))
+          if _в[_к]]
+    _с = sum(_закон_р203(р, кл) for р in редове)
+    _пп = "0" if not _с else "{:+,d}".format(int(_с)).replace("-", "−")
+    _дл = "0$" if not _с else "%s%s$" % ("+" if _с > 0 else "−", "{:,d}".format(abs(int(_с)) * 2))
+    return [етикет[0].lower() + етикет[1:] + " — %d %s: " % (len(редове), "затворена сделка" if len(редове) == 1
+                                                             else "затворени сделки") + " · ".join(_ч),
+            "общо <b>%s пипса</b> · %s при лот 0.20" % (_пп, _дл)]
+
+
+def _в_прозорец203(редове, от, до, по_рън=False):
+    """Редовете на closed_trades с изход в [от, до) — или с рън в (от, до] (по_рън)."""
+    _о, _д = _pd203.Timestamp(от), _pd203.Timestamp(до)
+    _изх = []
+    for р in редове:
+        if по_рън:
+            _т = _pd203.Timestamp(str(р.get("run_utc") or р["utc"]))
+            if _о < _т <= _д:
+                _изх.append(р)
+        else:
+            _т = _pd203.Timestamp(str(р["utc"]))
+            if _о <= _т < _д:
+                _изх.append(р)
+    return _изх
+
+
+# ── СТЕНДОВЕТЕ на П203 · истинският main() върху замразеното състояние ──
+def _замр_стенд203(име):
+    """Замразеният файл за СТЕНДА: печатът «v18.96» в записите ("v", "prebroeno" — кой ги е
+    писал) става «v18_96». Отпечатъкът (`_стенд_отп198`) заменя VERSION с «vX» и иначе v18.96
+    и v18.97 биха дали различни отпечатъци САМО заради печата. Сделките, изходите, нивата и
+    флаговете са байт по байт истинските; печатът не се чете от никоя сметка."""
+    return _замр203(име).replace(b"v18.96", b"v18_96")
+
+
+def _подг_замр203(meta):
+    def _п(д):
+        for _и in ("closed_trades.jsonl", "sdelki.json"):
+            (_P194(д) / _и).write_bytes(_замр_стенд203(_и))
+        _пиши194(д, "meta.json", dict(meta))
+    return _п
+
+
+_СТЕНДОВЕ203 = {
+    # вторник 29.09 21:01 · предишната вечерна е от понеделник 21:01 (digest_utc)
+    "вечерната · вт 29.09 21:01 (от вчера 21:01)": (
+        _подг_замр203({"digest": "2026-09-28", "digest_utc": "2026-09-28T18:01"}),
+        [("2026-09-29T18:01", {"spot": dict(_SP199Л)}, None)], {}),
+    # понеделник 28.09 07:05 · «Миналата седмица» = 21–27.09
+    "седмичната · пон 28.09 07:05 (21–27.09)": (
+        _подг_замр203({"седмица": "2026-39", "digest": "2026-09-27"}),
+        [("2026-09-28T04:05", {"spot": dict(_SP199Л)}, None)], {}),
+}
+
+
+def _всички203():
+    """Стендовете на блока: 17-те на П202 (7 на П199 · 4 на П201 · 6 на П202) и двата на П203."""
+    _в = dict(_всички202())
+    _в.update({("203 · " + _к): _в_ for _к, _в_ in _СТЕНДОВЕ203.items()})
+    return _в
+
+
+def _пусни203(име, стенд, лост, подг_още=None):
+    """Стенд при ЖИВИТЕ лостове (СЯНКА_РАЗМЕР 1 · ПОЛОВИНИ 1 · ЗАПИС_Д 1 · ЗАПИС_ЦЕНА 1 ·
+    КАНАЛ_РЕЖИМ 0) и ИСТОРИЯ_ПОЛОВИНИ=`лост`. Живото се връща накрая (и на v18.96,
+    където лостът го няма — setattr е без значение)."""
+    try:
+        if име.startswith("203 · "):
+            _подг, _рн, _лс = стенд
+
+            def _п(д):
+                _подг(д)
+                if подг_още:
+                    подг_още(д)
+            return _сц199(_п, _рн, dict({"КАНАЛ_РЕЖИМ": 0, "ЗАПИС_Д": 1, "ЗАПИС_ЦЕНА": 1, "ПОЛОВИНИ": 1,
+                                         "СЯНКА_РАЗМЕР": 1}, **dict(_лс, ИСТОРИЯ_ПОЛОВИНИ=лост)))
+        return _пусни202(име, стенд, 1, подг_още=подг_още, ИСТОРИЯ_ПОЛОВИНИ=лост)
+    finally:
+        lb.КАНАЛ_РЕЖИМ, lb.ЗАПИС_Д, lb.ЗАПИС_ЦЕНА, lb.ПОЛОВИНИ, lb.СЯНКА_РАЗМЕР = 0, 1, 1, 1, 1
+        lb.ИСТОРИЯ_ПОЛОВИНИ = 1
+        _ПОЩА199.clear()
+
+
+def _отпечатъци203(лост=0):
+    """Отпечатъците (кодовете на рънoвете и `_стенд_отп198`: картите, всички файлове,
+    meta, дневникът) на деветнайсетте стенда при ИСТОРИЯ_ПОЛОВИНИ=`лост`. Същата
+    функция смята и заковнатите от v18.96."""
+    _о = {}
+    for _им, _ст in _всички203().items():
+        _рез, _д = _пусни203(_им, _ст, лост)
+        _о[_им] = [[_x[0] for _x in _рез], _стенд_отп198(_рез, _д)]
+        _sh203.rmtree(_д, ignore_errors=True)
+    return _о
+
+
+# ── ЛОСТ 1 → ЛОСТ 0: махат се САМО замислените разлики (моят цикъл, не функциите на бота) ──
+_ЦЯЛАТА203 = _re203.compile(r" · цялата сделка [+−][\d,]+(?:\.\d)? пипса \(")
+
+
+def _сд_назад203(т):
+    """sdelki.json (текстът) → стойностите отпреди v18.97: запис с "predi_istoria" получава
+    полетата си отпреди (ключ, който го нямаше — пак го няма), белегът пада."""
+    _з = _j203.loads(т)
+    for _р in _з:
+        _п = _р.pop("predi_istoria", None) if isinstance(_р, dict) else None
+        if isinstance(_п, dict):
+            for _к in ("mode", "exit_kind", "parts", "sum_pips", "prebroeno"):
+                if _к in _п:
+                    _р[_к] = _п[_к]
+                else:
+                    _р.pop(_к, None)
+    return _j203.dumps(_з, ensure_ascii=False)
+
+
+def _назад203(рез, д):
+    """Отпечатъкът на стенд при ЛОСТ 1 БЕЗ «· цялата сделка X пипса» на реда с целите (в
+    пратеното и във всички файлове) и с sdelki.json отпреди преброяването."""
+    for _п in sorted(_P194(д).iterdir()):
+        if _п.is_dir():
+            continue
+        _т = _п.read_text(encoding="utf-8")
+        _н = _ЦЯЛАТА203.sub(" (", _т)
+        if _п.name == "sdelki.json":
+            _н = _сд_назад203(_н)
+        if _н != _т:
+            _п.write_text(_н, encoding="utf-8")
+    _р = [(_x[0], [_ЦЯЛАТА203.sub(" (", _т) for _т in _x[1]], _x[2]) for _x in рез]
+    return [[_x[0] for _x in _р], _стенд_отп198(_р, д)]
+
+
+def _карта203(рез, начало):
+    """Пратената карта, която почва с `начало` (голо), или None."""
+    for _x in рез:
+        for _т in _x[1]:
+            if _голо202(_т).startswith(начало):
+                return _голо202(_т)
+    return None
+# ── П203 · ПОМОЩНИЦИ (край) ──
+
+
+_lb_общ203 = lb
+_ст203 = {_и: getattr(lb, _и, None) for _и in ("ИСТОРИЯ_ПОЛОВИНИ", "СЯНКА_РАЗМЕР", "ПОЛОВИНИ", "ЗАПИС_Д", "ЗАПИС_ЦЕНА",
+                                                "main", "_send_raw", "datetime", "_yf", "КАНАЛ_РЕЖИМ")}
+# ── ОТПЕЧАТЪЦИТЕ НА v18.96 (92cf6fe7) · ЛОСТ 0 · сметнати в сесията на качването с
+# `_отпечатъци203(0)` горе върху live_bot.py на v18.96 (отделен процес, помощниците на
+# П194/П198/П199/П201/П202/П203 от този файл) и върху v18.97 при ИСТОРИЯ_ПОЛОВИНИ=0 —
+# същите. Смени ли се нещо в пътя назад — пада тук.
+_ЗЛАТО203 = {
+    "199 · ВЛЕЗ покупка": [[0], "bdedcc0a05d67a684a3b6de870b80b14d7d5829859b7a490072d0c85047b8253"],
+    "199 · +40, после стопът на входа (0)": [[0], "7935f6842a73e14293e4b2fff0f33df9f1ec978f0945dcc3b27b152d75f73884"],
+    "199 · +40, цел 1 и цел 2 в един рън": [[0], "b2639e2266a09111b49e1404e09570b7859e4e14b9da3109d452d1803a066bd8"],
+    "199 · стоп (−130)": [[0], "176ea1419289d585803055ca776227d7d03747e1b0dcd814b5fee3d623b08e3a"],
+    "199 · пощата: провал, после пратено": [[0, 0], "4cc22234acf58fe5b8112e049361a0bd8576d7bb7f337ec79d01fc94f423d352"],
+    "199 · несигурно": [[0], "9b3b7e61378e9d4e77e21aefc86a6aaf04c2f33310f2b42106189ab25b07fdca"],
+    "199 · само сайта (КАНАЛ_РЕЖИМ=1)": [[0], "829c14fde6c912db4c749b0bd7d5206f41d4418059c983163e7edc1efd9d6deb"],
+    "201 · ½ +40, цел 1 и цел 2 в един рън": [[0], "b40a56919fd2a404063d3f70dbae9f91584caf4b08df0e3ab53f52809b512b70"],
+    "201 · ½ цел 1, после входът": [[0], "3acfac060be035ca4d49e2341b9f3b9a2683e5765b08886ecb9bc6abdb33a700"],
+    "201 · ½ +40, после входът": [[0], "642cd438476726148a6c2e9168ecfc3e3b87881601ac0261ca4012874e1f427e"],
+    "201 · ½ стоп": [[0], "0218ba7d407f426ea22692da6c07301df03e735b1314af24bdcbd6faefb5fe36"],
+    "202 · вход покупка · спред 0.50 (К влиза)": [[0], "bdedcc0a05d67a684a3b6de870b80b14d7d5829859b7a490072d0c85047b8253"],
+    "202 · вход продажба · PAXG 0.70 (К не)": [[0], "41ad050c1246bda2a81aeb670c351625adab1a35c39dc66b3a27b31543981def"],
+    "202 · А · +40 → цел 1 → цел 2 → сянка → входът → нов вход": [[0, 0, 0], "d0456fb00f313fe41d1453fe37061f0a9ea95379c2cbb53d444e78557cbf73c8"],
+    "202 · Б · стоп на Г4 и К → забрана → нов вход": [[0, 0, 0], "9dd824bfe69a6199e9e67e6119890315682dded48589ab7c76416c36c828ae1c"],
+    "202 · книги отпреди · по време · сянка · заета · забрана": [[0], "9de8e763e401bb32af399c12d76a23587bb5add86239005c3745bb2150b3ec83"],
+    "202 · широк ATR (S между 6.5 и 52)": [[0], "86349526022a067c8204ec7c2eb6e0217bca1c96fcc6344aade49e459a1046a9"],
+    "203 · вечерната · вт 29.09 21:01 (от вчера 21:01)": [[0], "d7ca191d6cbd91d182aab3bc80b61ce59c1bdab7018969c24439cec3ed99a2a9"],
+    "203 · седмичната · пон 28.09 07:05 (21–27.09)": [[0], "5d980c672307cbf92ecf851ceb3a9787da501ee938c9f07715898a8acadcfaab"],
+}
+# ── ПРАТЕНИТЕ карти ВЛЕЗ от 29.09 (live/sent_log.jsonl, 14:06:01 и 14:55:58 UTC) — дословно ──
+_ПРАТЕНИ203 = {
+    "14:05": "🔴 ВЛЕЗ · ПРОДАЙ ЗЛАТО СЕГА · 17:05\nвход <code>4,166.62</code> · влизай само до <code>4,164.62</code>\n"
+             "стоп <code>4,179.62</code> · −130 пипса (−260$ при 0.20 лота)\n"
+             "цели <code>4,161.62</code> +50 · <code>4,156.62</code> +100 (+150$)\n"
+             "при +40 пипса стопът отива на входа · на цел 1 прибери половината · цел 2 затваря останалото\n"
+             "1 сделка · 2 половини × лот 0.10\n⚠️ новина JOLTS Job Openings — цената може да скочи рязко\n"
+             "⚠️ бърз пазар — влез с лимитна поръчка",
+    "14:55": "🔴 ВЛЕЗ · ПРОДАЙ ЗЛАТО СЕГА · 17:55\nвход <code>4,166.27</code> · влизай само до <code>4,164.27</code>\n"
+             "стоп <code>4,179.27</code> · −130 пипса (−260$ при 0.20 лота)\n"
+             "цели <code>4,161.27</code> +50 · <code>4,156.27</code> +100 (+150$)\n"
+             "при +40 пипса стопът отива на входа · на цел 1 прибери половината · цел 2 затваря останалото\n"
+             "1 сделка · 2 половини × лот 0.10\n⚠️ новина FOMC Member Bowman Speaks — цената може да скочи рязко",
+}
+try:
+    lb = _свеж198()
+    _пк_сп203 = _ilu203.spec_from_file_location("proba_karti203", "platforma/proba_karti.py")
+    _пк203 = _ilu203.module_from_spec(_пк_сп203)
+    _пк_сп203.loader.exec_module(_пк203)
+    _КАРТИ203 = []                   # всички карти от ЛОСТ 1 за думите (Ж)
+
+    # ══ А · лостът ══════════════════════════════════════════════════════
+    ck("П203 А · ИСТОРИЯ_ПОЛОВИНИ е 1 по подразбиране (живото) — и в извора, и в свежия модул; белегът "
+       "на преброения запис е \"predi_istoria\" с петте полета",
+       'ИСТОРИЯ_ПОЛОВИНИ = int(_env("ИСТОРИЯ_ПОЛОВИНИ", "1"))' in _ИЗХ203 and lb.ИСТОРИЯ_ПОЛОВИНИ == 1
+       and lb._история_пол() and lb.ИСТОРИЯ_ПАЗИ == "predi_istoria"
+       and lb._ИСТОРИЯ_ПОЛЕТА == ("mode", "exit_kind", "parts", "sum_pips", "prebroeno"))
+    _ред_л203 = "          ИСТОРИЯ_ПОЛОВИНИ: ${{ vars.HISTORY_HALVES || '' }}"
+    ck("П203 А · вързан в yml през env на рънa на бота (vars.HISTORY_HALVES, след СЯНКА_РАЗМЕР), казва "
+       "«НАЗАД: HISTORY_HALVES=0», без `if: vars.`",
+       _yml203.count(_ред_л203) == 1 and "НАЗАД: HISTORY_HALVES=0" in _yml203
+       and _yml203.count("vars.HISTORY_HALVES") == 1
+       and _yml203.index("          СЯНКА_РАЗМЕР: ${{ vars.SIZE_SHADOW || '' }}") < _yml203.index(_ред_л203)
+       < _yml203.index("python live_bot.py --send --stats backtest_stats.json --out live")
+       and "if: ${{ vars.HISTORY_HALVES" not in _yml203 and "if: vars.HISTORY_HALVES" not in _yml203)
+    _а203 = []
+    for _т203 in ((1, 1, 1), (0, 1, 1), (1, 0, 1), (1, 1, 0)):
+        _с203 = (lb.ИСТОРИЯ_ПОЛОВИНИ, lb.ПОЛОВИНИ, lb.ЕДНА_ПОЗИЦИЯ)
+        lb.ИСТОРИЯ_ПОЛОВИНИ, lb.ПОЛОВИНИ, lb.ЕДНА_ПОЗИЦИЯ = _т203
+        try:
+            _а203.append(lb._история_пол())
+        finally:
+            lb.ИСТОРИЯ_ПОЛОВИНИ, lb.ПОЛОВИНИ, lb.ЕДНА_ПОЗИЦИЯ = _с203
+    ck("П203 А · историята по половини важи САМО при включени половини: живото — да · лост 0 — не · "
+       "HALF_AT_TP1=0 — не · ONE_POSITION=0 — не", _а203 == [True, False, False, False])
+    _н_р203 = _ИЗХ203.index("def _размер_пари(")
+    _тяло_р203 = _ИЗХ203[_н_р203:_ИЗХ203.index("\ndef ", _н_р203 + 10)]
+
+    def _тяло203(нач, край):
+        return _ИЗХ203[_ИЗХ203.index(нач):_ИЗХ203.index(край)]
+    ck("П203 А · закачен на местата си: гапът по закона в картата, дневника и sdelki.json на живата сделка "
+       "(3 × `гап_ниво=_история_пол()`), в преброяването (торбата и sdelki.json) и в описанието на `_торба` "
+       "(3 × `гап_ниво=True`); видът по закона — определение + 3 места; сянката на размера (`_размер_пари`) — "
+       "без гапа по закона (тя мери по своите правила)",
+       _ИЗХ203.count("гап_ниво=_история_пол()") == 3 and _ИЗХ203.count("гап_ниво=True") == 3
+       and _ИЗХ203.count("_вид_по_закона(") == 4 and "гап_ниво" not in _тяло_р203
+       and "_ист97 = _история_пол()" in _тяло203("def _видове_затв(", "def _сделки_ред(")
+       and "_ист97 = _история_пол()" in _тяло203("def _торба_затворени(", "def _равносметка(")
+       and "if not _история_пол():" in _тяло203("def _сайт_по_закона(", "def _сайт_по_закона_96(")
+       and "_сайт_по_закона(r)" in _тяло203("def _сайт_сделки(", "def _сайт_отворени("))
+
+    # ══ Б · законът направо (очакваното — от таблицата на собственика) ══════
+    def _тб203(вид, hit, посока, стоп_пипса, ход_пипса, гап=True, пол=True):
+        """`_торба` за сделка от 4000 (нивата на закона; стопът — `стоп_пипса` от входа),
+        изход с ход `ход_пипса` → (пипса на сделката, [половините])."""
+        _з = 1.0 if посока == "long" else -1.0
+        _лв = dict(lb._levels(4000.0, посока))
+        _лв["sl"] = round(4000.0 + _з * стоп_пипса * 0.10, 2)
+        _сб, _ч = lb._торба(вид, dict(hit), _лв, 4000.0, round(ход_пипса * 0.10, 4), половини=пол, гап_ниво=гап)
+        return (lb._пипса_пол(_сб), [lb._пипса_пол(_x) for _x in _ч]) if пол else (int(round(_сб / 0.10)), _ч)
+    _Т1, _Т12 = {"tp1": True}, {"tp1": True, "tp2": True}
+    _СЛ203 = [  # (име, вид, hit, посока, стоп от входа, ход при изхода)
+        ("цел 2 покупка", "tp2", _Т12, "long", 0, 130),
+        ("цел 2 продажба", "tp2", _Т12, "short", 0, 100),
+        ("15.09 · цел 2, после стопът на входа · покупка", "sl", _Т12, "long", 0, 0),
+        ("цел 2, после стопът на входа · продажба", "sl", _Т12, "short", 0, 0),
+        ("стар «tp3»", "tp3", {}, "long", 0, 200),
+        ("цел 1, после входът", "sl", _Т1, "long", 0, 0),
+        ("цел 1, после гап 40 под входа", "sl", _Т1, "short", 0, -40),
+        ("+40, после входът", "sl", {}, "short", 0, 0),
+        ("+40, после гап 35 под входа", "sl", {}, "long", 0, -35),
+        ("стоп", "sl", {}, "long", -130, -130),
+        ("стоп в допуска (2.6 $)", "sl", {}, "short", -130, -156),
+        ("18.09 · гап 3.26 $ през стопа", "sl", {}, "long", -130, -162.6),
+        ("гап 10 $ през стопа", "sl", {}, "short", -130, -230),
+        ("цел 1, после обрат +33", "flip", _Т1, "long", 0, 33),
+        ("обрат −23 без цел 1", "flip", {}, "long", -130, -23),
+        ("цел 1, после по време +71", "time", _Т1, "short", 0, 71),
+        ("цел 1, после обрат −20 (стопът е на входа)", "flip", _Т1, "short", 0, -20),
+        ("+40, после по време +12", "time", {}, "long", 0, 12),
+        ("+40, после обрат −12", "flip", {}, "short", 0, -12),
+    ]
+    _Б1 = [(_и, _тб203(_в, _h, _п, _с, _х)[0], _закон203(_в, _h, _п, _с, int(round(_х))))
+           for _и, _в, _h, _п, _с, _х in _СЛ203]
+    ck("П203 Б · `_торба` на половини с гапа по закона = таблицата на собственика в %d случая (+90/+75 · "
+       "+25 · 0 · −130 и при гап · обрат/време = средното)%s"
+       % (len(_Б1), (" · " + str([_x for _x in _Б1 if _x[1] != _x[2]][:3])) if any(_x[1] != _x[2] for _x in _Б1) else ""),
+       all(_x[1] == _x[2] for _x in _Б1)
+       and [_x[1] for _x in _Б1] == [90, 75, 90, 75, 90, 25, 25, 0, 0, -130, -130, -130, -130, 41.5, -23, 60.5,
+                                     25, 12, 0])
+    _Б0 = [_тб203(_в, _h, _п, _с, _х, гап=False)[0] for _и, _в, _h, _п, _с, _х in _СЛ203]
+    ck("П203 Б · `гап_ниво=False` (лост 0) → v18.96: гапът е ХОДЪТ (18.09 → −163, 10 $ → −230), всичко "
+       "друго — същото",
+       _Б0 == [_x[2] for _x in _Б1[:11]] + [-163, -230] + [_x[2] for _x in _Б1[13:]])
+    ck("П203 Б · без половини (`половини=False`) гапът на нивото НЕ важи — едната позиция е дословно v18.96 "
+       "(гап 3.26 $ → −163; стоп → −130)",
+       _тб203("sl", {}, "long", -130, -162.6, гап=True, пол=False)[0] == -163
+       and _тб203("sl", {}, "long", -130, -162.6, гап=False, пол=False)[0] == -163
+       and _тб203("sl", {}, "short", -130, -130, гап=True, пол=False)[0] == -130)
+    ck("П203 Б · видът по закона: цел 2 е главна (стоп/обрат с hit.tp2 → «tp2»), «tp3» остава, иначе видът "
+       "както е записан",
+       [lb._вид_по_закона(*_x) for _x in (("sl", _Т12), ("sl", _Т1), ("tp3", {}), ("flip", {"tp2": True}),
+                                           ("time", {}), ("sl", None), (None, None), ("tp2", {}))]
+       == ["tp2", "sl", "tp3", "tp2", "time", "sl", None, "tp2"])
+    _поз_р203 = {"entry": 4079.5, "direction": "long", "hit": {}, "S": 6.5, "spread_in": 0.5,
+                 "levels": {"tp1": 4082.0, "tp2": 4086.0, "sl": 4073.0}}
+    _р_р203 = []
+    for _л203 in (1, 0):
+        lb.ИСТОРИЯ_ПОЛОВИНИ = _л203
+        _р_р203.append(lb._размер_пари(dict(_поз_р203), "sl", 4068.0, [1, 2], 0.5))
+    lb.ИСТОРИЯ_ПОЛОВИНИ = 1
+    ck("П203 Б · сянката на размера не е пипната: книга с гап 5 $ през стопа дава ХОДА и при двата лоста "
+       "(%s)" % (_р_р203[0],), _р_р203[0] == _р_р203[1] and _р_р203[0][0] == -115.0)
+
+    # ══ В · ЛОСТ 0 = v18.96 байт по байт ═══════════════════════════════
+    _о203 = _отпечатъци203(0)
+    for _к203 in _ЗЛАТО203:
+        ck("П203 В · ЛОСТ 0 · стенд «%s» = v18.96 байт по байт (кодът, картите, всички файлове, meta, "
+           "дневникът)" % _к203, _о203.get(_к203) == _ЗЛАТО203[_к203])
+    ck("П203 В · стендовете са всички (%d: 7 на П199 + 4 на П201 + 6 на П202 + 2 на П203)" % len(_о203),
+       set(_о203) == set(_ЗЛАТО203) and len(_ЗЛАТО203) == 19)
+
+    # ══ Г · ЛОСТ 1 на истинския main() ═════════════════════════════════
+    _Г203 = {}
+    for _им203, _ст203_ in _всички203().items():
+        _рз203, _дд203 = _пусни203(_им203, _ст203_, 1)
+        _сп203 = _P194(_дд203) / "sdelki.json"
+        _Г203[_им203] = {"рез": _рз203,
+                         "сд": _j203.loads(_сп203.read_text(encoding="utf-8")) if _сп203.is_file() else [],
+                         "без": _назад203(_рз203, _дд203)}
+        _КАРТИ203 += [_т for _x in _рз203 for _т in _x[1]]
+        _sh203.rmtree(_дд203, ignore_errors=True)
+    _17_203 = [_к for _к in _Г203 if not _к.startswith("203 · ")]
+    ck("П203 Г · без «· цялата сделка X пипса» на реда с целите и без преброяването на sdelki.json всеки от "
+       "седемнайсетте стенда е ЛОСТ 0 (= v18.96) байт по байт — картите, всички файлове, meta и дневникът; "
+       "това са ЕДИНСТВЕНИТЕ разлики %s" % [_к for _к in _17_203 if _Г203[_к]["без"] != _ЗЛАТО203[_к]][:2],
+       len(_17_203) == 17 and all(_Г203[_к]["без"] == _ЗЛАТО203[_к] for _к in _17_203))
+    # картите ВЛЕЗ при лост 1: на всяка сделка на половини — парите на ЦЯЛАТА сделка по закона
+    _ЦЕЛИ203 = _re203.compile(r"^цели ([\d,]+\.\d+) \+50 · ([\d,]+\.\d+) \+(\d+) · цялата сделка \+(\d+) пипса "
+                              r"\(\+([\d,]+)\$\)$")
+    _влез203 = [_голо202(_т) for _т in _КАРТИ203 if _голо202(_т).startswith(("🟢 ВЛЕЗ", "🔴 ВЛЕЗ"))]
+    _лв203 = []
+    for _т in _влез203:
+        _р = next((_x for _x in _т.split("\n") if _x.startswith("цели ")), "")
+        _м = _ЦЕЛИ203.match(_р)
+        _к = "КУПИ" in _т.split("\n")[0]
+        if not ("2 половини" in _т and _м and int(_м.group(3)) == (130 if _к else 100)
+                and int(_м.group(4)) == (50 + int(_м.group(3))) // 2
+                and int(_м.group(5).replace(",", "")) == 2 * int(_м.group(4))):
+            _лв203.append(_р)
+    ck("П203 Г · всяка карта ВЛЕЗ на стендовете (%d) е на половини и казва «… +130 · цялата сделка +90 пипса "
+       "(+180$)» / «… +100 · цялата сделка +75 пипса (+150$)» — (50 + цел 2) / 2 пипса, 2 $ на пипс%s"
+       % (len(_влез203), (" · " + str(_лв203[:2])) if _лв203 else ""), len(_влез203) >= 10 and not _лв203)
+    _сдл203 = []
+    for _к, _в in _Г203.items():
+        for _р in _в["сд"]:
+            if not (_р.get("mode") == "polovin" and len(_р.get("parts") or []) == 2
+                    and _р.get("sum_pips") == _закон_р203(_р, "exit_kind")):
+                _сдл203.append((_к[:24], _р.get("id"), _р.get("sum_pips")))
+    ck("П203 Г · sdelki.json на всички стендове: всеки запис носи \"mode\":\"polovin\", двете половини в "
+       "\"parts\" и числото по закона (%d записа)%s"
+       % (sum(len(_в["сд"]) for _в in _Г203.values()), (" · " + str(_сдл203[:3])) if _сдл203 else ""),
+       not _сдл203 and sum(len(_в["сд"]) for _в in _Г203.values()) >= 240)
+
+    # вечерната върху замразеното състояние (вторник 29.09 21:01, от вчера 21:01)
+    _кт203 = _замр_кт203()
+    _сд0_203 = _замр_сд203()
+    _ВЕ203 = "203 · вечерната · вт 29.09 21:01 (от вчера 21:01)"
+    _СЕ203 = "203 · седмичната · пон 28.09 07:05 (21–27.09)"
+    _вечер_р203 = _в_прозорец203(_кт203, "2026-09-28 18:01", "2026-09-29 18:01", по_рън=True)
+    _вечер_к203 = (_карта203(_Г203[_ВЕ203]["рез"], "📅 ДЕНЯТ ЗАВЪРШИ") or "").split("\n")
+    ck("П203 Г · вечерната на истинския main(): «%s» — видовете и сборът по ЗАКОНА (8 сделки · 2 × цел 2 · "
+       "2 × цел 1 + вход · 2 × нула · 2 × стоп · −45 пипса · −90$; v18.96 казваше −55)"
+       % " / ".join(_вечер_к203[1:3]),
+       _вечер_к203[0] == "📅 ДЕНЯТ ЗАВЪРШИ · вторник 29.09 · 21:01"
+       and _вечер_к203[1:3] == [_голо202(_x) for _x in _ред_закон203("От вчера 21:01", _вечер_р203)]
+       and len(_вечер_р203) == 8 and sum(_закон_р203(_р) for _р in _вечер_р203) == -45)
+    _седм_р203 = _в_прозорец203(_кт203, "2026-09-20 22:00", "2026-09-27 22:00")
+    _седм_к203 = [_x for _x in (_карта203(_Г203[_СЕ203]["рез"], "📅 СЕДМИЦАТА") or "").split("\n")]
+    _седм_и203 = next((_i for _i, _x in enumerate(_седм_к203) if _x.startswith("миналата седмица — ")), None)
+    ck("П203 Г · седмичната на истинския main(): «Миналата седмица» (21–27.09) — видовете и сборът по ЗАКОНА "
+       "(52 сделки · +100 пипса · +200$; v18.96 казваше +40)",
+       _седм_и203 is not None
+       and _седм_к203[_седм_и203:_седм_и203 + 2] == [_голо202(_x) for _x in _ред_закон203("Миналата седмица", _седм_р203)]
+       and len(_седм_р203) == 52 and sum(_закон_р203(_р) for _р in _седм_р203) == 100)
+    _сдв203 = {_р["id"]: _р for _р in _Г203[_ВЕ203]["сд"]}
+    _сд0с203 = {_р["id"]: _р for _р in _j203.loads(_замр_стенд203("sdelki.json").decode("utf-8"))}
+    _п203 = _сдв203.get("long|4282.95|2026-09-15T11:12") or {}
+    _г203 = _сдв203.get("long|4363.01|2026-09-18T01:22") or {}
+    _пол_ид203 = [_и for _и, _р in _сд0с203.items() if _р.get("mode") == "polovin"]
+    ck("П203 Г · sdelki.json след вечерната: 116 записа · %s пипса (законът −850; v18.96 −598) · всички "
+       "\"mode\":\"polovin\" · 114 със старите си стойности в \"predi_istoria\" · двата на половини — "
+       "непокътнати байт по байт" % sum(_р["sum_pips"] for _р in _сдв203.values()),
+       set(_сдв203) == set(_сд0с203) and len(_сдв203) == 116
+       and sum(_р["sum_pips"] for _р in _сдв203.values()) == -850
+       == sum(_закон_р203(_р, "exit_kind") for _р in _сд0_203)
+       and sum(_р["sum_pips"] for _р in _сд0_203) == -598
+       and sum(1 for _р in _сдв203.values() if "predi_istoria" in _р) == 114
+       and len(_пол_ид203) == 2 and all(_сдв203[_и] == _сд0с203[_и] for _и in _пол_ид203))
+    ck("П203 Г · покупка 4282.95 от 15.09 (стоп на входа СЛЕД цел 2) → «tp2» +90 [50, 130]; гапът 18.09 "
+       "(покупка 4363.01, 3.26 $ през стопа) → −130 [−130, −130]; старите стойности са в \"predi_istoria\"",
+       (_п203.get("exit_kind"), _п203.get("parts"), _п203.get("sum_pips")) == ("tp2", [50, 130], 90)
+       and _п203.get("predi_istoria") == {"exit_kind": "sl", "parts": [130], "sum_pips": 130, "prebroeno": "v18.84"}
+       and (_г203.get("exit_kind"), _г203.get("parts"), _г203.get("sum_pips")) == ("sl", [-130, -130], -130)
+       and (_г203.get("predi_istoria") or {}).get("sum_pips") == -163)
+    _бел203 = [_б for _x in _Г203[_ВЕ203]["рез"] for _б in (_x[2].get("notes") or []) if "sdelki.json" in str(_б)]
+    ck("П203 Г · дневникът казва преброяването веднъж: %s" % _бел203,
+       _бел203 == ["🧺 sdelki.json · 114 стари сделки преброени по закона (половини · цялата история · "
+                   "стопът на нивото)"])
+    # пътят назад през истинския main(): лост 1, после лост 0 в СЪЩАТА папка
+    _рз1_203, _дн203 = _пусни203(_ВЕ203, _всички203()[_ВЕ203], 1)
+    for _и203, _в203 in dict(_ЖИВО194, КАНАЛ_РЕЖИМ=0, ЗАПИС_Д=1, ЗАПИС_ЦЕНА=1, ПОЛОВИНИ=1, СЯНКА_РАЗМЕР=1,
+                              ИСТОРИЯ_ПОЛОВИНИ=0).items():
+        setattr(lb, _и203, _в203)
+    try:
+        _рз2_203 = _рън199(_дн203, "2026-09-29T18:06", spot=dict(_SP199Л))
+    finally:
+        lb.КАНАЛ_РЕЖИМ, lb.ИСТОРИЯ_ПОЛОВИНИ = 0, 1
+    _сдн203 = _j203.loads((_P194(_дн203) / "sdelki.json").read_text(encoding="utf-8"))
+    _сдн_ст203 = [_р for _р in _сдн203 if _р.get("id") in _сд0с203]
+    _бел0_203 = [_б for _б in (_рз2_203[2].get("notes") or []) if "sdelki.json" in str(_б)]
+    _sh203.rmtree(_дн203, ignore_errors=True)
+    ck("П203 Г · ПЪТЯТ НАЗАД на истинския main(): лост 1 (18:01), после лост 0 (18:06) в същата папка → "
+       "старите 116 записа са байт по байт замразеният файл (%s)" % _бел0_203,
+       _j203.dumps(_сдн_ст203, ensure_ascii=False) == _замр_стенд203("sdelki.json").decode("utf-8")
+       and _бел0_203 == ["🧺 sdelki.json · 114 стари сделки преброени по закона (1 позиция · стопът на нивото)"])
+
+    # ══ Д · функциите направо върху замразеното състояние и проби ══════
+    _дф203 = _P194(_tf194.mkdtemp(prefix="p203_"))
+    for _и203 in ("closed_trades.jsonl", "sdelki.json"):
+        (_дф203 / _и203).write_bytes(_замр203(_и203))
+    ck("П203 Д · замразеното състояние е истинското: sha256 = на live/closed_trades.jsonl и live/sdelki.json "
+       "при be13e2a8 (116 + 116 сделки, Н-01 едно към едно по посока · вход · отворена)",
+       all(_х203.sha256(_замр203(_и)).hexdigest() == _ЗАМР_SHA203[_и] for _и in _ЗАМР_SHA203)
+       and len(_кт203) == 116 and len(_сд0_203) == 116
+       and {"%s|%s|%s" % (_р["direction"], _р["entry"], _р["opened"]) for _р in _кт203} == {_р["id"] for _р in _сд0_203})
+
+    def _тз203(от, до, лост, по_рън=False):
+        lb.ИСТОРИЯ_ПОЛОВИНИ = лост
+        try:
+            return lb._торба_затворени(_дф203, _pd203.Timestamp(от), _pd203.Timestamp(до), по_рън=по_рън)[0]
+        finally:
+            lb.ИСТОРИЯ_ПОЛОВИНИ = 1
+    _в1_203 = _тз203("2026-09-01", "2026-10-01", 1)
+    _в0_203 = _тз203("2026-09-01", "2026-10-01", 0)
+    _сд_п203 = {_р["id"]: _р["sum_pips"] for _р in _сд0_203}
+    _лд203 = [("%s %s" % (_р["direction"], _р["entry"]), _р["пипса"], _закон_р203(_р)) for _р in _в1_203
+              if _р["пипса"] != _закон_р203(_р)]
+    ck("П203 Д · торбата (`_торба_затворени`) на всичките 116: ЛОСТ 1 — всяка по закона (сбор %s) · ЛОСТ 0 — "
+       "всяка = числото на v18.96 в sdelki.json (сбор %s)%s"
+       % (sum(_р["пипса"] for _р in _в1_203), sum(_р["пипса"] for _р in _в0_203), (" · " + str(_лд203[:3])) if _лд203 else ""),
+       len(_в1_203) == 116 and not _лд203 and sum(_р["пипса"] for _р in _в1_203) == -850
+       and len(_в0_203) == 116
+       and all(_р["пипса"] == _сд_п203["%s|%s|%s" % (_р["direction"], _р["entry"], _р["opened"])] for _р in _в0_203))
+
+    def _рв203(от, до, лост, етикет, по_рън=False):
+        lb.ИСТОРИЯ_ПОЛОВИНИ = лост
+        try:
+            return lb._равносметка(_дф203, _pd203.Timestamp(от), _pd203.Timestamp(до), [], None,
+                                   "2026-09-29T18:01", етикет, notes=[], по_рън=по_рън)
+        finally:
+            lb.ИСТОРИЯ_ПОЛОВИНИ = 1
+    _ве1_203 = _рв203("2026-09-28 18:01", "2026-09-29 18:01", 1, "От вчера 21:01", по_рън=True)
+    _ве0_203 = _рв203("2026-09-28 18:01", "2026-09-29 18:01", 0, "От вчера 21:01", по_рън=True)
+    ck("П203 Д · вечерта 28.09 21:01 → 29.09 21:01 (по рънa): ЛОСТ 1 — 8 сделки, %s пипса, видовете по закона "
+       "(«цел 1 + вход» и за сделките отпреди половините) · ЛОСТ 0 — дословно v18.96: −55, 4 × нула"
+       % _ве1_203["общо"],
+       (_ве1_203["n"], _ве1_203["общо"]) == (8, -45)
+       and _ве1_203["видове"] == _видове_закон203(_вечер_р203)
+       and lb._сделки_ред(_ве1_203) == _ред_закон203("От вчера 21:01", _вечер_р203)
+       and (_ве0_203["n"], _ве0_203["общо"]) == (8, -55)
+       and _ве0_203["видове"] == {"цел2": 2, "нула": 4, "стоп": 2, "друг": 0, "цел1вход": 0})
+    _се1_203 = _рв203("2026-09-20 22:00", "2026-09-27 22:00", 1, "Миналата седмица")
+    _се0_203 = _рв203("2026-09-20 22:00", "2026-09-27 22:00", 0, "Миналата седмица")
+    ck("П203 Д · седмицата 21–27.09: ЛОСТ 1 — 52 сделки, %s пипса по закона · ЛОСТ 0 — +40 (v18.96)"
+       % _се1_203["общо"],
+       (_се1_203["n"], _се1_203["общо"]) == (52, 100) and _се0_203["общо"] == 40
+       and lb._сделки_ред(_се1_203) == _ред_закон203("Миналата седмица", _седм_р203))
+    _ден_р203 = _в_прозорец203(_кт203, *lb._търг_ден("2026-09-29T09:05"))
+    _де1_203 = _рв203(*lb._търг_ден("2026-09-29T09:05"), 1, "Днес досега")
+    ck("П203 Д · пулсът «Днес досега» (вторник 29.09): %d сделки · %s пипса — по закона"
+       % (_де1_203["n"], _де1_203["общо"]),
+       _де1_203["n"] == len(_ден_р203) > 0 and _де1_203["общо"] == sum(_закон_р203(_р) for _р in _ден_р203)
+       and lb._сделки_ред(_де1_203) == _ред_закон203("Днес досега", _ден_р203))
+    _КАРТИ203 += ["\n".join(lb._сделки_ред(_x)) for _x in (_ве1_203, _се1_203, _де1_203)]
+    # sdelki.json · `_сайт_по_закона` направо
+    _сд1_203 = _cp203.deepcopy(_сд0_203)
+    _ch1_203 = sum(1 for _р in _сд1_203 if lb._сайт_по_закона(_р))
+    _ch1б_203 = sum(1 for _р in _сд1_203 if lb._сайт_по_закона(_р))
+    _лс203 = [(_р["id"], _р["sum_pips"], _закон_р203(_р0, "exit_kind")) for _р, _р0 in zip(_сд1_203, _сд0_203)
+              if _р["sum_pips"] != _закон_р203(_р0, "exit_kind")]
+    ck("П203 Д · sdelki.json (116): ЛОСТ 1 — 114 преброени, всеки запис по закона, сбор %s (v18.96: %s); "
+       "втори път — 0 (не се пипа, щом е по закона)%s"
+       % (sum(_р["sum_pips"] for _р in _сд1_203), sum(_р["sum_pips"] for _р in _сд0_203), (" · " + str(_лс203[:3])) if _лс203 else ""),
+       _ch1_203 == 114 and _ch1б_203 == 0 and not _лс203 and sum(_р["sum_pips"] for _р in _сд1_203) == -850
+       and all(_р.get("mode") == "polovin" and len(_р.get("parts") or []) == 2 for _р in _сд1_203)
+       and all(_р == _р0 for _р, _р0 in zip(_сд1_203, _сд0_203) if _р0.get("mode") == "polovin"))
+    lb.ИСТОРИЯ_ПОЛОВИНИ = 0
+    try:
+        _ch0_203 = sum(1 for _р in _сд1_203 if lb._сайт_по_закона(_р))
+        _ch0б_203 = sum(1 for _р in _сд1_203 if lb._сайт_по_закона(_р))
+    finally:
+        lb.ИСТОРИЯ_ПОЛОВИНИ = 1
+    ck("П203 Д · ПЪТЯТ НАЗАД: ЛОСТ 0 връща 114-те записа — файлът е байт по байт замразеният (%d върнати, "
+       "после 0)" % _ch0_203,
+       _ch0_203 == 114 and _ch0б_203 == 0
+       and _j203.dumps(_сд1_203, ensure_ascii=False) == _замр203("sdelki.json").decode("utf-8"))
+    # краищата: запис без нива · без изход · запис на половини с гап · новият запис
+    _бн203 = dict(_сд0_203[0], levels={})
+    _бн0_203 = _cp203.deepcopy(_бн203)
+    lb.ИСТОРИЯ_ПОЛОВИНИ = 0
+    lb._сайт_по_закона(_бн0_203)
+    lb.ИСТОРИЯ_ПОЛОВИНИ = 1
+    lb._сайт_по_закона(_бн203)
+    _би203 = {_к: _в for _к, _в in _сд0_203[0].items() if _к != "exit_px"}
+    _би0_203 = _cp203.deepcopy(_би203)
+    ck("П203 Д · запис без двете цели (без нива) → както v18.96, без \"mode\"; запис без изход → непокътнат",
+       _бн203 == _бн0_203 and "mode" not in _бн203 and lb._сайт_по_закона(_би203) is False and _би203 == _би0_203)
+    _пг203 = {"id": "long|4000.0|2026-09-29T09:00", "direction": "long", "entry": 4000.0,
+              "opened": "2026-09-29T09:00", "levels": {"tp1": 4005.0, "tp2": 4013.0, "sl": 3987.0},
+              "mode": "polovin", "closed": "2026-09-29T10:00", "hit": {}, "exit_kind": "sl", "exit_px": 3983.5,
+              "parts": [-165, -165], "sum_pips": -165, "v": "v18.96"}
+    _пг0_203 = _cp203.deepcopy(_пг203)
+    _пг_ch203 = lb._сайт_по_закона(_пг203)
+    _пг1_203 = _cp203.deepcopy(_пг203)
+    lb.ИСТОРИЯ_ПОЛОВИНИ = 0
+    _пг_в203 = lb._сайт_по_закона(_пг203)
+    lb.ИСТОРИЯ_ПОЛОВИНИ = 1
+    ck("П203 Д · запис на половини с гап 3.5 $ през стопа (v18.96: −165) → ЛОСТ 1: −130 [−130, −130], "
+       "\"predi_istoria\" пази и \"mode\" · ЛОСТ 0: пак −165 и пак на половини, байт по байт",
+       _пг_ch203 is True and (_пг1_203.get("parts"), _пг1_203.get("sum_pips")) == ([-130, -130], -130)
+       and _пг1_203.get("predi_istoria") == {"mode": "polovin", "exit_kind": "sl", "parts": [-165, -165],
+                                          "sum_pips": -165}
+       and _пг_в203 is True and _пг203 == _пг0_203
+       and list(_пг203) == list(_пг0_203))
+    # гапът на ЖИВА сделка на половини: картата, дневникът и sdelki.json
+    _тж203 = {"direction": "long", "entry": 4000.0, "opened": "2026-09-29T09:00",
+              "levels": dict(lb._levels(4000.0, "long")), "hit": {}, "sym": "XAUUSD", "mode": "polovin"}
+    _пл203 = ("sl", _тж203, 3983.5, "2026-09-29 10:00:00", "бар", True)
+    _жг203 = {}
+    for _л203 in (1, 0):
+        lb.ИСТОРИЯ_ПОЛОВИНИ = _л203
+        _дж203 = _P194(_tf194.mkdtemp(prefix="p203g_"))
+        try:
+            _к_ = lb._exit_msg("sl", dict(_тж203), 3983.5, "2026-09-29 10:00:00", "бар", True, spot={"mid": 3983.5})
+            lb._торба_запис(_дж203, [("exit:sl", _пл203, "sl", "long")], "2026-09-29T10:05")
+            _жг203[_л203] = (_голо202(_к_).split("\n"), (lb._д_на(_к_) or {}).get("pips"),
+                             _j203.loads((_дж203 / "closed_trades.jsonl").read_text(encoding="utf-8").splitlines()[1])["pips"],
+                             lb._сайт_сделка("exit:sl", _пл203)["sum_pips"])
+            if _л203 == 1:
+                _КАРТИ203.append(_к_)
+        finally:
+            _sh203.rmtree(_дж203, ignore_errors=True)
+    lb.ИСТОРИЯ_ПОЛОВИНИ = 1
+    ck("П203 Д · гап 3.5 $ през стопа на жива сделка на половини: ЛОСТ 1 — картата «−130 пипса (−260$)», "
+       "записът `d`, closed_trades и sdelki.json казват −130 · ЛОСТ 0 — −165 навсякъде (v18.96)",
+       _жг203[1] == (["🛑 СТОП · ЗЛАТО покупка · 13:00", "вход 4,000.00 → 3,987.00",
+                      "сделката донесе −130 пипса (−260$ при 0.20 лота) · затворена"], -130, -130, -130)
+       and _жг203[0] == (["🛑 СТОП · ЗЛАТО покупка · 13:00", "вход 4,000.00 → 3,987.00",
+                          "сделката донесе −165 пипса (−330$ при 0.20 лота) · затворена"], -165, -165, -165))
+    # нов запис на сделка БЕЗ "mode" (отворена преди половините), затворена сега
+    _ст_н203 = {"direction": "short", "entry": 4020.0, "opened": "2026-09-29T08:00",
+                "levels": dict(lb._levels(4020.0, "short"), sl=4020.0), "hit": {"tp1": True}, "sym": "XAUUSD"}
+    _дн2_203 = _P194(_tf194.mkdtemp(prefix="p203n_"))
+    try:
+        lb._сайт_сделки(_дн2_203, [("exit:sl", ("sl", _ст_н203, 4020.0, "2026-09-29 10:00:00", "спот", False), "sl",
+                                     "short")], [])
+        _нз203 = _j203.loads((_дн2_203 / "sdelki.json").read_text(encoding="utf-8"))
+    finally:
+        _sh203.rmtree(_дн2_203, ignore_errors=True)
+    ck("П203 Д · новият запис на сделка без \"mode\" (цел 1, после входът) се пише по закона още в същия рън: "
+       "+25 [50, 0], старото (една позиция: 0) — в \"predi_istoria\"",
+       len(_нз203) == 1 and (_нз203[0].get("mode"), _нз203[0].get("parts"), _нз203[0].get("sum_pips"))
+       == ("polovin", [50, 0], 25) and _нз203[0].get("predi_istoria") == {"exit_kind": "sl", "parts": [0], "sum_pips": 0})
+    # видовете направо
+    _зв203 = [{"kind": "tp2", "hit": _Т12, "direction": "long", "пипса": 90},
+              {"kind": "sl", "hit": _Т12, "direction": "long", "пипса": 90},
+              {"kind": "sl", "hit": _Т1, "direction": "short", "пипса": 25},
+              {"kind": "sl", "hit": {}, "direction": "short", "пипса": 0},
+              {"kind": "sl", "hit": {}, "direction": "long", "пипса": -130},
+              {"kind": "flip", "hit": _Т1, "direction": "long", "пипса": 41.5}]
+    lb.ИСТОРИЯ_ПОЛОВИНИ = 0
+    _зв0_203 = lb._видове_затв(_cp203.deepcopy(_зв203))
+    lb.ИСТОРИЯ_ПОЛОВИНИ = 1
+    ck("П203 Д · видовете: ЛОСТ 1 — цел 2 е главна (и стопът след цел 2), «цел 1 + вход» и без \"mode\" · "
+       "ЛОСТ 0 — v18.96 (без \"mode\" няма «цел 1 + вход»)",
+       lb._видове_затв(_cp203.deepcopy(_зв203)) == {"цел2": 2, "нула": 1, "стоп": 1, "друг": 1, "цел1вход": 1}
+       and _зв0_203 == {"цел2": 1, "нула": 1, "стоп": 1, "друг": 3, "цел1вход": 0})
+    # картата ВЛЕЗ ред по ред
+    def _влез_к203(посока, вход, съвет, новина, час, лост, ключ=None):
+        lb.ИСТОРИЯ_ПОЛОВИНИ = лост
+        try:
+            _к = lb._ясна_карта(посока, вход, dict(lb._levels(вход, посока)), съвет, новина, {"mid": вход}, час)
+            return lb._глас("signal", _к, ключ=ключ or час + ":00")
+        finally:
+            lb.ИСТОРИЯ_ПОЛОВИНИ = 1
+    _в1_203 = _влез_к203("short", 4166.62, "бърз ±$10/10мин", "JOLTS Job Openings", "2026-09-29T14:05", 1)
+    _в2_203 = _влез_к203("short", 4166.27, "", "FOMC Member Bowman Speaks", "2026-09-29T14:55", 1)
+    _в3_203 = _влез_к203("long", 4145.54, "", None, "2026-09-29T06:10", 1)
+    _КАРТИ203 += [_в1_203, _в2_203, _в3_203]
+    ck("П203 Д · ВЛЕЗ продажба 4166.62 (29.09 17:05) · ЛОСТ 1 · ред по ред: «цели … +100 · цялата сделка +75 "
+       "пипса (+150$)» — (50 + 100) / 2 = 75, × 2 $ = 150 $ — и новината на български",
+       _голо202(_в1_203).split("\n") == [
+           "🔴 ВЛЕЗ · ПРОДАЙ ЗЛАТО СЕГА · 17:05",
+           "вход 4,166.62 · влизай само до 4,164.62",
+           "стоп 4,179.62 · −130 пипса (−260$ при 0.20 лота)",
+           "цели 4,161.62 +50 · 4,156.62 +100 · цялата сделка +75 пипса (+150$)",
+           "при +40 пипса стопът отива на входа · на цел 1 прибери половината · цел 2 затваря останалото",
+           "1 сделка · 2 половини × лот 0.10",
+           "⚠️ новина свободни работни места в САЩ (JOLTS) — цената може да скочи рязко",
+           "⚠️ бърз пазар — влез с лимитна поръчка"])
+    ck("П203 Д · ВЛЕЗ продажба 4166.27 (29.09 17:55) · ЛОСТ 1: «новина реч на член на Фед (Bowman)»",
+       _голо202(_в2_203).split("\n")[3:] == [
+           "цели 4,161.27 +50 · 4,156.27 +100 · цялата сделка +75 пипса (+150$)",
+           "при +40 пипса стопът отива на входа · на цел 1 прибери половината · цел 2 затваря останалото",
+           "1 сделка · 2 половини × лот 0.10",
+           "⚠️ новина реч на член на Фед (Bowman) — цената може да скочи рязко"])
+    ck("П203 Д · ВЛЕЗ покупка · ЛОСТ 1: «цели … +130 · цялата сделка +90 пипса (+180$)» — (50 + 130) / 2",
+       _голо202(_в3_203).split("\n")[3] == "цели 4,150.54 +50 · 4,158.54 +130 · цялата сделка +90 пипса (+180$)")
+    _в1_0_203 = _влез_к203("short", 4166.62, "бърз ±$10/10мин", "JOLTS Job Openings", "2026-09-29T14:05", 0,
+                           ключ="2026-09-29T14:06:01")
+    _в2_0_203 = _влез_к203("short", 4166.27, "", "FOMC Member Bowman Speaks", "2026-09-29T14:55", 0,
+                           ключ="2026-09-29T14:55:58")
+    ck("П203 Д · ЛОСТ 0 · двете карти ВЛЕЗ са байт по байт ПРАТЕНИТЕ на 29.09 (14:06 и 14:55 UTC)",
+       _в1_0_203 == _ПРАТЕНИ203["14:05"] and _в2_0_203 == _ПРАТЕНИ203["14:55"])
+    _ред1_203 = next(_x for _x in _в1_203.split("\n") if _x.startswith("цели "))
+    _ред0_203 = next(_x for _x in _в1_0_203.split("\n") if _x.startswith("цели "))
+    ck("П203 Д · КОТВАТА: редът с целите почва дословно като стария («цели N +50 · M +100») — лост 1 само "
+       "добавя « · цялата сделка …» преди скобата",
+       _ред1_203.startswith(_ред0_203[:_ред0_203.index(" (")])
+       and _ред1_203 == _ред0_203[:_ред0_203.index(" (")] + " · цялата сделка +75 пипса" + _ред0_203[_ред0_203.index(" ("):])
+    _НОВИНИ203 = {"FOMC Member Barkin Speaks": "реч на член на Фед (Barkin)",
+                  "FOMC Member Bowman Speaks": "реч на член на Фед (Bowman)",
+                  "FOMC Member Williams Speaks": "реч на член на Фед (Williams)",
+                  "FOMC Statement": "решението на Фед за лихвите (FOMC)",
+                  "Industrial Production": "промишлено производство в САЩ",
+                  "Initial Jobless Claims": "молби за помощ при безработица",
+                  "JOLTS Job Openings": "свободни работни места в САЩ (JOLTS)",
+                  "Retail Sales": "продажби на дребно в САЩ"}
+    _нл203 = []
+    for _и203, _б203 in _НОВИНИ203.items():
+        _р = next((_x for _x in _голо202(_влез_к203("long", 4100.0, "", _и203, "2026-09-29T12:00", 1)).split("\n")
+                   if _x.startswith("⚠️ новина ")), "")
+        _р0 = next((_x for _x in _голо202(_влез_к203("long", 4100.0, "", _и203, "2026-09-29T12:00", 0)).split("\n")
+                    if _x.startswith("⚠️ новина ")), "")
+        if (_р != "⚠️ новина %s — цената може да скочи рязко" % _б203
+                or _re203.search(r"[A-Za-z]", _re203.sub(r"\([^)]*\)", "", _р))
+                or _р0 != "⚠️ новина %s — цената може да скочи рязко" % _и203):
+            _нл203.append((_и203, _р))
+    ck("П203 Д · осемте имена на новини, стигнали до картите ВЛЕЗ (sent_log до 29.09), са на български — "
+       "латиница само в скобите; ЛОСТ 0 — голото име (v18.96)%s" % ((" · " + str(_нл203[:2])) if _нл203 else ""),
+       not _нл203)
+    _sh203.rmtree(_дф203, ignore_errors=True)
+
+    # ══ Е · платформата: четците четат новия ред ════════════════════════
+    _нач203 = _пк203.начало_след("")
+    _пк_з203, _, _ = _пк203.рендирай_всички(lb, _нач203, уроци=[0], сценарии=_пк203.СЦЕНАРИИ_ПОЛОВИНИ,
+                                              шаг=_пк203.ШАГ_ПОЛОВИНИ)
+    _пк_в203 = [_з["text"] for _з in _пк_з203 if _з["tag"] == "signal"]
+    ck("П203 Е · пробата на платформата рендира ВЛЕЗ с НОВИЯ ред (%d карти на половини, всяка с «цялата "
+       "сделка»)" % len(_пк_в203),
+       len(_пк_в203) == len(_пк203.СЦЕНАРИИ_ПОЛОВИНИ) and all("· цялата сделка +" in _т for _т in _пк_в203))
+    try:
+        _пр203, _об203 = _пк203.провери_половини(lb, репо=".")
+    except Exception as _е203п:
+        _пр203 = [("пазачът на платформата тръгна (%s: %s)" % (type(_е203п).__name__, str(_е203п)[:200]), False)]
+    for _и203, _ок203 in _пр203:
+        ck("П203 Е · " + _и203.replace("П201 · ", ""), _ок203)
+
+    # ══ Ж · думите ═════════════════════════════════════════════════════
+    _лоши203 = [(_голо202(_т).split("\n")[0][:50], [_w for _w in lb.ВЪТРЕШНИ_ДУМИ if _re203.search(_w, str(_т), _re203.I)])
+                for _т in _КАРТИ203]
+    _лоши203 = [_x for _x in _лоши203 if _x[1]]
+    ck("П203 Ж · нито една вътрешна дума (П197) в %d карти при ЛОСТ 1 (ВЛЕЗ, вечерната, седмичната, пулсът, "
+       "изходите, стопът с гап) %s" % (len(_КАРТИ203), _лоши203[:2]), len(_КАРТИ203) >= 40 and not _лоши203)
+    _лат203 = []
+    for _т in _КАРТИ203:
+        for _р in _голо202(_т).split("\n"):
+            if _р.startswith(("цели ", "⚠️ новина ")) or " затворени сделки: " in _р or _р.startswith("общо "):
+                if _re203.search(r"[A-Za-z]", _re203.sub(r"\([^)]*\)", "", _р)):
+                    _лат203.append(_р)
+    ck("П203 Ж · редовете, които v18.97 пише (целите, новината, сделките по вид, общо), са без латиница извън "
+       "скобите %s" % _лат203[:2], not _лат203)
+    ck("П203 · стендовете не оставят лостовете си: пак е живото (ИСТОРИЯ_ПОЛОВИНИ 1 · СЯНКА_РАЗМЕР 1 · "
+       "ПОЛОВИНИ 1 · ЗАПИС_Д 1 · ЗАПИС_ЦЕНА 1 · КАНАЛ_РЕЖИМ 0)",
+       (lb.ИСТОРИЯ_ПОЛОВИНИ, lb.СЯНКА_РАЗМЕР, lb.ПОЛОВИНИ, lb.ЗАПИС_Д, lb.ЗАПИС_ЦЕНА, lb.КАНАЛ_РЕЖИМ)
+       == (1, 1, 1, 1, 1, 0))
+    ck("П203 версията е v18.97", lb.VERSION == "v18.97")
+except Exception as _е203:
+    import traceback as _tb203
+    _tb203.print_exc()
+    ck("П203 гръмна: %s: %s" % (type(_е203).__name__, _е203), False)
+finally:
+    lb = _lb_общ203                                  # общото `lb` обратно
+ck("П203 общото `lb` не е пипнато (лостовете и функциите са каквито бяха)",
+   all(getattr(lb, _и, None) is _в or getattr(lb, _и, None) == _в for _и, _в in _ст203.items()))
+# МУТАНТИТЕ, срещу които П203 е пуснат сам в сесията на качването (всеки чупи
+# едно нещо в копие на live_bot.py или yml; в скоби — колко проверки паднаха):
+#   М1 лостът не иска половините (1) · М2 гапът не е на нивото (8) · М3 цел 2 не е
+#   главна (3) · М4 «цел 1 + вход» само с "mode" (6) · М5 без резервата
+#   "predi_istoria" (7) · М6 пътят назад оставя "mode" (4) · М7 «цялата сделка» =
+#   пипсите на цел 2 (5) · М8 новината на английски (4) · М9 редът с целите и при
+#   лост 0 (17) · М10 торбата без гапа по закона (2) · М11 сянката на размера с гапа
+#   по закона (2) · М12 новият запис не се брои по закона (3) · М13 дневникът без
+#   гапа по закона (2) · М14 yml без лоста (1) · М15 лост 0 не връща записите (3) ·
+#   М16 записът на половини се пипа (6). 16 от 16 хванати.
+# ── П203 · КРАЙ ──
 
 
 if FAILS:
