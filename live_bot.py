@@ -34,7 +34,7 @@ import pandas as pd
 # v9.5–v9.8 — всеки ред в дневника твърдеше грешна версия, а дневникът е
 # единственият начин отвън да се види какво работи. П47 пада, ако VERSION не се
 # среща в темата на последния commit.
-VERSION = "v18.97"
+VERSION = "v18.98"
 
 
 def _env(ключ, подразб):
@@ -372,6 +372,35 @@ def _вид_по_закона(kind, hit):
     if kind not in ("tp2", "tp3") and (hit or {}).get("tp2"):
         return "tp2"
     return kind
+
+
+# ══════════════════════════════════════════════════════════════════════
+# 🔴 30.09 · v18.98 · «ДРЕБНИТЕ ПОПРАВКИ» · ДЕН_СЛЕД_ВХОД (vars.DIGEST_AFTER_ENTRY)
+# Видяно на живо 29.09, 18:01 UTC: вечерната карта «📅 ДЕНЯТ ЗАВЪРШИ» каза
+# «📌 отворена сделка няма», а СЪЩИЯТ рън прати «🔴 ВЛЕЗ · ПРОДАЙ 4158.67».
+# Причината е редът в main(): картите на деня (вечерната, сутрешната «ДЕНЯТ»,
+# седмичната, пулсът) се строят с `trade` отпреди рънa, а новият вход е още
+# `pending_trade` — той става сделка чак след доставената карта (7б). Клиентът
+# вижда двете карти една до друга и те си противоречат.
+# Сега картите на деня виждат и сделката, която ТОЗИ рън отваря (`_вход_в_рънa`
+# — същото условие като в 7б: слот 1 е свободен или има място до тавана): тя е
+# отворената сделка на вечерната («📌 отворена сделка: продажба от …»), брои се в
+# «има N отворени» на сутрешната и в отворените на торбата (седмичната, пулсът).
+# Картите вървят в СЪЩАТА поща след ВЛЕЗ; ако ВЛЕЗ не стигне, сделка не се отваря
+# (Б1) — тогава и тази карта е казала повече (рядко: двете тръгват в една секунда).
+# ПЪТ НАЗАД: DIGEST_AFTER_ENTRY=0 → картите на деня са дословно v18.97.
+ДЕН_СЛЕД_ВХОД = int(_env("ДЕН_СЛЕД_ВХОД", "1"))
+
+
+def _вход_в_рънa(pending, trade, доп):
+    """v18.98 · ДЕН_СЛЕД_ВХОД · сделката, която ТОЗИ рън отваря (картата ВЛЕЗ е в
+    същата поща) — или None. Условието е дословно това на 7б: слот 1 е свободен,
+    или допълнителните са под тавана. Лост 0 → None (дословно v18.97)."""
+    if not ДЕН_СЛЕД_ВХОД or pending is None:
+        return None
+    if trade is None or len(доп or []) + 1 < ТАВАН_СДЕЛКИ:
+        return pending
+    return None
 
 
 # 22.09 · ПАРИТЕ НА ЛОТА, НЕ НА УНЦИЯТА. Картата пишеше «СДЕЛКАТА ДОНЕСЕ +130
@@ -712,6 +741,19 @@ def _с_д_ред(ред, msg):
 # ПЪТ НАЗАД: EXEC_COST_LOG=0 → нито ред, нито файл (дословно v18.93).
 ЗАПИС_ЦЕНА = int(_env("ЗАПИС_ЦЕНА", "1"))
 ЦЕНА_ФАЙЛ = "cena_izpalnenie.jsonl"
+# 🔴 30.09 · v18.98 · ЗАПИС_ПРОФИЛИ (vars.EXEC_COST_PROFILES) · ЛОЦО/ЧУЖДИТЕ_БОТОВЕ
+# §3 «Стъпка 2»: `_spot` взима НАЙ-ТЕСНИЯ профил на Swissquote (elite, 0.504 $ в
+# 99.71% от рънoвете), а профилът на сметката не се знае. СЪЩИЯТ отговор на
+# Swissquote (без нито една заявка повече) носи всички профили на всички
+# платформи — elite · prime · premium · standard. Сега всеки ред на
+# cena_izpalnenie.jsonl носи и тях: "profiles": {"elite": [bid, ask], "premium":
+# [bid, ask], "prime": [bid, ask], "standard": [bid, ask]} — за всеки профил
+# най-тесният от пресните платформи (правилото на `_spot` за главната цена), по
+# азбучен ред. Главните bid/ask/spread на реда НЕ се пипат. PAXG резервата (или
+# без жива цена) → "profiles": null, никога измислено. Само мярка: картите,
+# сделките, каналът и сянката на размера не зависят от това.
+# ПЪТ НАЗАД: EXEC_COST_PROFILES=0 → редовете и `_spot` са дословно v18.97.
+ЗАПИС_ПРОФИЛИ = int(_env("ЗАПИС_ПРОФИЛИ", "1"))
 
 
 def _цена_сега():
@@ -746,6 +788,24 @@ def _цена_котировка(spot):
             "age_sec": _цена_число(_с.get("age_sec"))}
 
 
+def _цена_профили(spot):
+    """v18.98 · ЗАПИС_ПРОФИЛИ · профилите от СЪЩИЯ обект на живата цена ({име:
+    [bid, ask]}, по азбучен ред) или None (PAXG, без жива цена, без профили).
+    Профил без две числа или с bid ≥ ask не влиза — нищо не се измисля."""
+    _п = spot.get("profiles") if isinstance(spot, dict) else None
+    if not isinstance(_п, dict):
+        return None
+    _р = {}
+    for _и in sorted(_п, key=str):
+        try:
+            _b, _a = (_цена_число(_x) for _x in _п[_и])
+        except (TypeError, ValueError):
+            continue
+        if _b is not None and _a is not None and _b < _a:
+            _р[str(_и)] = [_b, _a]
+    return _р or None
+
+
 def _цена_вход(tr, slot, spot, миг):
     """Редът на ВЛЕЗ: сделката, която наистина се отваря (`pending_trade`).
     card_px = входът на картата (закръгленият до цент, както в сделката)."""
@@ -756,6 +816,8 @@ def _цена_вход(tr, slot, spot, миг):
     if _половин(tr):
         # v18.95 · ПОЛОВИНИ · входът е на ДВЕТЕ половини наведнъж (2 × лот 0.10)
         _р.update(mode=РЕЖИМ_ПОЛОВИНИ, halves_in=[1, 2])
+    if ЗАПИС_ПРОФИЛИ:
+        _р["profiles"] = _цена_профили(spot)     # v18.98 · последното поле на реда
     return _р
 
 
@@ -788,6 +850,8 @@ def _цена_изход(kind, tr, px, when, via, карта, spot, миг):
             _р["halves_out"] = [1]
         elif kind in _затваря():
             _р["halves_out"] = [2] if (tr.get("hit") or {}).get("tp1") else [1, 2]
+    if ЗАПИС_ПРОФИЛИ:
+        _р["profiles"] = _цена_профили(spot)     # v18.98 · последното поле на реда
     return _р
 
 
@@ -885,6 +949,23 @@ def _цена_запиши(out, редове, notes):
 РАЗМЕР_EPS = 1e-9                        # sud.py 95 · EPSG
 _РАЗМЕР_КЛЮЧОВЕ = ("v", "kniga", "ev", "id", "utc", "run", "dir", "entry", "stop", "tp1", "tp2",
                    "S", "lot", "half", "px", "pips", "usd_mid", "usd_ba", "spread", "via", "atr", "why")
+# 🔴 30.09 · v18.98 · СЯНКА_К (vars.SIZE_SHADOW_K) · книгата К НЕ ВЛИЗА ПОВЕЧЕ.
+# Вратата ѝ е спред ≤ 0.50 $, а живият източник (Swissquote elite) дава 0.504 $ в
+# 99.71% от записите — видяно на живо 29.09 19:50 (_ОЧАКВАЩИ): К пише само
+# «propusk · spred». И по същество: след поправката на DFII10 (ЛОЦО/
+# DFII10_ПОПРАВКА_29-09 §2 — огледалото) К не минава прага си. Затова на нов
+# вход К вече не се отваря и не пише ред; Г4 · Г3 · Г1 са байт по байт същите.
+# Старото състояние на К (ако го има — позиция, сянка, забрана) се чете и се
+# води до края си както досега; нищо не гърми и нищо не се трие.
+# ПЪТ НАЗАД: SIZE_SHADOW_K=1 → и К влиза на всеки вход (дословно v18.97).
+СЯНКА_К = int(_env("СЯНКА_К", "0"))
+
+
+def _размер_книги_вход():
+    """v18.98 · СЯНКА_К · книгите, които ВЛИЗАТ (или пишат «propusk») на нов вход:
+    без К при лост 0. Следенето на вече отворено (`_размер_ход`, `_размер_обрат`)
+    минава през всичките четири — старото състояние на К се води до края си."""
+    return РАЗМЕР_КНИГИ if СЯНКА_К else tuple(_к for _к in РАЗМЕР_КНИГИ if _к != "К")
 
 
 def _размер_atr14(gold_d, now_utc):
@@ -909,6 +990,65 @@ def _размер_atr14(gold_d, now_utc):
         return _а if np.isfinite(_а) and _а > 0 else None
     except Exception:
         return None
+
+
+# 🔴 30.09 · v18.98 · РАЗМЕР_ATR_СПОТ (vars.SIZE_ATR_SPOT) · ATR14 на Г4 ОТ СПОТА.
+# Видяно на живо 29.09: ATR14 от дневния GC=F = 99.2 $. Мерено с предварителен
+# запис (scratchpad/v98/prereg_atr.md, atr_mera.py): 35 търговски дни 11.08–29.09,
+# в които има и двете — медианата на |ATR14 GC=F − ATR14 спот| / ATR14 спот е
+# 17.6% > прага 10% → Г4 минава на спота. Спотът е собственият запис на бота —
+# полето "spot" (Swissquote, "spot_src":"swq") на всеки рън в live_journal.jsonl
+# (+ архивът на предишния месец), свещите по деня Ню Йорк + 7 ч; годността му
+# срещу пълни часови свещи (PAXG-USD, контрола) е 6.65% ≤ 10%. Ролът на фючърса
+# НЕ е причината (GC=F минус базиса на деня дава същия ATR, 0.2%) — дневният ход
+# на фючърса просто е по-широк от спота. Нито една заявка повече: дневникът се
+# чете САМО на истински вход (там, където книгите се отварят). Под 15 завършени
+# дни в дневника → ATR от GC=F, както досега (и бележка). Засяга само Г4 (и К, ако
+# е включена); Г3 и Г1 не ползват ATR.
+# ПЪТ НАЗАД: SIZE_ATR_SPOT=0 → ATR14 от дневния GC=F (дословно v18.97).
+РАЗМЕР_ATR_СПОТ = int(_env("РАЗМЕР_ATR_СПОТ", "1"))
+
+
+def _размер_спот_дни(out, now_utc, notes=None):
+    """v18.98 · РАЗМЕР_ATR_СПОТ · дневните свещи СПОТ от дневника на бота: полето
+    "spot" на рънoвете със "spot_src":"swq" в archive/live_journal-<предишния
+    месец>.jsonl и live_journal.jsonl; по един запис на "run_utc" (първият), денят =
+    Ню Йорк + 7 ч; Open/High/Low/Close = първата/най-високата/най-ниската/последната
+    проба на деня. Няма файл или проба → празна таблица (тогава ATR е от GC=F).
+    Никога не гърми: провал → празна таблица и бележка."""
+    _празна = pd.DataFrame(columns=["Open", "High", "Low", "Close"], dtype=float)
+    try:
+        _т = pd.Timestamp(str(now_utc)[:19])
+        _пм = (_т.normalize().replace(day=1) - pd.Timedelta(days=1)).strftime("%Y-%m")
+        _р = []
+        for _п in (Path(out) / "archive" / ("live_journal-%s.jsonl" % _пм), Path(out) / "live_journal.jsonl"):
+            if not _п.is_file():
+                continue
+            with _п.open(encoding="utf-8") as _fh:
+                for _ln in _fh:
+                    if '"swq"' not in _ln:
+                        continue
+                    try:
+                        _з = json.loads(_ln)
+                    except Exception:
+                        continue
+                    if _з.get("spot_src") != "swq" or _з.get("spot") is None or not _з.get("run_utc"):
+                        continue
+                    _р.append((pd.Timestamp(str(_з["run_utc"])), float(_з["spot"])))
+        if not _р:
+            return _празна
+        _д = pd.DataFrame(_р, columns=["t", "p"]).drop_duplicates("t").sort_values("t").set_index("t")["p"]
+        _ny = pd.DatetimeIndex(_д.index).tz_localize("UTC").tz_convert("America/New_York")
+        _ден = (_ny + pd.Timedelta(hours=7)).normalize().tz_localize(None)
+        _св = _д.groupby(_ден.values).agg(["first", "max", "min", "last"])
+        _св.columns = ["Open", "High", "Low", "Close"]
+        _св.index = pd.DatetimeIndex(_св.index)
+        return _св
+    except Exception as _е:
+        if notes is not None:
+            notes.append("🟡 сянката на размера: спот свещите от дневника не се сглобиха (%s) — ATR "
+                         "от GC=F; картите и сделките не са пипнати" % type(_е).__name__)
+        return _празна
 
 
 def _размер_S(книга, atr):
@@ -1130,20 +1270,29 @@ def _размер_обрат(книги, редове, new_dir, now_price, now_u
                          "сделките не са пипнати" % (_к, type(_е).__name__))
 
 
-def _размер_отвори(книги, редове, tr, spot, gold_d, run, notes):
+def _размер_отвори(книги, редове, tr, spot, gold_d, run, notes, спот_дни=None):
     """Истинският вход на главната (`tr`, слот 1) → всяка книга влиза със своите
     нива или пише «propusk»: заета · в сянката след цел 2 · в забрана след стоп ·
     К при спред над 0.50 $ (или без жива цена). Пропуснатият вход на К не заема
-    място (sud.py 401–404: заета/сянка/забрана първо, после вратата)."""
+    място (sud.py 401–404: заета/сянка/забрана първо, после вратата).
+    v18.98 · `спот_дни` (РАЗМЕР_ATR_СПОТ) → ATR14 от спот свещите на дневника;
+    под 15 завършени дни → от GC=F (`gold_d`) и бележка. None → дословно v18.97."""
     try:
         _сп = _цена_котировка(spot)["spread"]
         _atr = _размер_atr14(gold_d, tr.get("opened"))
+        if спот_дни is not None:
+            _ас98 = _размер_atr14(спот_дни, tr.get("opened"))
+            if _ас98 is not None:
+                _atr = _ас98
+            else:
+                notes.append("🟡 сянката на размера: ATR14 от спота няма (под 15 завършени дни в "
+                             "дневника) — Г4 по GC=F; картите и сделките не са пипнати")
         _сега = pd.Timestamp(str(tr.get("opened")))
     except Exception as _е:
         notes.append("🟡 сянката на размера: входът не се отвори в книгите (%s) — картите и "
                      "сделките не са пипнати" % type(_е).__name__)
         return
-    for _к in РАЗМЕР_КНИГИ:
+    for _к in _размер_книги_вход():          # v18.98 · СЯНКА_К · без К при лост 0
         try:
             _кн = книги.setdefault(_к, {})
             _S, _а = _размер_S(_к, _atr)
@@ -4660,6 +4809,7 @@ def _spot(instr="XAU/USD", market_closed=False, cme_pause=False, реф=None, с
         with urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"}), timeout=8) as r:
             data = json.loads(r.read().decode())
         best = None; best_age = None
+        _проф98 = {}                                     # v18.98 · ЗАПИС_ПРОФИЛИ
         now_ms = _t.time() * 1000
         for plat in data:
             age = (now_ms - plat.get("ts", 0)) / 1000.0
@@ -4674,12 +4824,27 @@ def _spot(instr="XAU/USD", market_closed=False, cme_pause=False, реф=None, с
             for p in plat.get("spreadProfilePrices", []):
                 if p["bid"] < p["ask"] and (best is None or (p["ask"] - p["bid"]) < (best[1] - best[0])):
                     best = (p["bid"], p["ask"]); best_age = age
+                if ЗАПИС_ПРОФИЛИ:
+                    # 🔴 30.09 · v18.98 · ЗАПИС_ПРОФИЛИ · всеки профил: най-тесният от
+                    # пресните платформи (правилото на главната цена горе). Само мярка —
+                    # нищо тук не може да счупи главната цена (грешка → профилът пада).
+                    try:
+                        _пи, _пб, _па = str(p["spreadProfile"]), float(p["bid"]), float(p["ask"])
+                        if _пб < _па and (_пи not in _проф98
+                                          or (_па - _пб) < (_проф98[_пи][1] - _проф98[_пи][0])):
+                            _проф98[_пи] = (_пб, _па)
+                    except Exception:
+                        pass
         if best is not None:
             if следа is not None:
                 следа.append(("swq", "ok"))
-            return {"bid": round(best[0], 3), "ask": round(best[1], 3),
-                    "mid": round((best[0] + best[1]) / 2, 3), "src": "swq",
-                    "age_sec": round(best_age, 1)}
+            _рез98 = {"bid": round(best[0], 3), "ask": round(best[1], 3),
+                      "mid": round((best[0] + best[1]) / 2, 3), "src": "swq",
+                      "age_sec": round(best_age, 1)}
+            if ЗАПИС_ПРОФИЛИ:
+                _рез98["profiles"] = {_и: [round(_пр[0], 3), round(_пр[1], 3)]
+                                      for _и, _пр in sorted(_проф98.items())}
+            return _рез98
         if следа is not None:
             следа.append(("swq", "празен отговор"))
     except Exception as _еs:
@@ -17488,16 +17653,23 @@ def main():
         notes.append(f"сянка-злато пропусната: {type(_e).__name__}")
 
     # === 6б) ВЕЧЕРНА РАВНОСМЕТКА + ПУЛС (Ф5/Ф8.4) и СТАТУС (Ф9.8) ===
+    # 🔴 30.09 · v18.98 · ДЕН_СЛЕД_ВХОД · картите на деня (вечерната, сутрешната,
+    # седмичната, пулсът) виждат и сделката, която ТОЗИ рън отваря (`_вход_в_рънa`):
+    # слот 1 свободен → тя е отворената сделка; иначе — още една от отворените.
+    # Лост 0 → `_тр98` е `trade`, `_доп98` е `доп_сделки` (дословно v18.97).
+    _вх98 = _вход_в_рънa(pending_trade, trade, доп_сделки)
+    _тр98 = _вх98 if (trade is None and _вх98 is not None) else trade
+    _доп98 = list(доп_сделки or []) + ([_вх98] if (_вх98 is not None and trade is not None) else [])
     sof_now = datetime.now(timezone.utc).astimezone(_tz("Europe/Sofia"))
     want_digest = sof_now.hour >= 21 and meta.get("digest") != ден_карти and not weekend
     if want_digest:
         s_tr_now = _load_state(s_tr_f, None)
         # 🔴 22.09 · v18.88 · ВЕЧЕР_ОТ_КАРТА · от предишната пратена вечерна до сега
         _вп_от, _вп_до, _вп_ет, _вп_рън = _вечер_прозорец(out, meta, now_utc, notes)
-        new_msgs.append(("digest", _digest_msg(out, date, trade, s_tr_now, spot_g, spot_s, guard,
+        new_msgs.append(("digest", _digest_msg(out, date, _тр98, s_tr_now, spot_g, spot_s, guard,
                                                weekly_part=(sof_now.weekday() == 4),
                                                торба=(_равносметка(out, _вп_от, _вп_до,
-                                                                   [trade] + list(доп_сделки or []),
+                                                                   [_тр98] + _доп98,
                                                                    spot_g, now_utc, _вп_ет, notes,
                                                                    по_рън=_вп_рън)
                                                       if РАВНОСМЕТКА_ВСИЧКИ else None))))
@@ -17579,7 +17751,7 @@ def main():
                 cq=cq, now_utc=now_utc,
                 базис=basis_g,          # v18.89 · СЕДМИЦА_СПОТ · цените на спота
                 торба=(_равносметка(out, *_търг_седмица(now_utc),
-                                    [trade] + list(доп_сделки or []),
+                                    [_тр98] + _доп98,          # v18.98 · ДЕН_СЛЕД_ВХОД
                                     spot_g, now_utc, "Миналата седмица", notes)
                        if РАВНОСМЕТКА_ВСИЧКИ else None),
                 мозък_ред=_мт_ред)))
@@ -17607,7 +17779,8 @@ def main():
             new_msgs.append(("обзор", _обзор_msg(
                 gold_d=gold_d, board=board, macro=macro, streak_n=streak_n,
                 price=price_user, cq=cq, now_utc=now_utc,
-                отворени=(1 if trade else 0) + len(доп_сделки), dxy_d=dxy_d, ден=_ден_т5)))
+                # v18.98 · ДЕН_СЛЕД_ВХОД · и входът от този рън (лост 0 → trade + доп_сделки)
+                отворени=(1 if _тр98 else 0) + len(_доп98), dxy_d=dxy_d, ден=_ден_т5)))
             if _ден_т5:
                 try:
                     _ден_запиши(out, _ден_т5)
@@ -17681,12 +17854,12 @@ def main():
             # 🔴 01.09 · и редът от канала. ЦИТАТ, не съвет: текстът е чужд,
             # от външен канал, и НЕ пипа нито гейта, нито размера, нито точките.
             _пулс = _pulse_msg(ph, board, best, new_dir, advice_txt, _adv_ok,
-                               trade, s_tr_p, spot_g, spot_s, macro, shield, weekend,
+                               _тр98, s_tr_p, spot_g, spot_s, macro, shield, weekend,
                                macro_raw=macro_health,
                                streaks=regime.get("streaks"),
                                stats=stats,
                                торба=(_равносметка(out, *_търг_ден(now_utc),
-                                                   [trade] + list(доп_сделки or []),
+                                                   [_тр98] + _доп98,   # v18.98 · ДЕН_СЛЕД_ВХОД
                                                    spot_g, now_utc, "Днес досега", notes)
                                       if РАВНОСМЕТКА_ВСИЧКИ else None))
             # 🔴 01.09 · ДВЕТЕ СТРАНИ. Преди реда от канала, защото е за
@@ -18338,7 +18511,10 @@ def main():
                 # v18.96 · СЯНКА_РАЗМЕР · истинският вход на главната отваря книгите
                 if _размер_книги is not None:
                     _размер_отвори(_размер_книги, _размер_редове, pending_trade, spot_g, gold_d,
-                                   _размер_миг, notes)
+                                   _размер_миг, notes,
+                                   # v18.98 · РАЗМЕР_ATR_СПОТ · ATR14 на Г4 от спота в дневника
+                                   спот_дни=(_размер_спот_дни(out, pending_trade.get("opened"), notes)
+                                             if РАЗМЕР_ATR_СПОТ else None))
             elif len(доп_сделки) + 1 < ТАВАН_СДЕЛКИ:
                 доп_сделки.append(pending_trade)
                 statuses.append("trade=OPENED#%d" % (len(доп_сделки) + 1))

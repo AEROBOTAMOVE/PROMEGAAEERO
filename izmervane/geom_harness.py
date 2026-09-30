@@ -35,10 +35,22 @@ HONESTY NOTES (read before believing any number)
     * Cost model: entry and every exit are taken on the side of the spread a real fill would
       use, so the REAL spread present in the tape at those bars is already paid. On top of that
       a flat slippage of 0.02 $/oz per TRADE is subtracted. Commission/financing are NOT modelled.
+    * 🔴 30.09 · v18.98 · DFII10 (the real-rates leg) — THE MIRROR IS THE DEFAULT. The old
+      `(-(r - r.shift(20))).shift(1)` joined per DAY let every checkpoint of day D see the
+      DFII10 observation of D−1 from the first minute of D. FRED publishes it later: the bot's
+      own journal (37 changes, 29.07–28.09.2026; 32 of them 16:18–16:34 New York) sees the
+      observation for D at ~16:30 New York on the NEXT business day. So the harness peeked
+      ~a day ahead (ЛОЦО/DFII10_ПОПРАВКА_29-09.md). Rule (scratchpad/dfii10/prereg.md §1):
+      observation D is usable from 16:30 New York on the next date that has a value in
+      DFII10.csv; a checkpoint labelled T decides at T+15m; before that the previous usable
+      value is used. When everything is usable the per-point leg equals the old one bit for
+      bit (checked in `build_entries`). Law per entry, 20 y: +4.96 → +4.14 at mid,
+      +0.40 → −0.25 at bid/ask. BACK: environment DFII10_MIRROR=0 → the old per-day leg.
 """
 from __future__ import annotations
 
 import json
+import os
 import sys
 import time
 from pathlib import Path
@@ -65,6 +77,11 @@ COOL_MIN = 45                # live_bot.py:1458
 COOL_FLIP_MIN = 15           # live_bot.py:1459
 MIN_HISTORY = 200            # live_bot.py:1256  (enough_history)
 BLIND_SEED = 20260729
+# 🔴 30.09 · v18.98 · the DFII10 availability rule (see the module docstring). 1 = the mirror
+# (DFII10 for D usable from 16:30 New York on the next business day) — the DEFAULT.
+# BACK: DFII10_MIRROR=0 → the old `.shift(1)` per day (every number before 30.09).
+DFII10_MIRROR = int(os.environ.get("DFII10_MIRROR", "1"))
+DFII10_AVAIL_NY = (16, 30)   # hour, minute New York on the next business day
 
 TIER_NAME = {0: "weak", 1: "medium", 2: "strong", 3: "premium"}
 DIR_NAME = {1: "long", -1: "short", 0: "wait"}
@@ -124,6 +141,44 @@ def load_tape():
 
 
 # ============================================================================= 2. signal
+def dfii10_leg_per_point(ts_utc, pos, idx, rr, all_usable=False):
+    """The rates leg −(v − b) PER CHECKPOINT under the availability rule (v18.98;
+    scratchpad/dfii10/prereg.md §1, the same code as dfii10/ogledalo.py `сигнал`).
+
+    ts_utc  checkpoint labels (UTC, datetime64); the decision is at label + 15 min
+    pos     position of the checkpoint's day in `idx` (the daily gold index)
+    idx     daily gold index (day = New York + 7 h)
+    rr      DFII10 series (observation_date → value, NaN rows dropped)
+    v = last USABLE observation dated ≤ day[pos − 1], b = last USABLE dated ≤ day[pos − 21];
+    observation D is usable from 16:30 New York on the next date with a value in the file
+    (the last one: the next weekday). `all_usable=True` → everything usable, which is the
+    old per-day leg `(-(r - r.shift(20))).shift(1)` bit for bit."""
+    t_dec = ts_utc.astype("datetime64[m]").astype(np.int64) + 15
+    idx_d = pd.DatetimeIndex(idx).values.astype("datetime64[D]")
+    od_all = rr.index.values.astype("datetime64[D]")
+    ov_all = rr.values.astype(float)
+    nxt = np.empty_like(od_all)
+    nxt[:-1] = od_all[1:]                                        # next date with a value in the file
+    nxt[-1] = np.busday_offset(od_all[-1], 1, roll="forward")    # the last: the next weekday
+    av = (pd.DatetimeIndex(nxt.astype("datetime64[ns]"))
+          + pd.Timedelta(hours=DFII10_AVAIL_NY[0], minutes=DFII10_AVAIL_NY[1]))
+    av = av.tz_localize("America/New_York").tz_convert("UTC").tz_localize(None)
+    av = av.values.astype("datetime64[m]").astype(np.int64)
+    inidx = np.isin(od_all, idx_d)                               # reindex(idx).ffill() sees only these
+    od, ov, avl = od_all[inidx], ov_all[inidx], av[inidx]
+    assert (np.diff(od.astype(np.int64)) > 0).all() and (np.diff(avl) >= 0).all()
+    pos = np.asarray(pos, dtype=np.int64)
+    p1, p21 = pos - 1, pos - 21
+    m1 = np.where(p1 >= 0, np.searchsorted(od, idx_d[np.clip(p1, 0, None)], side="right"), 0)
+    m21 = np.where(p21 >= 0, np.searchsorted(od, idx_d[np.clip(p21, 0, None)], side="right"), 0)
+    k = (np.full(len(t_dec), len(od), np.int64) if all_usable
+         else np.searchsorted(avl, t_dec, side="right"))        # how many are usable at the decision
+    n1, n21 = np.minimum(k, m1), np.minimum(k, m21)
+    v = np.where(n1 >= 1, ov[np.clip(n1 - 1, 0, None)], np.nan)
+    b = np.where(n21 >= 1, ov[np.clip(n21 - 1, 0, None)], np.nan)
+    return -(v - b)
+
+
 def build_entries(B):
     """Mirror of live_bot._macro/_refs/_scores/_resolve/_tier for the «1ден» frame,
     evaluated on a 15-minute checkpoint grid over the PARTIAL daily bar."""
@@ -178,10 +233,32 @@ def build_entries(B):
     R["m_min"] = m_min.values
     R["m_dol"] = m_dol.values
     R["m_rat"] = m_rat.values
+    R["mac_ok_nr"] = (raw_min.notna() & raw_dol.notna()).values    # v18.98 · the other two legs
+    R["raw_rat"] = raw_rat.values
+    R["pos"] = np.arange(len(idx))
 
     d["run_h"] = d.groupby("day")["h"].cummax()     # PARTIAL daily bar at this checkpoint
     d["run_l"] = d.groupby("day")["l"].cummin()
     X = d.join(R, on="day")
+
+    # 🔴 30.09 · v18.98 · DFII10_MIRROR · the rates leg PER CHECKPOINT (module docstring).
+    # Self-check first: with everything usable the per-point leg IS the old per-day leg,
+    # bit for bit — otherwise the rule is not the only change.
+    if DFII10_MIRROR:
+        _ts = X.timestamp_utc.values
+        _all = dfii10_leg_per_point(_ts, X.pos.values, idx, rr, all_usable=True)
+        _old = X.raw_rat.values.astype(float)
+        assert (np.array_equal(np.isnan(_all), np.isnan(_old))
+                and np.array_equal(_all[~np.isnan(_old)].view(np.int64), _old[~np.isnan(_old)].view(np.int64))), \
+            "DFII10: the per-point leg with everything usable is not the old leg"
+        rat_pt = dfii10_leg_per_point(_ts, X.pos.values, idx, rr)
+        m_rat_row = np.where(np.isnan(rat_pt), False, rat_pt > 0)
+        mac_ok_row = X.mac_ok_nr.values.astype(bool) & ~np.isnan(rat_pt)
+        log(f"[signal] DFII10 mirror: rates leg changed at {int(np.sum(m_rat_row != X.m_rat.values.astype(bool))):,}"
+            f" of {len(X):,} checkpoints")
+    else:
+        m_rat_row = X.m_rat.values.astype(bool)
+        mac_ok_row = X.mac_ok.values.astype(bool)
 
     # _scores reads Close/High/Low of the LAST bar of the frame = the partial daily bar
     cN, hN, lN = X.c.values, X.run_h.values, X.run_l.values
@@ -200,7 +277,7 @@ def build_entries(B):
               + (nn(a5) & nn(a20) & (cN / a5 - 1 > 0) & (cN / a20 - 1 < 0)).astype(np.int8)
               + (nn(h20) & (hN >= h20 * 0.985)).astype(np.int8))
     ml = (X.m_min.values.astype(np.int8) + X.m_dol.values.astype(np.int8)
-          + X.m_rat.values.astype(np.int8))
+          + m_rat_row.astype(np.int8))           # v18.98 · per checkpoint (old: per day)
     ls = ml + lp                      # _scores long score
     ss = (3 - ml) + sp                # _scores short score
     m3l = ml == 3
@@ -213,7 +290,7 @@ def build_entries(B):
     direction = np.where(ls > ss, 1, np.where(ss > ls, -1, 0))       # _resolve
     score = np.where(ls > ss, ls, np.where(ss > ls, ss, np.maximum(ls, ss)))
     tk = np.where(ls > ss, tl, np.where(ss > ls, tsh, 0))
-    ok_hist = (X.n_hist.values >= MIN_HISTORY) & X.mac_ok.values
+    ok_hist = (X.n_hist.values >= MIN_HISTORY) & mac_ok_row      # v18.98 · per checkpoint
     actionable = (direction != 0) & (tk > 0) & ok_hist
     log(f"[signal] checkpoints {len(X):,}  actionable {int(actionable.sum()):,}")
 
