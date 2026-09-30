@@ -1,30 +1,30 @@
 {
- "den": "2026-09-29",
- "sazdadeno_utc": "2026-09-29T04:01:00Z",
- "v": "v18.93",
- "cena": 4131.77,
- "bazis": 33.36,
+ "den": "2026-09-30",
+ "sazdadeno_utc": "2026-09-30T04:01:00Z",
+ "v": "v18.96",
+ "cena": 4174.26,
+ "bazis": 32.83,
  "nosht": {
-  "ot": 4112.11,
-  "do": 4136.09,
+  "ot": 4165.29,
+  "do": 4189.27,
   "shirina": 23.98,
-  "atr": 94.18,
-  "dyal_atr": 0.241,
+  "atr": 97.63,
+  "dyal_atr": 0.216,
   "rezhim": "тясна"
  },
  "vchera": {
-  "vryh": 4318.24,
-  "dyno": 4255.84,
-  "zatvaryane": 4287.84
+  "vryh": 4188.43,
+  "dyno": 4112.37,
+  "zatvaryane": 4146.87
  },
  "idei": [
   {
    "posoka": "long",
-   "nivo": 4112.11,
-   "stop": 4099.11,
+   "nivo": 4165.29,
+   "stop": 4152.29,
    "celi": [
-    4117.11,
-    4125.11
+    4170.29,
+    4178.29
    ],
    "izvor": "нощно дъно",
    "belezhka": "наблюдение, не вход: сигнал е само картата ВЛЕЗ · нивото е с разликата към борсата от своя час",
@@ -32,11 +32,11 @@
   },
   {
    "posoka": "short",
-   "nivo": 4136.09,
-   "stop": 4149.09,
+   "nivo": 4189.27,
+   "stop": 4202.27,
    "celi": [
-    4131.09,
-    4126.09
+    4184.27,
+    4179.27
    ],
    "izvor": "нощен връх",
    "belezhka": "наблюдение, не вход: сигнал е само картата ВЛЕЗ · нивото е с разликата към борсата от своя час",
@@ -45,26 +45,17 @@
  ],
  "sabitiya": [
   {
-   "ime": "JOLTS Job Openings",
-   "utc": "2026-09-29T14:00:00Z",
-   "sila": "high",
+   "ime": "ADP Nonfarm Employment Change",
+   "utc": "2026-09-30T12:30:00Z",
+   "sila": "critical",
    "prozorec_min": [
     20,
     40
    ]
   },
   {
-   "ime": "FOMC Member Bowman Speaks",
-   "utc": "2026-09-29T15:00:00Z",
-   "sila": "high",
-   "prozorec_min": [
-    20,
-    40
-   ]
-  },
-  {
-   "ime": "FOMC Member Williams Speaks",
-   "utc": "2026-09-29T18:00:00Z",
+   "ime": "FOMC Member Barkin Speaks",
+   "utc": "2026-09-30T17:30:00Z",
    "sila": "high",
    "prozorec_min": [
     20,
@@ -72,6 +63,6 @@
    ]
   }
  ],
- "yasna_ideya": true,
- "zashto_nyama": ""
+ "yasna_ideya": false,
+ "zashto_nyama": "денят е на новината: NFP в 15:30 (15:10–16:10)"
 }
