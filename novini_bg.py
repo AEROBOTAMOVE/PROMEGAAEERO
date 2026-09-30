@@ -17,8 +17,13 @@
      «от седмици», «от месеци», «от години»;
    · никакво «ще», никаква причина, която заглавието не казва. Връзката е
      «на фона на» — заглавието казва «as/amid», не «because»;
-   · човек се назовава САМО ако е в списъка с хората на Фед (_FED_HORA) и
-     до името стои Фед — или е в емисията на речите на самия Фед;
+   · човек се назовава САМО ако е в списъка с хората на Фед (_FED_UNIKALNI,
+     _FED_DVUSMISLENI) и е ПОДЛОГЪТ на заглавието (_podlog: в началото, след
+     етикет, или «…, Fed's X says» в края). Двусмислените имена (Cook, Barr,
+     Williams…) искат «Fed» точно пред името; уникалните (Warsh, Kashkari…) —
+     «Fed» някъде в заглавието. Или е в емисията на речите на самия Фед;
+   · мирът и войната: отхвърлено/рухнало примирие е напрежение; и напрежение,
+     и успокояване в едно заглавие → без фон; геополитиката никога не е «преди»;
    · държава се казва само ако заглавието я казва (US, U.S., Fed…) или ако
      данните по природа са само американски (PCE, JOLTS, NFP, ISM);
    · оригиналното заглавие остава непипнато — редът е ДО него, не вместо него.
@@ -218,7 +223,10 @@ _IME = r"(?:(?:%s) )?(?P<ime>%s)" % ("|".join(_FED_IMENA), "|".join(_VSICHKI_FED
 _FED_PRED_IMETO = (r"(?:(?:New York|NY|Philadelphia|Philly|Cleveland|Richmond|Atlanta|Chicago|St\.? Louis|"
                    r"Minneapolis|Kansas City|Dallas|San Francisco|Boston) )?Fed(?:eral Reserve)?(?:'s)?"
                    r"(?: (?P<rolya>Chair(?:man|woman)?|Vice Chair(?: for Supervision)?|Governor|President|"
-                   r"Board Member|Board Governor|official|chief|policymaker))?(?:'s)?")
+                   r"Board Member|Board Governor|official|chief|policymaker|"
+                   # малките букви («Fed chair Jerome Powell») — само за разпознаването; «председател»
+                   # се пише само при «Chair» с главна (виж kyde)
+                   r"chair(?:man|woman)?|vice chair|governor|president))?(?:'s)?")
 _FED_CHOVEK = re.compile(r"\b" + _FED_PRED_IMETO + r" " + _IME + r"\b")
 _FED_IME_SAMO = re.compile(r"(?<![\w'])" + _IME + r"\b")
 _KAZVA = _r(r"^(?:'s)?,?\s*(?:reportedly |also |again |still |now )?(?:says?|said|signals?|signaled|signalled|warns?|warned|sees|saw|"
@@ -254,9 +262,11 @@ def _temi(t, naj=2):
     for rx, bg in _TEMI_RECH:
         if rx.search(t) and bg not in out:
             out.append(bg)
-        if len(out) >= naj:
-            break
-    return out
+    # и двете посоки в едно заглавие → без посока: «Musalem Warns Excessive Cut in Fed
+    # Communications Could Raise Rates and Inflation» не е реч «за вдигане на лихвата» (30.09)
+    if "за вдигане на лихвата" in out and ("за намаляване на лихвата" in out or re.search(r"\bcut\b", t, _I)):
+        out = [x for x in out if x not in ("за вдигане на лихвата", "за намаляване на лихвата")]
+    return out[:naj]
 
 
 def _s_temi(osnova, t):
@@ -290,6 +300,30 @@ def _fed_emisiya(t, emisiya):
     return "Съобщение на Фед — централната банка на САЩ"
 
 
+# Човекът от Фед трябва да е ПОДЛОГЪТ на заглавието. Втората проверка (80 нови заглавия,
+# 29.09) хвана «UBS Expects Two Fed Rate Hikes by End of 2026 After Warsh Speech and Jobs
+# Data» → «Изказване на член на Фед (Warsh)…»: очакването е на UBS, не на Warsh. Затова пред
+# човека може да стои само: нищо · етикет с двоеточие («US Market:») · «Exclusive-»/«Watch:» ·
+# член/«US» · «In CT visit,». Или обърнатият ред на Reuters: «…, Fed Governor Barr says».
+_PRED_PODLOG = _r(r"^(?:[\w&.' ]{2,30}\s+\|\s+|[\w&.']{2,20} - )?"         # «News | …», «Weeeknd - …»
+                  r"(?:(?:EXCLUSIVE|Exclusive|BREAKING|Breaking|UPDATE|Update|WATCH|Watch|VIDEO|Video|LIVE|Live)\s*[-:|]\s*)?"
+                  r"(?:(?:In|At|During) [^,]{1,40}, )?(?:the |a |an )?(?:US |U\.S\. )?"
+                  r"(?:(?:more|two|three|several|some|top|other|key|many|most|few|senior) )?$")
+_SLED_OBARNATO = _r(r"^\s*(?:says|said|warns|warned|tells \w+)\b\s*(?:\([^)]*\))?\s*(?:[-|].*)?$")
+
+
+def _podlog(t, nachalo, kraj):
+    """Човекът (t[nachalo:kraj]) ли е подлогът на заглавието."""
+    pred = t[:nachalo]
+    m = _ETIKET.match(pred)
+    if m:
+        pred = pred[m.end():]
+    if _PRED_PODLOG.match(pred):
+        return True
+    # «The Fed shouldn't 'look through' some supply shocks, Chicago Fed's Goolsbee says»
+    return bool(re.search(r",\s*$", pred) and _SLED_OBARNATO.match(t[kraj:]))
+
+
 def _fed_chovek(t):
     """Изказване на човек от Фед в чуждо заглавие. None, ако не е сигурно."""
     if _NE_CHLEN.search(t):
@@ -303,10 +337,14 @@ def _fed_chovek(t):
         m = _FED_IME_SAMO.search(t)
         if m and m.group("ime") in _FED_UNIKALNI and re.search(r"\bFed\b|\bFederal Reserve\b|\bFOMC\b", t):
             ime, rolya, kraj = m.group("ime"), "", m.end()
+    if ime and not _podlog(t, m.start(), kraj):
+        return None                       # човекът не е подлогът — новината е на някой друг
     if not ime:
         # «Fed official(s) …» без име
         m = re.search(r"\bFed(?:eral Reserve)? (?P<mn>officials?|policymakers?|speakers?|members?)\b", t, _I)
         if not m or not _KAZVA.search(t[m.end():m.end() + 40].lstrip()):
+            return None
+        if not _podlog(t, m.start(), m.end()):
             return None
         mn = m.group("mn").lower().endswith("s")
         return _s_temi("Изказвания на членове на Фед" if mn else "Изказване на член на Фед", t[m.end():])
@@ -316,7 +354,7 @@ def _fed_chovek(t):
         # «Warsh: …» / «Kashkari: …» — двоеточие точно след името
         if not re.match(r"^\s*:", sled):
             return None
-    kyde = "председателя на Фед" if re.fullmatch(r"Chair(?:man|woman)?", rolya or "", _I) else "член на Фед"
+    kyde = "председателя на Фед" if re.fullmatch(r"Chair(?:man|woman)?", rolya or "") else "член на Фед"
     # темите — от заглавието без името и без изреченията-въпроси на изданието
     # («…Jackson Hole Speech. Does That Signal a Rate Hike Is Coming?» — въпросът не е негов)
     tekst = t[:m.start()] + " " + t[kraj:]
@@ -347,13 +385,20 @@ _FED_ZAPAZI = _r(r"\b" + _FED + r"(?:'s)?(?: just)? (?:holds|held|keeps|kept|lea
 # пред «Fed hikes» стои дума, която го прави съществително: «more Fed hikes», «on Fed hikes»
 _NE_GLAGOL = _r(r"\b(?:more|further|another|additional|two|three|four|several|multiple|sees?|expects?|of|on|for|by|about|"
                 r"over|amid|despite|to|with|bets?)\s+$")
-_SLED_FED = _r(r"\b(?:after|following|post)[- ](?:the )?(?:Fed|FOMC|Federal Reserve)(?:'s)?(?: (?:first |latest |recent )?(?:rate |interest rate |policy )?"
+_SLED_FED = _r(r"\b(?:after|following|post)[- ](?:the |a |its )?(?:hawkish |dovish |surprise |latest |first |big |jumbo |unanimous )?"
+               # «Gold faces critical technical test after hawkish Fed rate hike» (третата проба, 29.09)
+               r"(?:Fed|FOMC|Federal Reserve)(?:'s)?(?: (?:first |latest |recent )?(?:rate |interest rate |policy )?"
                r"(?:decision|meeting|hike|increase|move|announcement|statement|verdict))|\bpost-FOMC\b|\b(?:after|following) (?:the )?FOMC\b|"
                r"\b(?:after|following) (?:the )?Fed(?:'s)?(?=\s*(?:[,.;:!?]|$))|"
+               # «Bitcoin Price Wobbles Before Settling After Fed Raises Rates» — решението е СТАНАЛО
+               r"\b(?:after|following) (?:the )?(?:US |U\.S\. )?(?:Fed|FOMC|Federal Reserve) (?:raises|raised|hikes|hiked|lifts|lifted|"
+               r"cuts|cut|lowers|lowered|holds|held|keeps|kept|leaves|left|decides|decided|announces|announced|delivers|delivered)\b|"
                r"\b(?:after|following) (?:the |a |its )?(?:first )?(?:rate )?(?:hike|decision|increase)\b")
 _MESECI = r"(?:January|February|March|April|May|June|July|August|September|October|November|December|Monday's|Tuesday's|Wednesday's|Thursday's|Friday's|This Week's|Next Week's)"
 _FED_RESHENIE = _r(r"\b(?:Fed|FOMC|Federal Reserve)(?:'s)?(?: (?:rate|interest rate|policy|monetary policy|" + _MESECI + r"))?"
-                   r"(?: rate| hike| interest rate| interest-rate)? (?:decision|meeting|announcement|verdict)s?\b|\bFOMC\b|\b(?:Fed|FOMC) (?:decides|to decide)\b|"
+                   r"(?: rates?| hike| interest rates?| interest-rates?)? (?:decision|meeting|announcement|verdict)s?\b|\bFOMC\b|\b(?:Fed|FOMC) (?:decides|to decide)\b|"
+                   # «Stocks edge higher ahead of US Fed rate call» (30.09)
+                   r"\b(?:Fed|FOMC)(?:'s)? (?:interest[- ])?rates? call\b|"
                    r"\b" + _MESECI + r" (?:Fed|FOMC) (?:rate |policy )?(?:decision|meeting)\b")
 # вдигане/намаляване ВЪРЗАНО с лихвата («price hikes» и «job cuts» не са)
 _VDIGANE = _r(r"\b(?:rate[- ]hikes?|rate[- ]hiking|interest[- ]rate (?:hikes?|increases?|rises?)|rate[- ]rises?|rate[- ]increases?|"
@@ -369,12 +414,51 @@ _MEKO = _r(r"\bdovish\b|\b(?:monetary|policy|Fed) easing\b|\beasing (?:cycle|bia
 _OCHAKVANE = _r(r"\b(?:bets?|betting|odds|expectations?|expected|expects?|expect|pricing(?! out)|priced in|chances?|probability|"
                 r"prospects?|likely|forecasts?|forecasting|predicts?|predicted|sees|set to (?:hike|raise|cut|lower)|poised|on track|"
                 r"looms?|looming|anticipat\w*|braces? for|bracing for|prepares? for|preparing for|certain|survey|poll|consensus|"
-                r"calls? for|signals? more|points? to (?:another|more)|fears?|worries|concerns?|risks?|looking to|looks to|plans? to|"
+                # страх/риск — само вързани за лихвата: «AI Safety Fears Collide with Fed Rate Hikes» и
+                # «Yield Curve Becomes New Risk as Fed Hikes» НЕ са очаквания за вдигане (третата проверка, 29.09)
+                r"calls? for|signals? more|points? to (?:another|more)|fears? (?:of|over|about|that|for)|worries (?:of|over|about|that)|"
+                r"(?:fears?|feared|fearing|worries|worried about) (?:more|further|another|additional|a|an|potential|possible)|"
+                r"concerns? (?:of|over|about|that)|risks? of|(?:hike|hiking|tightening|rate|policy) (?:fears?|worries|concerns?|risks?)|"
+                r"looking to|looks to|plans? to|"
                 r"(?:hike|hiking|tightening) pressures?|pressure to (?:raise|hike|tighten)|likelihood|speculations?|seen|"
                 r"prices? in|imminent)\b")
+_OCHAKV_DUMI = _r(r"\b(?:await\w*|outlook|path|signals?|view|uncertain\w*|guidance|stance|hawkish|dovish|concern\w*|jitters|"
+                  r"nerves|worr\w*|watch\w*|focus|question|debate|what's next|where next|repric\w*|pricing out|priced out|"
+                  r"unlikely|doubts?)\b|\?")
+# при отрицание — по-тесният списък: «"Hawkish winds" sweep through the Federal Reserve! … no need
+# for rate hikes» е за спора, не за очакванията
+_OCHAKV_NE = _r(r"\b(?:repric\w*|pricing out|priced out|unlikely|doubts?|overestimat\w*|overpric\w*|too hot|trail\w*|"
+                r"(?:defy|defies|defying|defied) (?:the )?expectations)\b|\?")
 _OTRICANIE_PREDI = _r(r"\b(?:no|not|unlikely|won't|doubts?|without|never|skip|rules? out|ruled out|pricing out|priced out|"
-                      r"holds? off|pause)\b|n't\b")
-_OTRICANIE_SLED = _r(r"^\S*\s*\?\s*No\b|^\s+(?:no|not|unlikely)\b|^\S*\s+(?:unlikely|off the table|ruled out|priced out)\b")
+                      r"holds? off|pause|(?:defy|defies|defying|defied) (?:the )?(?:expectations|forecasts|bets|odds|markets?)|"
+                      r"overestimat\w*|overpric\w*|against)\b|n't\b")
+_OTRICANIE_SLED = _r(r"^\S*\s*\?\s*No\b|^\s+(?:no|not|unlikely)\b|^\S*\s+(?:unlikely|off the table|ruled out|priced out)\b|"
+                     # «Fed Rate Cut Delayed as Strong Jobs Data Tests Bitcoin» (30.09)
+                     r"^\s+(?:(?:is|was|gets?|got) )?(?:delayed|postponed|pushed back|shelved)\b|"
+                     r"^\s+(?:trail|lag)\w*\b|^(?:\s+\S+){0,4}\s+(?:too hot|overdone|overblown|overestimat\w*|overpric\w*|too far|too aggressive|excessive)\b")
+# очакванията спадат: глагол ПРЕД тях («cools … hike bets») или СЛЕД тях («Hike Odds Fall») (30.09)
+# («Bitcoin Breakout Cools as Fed Rate-Hike Bets Climb» — «cools» е за биткойна: съюзът «as» пречи)
+_OCHAKV_SPAD = _r(r"\b(?:cool\w*|pare[sd]?|paring|trim\w*|dampen\w*|reduc\w*|curb\w*|scal\w* back|pull\w* back|unwind\w*|"
+                  # «Gold rises as oil slide eases Fed hike fears» (30.09)
+                  r"temper\w*|dash\w*|eases|eased|easing|calms?|calmed|soothe[sd]?|allay\w*|quell\w*)"
+                  r"(?:\s+(?!(?:as|on|amid|after|while|despite|and|but)\b)[\w'-]+){0,3}\s*$")
+_OCHAKV_SPAD_SLED = _r(r"^[\w\s'-]{0,16}?\b(?:fade[sd]?|fading|ease[sd]?|easing|dwindl\w*|fall|falls|fell|drop\w*|slip\w*|"
+                       r"recede\w*|wane[sd]?|waning|diminish\w*|cool\w*|retreat\w*|decline[sd]?|shrink\w*|evaporat\w*|"
+                       # «Fed rate hike odds tumble to coin flip», «…Rate-Hike Expectations Ease» (30.09)
+                       r"tumbl\w*|plung\w*|sink\w*|sank|slid\w*|slump\w*|collaps\w*|dive[sd]?|diving|crater\w*|pared|trimmed)\b")
+# прогнозата е обърната или е двусмислена: «Goldman flips on Fed rate hike, then backtracks on forecast»,
+# «Goldman Sachs drops surprise call for next Fed interest-rate hike» (drops = пусна или отказа?)
+_OBRAT_PROGNOZA = _r(r"\b(?:backtrack\w*|walks? back|walked back|u-turn\w*|scraps?|scrapped|abandon\w*|drops? (?:\w+ )?(?:call|forecast)|"
+                     r"dropped (?:\w+ )?(?:call|forecast)|flips? on)\b")
+# последицата на вдигането, не очакване за него: «Fed's rate hike likely means more expensive credit cards»,
+# «Federal Reserve Rate Hikes Would Likely Put the Trump Bull Market on Thin Ice», «Fed rate hikes may not end the bull market»
+_SLED_EFEKT = _r(r"^\s+(?:(?P<dum>\w+)\s+)?(?:would|could|might|may|will|likely|to)\s+(?:\w+\s+)?(?:not\s+)?(?:means?|hit|hurt|affect|impact|push|put|"
+                 r"squeeze|cost|weigh|slam|pressure|crush|help|boost|spell|make|send|drive|end|derail|kill|sink|lift|change)\b")
+# «hawkish» за самия Фед или за очакванията, не «Warsh's Hawkish Background»
+_STROGO_SLED = _r(r"^(?:[\s-]+[\w'-]+){0,2}?[\s-]+(?:Fed|FOMC|Federal Reserve|policy|bets?|expectations?|outlook|stance|signals?|shift|"
+                  r"tilt|pivot|tone|remarks?|comments?|repricing|pricing|path|cycle|mood|message|minutes|hold|pause|surprise|bias|"
+                  r"officials?|rates?)\b")
+_STROGO_PREDI = _r(r"\b(?:Fed|FOMC|Federal Reserve|Fed's|Federal Reserve's|policymakers?|officials?|policy)\b[\w\s']*$")
 _FED_LIHVA = _r(r"\b(?:Fed|Federal Reserve|FOMC)(?:'s)?\b.*\b(?:rates?|hikes?|cuts?|policy|decision|meeting|tightening|easing|"
                 r"hawkish|dovish|outlook|signals?|path|minutes)\b|\b(?:rates?|hikes?|cuts?|policy)\b.*\b(?:Fed|Federal Reserve|FOMC)\b")
 _KAKVO_ZNACHI = _r(r"\bwhat\b.*\b(?:means?|mean)\b|\bhere's what\b|\bwhat it means\b|\bwhat to know\b|\beverything to know\b|"
@@ -383,11 +467,17 @@ _KAKVO_ZNACHI = _r(r"\bwhat\b.*\b(?:means?|mean)\b|\bhere's what\b|\bwhat it mea
 _STANALO = _r(r"\b(?:(?:the )?(?:Fed's|Federal Reserve's) (?:first |latest |recent |surprise )?(?:interest[- ])?rate (?:hike|increase)|"
               r"latest|recent|surprise|last week's|this week's|first (?:rate )?hike in|"
               r"first interest rate (?:hike|increase) in)\b")
+_STANALO_POS = _r(r"\b(?:the )?(?:Fed's|Federal Reserve's|FOMC's) (?:first |latest |recent |surprise |last )?(?:interest[- ])?rate (?:hike|increase)\b")
+_SLEDVASHTO = _r(r"\b(?:expected|likely|possible|potential|probable|next|another|more|further|upcoming|coming|planned|looming|"
+                 r"would|could|will|may|might|if|odds|bets?|chances?)\b|\?")
 # регионалните банки на Фед и техните проучвания/срещи не са решенията на Фед
 _REGIONALEN_FED = _r(r"\b(?:New York|NY|Philadelphia|Philly|Cleveland|Richmond|Atlanta|Chicago|St\.? Louis|Minneapolis|Kansas City|"
                      r"Dallas|San Francisco|Boston) Fed(?:'s)?(?: (?:Empire State|manufacturing|services|business|consumer|nonmanufacturing))?"
                      r" (?:survey|index|GDPNow|meeting|symposium|conference|report|study|research|data|poll|outlook|"
-                     r"manufacturing|nonmanufacturing|services|business)\b")
+                     r"manufacturing|nonmanufacturing|services|business)\b|"
+                     # «Corporate finance chiefs lift inflation outlook, cite rates as concern - Fed survey» —
+                     # анкетата на Фед не е лихвата на Фед (30.09)
+                     r"[-|–—:]\s*Fed (?:survey|poll)\s*$")
 
 
 def _blizo(rx, t, m, pred=45, sled=30):
@@ -411,7 +501,8 @@ def _lihva_vid(t):
         return None
     # изказванията — само когато те са новината: «Hawkish Fed Comments», «comments from Fed
     # officials», «Fed officials say…»; НЕ «Hassett Voices Concern Against Fed Officials' Call»
-    if re.search(r"\bFed (?:speakers?|speeches|comments|appearances)\b|\b(?:comments|remarks|speeches) (?:from|by) Fed\b|"
+    # «…Dovish Fed Speech» — речта е новината, не «очаквания за по-ниска лихва» (30.09)
+    if re.search(r"\bFed (?:speakers?|speech(?:es)?|comments|remarks|appearances)\b|\b(?:comments|remarks|speeches) (?:from|by) Fed\b|"
                  r"\bFed officials? (?:says?|said|signals?|warns?|sees?|expects?|backs?|flags?|urges?|repeats?)\b", t, _I):
         return "rechi"
     for vid, rx in (("vdigna", _FED_VDIGNA), ("namali", _FED_NAMALI), ("zapazi", _FED_ZAPAZI)):
@@ -426,7 +517,14 @@ def _lihva_vid(t):
         return "ochakv"
     mv, mn_ = _VDIGANE.search(t), _NAMALYAVANE.search(t)
     vd, nm = bool(mv), bool(mn_)
-    if (vd or nm) and _KAKVO_ZNACHI.search(t) and not (vd and nm):
+    # «What makes the Federal Reserve decide to raise or lower interest rates?» — и двете посоки
+    if re.search(r"\b(?:raise|hike|lift|increase)s? or (?:lower|cut|reduce)\b|\b(?:lower|cut|reduce)s? or (?:raise|hike|lift)\b|"
+                 r"\bhikes? or cuts?\b|\bcuts? or hikes?\b", t, _I):
+        vd = nm = True
+    # «Experts Predict No Fed Rate Cut Next Week: What It Means» — «какво значи» без отрицание до
+    # вдигането/намаляването; с отрицание редът пада към неутралното по-долу (30.09)
+    if (vd or nm) and _KAKVO_ZNACHI.search(t) and not (vd and nm) \
+            and not _blizo(_OTRICANIE_PREDI, t, mv or mn_, 40, 0):
         return "znachi_gore" if vd else "znachi_dolu"
     if re.search(r"\bminutes\b", t, _I):
         return "protokol"
@@ -434,17 +532,56 @@ def _lihva_vid(t):
         return "bezhova"
     if _SLED_FED.search(t):
         return "sled"
-    strogo, meko = bool(_STROGO.search(t)), bool(_MEKO.search(t))
+    # «Federal Reserve hawkish hike sent Gold price lower» — вдигането (с остър тон) е станало
+    if re.search(r"\bhawkish (?:Fed |FOMC |Federal Reserve |Fed's )?(?:rate |interest[- ]rate )?(?:hike|increase)\b", t, _I):
+        return "vdigane_stanalo"
+    strogi = [x for x in _STROGO.finditer(t)
+              if _STROGO_SLED.match(t[x.end():]) or _STROGO_PREDI.search(t[max(0, x.start() - 35):x.start()])]
+    strogo = bool(strogi)
+    # «tightening» само по себе си е действието, не очакване: «Where will Fed tightening hit hardest
+    # in Asia?» е за вдигането. Очакване е острият тон («hawkish») или дума за очакване до него (30.09)
+    strogo_ochakv = any(re.match(r"hawk|higher", x.group(0), _I) or _blizo(_OCHAKVANE, t, x)
+                        or _blizo(_r(r"\b(?:view|outlook|stance|signals?|pricing)\b"), t, x, 10, 25) for x in strogi)
+    meko = bool(_MEKO.search(t))
+    # прогнозата е обърната / двусмислена → неутрално
+    if (mv or mn_ or strogo) and _OBRAT_PROGNOZA.search(t):
+        return "ochakv"
     # Отрицанието — ПРЕДИ вдигането в същото изречение, или «? No» точно след него → неутрално
     # («There Will Be No Fed Rate Hikes», «Will the Fed Raise Rates? No, Says One Expert»).
     # Въпросът сам не отрича — само маха посоката: «How Stocks Performed After Initial Fed Rate
     # Hikes?» остава темата. «A Fed Rate Hike Wouldn't Hit Every Portfolio» — «n't» е за «hit».
-    m_ = mv or mn_ or _STROGO.search(t) or _MEKO.search(t)
+    m_ = mv or mn_ or (_STROGO.search(t) if strogo else None) or _MEKO.search(t)
     if m_ and (_blizo(_OTRICANIE_PREDI, t, m_, 40, 0) or _OTRICANIE_SLED.match(t[m_.end():])):
+        # «очакванията» само ако заглавието пита или очаква; «The Fed Hasn't Cut Rates Once
+        # This Year. Car Loans Got Cheaper Anyway.» не е за очакванията (втората проверка, 29.09)
+        return "ochakv" if (_OCHAKVANE.search(t) or _OCHAKV_NE.search(t)) else "ne"
+    # «the Federal Reserve's rate hike» — конкретното вдигане. «The implementation of the Federal
+    # Reserve's rate hike has improved liquidity expectations» НЕ е очакване за по-висока лихва
+    if vd and not nm and _STANALO_POS.search(t) and not _SLEDVASHTO.search(t):
+        return "vdigane_stanalo"
+    # последицата на вдигането («…likely means more expensive credit cards») — темата, не очакване;
+    # освен ако очакването стои точно пред него («How the expected Fed rate hike could squeeze…»)
+    me = _SLED_EFEKT.match(t[mv.end():]) if (vd and not nm) else None
+    # («Fed Rate-Hike Prospects Could Weigh» — «prospects» е очакването, то остава)
+    if me and not _OCHAKVANE.search(t[max(0, mv.start() - 15):mv.start()] + " " + (me.group("dum") or "")):
+        return "vdigane_stanalo" if _STANALO_POS.search(t) else "vdigane"
+    # «Treasury Curve Narrows: Fed Hike Risks Growth» — «risks» е глаголът (вдигането застрашава
+    # растежа), не «рисковете от вдигане» (30.09)
+    # («Fed rate hike risks linger», «…Hike Risks Cloud the Rally» — там «risks» е съществително)
+    if vd and not nm and re.match(r"^\s+(?:risks (?:growth|recession|a|an|the|economy|jobs|stocks|markets?|slowdown|housing|"
+                                  r"damage|hurting|derailing|choking|tipping)|threatens|hurts|squeezes|slams|crushes)\b",
+                                  t[mv.end():], _I) \
+            and not _OCHAKVANE.search(t[max(0, mv.start() - 15):mv.start()]):
+        return "vdigane_stanalo" if _STANALO_POS.search(t) else "vdigane"
+    vypros =bool(m_ and re.search(r"\?", t[m_.start():m_.end() + 15]))
+    # «soft data cools October Fed hike bets», «October Rate Hike Odds Fall» — очакванията СПАДАТ;
+    # «на фона на очакванията за по-висока лихва» би казало обратното → неутрално (30.09)
+    m_sp = mv if (vd and not nm) else (mn_ if (nm and not vd) else None)
+    if m_sp and not vypros and _blizo(_OCHAKVANE, t, m_sp) and (
+            _OCHAKV_SPAD.search(t[max(0, m_sp.start() - 30):m_sp.start()]) or _OCHAKV_SPAD_SLED.match(t[m_sp.end():])):
         return "ochakv"
-    vypros = bool(m_ and re.search(r"\?", t[m_.start():m_.end() + 15]))
     if not vypros:
-        if (vd and not nm and _blizo(_OCHAKVANE, t, mv)) or (strogo and not nm and not meko):
+        if (vd and not nm and _blizo(_OCHAKVANE, t, mv)) or (strogo_ochakv and not nm and not meko):
             return "ochakv_gore"
         if (nm and not vd and _blizo(_OCHAKVANE, t, mn_)) or (meko and not vd and not strogo):
             return "ochakv_dolu"
@@ -454,7 +591,23 @@ def _lihva_vid(t):
         return "vdigane_stanalo" if _STANALO.search(t) else "vdigane"
     if nm and not vd:
         return "namalyavane_stanalo" if _STANALO.search(t) else "namalyavane"
+    # «Federal Reserve Inflation Outlook Signals a Critical Warning for Investors» — прогнозата е за
+    # инфлацията, в заглавието няма дума за лихвата (30.09)
+    if not re.search(r"\b(?:rates?|hikes?|cuts?|hiking|policy|decision|meeting|tightening|easing|hawkish|dovish|minutes)\b", t, _I) \
+            and re.search(r"\b(?:inflation|growth|economic|economy|jobs|labou?r(?: market)?) (?:outlook|forecasts?|projections?)\b", t, _I):
+        return "fed"
     if _FED_LIHVA.search(t):
+        # фонът «очакванията…» само с дума за очакване/посока; иначе голото «лихвата на Фед»
+        # («Interest Rates and Gold: Why the Fed Didn't Move the Price»)
+        # «U.S. Treasury Yields Fall as Fed Regains Trust, BOE Leaves Rates Unchanged» — лихвата
+        # е на Английската банка: друга централна банка между Фед и лихвата → не е лихвата на Фед
+        mf = re.search(r"\b(?:Fed|Federal Reserve|FOMC)\b", t, _I)
+        mr = re.search(r"\b(?:rates?|hikes?|cuts?)\b", t[mf.end():], _I) if mf else None
+        if mf and mr and _DRUG_CB_IMA.search(t[mf.end():mf.end() + mr.start()]):
+            return "fed"
+        return "obshto" if (_OCHAKVANE.search(t) or _OCHAKV_DUMI.search(t)) else "obshto_goli"
+    # «Oil-Driven Fed Bets Sink Gold Nearly 4%» — залозите за Фед са очакванията за лихвата (30.09)
+    if re.search(r"\b(?:Fed|FOMC)(?:'s)?[- ](?:rate[- ])?(?:bets|pricing|expectations)\b", t, _I):
         return "obshto"
     return "fed"
 
@@ -470,7 +623,8 @@ _RED_OT_VID = {
     # «За …» — темата, не събитие: «A Fed Rate Hike Is A Massive Mistake» не казва, че е станало
     "vdigane": "За вдигане на лихвата от Фед", "vdigane_stanalo": "За вдигането на лихвата от Фед",
     "namalyavane": "За намаляване на лихвата от Фед", "namalyavane_stanalo": "За намаляването на лихвата от Фед",
-    "obshto": "За лихвата на Фед", "rechi": "Изказвания на членове на Фед",
+    "obshto": "За лихвата на Фед", "obshto_goli": "За лихвата на Фед", "ne": "За лихвата на Фед",
+    "rechi": "Изказвания на членове на Фед",
 }
 _FON_OT_VID = {
     "vdigna": "вдигането на лихвата от Фед", "namali": "намаляването на лихвата от Фед",
@@ -481,14 +635,19 @@ _FON_OT_VID = {
     "ochakv_gore": "очакванията за по-висока лихва от Фед", "ochakv_dolu": "очакванията за по-ниска лихва от Фед",
     "vdigane": "решенията на Фед за лихвата", "vdigane_stanalo": "вдигането на лихвата от Фед",
     "namalyavane": "решенията на Фед за лихвата", "namalyavane_stanalo": "намаляването на лихвата от Фед",
-    "obshto": "очакванията за лихвата на Фед", "rechi": "изказванията на членове на Фед",
+    "obshto": "очакванията за лихвата на Фед", "obshto_goli": "лихвата на Фед", "ne": "решенията на Фед за лихвата",
+    "rechi": "изказванията на членове на Фед",
     "fed": "Фед",
 }
+# «преди …» може само предстоящото: решението, изказванията, решенията изобщо. Станалото
+# («sled», «vdigna»…), очакванията и отрицанието — никога.
+_FON_MOJE_PREDI = frozenset(("reshenie", "rechi", "vdigane", "namalyavane", "znachi_gore", "znachi_dolu"))
 
 
-def _fed_kontekst(t):
-    """Лихвата на Фед като ФОН на друга новина · фраза или None."""
-    return _FON_OT_VID.get(_lihva_vid(t))
+def _fed_kontekst(t, s_vid=False):
+    """Лихвата на Фед като ФОН на друга новина · фраза или None (с s_vid → (фраза, вид))."""
+    vid = _lihva_vid(t)
+    return (_FON_OT_VID.get(vid), vid) if s_vid else _FON_OT_VID.get(vid)
 
 
 def _fed_red(t, nachalo=True):
@@ -504,6 +663,10 @@ def _fed_red(t, nachalo=True):
         m = _FED_RESHENIE.search(t)
         if m and _predstoi(t, m.start(), m.end()):
             return "Преди решението на Фед за лихвата"   # новината е друга, случва се преди решението
+    # седмичният календар: «Fed Meeting, Dreamforce, Retail Sales: Key Events for the Week of Sept. 15»
+    if vid == "reshenie" and re.search(r"\b(?:week ahead|key events|events for the week|what to watch|what to expect|calendar|"
+                                       r"the week of|this week|next week|preview)\b", t, _I):
+        return "Преди решението на Фед за лихвата"
     return _RED_OT_VID.get(vid)
 
 
@@ -567,6 +730,13 @@ def _danni(t):
         return None
     poz, ime, kod, samo_sasht, cyal = nai
     d = "" if samo_sasht is None else _drzhava(t, samo_sasht)
+    # кодовете JOLTS/ADP/NFP/PCE/ISM са само американски: «UK payrolls drop» НЕ е NFP
+    if samo_sasht and kod and d not in ("", " в САЩ"):
+        kod = None
+    if kod == "NFP" and d != " в САЩ":
+        mm = _DANNI[2][0].search(t)
+        if mm and not re.search(r"(?i:non-?farm)|NFP", mm.group(0)) and not re.search(r"\b(?:US|U\.S\.)\s*$", t[:mm.start()]):
+            kod = None                     # голото «payrolls» без САЩ до него — без кода
     kod_s = " (%s)" % kod if kod else ""
     if cyal:
         return cyal + d + kod_s, _FON_CYAL.get(cyal, cyal[0].lower() + cyal[1:]) + d + kod_s, poz
@@ -609,7 +779,9 @@ _PREDMETI = (
     (r"(?:the )?crypto(?:currencies|currency)?(?: market| markets| prices)?", "Криптовалутите", "цена", True),
     (r"mortgage rates", "Ипотечните лихви", "доход", True),
 )
-_PREDMETI_RE = tuple((re.compile(r"^(?:" + p + r")\b", _I), bg, vid, mn) for p, bg, vid, mn in _PREDMETI)
+# «(?!-)»: сложното прилагателно не е предметът · «Oil-Driven Fed Bets Sink Gold Nearly 4%» е за
+# златото, не за петрола (пробата от живия файл, 30.09)
+_PREDMETI_RE = tuple((re.compile(r"^(?:" + p + r")\b(?!-)", _I), bg, vid, mn) for p, bg, vid, mn in _PREDMETI)
 
 _NAR = r"(?:(?:sharply|further|again|slightly|modestly|marginally|steadily|early|today|on \w+day)\s+)?"
 _POSOKI = (
@@ -735,13 +907,69 @@ _SPIRA = _r(r"^\s+(?:stalls?|stalled|fades?|faded|falters?|faltered|fizzles?|fiz
 # ── фонът · най-много два, по важност ─────────────────────────────────────
 _BLIZAK_IZTOK = _r(r"\b(?:Iran|Iranian|Israel|Israeli|Gaza|Hamas|Hezbollah|Houthis?|Yemen|Middle East|Mideast|Hormuz|Red Sea|Lebanon)\b")
 _UKRAYNA = _r(r"\b(?:Russia|Russian|Ukraine|Ukrainian|Kremlin|Putin|Zelensky\w*)\b")
-_NAPREZHENIE = _r(r"\b(?:war|wars|conflict|tensions?|attacks?|attacked|strikes?|struck|missiles?|drones?|(?<!de-)escalat\w*|risks?|crisis|"
-                  r"blockade|clash\w*|fighting|hostilities|invasion|military|bombing|shelling|threats?|unrest)\b")
-_MIR = _r(r"\b(?:ceasefire|cease-fire|truce|peace (?:talks|deal|plan|agreement|process|push|efforts?)|de-escalat\w*)\b")
+# «risk» е напрежение само до мястото («Hormuz risk», «Iran war risks», «Oil Supply Risks Deepen
+# as Hormuz…»), не «…Iran Bypasses US Sanctions as Oil Enigma Deepens Sell-Off Risk»;
+# «clash with» е образ («Iran diplomacy hopes clash with hawkish Fed expectations»)
+_NAPREZHENIE = _r(r"\b(?:war|wars|conflict|tensions?|attacks?|attacked|strikes?|struck|missiles?|drones?|(?<!de-)escalat\w*|crisis|"
+                  r"blockade|clashes|clashed|clash(?! with)|fighting|hostilities|invasion|military|bombing|shelling|threats?|unrest|"
+                  r"sanctions?)\b")
+_RISK = _r(r"\brisks?\b")
+_MIR = _r(r"\b(?:ceasefire|cease-fire|truce|peace(?: (?:talks|deal|plan|agreement|process|push|efforts?|proposal|offer|bid|hopes?|negotiations?))?|"
+          r"de-escalat\w*)\b")
 _PRIMIRIE = _r(r"\b(?:ceasefire|cease-fire|truce)\b")
+# мирът е ПРОВАЛЕН: отхвърлен, рухнал, нарушен… → това е напрежение, не мир
+_MIR_PROVAL = _r(r"\b(?:rejects?|rejected|rejecting|rebuff\w*|spurn\w*|dismiss\w*|collaps\w*|breaks? down|broke down|broken|"
+                 r"fails?|failed|failing|falls? apart|fell apart|falter\w*|fades?|faded|fading|stall\w*|violat\w*|breach\w*|"
+                 r"shatter\w*|crumbl\w*|derail\w*|scuttl\w*|dashed|dims?|dimmed|doubts?|jeopardi\w*|"
+                 r"no (?:ceasefire|cease-fire|truce|peace|deal)|without (?:a )?(?:ceasefire|cease-fire|truce|peace|deal)|"
+                 r"lack of|refuses?|refused|postpon\w*|delay\w*|cancel\w*|calls? off|called off)\b")
+# успокояване: пауза в ударите, дипломация, отслабващо напрежение — с напрежение заедно = не е ясно
+_DIPLOMACIA = _r(r"\bdiplomac\w*|\bdiplomatic\b|\btalks with\b|\bnegotiat\w*")
+_UTIHVANE = _r(r"\b(?:pause[sd]?|pausing|halt\w*|suspend\w*|pull(?:s|ed)? back|withdraw\w*|de-escalat\w*|calm\w*|"
+               r"(?:tensions?|fears?|worries) (?:ease[sd]?|easing|cool\w*|recede\w*|subside\w*|fade[sd]?)|easing tensions?|"
+               r"eases? (?:tensions?|fears?)|relief)\b")
+# думи, които казват, че примирието още НЕ е факт
+_MIR_NE_FAKT = _r(r"\b(?:hopes?|hoped|hoping|optimism|talks|negotiat\w*|offer\w*|propos\w*|plan|push|bid|efforts?|calls? for|"
+                  r"urges?|seeks?|seeking|possible|potential|prospects?|could|may|might|would|likely|nears?|close to|brokers?|"
+                  r"diplomac\w*|deal)\b|\?")
+
+
+def _blizo_do(rx_a, rx_b, t, prozorec=40):
+    """Има ли rx_b на ≤ prozorec знака от някое rx_a."""
+    for m in rx_a.finditer(t):
+        if rx_b.search(t[max(0, m.start() - prozorec):m.end() + prozorec]):
+            return True
+    return False
+
+
+def _geo_fon(t, rx_myasto, napr_fraza, kyde):
+    """Фонът за едно място (Близкия изток · Украйна) · фраза или None, когато не е ясно."""
+    napr = bool(_NAPREZHENIE.search(t)) or _blizo_do(rx_myasto, _RISK, t, 25)
+    mir = bool(_MIR.search(t))
+    # «Oil hits $108 as Gulf states postpone talks with Iran over Hormuz» — и отложената дипломация е провал
+    proval = (mir and _blizo_do(_MIR, _MIR_PROVAL, t, 40)) or _blizo_do(_DIPLOMACIA, _MIR_PROVAL, t, 30)
+    if proval:
+        return napr_fraza                  # «Trump rejects Iran truce offer» → напрежение
+    utih = bool(_UTIHVANE.search(t)) or bool(_DIPLOMACIA.search(t))
+    if napr and not (mir or utih):
+        return napr_fraza
+    if napr:
+        return None                        # и война, и успокояване в едно заглавие — без фон
+    if _PRIMIRIE.search(t) and not _blizo_do(_PRIMIRIE, _MIR_NE_FAKT, t, 40):
+        return "примирието " + kyde        # «Oil falls as Israel-Iran ceasefire holds»
+    if _DIPLOMACIA.search(t):
+        return "дипломатическите усилия " + kyde
+    if mir or _r(r"\bde-escalat\w*").search(t):
+        return ("надеждите за мир " if re.search(r"\bhop\w*|\boptimism\b", t, _I) else "усилията за мир ") + kyde
+    return None
 _MITA = _r(r"\b(?:tariffs?|trade war|trade tensions?|trade dispute|trade spat|levies)\b")
 _TARGOVIYA = _r(r"\b(?:trade (?:deal|talks|agreement|truce|negotiations?))\b")
-_CB_ZLATO = _r(r"\bcentral banks?\b.*\bgold\b|\bgold\b.*\bcentral banks?\b|\bPBOC\b.*\bgold\b|\bgold\b.*\bPBOC\b")
+# «покупките» само с дума за купуване до централните банки: «Central Banks Are Hiking Again, Yet
+# Gold Keeps Climbing» е за лихвите, не за покупки на злато (30.09)
+_CB_ZLATO = _r(r"^(?=.*\bgold\b).*?(?:\b(?:central banks?|PBOC)(?:'s?)?\b.{0,50}?\b(?:buy|buys|buying|bought|purchas\w*|demand|"
+               r"accumulat\w*|hoard\w*|stockpil\w*|adds?|adding|added)\b|\b(?:buying|purchases?|purchasing|demand|accumulation|"
+               r"hoarding|stockpiling)\b.{0,30}\b(?:by|from|of|among) (?:the )?(?:central banks?|PBOC)\b|"
+               r"\bcentral[- ]bank (?:gold )?(?:buying|purchases?|demand|accumulation|hoarding)\b)")
 # «Oil Stocks» са акции на петролни компании, не цената на петрола; «XAU/USD» е
 # златото, не доларът; «Treasuries» сами са облигациите, не доходността им
 _PETROL = _r(r"\b(?:oil|crude|brent|WTI)\b(?! (?:stocks|majors|companies|firms|producers|shares|giant))")
@@ -752,10 +980,14 @@ _SHUTDOWN = _r(r"\b(?:government )?shutdown\b")
 
 # «преди» · събитието предстои: «ahead of the Fed decision», «jobs data looms»,
 # «markets await Fed signals». Иначе връзката е «на фона на».
-_PREDI_PRED = _r(r"\b(?:ahead of|before|awaits?|awaiting|eyes|eyeing|braces? for|bracing for|in the run-up to|"
-                 r"prepares? for|preparing for|countdown to|watch(?:es|ing)? for|looks? ahead to)\b(?:\s+[\w'.,&%$-]+){0,5}\s*$")
-_PREDI_SLED = _r(r"^(?:\s+[\w'.-]+){0,2}\s+(?:looms?|looming|due|up next|on tap|on deck|in focus|test|approach(?:es)?|"
-                 r"next week|this week|later this week|coming up)\b")
+_PREDI_PRED = _r(r"\b(?:ahead of|before|awaits?|awaiting|eye|eyes|eyeing|braces? for|bracing for|in the run-up to|"
+                 r"prepares? for|preparing for|countdown to|watch(?:es|ing)? for|looks? ahead to|"
+                 # «Gold rebounds as traders position for Fed interest rate decision» (30.09)
+                 r"position(?:s|ing|ed)? (?:themselves )?(?:for|into)|gears? up for|gearing up for)\b"
+                 # «Wobbles Before Settling After Fed Raises Rates» — «before» е за друго, решението е минало
+                 r"(?:\s+(?!(?:after|following|since|post)\b)[\w'.,&%$-]+){0,5}\s*$")
+_PREDI_SLED = _r(r"^(?:\s+[\w'.-]+){0,2}\s+(?:looms?|looming|due|up next|on tap|on deck|in focus|test|approach(?:es)?|approaching|"
+                 r"nears|nearing|next week|this week|later this week|coming up|ahead(?! of))\b")
 
 
 def _predstoi(t, poz, kraj):
@@ -781,14 +1013,14 @@ def _fonove(t, predmet_klyuch=None, s_glagol=False, samo_silni=False):
         if fraza and mesto and all(fraza != x[0] for x in out):
             out.append((fraza, moje_predi and _predstoi(t, mesto[0], mesto[1])))
 
-    f = _fed_kontekst(t)
+    f, f_vid = _fed_kontekst(t, s_vid=True)
     if f == "Фед" and s_glagol:
         f = None                          # «Златото поскъпва на фона на Фед» не казва нищо вярно
     if f:
         # очакванията са сега по природа, станалото е станало; «преди» може само
         # решението, изказванията и общите решения («ahead of the Fed decision»)
         dobavi(f, _pyrvo(_r(r"\bFed\b|\bFederal Reserve\b|\bFOMC\b|\brate[- ]hikes?\b|\brate[- ]cuts?\b"), t),
-               moje_predi=f in ("решението на Фед за лихвата", "изказванията на членове на Фед", "решенията на Фед за лихвата"))
+               moje_predi=f_vid in _FON_MOJE_PREDI)
     d = _danni(t)
     if d:
         m = None
@@ -800,21 +1032,21 @@ def _fonove(t, predmet_klyuch=None, s_glagol=False, samo_silni=False):
         dobavi(d[1], m or (d[2], d[2] + 3))
     if _CB_ZLATO.search(t) and predmet_klyuch != "cb":
         dobavi("покупките на злато от централните банки", _pyrvo(_r(r"\bcentral banks?\b|\bPBOC\b"), t))
-    # Мир само когато няма и дума за напрежение: «Trump rejects peace deal to resolve
-    # Iran conflict» НЕ е примирие (проверката на 220 заглавия, 29.09).
+    # Геополитиката · никога «преди» (войната не е насрочено събитие: «Gold drops to three-day
+    # low, eyes $4,300 as … Iran risks» НЕ е «преди напрежението»). Мирът и напрежението — по
+    # _geo_fon (отхвърленото примирие е напрежение, не примирие · втората проверка, 29.09).
     m = _pyrvo(_BLIZAK_IZTOK, t)
-    if m and _NAPREZHENIE.search(t):
-        dobavi("напрежението в Близкия изток", m)
-    elif m and _PRIMIRIE.search(t):
-        dobavi("примирието в Близкия изток", m)
-    elif m and _MIR.search(t):
-        dobavi("преговорите за мир в Близкия изток", m)
-    elif _UKRAYNA.search(t) and _NAPREZHENIE.search(t):
-        dobavi("войната в Украйна", _pyrvo(_UKRAYNA, t))
-    elif _UKRAYNA.search(t) and _MIR.search(t):
-        dobavi("преговорите за мир в Украйна", _pyrvo(_UKRAYNA, t))
+    g = _geo_fon(t, _BLIZAK_IZTOK, "напрежението в Близкия изток", "в Близкия изток") if m else None
+    if g:
+        dobavi(g, m, moje_predi=False)
+    elif m:
+        pass                               # Близкият изток е тук, но не е ясно какво — без фон
+    elif _UKRAYNA.search(t):
+        g = _geo_fon(t, _UKRAYNA, "войната в Украйна", "в Украйна")
+        if g:
+            dobavi(g, _pyrvo(_UKRAYNA, t), moje_predi=False)
     elif re.search(r"\bgeopolitic\w*\b", t, _I):
-        dobavi("геополитическото напрежение", _pyrvo(_r(r"\bgeopolitic\w*\b"), t))
+        dobavi("геополитическото напрежение", _pyrvo(_r(r"\bgeopolitic\w*\b"), t), moje_predi=False)
     if _MITA.search(t):
         dobavi("митата", _pyrvo(_MITA, t))
     elif _TARGOVIYA.search(t):
@@ -829,6 +1061,10 @@ def _fonove(t, predmet_klyuch=None, s_glagol=False, samo_silni=False):
     # «движението на долара», «oil prices rise» е «цената на петрола».
     def s_hod(mesto):
         if not mesto:
+            return None
+        # «Gold gains as US Dollar and yields pause» — доларът стои, не се движи (30.09)
+        if re.match(r"^(?:\s+(?:and|&)\s+[\w-]+)?\s+(?:pauses?|paused|pausing|steady|steadies|steadied|(?:is |are )?flat|"
+                    r"unchanged|little changed|stalls?|stalled|stable|holds? steady)\b", t[mesto[1]:], _I):
             return None
         return mesto if _HOD.search(t[max(0, mesto[0] - 20):mesto[1] + 36]) else None
     if predmet_klyuch not in ("Петролът",):
@@ -917,7 +1153,9 @@ _ZLATO_MINI = re.compile(r"(?i:\b(?:gold|bullion)\b)|\bAu\b")
 # без «oz/ounces»: «Goldman Sachs maintains its forecast for gold at USD 5,400/oz» НЕ е минна новина
 _MINNI = _r(r"\b(?:drill\w*|intersects?|intersections?|intercepts?|assays?|mineraliz\w*|mineralis\w*|g/t|"
             r"exploration|prospecting|resource estimate|feasibility|PEA|deposit|mine|mines|miners?|mining|"
-            r"royalty|royalties|streaming|streamers?|(?:first |gold )pour|mill|ore|tailings)\b")
+            # «streaming» само като сделка на мините: «Gold Futures Streaming Chart» е графика (30.09)
+            r"royalty|royalties|streaming (?:company|companies|deal|agreement|interest|portfolio|business)|streamers?|"
+            r"(?:first |gold )pour|mill|ore|tailings)\b")
 # РЕЗУЛТАТИ от сондажи — само с белезите на резултат (засечен интервал, грамове на тон).
 # «Drill Targets», «Starts Drilling», «Drill Program Update» НЕ са резултати.
 _SONDAZHI = _r(r"\b(?:intersects?|intersections?|intercepts?|g/t|drill(?:ing)? results|assay results|drills \d)")
@@ -957,16 +1195,23 @@ def _cb_reshenie(t, ime):
             return bg + " намали лихвата"
         if re.match(r"^ (?:holds|held|keeps|kept|leaves|left|maintains)\b.{0,40}\brates?\b", o, _I):
             return bg + " запази лихвата"
-    m = _DRZHAVA_LIHVA.match(t)
+    m = _DRZHAVA_LIHVA.match(t) or _DRZHAVA_LIHVA_PAS.match(t)
     if m:
         cb = _DRZHAVA_CB_BG[m.group("d")] + " централна банка"
         gl = m.group("gl").lower()
-        if gl in ("raises", "hikes", "lifts"):
+        if gl in ("raises", "hikes", "lifts", "raised", "hiked", "lifted", "increased"):
             return cb + " вдигна лихвата"
-        if gl in ("cuts", "lowers"):
+        if gl in ("cuts", "lowers", "cut", "lowered", "reduced"):
             return cb + " намали лихвата"
         return cb + " запази лихвата"
     return None
+
+
+# «Japan's interest rate hiked to 31-year high at 1.25% as inflation rises» — решението на
+# банката, не данни за инфлацията (30.09)
+_DRZHAVA_LIHVA_PAS = _r(r"^(?P<d>Australia|Canada|Japan|India|Britain|UK|New Zealand|Switzerland|Mexico|Brazil|Turkey|South Korea|"
+                        r"Norway|Sweden)(?:'s)? (?:key |benchmark |policy |main )?(?:interest )?rate (?:is |was |has been )?"
+                        r"(?P<gl>hiked|raised|lifted|increased|cut|lowered|reduced|held|kept|left)(?= (?:to|by|at|unchanged|steady)\b)")
 
 
 # ══════════════════════════════════════════════════════════════════════════
@@ -1103,12 +1348,13 @@ def bg_red(zaglavie, emisiya=None, izvor=None):
             return r
     if _TRAMP_KAZVA.search(t):
         return _tramp_red(t, fed_poz)
-    # 8 · данните
+    # 8 · данните — освен когато начело стои решение на друга централна банка (30.09)
     d = _danni(t)
-    if d and (not fed_poz or d[2] <= fed_poz.start()):
+    r_cb = _cb_reshenie(t, None)
+    if d and not r_cb and (not fed_poz or d[2] <= fed_poz.start()):
         return d[0]
     # 9 · други централни банки · решение, или «<банката> и Фед», когато тя води
-    r = _cb_reshenie(t, None)
+    r = r_cb
     if r:
         return r
     if fed_poz and not fed_pryv:
@@ -1219,7 +1465,7 @@ PRIMERI = (
     ("Fed rate hike fails to calm troubled markets as Dow falls 600 points. Expect more sharp swings in stocks and bonds.", None,
      "За вдигане на лихвата от Фед"),
     ("Gold's Safe-Haven Premium Is Now Trading on Xi's Iran De-Escalation Push", None,
-     "Златото и преговорите за мир в Близкия изток"),
+     "Златото и усилията за мир в Близкия изток"),
     ("What this Kansas City Fed meeting means for the economy and inflation | Opinion", None, None),
     ("Bond Yields Are Pressuring Gold, But Miners May Tell a Different Story", None, None),
     ("Federal Reserve hikes key rate for 1st time in 3 years, defying Trump demands for a cut", None, "Фед вдигна лихвата"),
@@ -1250,6 +1496,92 @@ PRIMERI = (
     ("Fed's Williams Hints Next Rate Increase Can Wait", None, "Изказване на член на Фед (Williams) за вдигане на лихвата"),
     ("US Dollar Rises Early Tuesday Ahead of Packed Data, Fed Speaker Schedule", None,
      "Доларът поскъпва преди изказванията на членове на Фед"),
+    # от втората проверка (80 нови заглавия от историята + прегледа по групи, 29.09 вечер) — да не се върнат
+    ("Oil up, Wall Street dips after Trump rejects Iran truce offer", None,
+     "Петролът поскъпва на фона на напрежението в Близкия изток"),
+    ("Oil takes off again, Wall Street dips after Trump rejects Iran truce offer", None,
+     "Петролът и напрежението в Близкия изток"),
+    ("Oil jumps after Iran ceasefire collapses", None, "Петролът поскъпва на фона на напрежението в Близкия изток"),
+    ("Gold jumps as Iran rejects ceasefire proposal", None, "Златото поскъпва на фона на напрежението в Близкия изток"),
+    ("Oil falls after Iran truce talks break down", None, "Петролът поевтинява на фона на напрежението в Близкия изток"),
+    ("Gold rises as Russia rejects Ukraine peace plan", None, "Златото поскъпва на фона на войната в Украйна"),
+    ("Oil falls as Israel-Iran ceasefire holds", None, "Петролът поевтинява на фона на примирието в Близкия изток"),
+    ("Gold falls on Iran ceasefire hopes", None, "Златото поевтинява на фона на надеждите за мир в Близкия изток"),
+    ("Oil falls as Middle East tensions ease", None, "Петролът поевтинява"),
+    ("Gold Price Recovers To $4,450 On Trump's Iran Attack Pause", None, "Златото се връща нагоре"),
+    ("Gold consolidates as Iran diplomacy hopes clash with hawkish Fed expectations", None,
+     "Златото е без голяма промяна на фона на очакванията за по-висока лихва от Фед и дипломатическите усилия в Близкия изток"),
+    ("Oil hits $108 as Gulf states postpone talks with Iran over Hormuz", None, "Петролът и напрежението в Близкия изток"),
+    ("Gold drops to three-day low, eyes $4,300 as hawkish Fed and Iran risks underpin USD", None,
+     "Златото е на най-ниското си ниво от дни на фона на очакванията за по-висока лихва от Фед и напрежението в Близкия изток"),
+    ("Gold firms on softer dollar, inflation data and Mideast risks in focus", None,
+     "Златото поскъпва на фона на данните за инфлацията и напрежението в Близкия изток"),
+    ("Bitcoin Price Wobbles Before Settling After Fed Raises Rates", None, "Биткойн и решението на Фед за лихвата"),
+    ("UBS Expects Two Fed Rate Hikes by End of 2026 After Warsh Speech and Jobs Data", None,
+     "Очаквания за по-висока лихва от Фед"),
+    ("Trump lashes out at Fed after Warsh backs rate hike", None, "Тръмп и лихвата на Фед"),
+    ("Bitcoin Falls to $75,500 as Warsh Backs Fed Independence", None, "Биткойн поевтинява"),
+    ("Gold slips as Fed officials signal rate hikes", None, "Златото поевтинява на фона на изказванията на членове на Фед"),
+    ("More rate adjustments are likely needed to lower inflation, Fed Governor Barr says", None,
+     "Изказване на член на Фед (Barr) за инфлацията"),
+    ("In CT visit, Boston Fed President Collins backs rate hike, sees possible further increase", None,
+     "Изказване на член на Фед (Collins) за вдигане на лихвата"),
+    ("The Fed Hasn't Cut Rates Once This Year. Car Loans Got Cheaper Anyway.", None, "За лихвата на Фед"),
+    ("Fed unlikely to hike rates this week despite 87% market odds", None, "Очакванията за лихвата на Фед"),
+    ("Zheshang Securities: The implementation of the Federal Reserve's rate hike has improved liquidity expectations; "
+     "the firm is also bullish on gold allocation opportunities.", None, "Златото и вдигането на лихвата от Фед"),
+    ("Interest Rates and Gold: Why the Fed Didn't Move the Price", None, "Златото и лихвата на Фед"),
+    ("U.S. Treasury Yields Fall as Fed Regains Trust, BOE Leaves Rates Unchanged", None,
+     "Доходността на американските облигации спада"),
+    ("AI Safety Fears Collide with Fed Rate Hikes, Roiling Markets", None, "За вдигане на лихвата от Фед"),
+    ("Federal Reserve hawkish hike sent Gold price lower", None, "За вдигането на лихвата от Фед"),
+    ("Economists See Fed Defying Expectations for Rate Hikes", None, "Очакванията за лихвата на Фед"),
+    ("Fed should defy Donald Trump with rate rise, top economists say", None, "За вдигане на лихвата от Фед"),
+    ("Goldman flips on Fed rate hike, then backtracks on forecast", None, "Очакванията за лихвата на Фед"),
+    ("Fed's rate hike likely means more expensive credit cards, mortgages", None, "За вдигането на лихвата от Фед"),
+    ("Singapore Dollar Consolidates; Fed Rate-Hike Prospects Could Weigh", None, "Очаквания за по-висока лихва от Фед"),
+    ("Bond yields surge above 5% as Wall Street fears more Fed rate hikes", None,
+     "Доходността на облигациите расте на фона на очакванията за по-висока лихва от Фед"),
+    ("Warsh's Hawkish Background And The Federal Reserve's Policy Orientation - Analysis", None, "За лихвата на Фед"),
+    ("What makes the Federal Reserve decide to raise or lower interest rates?", None, "За лихвата на Фед"),
+    ("UK payrolls drop for fifth month as hiring slows", None, "Данни за работните места във Великобритания"),
+    ("Week Ahead: US Payrolls Test Rate Path After Fed and ECB Hikes", None, "Данни за работните места (NFP)"),
+    # от пробите 30.09 (40 от живия файл + нови 40 от историята) — да не се върнат
+    ("Oil-Driven Fed Bets Sink Gold Nearly 4%, Opening a Selective Rebound Case", None,
+     "Златото и очакванията за лихвата на Фед"),
+    ("Gold Futures Streaming Chart", None, None),
+    ("Experts Predict No Fed Rate Cut Next Week: What It Means", None, "Очакванията за лихвата на Фед"),
+    ("COMMENTARY: Where will Fed tightening hit hardest in Asia?", None, "За лихвата на Фед"),
+    ("Citi Trims Gold Positions Amid Tighter Fed Policy View", None, "Златото и очакванията за по-висока лихва от Фед"),
+    ("Gold gains as US Dollar and yields pause, but weekly loss remains in sight", None, "Златото поскъпва"),
+    ("MARKETS LIVE: Wall Street dips as oil steadies", None, "Американските акции падат"),
+    ("Federal Reserve Inflation Outlook Signals a Critical Warning for Investors", None, None),
+    ("Japan's interest rate hiked to 31-year high at 1.25% as inflation rises", None, "Японската централна банка вдигна лихвата"),
+    ("Gold rebounds as traders position for Fed interest rate decision", None,
+     "Златото се връща нагоре преди решението на Фед за лихвата"),
+    ("Treasury Curve Narrows: Fed Hike Risks Growth", None, "За вдигане на лихвата от Фед"),
+    ("Gold comes under pressure ahead of US PPI as Fed rate hike risks linger", None,
+     "Златото е под натиск на фона на очакванията за по-висока лихва от Фед, преди данните за цените на производител в САЩ (PPI)"),
+    ("Corporate finance chiefs lift inflation outlook, cite rates as concern - Fed survey", None, None),
+    ("Fed Rate Cut Delayed as Strong Jobs Data Tests Bitcoin", None, "За лихвата на Фед"),
+    ("Central Banks Are Hiking Again, Yet Gold Keeps Climbing", None, None),
+    ("Gold, silver rebound as soft data cools October Fed hike bets - Kitco PM Report", None,
+     "Златото и среброто се връщат нагоре на фона на очакванията за лихвата на Фед"),
+    ("Odds of October Rate Increase Drop as Fed's Williams Signals He's Open to a Pause", None, "Очакванията за лихвата на Фед"),
+    ("Bitcoin Breakout Cools as Fed Rate-Hike Bets Climb", None, "Биткойн и очакванията за по-висока лихва от Фед"),
+    ("Fed rate hike odds tumble to coin flip after Williams says no rush", None, "Очакванията за лихвата на Фед"),
+    ("Stocks edge higher ahead of US Fed rate call", None, "Акциите леко се качват преди решението на Фед за лихвата"),
+    ("Bond Yields Keep Rising Despite Drop in Oil Price, Dovish Fed Speech", None,
+     "Доходността на облигациите, изказванията на членове на Фед и цената на петрола"),
+    ("Gold rises as oil slide eases Fed hike fears, Iran talks stay in focus", None,
+     "Златото поскъпва на фона на очакванията за лихвата на Фед и цената на петрола"),
+    ("Gold slips as oil rally fans rate hike bets ahead of Fed meeting", None,
+     "Златото поевтинява на фона на очакванията за по-висока лихва от Фед и цената на петрола"),
+    ("Musalem Warns Excessive Cut in Fed Communications Could Raise Rates and Inflation", None,
+     "Изказване на член на Фед (Musalem) за инфлацията"),
+    ("Socgen remains bullish on gold price in Q4 as central banks won't get ahead of inflation", None, None),
+    ("Philippines Gold Prices Dip as Peso Conversion, Central Bank Demand and Dollar Moves Shape Outlook", None,
+     "Златото и покупките на злато от централните банки"),
     # централни банки, фондове, банки
     ("Goldman Sachs maintains its end-2027 forecast for gold at USD 5,400/oz", None, "Goldman Sachs запазва прогнозата си за златото"),
     ("Central banks bought 20 tonnes of gold in August, WGC says", None, "Централни банки купуват злато"),
