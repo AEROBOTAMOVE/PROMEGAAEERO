@@ -756,7 +756,7 @@ _PREDMETI = (
     (r"platinum(?: price| prices)?", "Платината", "цена", False),
     (r"palladium(?: price| prices)?", "Паладият", "цена", False),
     (r"copper(?: futures| price| prices)?", "Медта", "цена", False),
-    (r"(?:oil|crude|crude oil|brent|brent crude|WTI|US crude)(?: futures| price| prices)?", "Петролът", "цена", False),
+    (r"(?:oil|crude(?! palm)|crude oil|brent|brent crude|WTI|US crude)(?: futures| price| prices)?", "Петролът", "цена", False),
     (r"(?:the )?(?:canadian dollar|loonie)", "Канадският долар", "цена", False),
     (r"(?:the )?(?:australian dollar|aussie dollar)", "Австралийският долар", "цена", False),
     (r"(?:the )?(?:new zealand dollar|kiwi dollar)", "Новозеландският долар", "цена", False),
@@ -795,6 +795,7 @@ _POSOKI = (
                 r"(?:heads?|trades?|opens?|closes?|ends?|turns?|trends?|moves?|is|are|goes|go|finishes|settles?) lower|"
                 r"(?:is |are )?down\b|(?:is |are )?(?:falling|dropping|sliding|slipping|declining|"
                 r"sinking|tumbling|weakening|retreating)|corrects?|pulls? back|gives? up gains|"
+                r"(?:is |are )?(?:weaker|softer)(?! (?:than|for)\b)|"
                 r"(?:has|have) (?:fallen|dropped|declined|tumbled|slipped|plunged))\b")),
     ("otskok", _r(r"^" + _NAR + r"(?:rebounds?|rebounded|bounces?(?: back)?|bounced|recovers?|recovered|regains?|regained|"
                   r"pares? losses|claws? back|(?:is |are )?(?:bouncing|rebounding|recovering)|extends? (?:recovery|rebound|bounce)|"
@@ -804,6 +805,8 @@ _POSOKI = (
                 r"shoots? (?:up|higher|to)|extends? (?:gains|rally|rise|advance|climb|rebound)|breaks? (?:above|higher|out)|"
                 r"(?:heads?|trades?|opens?|closes?|ends?|turns?|trends?|moves?|is|are|goes|go|finishes|settles?|push(?:es)?|grinds) higher|"
                 r"(?:is |are )?up\b|(?:is |are )?(?:rising|climbing|gaining|surging|rallying|jumping|strengthening|firming|advancing)|"
+                # «Oil Stronger on Saudi Pipeline Shutdown» (третата проверка, 30.09)
+                r"(?:is |are )?(?:stronger|firmer)(?! (?:than|for)\b)|"
                 r"(?:has|have) (?:risen|climbed|jumped|surged|rallied|gained))\b")),
     ("natisk", _r(r"^(?:(?:is |are |comes? |stays? |remains? )?under (?:heavy |renewed |selling )?pressure|faces? (?:renewed |more |fresh |heavy )?(?:selling )?pressure|(?:is |are )?pressured)\b")),
     ("stoi", _r(r"^(?:holds? steady|steadies|steadied|(?:is |are )?steady|stays? steady|(?:is |are |trades? |stays? )?flat|"
@@ -886,6 +889,9 @@ def _posoka(ostatak, vid, mn):
         if vid_n == "rekord":
             return ("са на рекордни нива" if mn else "е на рекордно ниво")
         p = _period_bg(m)
+        # «Dollar jumps to near two-month high» — близо до върха, не на него (третата проверка, 30.09)
+        if vid_n in ("na_vryh", "na_dyno") and re.search(r"\b(?:near|nearly|almost|roughly)\b", m.group(0), _I):
+            vid_n = "blizo_vryh" if vid_n == "na_vryh" else "blizo_dyno"
         if p:
             return _nivo_bg(vid_n, p, mn)
         break                              # «rises to one-week high» — периодът не става, глаголът става
@@ -895,6 +901,9 @@ def _posoka(ostatak, vid, mn):
             # «Gold rebound stalls» — ходът е спрял, не върви
             if _SPIRA.match(o[m.end():]):
                 return None
+            # «BTC Gains Against XAUUSD» — ходът е спрямо друг актив, не цената (живо, 30.09)
+            if _SPRYAMO_AKTIV.match(o[m.end():]):
+                return None
             ed, mnoj = _GLAGOLI[vid][vid_p]
             return mnoj if mn else ed
     return None
@@ -902,6 +911,9 @@ def _posoka(ostatak, vid, mn):
 
 _SPIRA = _r(r"^\s+(?:stalls?|stalled|fades?|faded|falters?|faltered|fizzles?|fizzled|halts?|halted|loses steam|runs out|"
             r"reverses?|reversed|is over|ends)\b")
+_SPRYAMO_AKTIV = _r(r"^\s+(?:\w+\s+)?(?:against|versus|vs\.?|relative to|compared (?:to|with))\s+(?:the\s+)?"
+                    r"(?:gold|XAU\S*|silver|XAG\S*|bitcoin|BTC|ether\w*|ETH|crypto\w*|stocks|equities|S&P\b|Nasdaq|oil|crude|"
+                    r"copper|bonds?|Treasuries)\b")
 
 
 # ── фонът · най-много два, по важност ─────────────────────────────────────
@@ -922,7 +934,10 @@ _MIR_PROVAL = _r(r"\b(?:rejects?|rejected|rejecting|rebuff\w*|spurn\w*|dismiss\w
                  r"fails?|failed|failing|falls? apart|fell apart|falter\w*|fades?|faded|fading|stall\w*|violat\w*|breach\w*|"
                  r"shatter\w*|crumbl\w*|derail\w*|scuttl\w*|dashed|dims?|dimmed|doubts?|jeopardi\w*|"
                  r"no (?:ceasefire|cease-fire|truce|peace|deal)|without (?:a )?(?:ceasefire|cease-fire|truce|peace|deal)|"
-                 r"lack of|refuses?|refused|postpon\w*|delay\w*|cancel\w*|calls? off|called off)\b")
+                 r"lack of|refuses?|refused|postpon\w*|delay\w*|cancel\w*|calls? off|called off|"
+                 # третата проверка, 30.09
+                 r"turns? down|turned down|snubs?|snubbed|vetoe?s?|vetoed|scupper\w*|torpedo\w*|shoots? down|shot down|"
+                 r"walks? away from|walked away from|balks? at|balked at|says no to|said no to)\b")
 # успокояване: пауза в ударите, дипломация, отслабващо напрежение — с напрежение заедно = не е ясно
 _DIPLOMACIA = _r(r"\bdiplomac\w*|\bdiplomatic\b|\btalks with\b|\bnegotiat\w*")
 _UTIHVANE = _r(r"\b(?:pause[sd]?|pausing|halt\w*|suspend\w*|pull(?:s|ed)? back|withdraw\w*|de-escalat\w*|calm\w*|"
@@ -972,10 +987,20 @@ _CB_ZLATO = _r(r"^(?=.*\bgold\b).*?(?:\b(?:central banks?|PBOC)(?:'s?)?\b.{0,50}
                r"\bcentral[- ]bank (?:gold )?(?:buying|purchases?|demand|accumulation|hoarding)\b)")
 # «Oil Stocks» са акции на петролни компании, не цената на петрола; «XAU/USD» е
 # златото, не доларът; «Treasuries» сами са облигациите, не доходността им
-_PETROL = _r(r"\b(?:oil|crude|brent|WTI)\b(?! (?:stocks|majors|companies|firms|producers|shares|giant))")
-_DOLAR = _r(r"\b(?:dollar|greenback|DXY)\b|(?<![/\w])USD(?![/\w])")
+# «Silver gains as palm oil prices jump» — палмовото масло не е петрол (третата проверка, 30.09)
+_PETROL = _r(r"(?<!palm )(?<!olive )(?<!cooking )(?<!edible )(?<!vegetable )(?<!soybean )(?<!soy )(?<!sunflower )"
+             r"(?<!canola )(?<!rapeseed )(?<!coconut )(?<!fish )(?<!castor )(?<!essential )"
+             r"\b(?:oil|crude(?! palm)|brent|WTI)\b(?! (?:stocks|majors|companies|firms|producers|shares|giant|painting|paint))")
+# Доларът като валута, не като мярка или тикер (третата проверка, 30.09): «losing nearly 90 USD»,
+# «at USD 5,400/oz», «a 100 dollar» са суми; «BUG to USD Price Chart», «Euro to Dollar Rate» са
+# обмен; «Dollar Debasement Risks» е спор за стойността, не ход на долара.
+_DOLAR = _r(r"(?<!\d )(?<!\d)(?<!million )(?<!billion )(?<!trillion )(?<!\bto )(?<!-)"
+            r"(?:\b(?:dollar|greenback|DXY)\b|(?<![/\w])USD(?![/\w]))"
+            r"(?!\s*\$?\d)(?! (?:price|prices|per|converter|units?|rates?|debasement|dominance|hegemony|debt|store|general|tree)\b)")
 _DOHOD = _r(r"\byields?\b")
-_SHUTDOWN = _r(r"\b(?:government )?shutdown\b")
+# само спиране на работата на ПРАВИТЕЛСТВОТО: «Oil Stronger on Saudi Pipeline Shutdown», «refinery
+# shutdown», «Hormuz shutdown» НЕ са то (третата проверка, 30.09)
+_SHUTDOWN = _r(r"\b(?:(?:US|U\.S\.|federal) )?government shutdown\b")
 
 
 # «преди» · събитието предстои: «ahead of the Fed decision», «jobs data looms»,
@@ -994,7 +1019,11 @@ def _predstoi(t, poz, kraj):
     """Предстои ли събитието · само в своето изречение: «…surging ahead of midterms. Will
        Fed rate hikes actually help?» — «ahead of» е за изборите, не за Фед."""
     predi = t[max(0, poz - 60):poz]
-    k = max(predi.rfind(". "), predi.rfind("? "), predi.rfind("! "), predi.rfind("; "))
+    # «Markets Await U.S. PPI and CPI Data» — точката на «U.S.» не е край на изречението
+    # (третата проверка, 30.09); същата дължина, за да не се местят позициите
+    predi_b = re.sub(r"\b([A-Z])\.(?=[A-Z]\.)|\b([A-Z])\.(?= )|\b(St|vs|Mr|Ms|Dr|No)\.(?= )",
+                     lambda mm: (mm.group(1) or mm.group(2) or mm.group(3)) + "_", predi)
+    k = max(predi_b.rfind(". "), predi_b.rfind("? "), predi_b.rfind("! "), predi_b.rfind("; "))
     if k >= 0:
         predi = predi[k + 2:]
     return bool(_PREDI_PRED.search(predi) or _PREDI_SLED.search(t[kraj:kraj + 40]))
@@ -1029,7 +1058,9 @@ def _fonove(t, predmet_klyuch=None, s_glagol=False, samo_silni=False):
             if mm and mm.start() == d[2]:
                 m = (mm.start(), mm.end())
                 break
-        dobavi(d[1], m or (d[2], d[2] + 3))
+        # «…to Begin NFP Week» — седмицата на данните, данните още ги няма (третата проверка, 30.09)
+        if not (m and re.match(r"^\s+week\b", t[m[1]:], _I)):
+            dobavi(d[1], m or (d[2], d[2] + 3))
     if _CB_ZLATO.search(t) and predmet_klyuch != "cb":
         dobavi("покупките на злато от централните банки", _pyrvo(_r(r"\bcentral banks?\b|\bPBOC\b"), t))
     # Геополитиката · никога «преди» (войната не е насрочено събитие: «Gold drops to three-day
@@ -1593,6 +1624,27 @@ PRIMERI = (
     ("Gold Price Forecast: Falling Rates Support Key Trend-Line Bounce", None, "Анализ и прогноза за златото"),
     ("Kobo Resources Intersects Strong Gold Mineralisation at the Road Cut Zone with 19.0 m at 1.94 g/t Au", None,
      "Минна компания съобщава резултати от сондажи за злато"),
+    # третата проверка, 30.09 · фон, какъвто в заглавието няма (истински заглавия от историята)
+    ("Oil Stronger on Saudi Pipeline Shutdown", None, "Петролът поскъпва"),
+    ("Oil climbs as Hormuz shutdown fears grow", None, "Петролът поскъпва"),
+    ("Gold rises as US government shutdown drags on", None,
+     "Златото поскъпва на фона на спирането на работата на правителството на САЩ"),
+    ("Gold prices sink into red, losing nearly 90 USD in the first session of the week", None, "Златото поевтинява"),
+    ("Gold Bug Price Today: Live BUG to USD Price Chart & Market Data", None, None),
+    ("Gold rises to 4,400 USD per ounce", None, "Златото поскъпва"),
+    ("Gold gains as USD weakens", None, "Златото поскъпва на фона на движението на долара"),
+    ("Euro to Dollar Rate Ends at $1.1460 After Fed Hike; Banks Split on the Rebound", None,
+     "Еврото и решението на Фед за лихвата"),
+    ("Gold Above $4,400 As SEB Flags Dollar Debasement Risks - Gold Price Forecast", None, None),
+    ("Silver gains as palm oil prices jump", None, "Среброто поскъпва"),
+    ("Gold rises as Trump turns down Iran ceasefire offer", None, "Златото поскъпва на фона на напрежението в Близкия изток"),
+    ("Oil rises as Iran says no to ceasefire", None, "Петролът поскъпва на фона на напрежението в Близкия изток"),
+    ("Bitcoin vs Gold: BTC Gains Against XAUUSD as ETF Demand Remains Firm", "Google злато", None),
+    ("Gold Price Moves Higher as Markets Await U.S. PPI and CPI Data", None,
+     "Златото поскъпва преди данните за цените на производител в САЩ (PPI)"),
+    ("Dollar jumps to near two-month high on Fed outlook, oil climb", None,
+     "Доларът е близо до най-високото си ниво от месеци на фона на очакванията за лихвата на Фед и цената на петрола"),
+    ("Gold Breaks Below $4,200 to Begin NFP Week on a Bearish Note", None, "Златото поевтинява"),
     # това правилата НЕ пипат
     ("Could SpaceX be worth $12 trillion one day? Citi says Starship gets it a step closer.", None, None),
     ("How gold surpassed cocaine as Peru's most profitable criminal industry", None, None),
