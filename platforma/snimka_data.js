@@ -1,4 +1,4 @@
-// СНИМКА · netlify/functions/_lib/data.mjs на AERO_КЛИЕНТ · 2026-09-29T09:36 UTC · sha256 40032587074ee052
+// СНИМКА · netlify/functions/_lib/data.mjs на AERO_КЛИЕНТ · 2026-09-30T06:35 UTC · sha256 28a0b835837ba7d2
 // СНИМКА · дословни извадки, НЕ СЕ ПИШАТ НА РЪКА: node platforma/proba_karti.mjs snimka <AERO_КЛИЕНТ>
 const RE_CENI = /([\d,]+\.\d+)\s*(?:\([^)]*\))?\s*→\s*([\d,]+\.\d+)/;
 const RE_VHOD = /вход\s+<?c?o?d?e?>?\s*([\d,]+\.\d+)/;
@@ -22,8 +22,20 @@ function celiOt(g) {
   return out;
 }
 const ZAKON_BROENE = "sdelka";
-const ZAKON_POZICII = 1;
-const hodPips = (vhod, izhod, dir) => Math.round(Number((((izhod - vhod) * dir) / 0.1).toFixed(6)));
+const ZAKON_POZICII = "polovin";
+const hodPips = (vhod, izhod, dir) => Math.round(Number((((izhod - vhod) * dir) / 0.1).toFixed(6)) * 10) / 10;
+const POL_CEL1 = 50;
+const POL_STOP = 130;
+const polCel2 = (dir) => (dir > 0 ? 130 : 100);
+const polDvoika = (halves, kind) => ({ halves, sum: (halves[0] + halves[1]) / 2, kind });
+function polovinZakon(nv, vid, dir, naVh, hod) {
+  const v = vid === "tp3" ? "tp2" : String(vid || "");
+  if (nv >= 2 || v === "tp2") return polDvoika([POL_CEL1, polCel2(dir)], "tp2");
+  if (v === "sl") return polDvoika(nv >= 1 ? [POL_CEL1, 0] : naVh ? [0, 0] : [-POL_STOP, -POL_STOP], "sl");
+  const x = Number.isFinite(hod) ? Math.round(hod * 10) / 10 : 0;
+  const h2 = nv >= 1 || naVh ? Math.max(0, x) : x;
+  return polDvoika([nv >= 1 ? POL_CEL1 : h2, h2], v);
+}
 const ZAPIS_D = true;
 function dOt(k, ev) {
   const d = ZAPIS_D && k ? k.d : null;
@@ -46,6 +58,7 @@ function dOt(k, ev) {
 function sdelkiOtKarti(text, zakonBroene = ZAKON_BROENE, pozicii = ZAKON_POZICII) {
   const poKarti = zakonBroene === "karta";
   const dvePoz = pozicii === 2;                               // пътят назад · старото броене
+  const naPol = pozicii === "polovin";                        // 29.09 · законът на половините за цялата история
   const redove = String(text).split(/\r?\n/);
   const spis = [];           // всички входове по ред · затворените остават, за да се разпознае остатъкът
   let ostatak = 0, bezVhod = 0;
@@ -251,6 +264,22 @@ function sdelkiOtKarti(text, zakonBroene = ZAKON_BROENE, pozicii = ZAKON_POZICII
     /* стопът е на входа при +40, а цел 1 НЕ е взета (бот v18.85) → hit.be вместо hit.tp1:
        числото е същото (0), но платформата не бива да пише «цел 1», щом цел 1 не е падала */
     const be40 = !!v.be40 && v.cel < 1;
+    if (naPol) {
+      /* 29.09 · ЗАКОНЪТ НА ПОЛОВИНИТЕ (polovinZakon) · същите изходи и същото доказателство за цел 1 като досега:
+         карта ЦЕЛ 1 (v.cel), ✅ «стопът беше на входа» (z.naVhoda), карта «стопът на входа» при +40 (be40) */
+      const nvP = z.vid === "tp2" ? 2 : z.vid === "sl" ? (z.naVhoda && !be40 ? Math.max(1, v.cel) : v.cel) : v.cel;
+      const P = polovinZakon(nvP, z.vid, v.dir, be40, Number.isFinite(z.px) ? hodPips(v.entry, z.px, v.dir) : null);
+      const hitP = z.vid === "tp2" ? { tp1: true, tp2: true } : z.vid === "sl"
+        ? (z.naVhoda ? (be40 ? { be: true } : { tp1: true }) : {}) : v.cel >= 1 ? { tp1: true } : be40 ? { be: true } : {};
+      out.push({
+        id: (v.dir === 1 ? "long" : "short") + "|" + v.entry.toFixed(2) + "|" + isoUtc(v.otv).slice(0, 16),
+        direction: v.dir === 1 ? "long" : "short", entry: v.entry, opened: v.bezVhod ? null : isoUtc(v.otv), slot: "main",
+        levels: { tp1: v.celi[0] !== undefined ? v.celi[0] : null, tp2: v.celi[1] !== undefined ? v.celi[1] : null, sl: v.sl },
+        closed: isoUtc(z.t), hit: hitP, exit_kind: z.vid, exit_px: Number.isFinite(z.px) ? z.px : null,
+        parts: P.halves, sum_pips: P.sum, izvor_zapis: "karti", zakon: v.otv < NOV_ZAKON ? "star" : "nov", mode: "polovin",
+      });
+      continue;
+    }
     let parts, hit;
     if (dvePoz) {
       /* пътят назад · двете позиции, точно както се броеше до 21.09 */

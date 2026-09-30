@@ -35,8 +35,11 @@ const TUK = dirname(fileURLToPath(import.meta.url));
 const IZVORI = {
   data: {
     pat: "netlify/functions/_lib/data.mjs", snimka: "snimka_data.js",
+    /* 30.09 · v18.97 · законът на половините за цялата история: sdelkiOtKarti вика polovinZakon
+       (и неговите POL_CEL1 · POL_STOP · polCel2 · polDvoika) — без тях CI гърми с ReferenceError */
     imena: ["RE_CENI", "RE_VHOD", "golo", "chislo", "isoUtc", "celiOt", "ZAKON_BROENE",
-      "ZAKON_POZICII", "hodPips", "ZAPIS_D", "dOt", "sdelkiOtKarti", "RE_OBSHTO", "RE_KRAEN", "poziciiOtKarti"],
+      "ZAKON_POZICII", "hodPips", "POL_CEL1", "POL_STOP", "polCel2", "polDvoika", "polovinZakon",
+      "ZAPIS_D", "dOt", "sdelkiOtKarti", "RE_OBSHTO", "RE_KRAEN", "poziciiOtKarti"],
     vrashta: ["sdelkiOtKarti", "poziciiOtKarti"],
   },
   app: {
@@ -52,7 +55,8 @@ const IZVORI = {
     /* 29.09 · v18.95 · и ledgerOt на профила (сделките на половини носят "mode" и sum_pips) */
     imena: ["PIP", "BR_CELI", "STOP_P", "CEL2_P", "ednaPoz", "hodP", "num", "ENT", "razEnt", "gol",
       "RE_CEL", "vhodOt", "izhodOt", "beOt", "sglobiSdelki", "chastiZatvorena", "imeCeli",
-      "prichinaZatv", "CELI_K", "utcDate", "ZHARGON", "bezZhargon", "prichinaLedger", "ledgerOt"],
+      "prichinaZatv", "CELI_K", "utcDate", "fmt", "cena", "ZHARGON", "bezZhargon", "prichinaLedger", "ledgerOt"],
+    /* 30.09 · fmt · cena: ZHARGON на профила преписва цената в причината («4,302.87» → «4 302,87») */
     vrashta: ["vhodOt", "sglobiSdelki", "chastiZatvorena", "prichinaZatv", "ledgerOt"],
   },
 };
@@ -131,6 +135,8 @@ function vhodoveOt(sglobiSdelki, chastiZatvorena, prichinaZatv, karti, otMs) {
     tp: (v.tp || []).map((x) => r2(x.px)),
     zatv: v.zatv ? v.zatv.vid : null,
     ch: v.zatv ? chastiZatvorena(v).ch : null,
+    /* 30.09 · v18.97 · двете половини на сделката (законът на половините за цялата история) · null = четецът не ги дава */
+    halves: v.zatv ? (chastiZatvorena(v).halves || null) : null,
     prichina: v.zatv ? prichinaZatv(v) : null,
   }));
 }
@@ -164,16 +170,18 @@ async function cheti(izvor, bazaP, pylenP, ot) {
     neprochetni_novi: s1.neprochetni.filter((n) => String(n.utc) >= ot),
     sdelki: noviS.map((x) => ({ direction: x.direction, entry: r2(x.entry), tp1: r2(x.levels.tp1),
       tp2: r2(x.levels.tp2), sl: r2(x.levels.sl), hit: x.hit, exit_kind: x.exit_kind, sum: x.sum_pips,
-      mode: x.mode || null })),                  // 29.09 · v18.95 · сделката на половини
+      mode: x.mode || null,                      // 29.09 · v18.95 · сделката на половини
+      parts: Array.isArray(x.parts) ? x.parts : null })),   // 30.09 · v18.97 · двете половини
     pozicii: p1.pozicii.filter((p) => String(p.closed) >= ot).map((p) => ({ slot: p.slot,
       direction: p.direction, entry: r2(p.entry), kraj: p.kraj, pipsove: p.pipsove, daden: p.daden })),
     vhod_app: vhod(C.app.vhodOt),
     vhod_profil2: vhod(C.profil2.vhodOt),
     ledger: L.map((x) => ({ dir: x.dir, entry: r2(x.entry), vid: x.vid, sbor: x.sbor, be40: !!x.be40,
-      vzeti: x.vzeti, tp: x.tp.map((t) => r2(t.px)), prichina: x.prichina })),
+      vzeti: x.vzeti, tp: x.tp.map((t) => r2(t.px)), prichina: x.prichina,
+      halves: Array.isArray(x.halves) ? x.halves : null })),   // 30.09 · v18.97
     /* 29.09 · v18.95 · и дневникът на профила (profil2.js · ledgerOt) върху сделките на сървъра */
     ledger_profil2: (C.profil2.ledgerOt(noviS) || []).map((x) => ({ dir: x.dir, entry: r2(x.entry), vid: x.vid,
-      sbor: x.sbor })),
+      sbor: x.sbor, halves: Array.isArray(x.halves) ? x.halves : null })),
     app_karti: vhodoveOt(C.app.sglobiSdelki, C.app.chastiZatvorena, C.app.prichinaZatv, karti, otMs),
     profil2_karti: vhodoveOt(C.profil2.sglobiSdelki, C.profil2.chastiZatvorena, C.profil2.prichinaZatv, karti, otMs),
   };

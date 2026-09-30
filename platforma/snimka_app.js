@@ -1,4 +1,4 @@
-// СНИМКА · app.js на AERO_КЛИЕНТ · 2026-09-29T09:36 UTC · sha256 98c592239d7c4b10
+// СНИМКА · app.js на AERO_КЛИЕНТ · 2026-09-30T06:35 UTC · sha256 5b85f5b9d265cfd5
 // СНИМКА · дословни извадки, НЕ СЕ ПИШАТ НА РЪКА: node platforma/proba_karti.mjs snimka <AERO_КЛИЕНТ>
 const PIP = 0.1;                 // 1 пипс = 0.10 $ на унция
   const BR_CELI = 2;
@@ -6,16 +6,16 @@ const PIP = 0.1;                 // 1 пипс = 0.10 $ на унция
   const STOP_P = 130;                                   // стоп преди цел 1 · разстояние 13 $
   const CEL2_P = (dir) => (dir > 0 ? 130 : 100);        // цел 2 · 13 $ покупка / 10 $ продажба
   function ednaPoz(ch, nv, vid, dir, naVh) {
-    /* naVh · 22.09 · бот v18.85: стопът е отишъл на входа при +40 (картата exit-be), преди цел 1 →
-       стоп след това е 0, не −130 (сметката е същата като след цел 1) */
-    if (nv >= 2 || vid === 'tp2' || vid === 'tp3') return CEL2_P(dir);
-    if (vid === 'sl') return nv >= 1 || naVh ? 0 : -STOP_P;
-    /* обрат / по време: при една позиция — самата тя; при старите две — ВТОРАТА, защото тя е
-       стояла до изхода (първата е излизала на цел 1). След цел 1 стопът е на входа → не под нулата. */
-    const h = Math.round(ch.length === 1 ? ch[0] : ch[Math.min(1, ch.length - 1)]);
-    return nv >= 1 || naVh ? Math.max(0, h) : h;
+    const dv = (h, kind) => ({ sbor: (h[0] + h[1]) / 2, halves: h, kind });
+    const v = vid === 'tp3' ? 'tp2' : String(vid || '');
+    if (nv >= 2 || v === 'tp2') return dv([50, CEL2_P(dir)], 'tp2');
+    if (v === 'sl') return dv(nv >= 1 ? [50, 0] : naVh ? [0, 0] : [-STOP_P, -STOP_P], 'sl');
+    const h0 = ch.length === 1 ? ch[0] : ch[Math.min(1, ch.length - 1)];
+    const x = Number.isFinite(h0) ? Math.round(h0 * 10) / 10 : 0;
+    const h2 = nv >= 1 || naVh ? Math.max(0, x) : x;
+    return dv([nv >= 1 ? 50 : h2, h2], v);
   }
-  const hodP = (vhod, izhod, dir) => Math.round(Number((((izhod - vhod) * dir) / PIP).toFixed(6)));
+  const hodP = (vhod, izhod, dir) => Math.round(Number((((izhod - vhod) * dir) / PIP).toFixed(6)) * 10) / 10;
   function num(v) {
     if (v === null || v === undefined || v === '') return null;
     if (typeof v === 'number') return Number.isFinite(v) ? v : null;
@@ -81,9 +81,14 @@ const PIP = 0.1;                 // 1 пипс = 0.10 $ на унция
          накрая · мерено 22.09 в live/sdelki.json: 64 от 64 записа — стоп = вход ⇔ стопът е бил преместен). */
       const slL = num(Lv.sl);
       const naVh = !!(hit.be || hit.be40 || x.stop_at_entry === true || (entry !== null && slL !== null && Math.abs(slL - entry) < 0.01));
-      /* 29.09 · бот v18.95 · сделка на ДВЕ ПОЛОВИНИ ("mode":"polovin" в sdelki.json и в сглобеното от сървъра):
-         числото е на СДЕЛКАТА — sum_pips (средното на половините: +90/+75/+25/0/−130…), не законът за една позиция */
-      const sbor = x.mode === 'polovin' && num(x.sum_pips) !== null ? num(x.sum_pips) : ednaPoz(ch, nv, vid, dir, naVh);
+      /* 29.09 · ЗАКОНЪТ НА ПОЛОВИНИТЕ за цялата история. Записът на половини ("mode":"polovin" · бот v18.95 и
+         сглобеното от сървъра) носи числото на СДЕЛКАТА — sum_pips (средното на половините: +90/+75/+25/0/−130…).
+         Всеки друг запис (старият дневник на бота) дава само КОЙ е изходът (hit · exit_kind · стоп = вход);
+         числото му е по стария закон и не се взима → ednaPoz (законът на половините). */
+      const P = x.mode === 'polovin' && num(x.sum_pips) !== null
+        ? { sbor: num(x.sum_pips), halves: ch.length === 2 ? ch.slice() : null, kind: vid }
+        : ednaPoz(ch, nv, vid, dir, naVh);
+      const sbor = P.sbor;
       out.push({
         dir, entry, d: utcDate(x.opened || x.otvoreno || x.vhod_utc || x.opened_utc),
         zatvD, chasti: [sbor], sbor,
@@ -93,6 +98,9 @@ const PIP = 0.1;                 // 1 пипс = 0.10 $ на унция
         starZakon: x.zakon === 'star', otKarti: x.izvor_zapis === 'karti',
         prichina: (x.prichina || x.reason) ? bezZhargon(String(x.prichina || x.reason)) : prichinaLedger(vid, nv, tp.length, naVh),
       });
+      /* 29.09 · ВСЯКА сделка носи режима, половините и вида до mod/core.js · krai (видът: «Цел 2» · «Цел 1 + вход» ·
+         «На входа» · «Стоп» · «Друг изход») — старите вече са преброени на половини */
+      { const o = out[out.length - 1]; o.mode = 'polovin'; o.halves = P.halves; o.exit_kind = P.kind; }
     });
     return out.length ? out.sort((p, q) => p.zatvD - q.zatvD) : null;
   }
@@ -205,17 +213,23 @@ const PIP = 0.1;                 // 1 пипс = 0.10 $ на унция
   }
   function chastiZatvorena(v) {
     const z = v.zatv;
-    /* 29.09 · бот v18.95 · сделка на две половини → числото, което ботът е написал за СДЕЛКАТА */
-    if (v.polovin && Number.isFinite(z.sbor)) return { ch: [z.sbor], otBota: false };
     const k = Math.min(v.maxCel, v.tp.length);
     const vid = z.vid === 'tp3' ? 'tp2' : z.vid;
+    /* 29.09 · бот v18.95 · сделка на две половини → числото, което ботът е написал за СДЕЛКАТА */
+    if (v.polovin && Number.isFinite(z.sbor)) return { ch: [z.sbor], otBota: false, halves: null, kind: vid, nv: k };
+    /* 29.09 · законът на половините (ednaPoz) · цел 1 = картата ЦЕЛ 1 или ✅ «стопът беше на входа» без карта
+       «стопът на входа» при +40 (както сървърът · data.mjs) */
+    const nv = vid === 'sl' && z.naVhoda && !v.be40 ? Math.max(1, k) : k;
     const hod = Number.isFinite(z.to) ? [hodP(v.entry, z.to, v.dir)] : (z.parts && z.parts.length ? z.parts : [0]);
-    return { ch: [ednaPoz(hod, k, vid, v.dir, !!(v.be40 || z.naVhoda))], otBota: false };
+    const P = ednaPoz(hod, nv, vid, v.dir, !!(v.be40 || z.naVhoda) && nv < 1);
+    return { ch: [P.sbor], otBota: false, halves: P.halves, kind: P.kind, nv };
   }
   function imeCeli(k) { return k === 1 ? 'цел 1' : k === 2 ? 'цел 1 и цел 2' : 'целите'; }
   function prichinaZatv(v) {
     const z = v.zatv;
-    const k = Math.min(v.maxCel, v.tp.length);
+    const k0 = Math.min(v.maxCel, v.tp.length);
+    /* 29.09 · ✅ «стопът беше на входа» без карта «+40» = цел 1 е взета (както chastiZatvorena и сървърът) */
+    const k = z.vid === 'sl' && z.naVhoda && !v.be40 ? Math.max(1, k0) : k0;
     const naVh = !!(v.be40 || z.naVhoda);
     if (k >= v.tp.length) return 'всички цели взети';
     if (z.vid === 'sl') return k ? imeCeli(k) + ', после стоп на входа' : naVh ? 'стоп на входа след +40' : 'стоп преди цел 1';
