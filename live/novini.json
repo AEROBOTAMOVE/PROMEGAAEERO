@@ -1,38 +1,69 @@
 {
- "kogato": "2026-09-30T07:11:14Z",
- "sekundi": 0.67,
+ "kogato": "2026-09-30T07:46:18Z",
+ "sekundi": 7.34,
  "broi": 200,
- "novi_tozi_pyt": 9,
+ "novi_tozi_pyt": 3,
  "iztochnici_ok": [
-  "Fed всички",
   "Fed политика",
-  "Fed речи",
-  "Investing",
+  "Fed всички",
   "MarketWatch",
+  "Fed речи",
   "Yahoo долар",
   "Yahoo злато",
+  "Investing",
   "CNBC",
   "FT пазари",
-  "Google Fed",
-  "Google злато",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google злато",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  },
+  {
+   "ime": "Google Fed",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.4с",
-  "новини · FT пазари · 25 бр. за 0.42с",
-  "новини · Fed всички · 5 бр. за 0.14с",
-  "новини · Fed политика · 15 бр. за 0.16с",
-  "новини · Fed речи · 15 бр. за 0.17с",
-  "новини · Google Fed · 40 бр. за 0.43с",
-  "новини · Google злато · 40 бр. за 0.58с",
-  "новини · Investing · 10 бр. за 0.18с",
-  "новини · MarketWatch · 10 бр. за 0.21с",
-  "новини · Mining.com · 36 бр. за 0.65с",
-  "новини · Yahoo долар · 12 бр. за 0.3с",
-  "новини · Yahoo злато · 18 бр. за 0.32с"
+  "новини · CNBC · 30 бр. за 0.34с",
+  "новини · FT пазари · 25 бр. за 0.51с",
+  "новини · Fed всички · 5 бр. за 0.23с",
+  "новини · Fed политика · 15 бр. за 0.21с",
+  "новини · Fed речи · 15 бр. за 0.24с",
+  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Investing · 10 бр. за 0.31с",
+  "новини · MarketWatch · 10 бр. за 0.23с",
+  "новини · Mining.com · 36 бр. за 0.67с",
+  "новини · Yahoo долар · 12 бр. за 0.25с",
+  "новини · Yahoo злато · 18 бр. за 0.27с"
  ],
  "novini": [
+  {
+   "zaglavie": "Gold Approaches a Critical Juncture Ahead of US PCE Data, Prompting Selling",
+   "vryzka": "https://www.investing.com/analysis/gold-approaches-a-critical-juncture-ahead-of-us-pce-data-prompting-selling-200688662",
+   "izvor": "Investing.com",
+   "chas": "2026-09-30T07:08:00Z",
+   "vazhnost": 3,
+   "za": "злато",
+   "emisiya": "Investing",
+   "chas_ot_iztochnika": true,
+   "duma": "pce",
+   "zashto": "Това е измерването на инфлацията, което Fed гледа най-внимателно при решението за лихвата."
+  },
+  {
+   "zaglavie": "Gold Reacts at the 4H FVG: Will $4,200 Come Into Play?",
+   "vryzka": "https://www.investing.com/analysis/gold-reacts-at-the-4h-fvg-will-4200-come-into-play-200688659",
+   "izvor": "Investing.com",
+   "chas": "2026-09-30T06:55:00Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Investing",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото."
+  },
   {
    "zaglavie": "Gold prices have pulled back — but a Morgan Stanley strategist sees 3 key reasons to hold the precious metal",
    "vryzka": "https://news.google.com/rss/articles/CBMibkFVX3lxTE1LUXRiRGdoQ1lHR1oxUEpocWtxc1lydE5DRF8tZnUzOVNEOEFQanNBRzYwVmVrR1ZDUzlLaEpFVkFiWE1UdDdwWi1ic2NTelM5SzVFVS1KaU5ITk83TTFGNXkxMXVHWmVUVnp6TkhR?oc=5",
@@ -116,6 +147,18 @@
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null
+  },
+  {
+   "zaglavie": "Oil Prices Climb as Trump Rules Out Easing Iran Sanctions",
+   "vryzka": "https://www.investing.com/analysis/oil-prices-climb-as-trump-rules-out-easing-iran-sanctions-200688653",
+   "izvor": "Investing.com",
+   "chas": "2026-09-30T06:17:00Z",
+   "vazhnost": 3,
+   "za": "общо",
+   "emisiya": "Investing",
+   "chas_ot_iztochnika": true,
+   "duma": "sanctions",
+   "zashto": "Санкциите разбъркват търговията и валутите; златото е убежището при такова."
   },
   {
    "zaglavie": "Europe’s Gas Crisis Deepens as Hormuz LNG Crunch Drives Prices Higher",
@@ -2290,42 +2333,6 @@
    "zashto": null
   },
   {
-   "zaglavie": "Video - CEO Clips: Hemlo Mining: A New Chapter for an Iconic Canadian Gold Mine",
-   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/video-ceo-clips-hemlo-mining-164700672.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-09-29T16:47:00Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото."
-  },
-  {
-   "zaglavie": "Video - CEO Clips: Hemlo Mining: Building on 40 Years of Gold Production in Ontario",
-   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/video-ceo-clips-hemlo-mining-164700672.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-09-29T16:47:00Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото."
-  },
-  {
-   "zaglavie": "Middle Eastern oil exports rise to highest level since Iran war began",
-   "vryzka": "https://www.ft.com/content/26c54c8c-931c-4d84-9cf3-fd3e9b5e215d?syn-25a6b1a6=1",
-   "izvor": "Financial Times",
-   "chas": "2026-09-29T16:46:57Z",
-   "vazhnost": 3,
-   "za": "общо",
-   "emisiya": "FT пазари",
-   "chas_ot_iztochnika": true,
-   "duma": "war",
-   "zashto": "Война значи страх, а страхът гони парите към златото."
-  },
-  {
    "zaglavie": "Barr, Economic Conditions and Monetary Policy",
    "vryzka": "https://www.federalreserve.gov/newsevents/speech/barr20260929a.htm",
    "izvor": "Fed",
@@ -2416,10 +2423,10 @@
    "chas": "2026-09-16T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed всички",
+   "emisiya": "Fed политика",
    "chas_ot_iztochnika": true,
    "duma": "fomc",
-   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото."
+   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото."
   },
   {
    "zaglavie": "Federal Reserve Board and Federal Open Market Committee release economic projections from the September 15-16 FOMC meeting",
@@ -2428,10 +2435,10 @@
    "chas": "2026-09-16T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed всички",
+   "emisiya": "Fed политика",
    "chas_ot_iztochnika": true,
    "duma": "fomc",
-   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото."
+   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото."
   }
  ]
 }
