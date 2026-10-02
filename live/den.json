@@ -1,64 +1,53 @@
 {
- "den": "2026-10-01",
- "sazdadeno_utc": "2026-10-01T04:01:00Z",
+ "den": "2026-10-02",
+ "sazdadeno_utc": "2026-10-02T04:01:00Z",
  "v": "v18.98",
- "cena": 4175.65,
- "bazis": 25.77,
+ "cena": 4179.81,
+ "bazis": 26.67,
  "nosht": {
-  "ot": null,
-  "do": null,
-  "shirina": null,
-  "atr": 93.89,
-  "dyal_atr": null,
-  "rezhim": "неясно"
+  "ot": 4125.07,
+  "do": 4184.04,
+  "shirina": 58.97,
+  "atr": 89.71,
+  "dyal_atr": 0.562,
+  "rezhim": "средна"
  },
  "vchera": {
-  "vryh": 4225.33,
-  "dyno": 4152.43,
-  "zatvaryane": 4160.93
+  "vryh": 4196.18,
+  "dyno": 4142.73,
+  "zatvaryane": 4175.63
  },
- "idei": [],
+ "idei": [
+  {
+   "posoka": "long",
+   "nivo": 4125.07,
+   "stop": 4112.07,
+   "celi": [
+    4130.07,
+    4138.07
+   ],
+   "izvor": "нощно дъно",
+   "belezhka": "наблюдение, не вход: сигнал е само картата ВЛЕЗ · нивото е с разликата към борсата от своя час",
+   "nablyudenie": true
+  },
+  {
+   "posoka": "short",
+   "nivo": 4184.04,
+   "stop": 4197.04,
+   "celi": [
+    4179.04,
+    4174.04
+   ],
+   "izvor": "нощен връх",
+   "belezhka": "наблюдение, не вход: сигнал е само картата ВЛЕЗ · нивото е с разликата към борсата от своя час",
+   "nablyudenie": true
+  }
+ ],
  "sabitiya": [
   {
-   "ime": "Initial Jobless Claims",
-   "utc": "2026-10-01T12:30:00Z",
-   "sila": "high",
-   "prozorec_min": [
-    20,
-    40
-   ]
-  },
-  {
-   "ime": "FOMC Member Barkin Speaks",
-   "utc": "2026-10-01T13:05:00Z",
-   "sila": "high",
-   "prozorec_min": [
-    20,
-    40
-   ]
-  },
-  {
-   "ime": "ISM Manufacturing PMI",
-   "utc": "2026-10-01T14:00:00Z",
-   "sila": "high",
-   "prozorec_min": [
-    20,
-    40
-   ]
-  },
-  {
-   "ime": "FOMC Member Bowman Speaks",
-   "utc": "2026-10-01T19:00:00Z",
-   "sila": "high",
-   "prozorec_min": [
-    20,
-    40
-   ]
-  },
-  {
-   "ime": "FOMC Member Williams Speaks",
-   "utc": "2026-10-01T19:30:00Z",
-   "sila": "high",
+   "ime": "Nonfarm Payrolls",
+   "utc": "2026-10-02T12:30:00Z",
+   "sila": "critical",
    "prozorec_min": [
     20,
     40
@@ -66,5 +55,5 @@
   }
  ],
  "yasna_ideya": false,
- "zashto_nyama": "нощта не се чете"
+ "zashto_nyama": "денят е на новината: NFP в 15:30 (15:10–16:10); нощта е средна, без измерен ръб"
 }
