@@ -1,37 +1,44 @@
 {
- "kogato": "2026-10-04T11:31:33Z",
- "sekundi": 0.76,
+ "kogato": "2026-10-04T12:01:55Z",
+ "sekundi": 9.01,
  "broi": 200,
- "novi_tozi_pyt": 13,
+ "novi_tozi_pyt": 1,
  "iztochnici_ok": [
-  "Fed политика",
-  "MarketWatch",
   "Fed всички",
+  "MarketWatch",
   "Fed речи",
+  "Fed политика",
   "Investing",
   "Yahoo долар",
   "Yahoo злато",
-  "FT пазари",
   "CNBC",
-  "Google Fed",
-  "Google злато",
+  "FT пазари",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google злато",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  },
+  {
+   "ime": "Google Fed",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.43с",
-  "новини · FT пазари · 25 бр. за 0.37с",
-  "новини · Fed всички · 5 бр. за 0.16с",
-  "новини · Fed политика · 15 бр. за 0.15с",
-  "новини · Fed речи · 15 бр. за 0.19с",
-  "новини · Google Fed · 40 бр. за 0.33с",
-  "новини · Google злато · 40 бр. за 0.53с",
+  "новини · CNBC · 30 бр. за 0.28с",
+  "новини · FT пазари · 25 бр. за 0.4с",
+  "новини · Fed всички · 5 бр. за 0.13с",
+  "новини · Fed политика · 15 бр. за 0.16с",
+  "новини · Fed речи · 15 бр. за 0.16с",
+  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
   "новини · Investing · 10 бр. за 0.19с",
-  "новини · MarketWatch · 10 бр. за 0.15с",
-  "новини · Mining.com · 36 бр. за 0.68с",
-  "новини · Yahoo долар · 16 бр. за 0.24с",
-  "новини · Yahoo злато · 19 бр. за 0.26с",
-  "новини · български ред: 125 от 200 · махнати по език: 4"
+  "новини · MarketWatch · 10 бр. за 0.16с",
+  "новини · Mining.com · 36 бр. за 0.71с",
+  "новини · Yahoo долар · 16 бр. за 0.26с",
+  "новини · Yahoo злато · 19 бр. за 0.28с",
+  "новини · български ред: 125 от 200 · махнати по език: 0"
  ],
  "novini": [
   {
@@ -59,6 +66,19 @@
    "duma": "gold",
    "zashto": "Пряко за златото.",
    "bg": "Новина от минния бранш (злато)"
+  },
+  {
+   "zaglavie": "What can revive the battered government bond market?",
+   "vryzka": "https://www.ft.com/content/1a94931f-421e-4d0e-888a-7727f15c3d5f?syn-25a6b1a6=1",
+   "izvor": "Financial Times",
+   "chas": "2026-10-04T11:00:08Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "FT пазари",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
   },
   {
    "zaglavie": "Mortgage Matters: What the Fed Rate Means for Your Santa Fe Home: A Plain-English Guide",
@@ -2466,19 +2486,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Lula or Bolsonaro: Wall Street braces for two wildly different results in Brazil election",
-   "vryzka": "https://www.cnbc.com/2026/10/03/lula-or-bolsonaro-wall-street-braces-for-two-wildly-different-results-in-brazil-election.html",
-   "izvor": "CNBC",
-   "chas": "2026-10-03T13:12:27Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "CNBC",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
    "zaglavie": "Bowman, Modernizing Financial Regulation: Initial Observations from eSLR",
    "vryzka": "https://www.federalreserve.gov/newsevents/speech/bowman20261001a.htm",
    "izvor": "Fed",
@@ -2636,5 +2643,5 @@
   }
  ],
  "s_bg_red": 125,
- "mahnati_ezik": 4
+ "mahnati_ezik": 0
 }
