@@ -1,9 +1,33 @@
-// СНИМКА · profil2.js на AERO_КЛИЕНТ · 2026-09-30T06:35 UTC · sha256 72c5586071dfcc5a
+// СНИМКА · profil2.js на AERO_КЛИЕНТ · 2026-10-06T17:35 UTC · sha256 97cc5786534ac955
 // СНИМКА · дословни извадки, НЕ СЕ ПИШАТ НА РЪКА: node platforma/proba_karti.mjs snimka <AERO_КЛИЕНТ>
 const PIP = 0.1;
-  const BR_CELI = 2;
+  const BR_CELI = 3;
   const STOP_P = 130;
-  const CEL2_P = (dir) => (dir > 0 ? 130 : 100);
+  const CEL2_P = (dir) => (dir > 0 ? 130 : 100);        // старата последна цел · само за запис без нива
+  function zakonTp123(o) {
+    try { const Z = root.AERO_MOD && root.AERO_MOD.zakoni; if (Z && typeof Z.tp123 === 'function') return Z.tp123(o); } catch (e) { /* правилото отдолу */ }
+    const z = o || {};
+    const kind = String(z.kind || '').toLowerCase();
+    if (z.mode === 'tp123' && Number.isFinite(z.pips)) {
+      const b = Math.max(0, Math.min(3, Math.round(+z.best || 0)));
+      return { best: b, pips: z.pips, k: b ? 'cel' + b : kind === 'sl' ? (z.pips < 0 ? 'stop' : 'vhod') : 'drugo' };
+    }
+    const m = Number.isFinite(z.m) ? z.m : 0;
+    const b = m >= 129.95 ? 3 : m >= 99.95 ? 2 : m >= 49.95 ? 1 : 0;
+    if (b) return { best: b, pips: [50, 100, 130][b - 1], k: 'cel' + b };
+    if (kind === 'sl') return z.naVh ? { best: 0, pips: 0, k: 'vhod' } : { best: 0, pips: -STOP_P, k: 'stop' };
+    if (!Number.isFinite(z.hod)) return { best: 0, pips: null, k: 'drugo' };
+    let p = Math.round(z.hod * 10) / 10;
+    if (z.naVh && p < 0) p = 0;
+    return { best: 0, pips: Math.max(p, -STOP_P), k: 'drugo' };
+  }
+  function naiDaleche(tp, nv, dir, vidIzh, hodIzh) {
+    let m = 0;
+    (tp || []).forEach((x, i) => { if ((x.vzeta || i < nv) && Number.isFinite(x.pips)) m = Math.max(m, x.pips); });
+    if (!(tp || []).length && nv) m = nv >= 2 ? CEL2_P(dir) : 50;
+    if (/^tp\d$/.test(String(vidIzh || '')) && Number.isFinite(hodIzh)) m = Math.max(m, hodIzh);
+    return m;
+  }
   function ednaPoz(ch, nv, vid, dir, naVh) {
     const dv = (h, kind) => ({ sbor: (h[0] + h[1]) / 2, halves: h, kind });
     const v = vid === 'tp3' ? 'tp2' : String(vid || '');
@@ -30,26 +54,33 @@ const PIP = 0.1;
     const m = g.match(/(КУПИ|ПРОДАЙ)\s+(ЗЛАТО|СРЕБРО)/);
     if (!m || m[2] !== 'ЗЛАТО') return null;
     const dir = m[1] === 'КУПИ' ? 1 : -1;
-    const e = g.match(/вход\s+([\d,]+\.\d+)/);
-    const entry = e ? num(e[1]) : null;
+    /* 06.10 · КАРТИТЕ В TELEGRAM (като app.js) · новата карта «🟢 ВХОД · КУПИ ЗЛАТО · N» · «СЛ N · −130 пипса» ·
+       «ТП1 N · +50   ТП2 N · +100   ТП3 N · +130» · първо записът `d` (mode tp123, ev signal), после думите ·
+       ПЪТ НАЗАД: plan_rezervi/2026-10-06_tp123_karti_plat/profil2.js */
+    const vx = g.match(/ВХОД\s*·\s*(?:КУПИ|ПРОДАЙ)\s+ЗЛАТО\s*·\s*([\d,]+\.\d+)/);
+    const dv = k.dan && k.dan.mode === 'tp123' && k.dan.ev === 'signal' && k.dan.levels && typeof k.dan.levels === 'object' ? k.dan : null;
+    const e = vx || g.match(/вход\s+([\d,]+\.\d+)/);
+    const entry = dv && num(dv.entry) !== null ? num(dv.entry) : e ? num(e[1]) : null;
     if (entry === null) return null;
-    const s = g.match(/стоп\s+([\d,]+\.\d+)(?:\s*·\s*(\d+)\s*пипса)?/);
-    const sl = s ? num(s[1]) : null;
+    const s = vx ? g.match(/(?:^|\n)\s*СЛ\s+([\d,]+\.\d+)(?:\s*·\s*[−–-]?(\d+)\s*пипса)?/) : g.match(/стоп\s+([\d,]+\.\d+)(?:\s*·\s*(\d+)\s*пипса)?/);
+    const sl = dv && num(dv.levels.sl) !== null ? num(dv.levels.sl) : s ? num(s[1]) : null;
     const slPips = (s && s[2]) ? +s[2] : (sl !== null ? Math.round(Math.abs(sl - entry) / PIP) : 130);
     const tp = [];
     let x;
+    if (dv) ['tp1', 'tp2', 'tp3'].forEach((c) => { const p = num(dv.levels[c]); if (p !== null) tp.push({ px: p, pips: Math.round(Math.abs(p - entry) / PIP) }); });
+    if (!tp.length && vx) { const re = /ТП([123])\s+([\d,]+\.\d+)\s*·\s*\+(\d+)/g; while ((x = re.exec(g)) !== null) tp.push({ px: num(x[2]), pips: +x[3] }); }
     RE_CEL.lastIndex = 0;
-    while ((x = RE_CEL.exec(g)) !== null) tp.push({ px: num(x[2]), pips: +x[3] });
+    if (!tp.length) while ((x = RE_CEL.exec(g)) !== null) tp.push({ px: num(x[2]), pips: +x[3] });
     if (!tp.length) {
       const red = g.split('\n').find((l) => /цели\s/.test(l));
       if (red) { const re = /([\d,]+\.\d+)\s*\+(\d+)/g; while ((x = re.exec(red)) !== null) tp.push({ px: num(x[1]), pips: +x[2] }); }
     }
     if (!tp.length) return null;
-    const tri = tp.length > BR_CELI;                  // старата карта с три цели
-    tp.splice(BR_CELI);
-    const v = { d: k.d, dir, entry, sl, slPips, tp, maxCel: 0, zatv: null, tri };
-    /* 29.09 · бот v18.95 · ВЛЕЗ на сделка на две половини: «1 сделка · 2 половини × лот 0.10» (като app.js) */
-    if (/2\s+половини/.test(g)) v.polovin = true;
+    /* 06.10 · ЗАКОНЪТ ТП 1·2·3 (като app.js) · новата ВЛЕЗ има три цели до +130 и цел 3 затваря; старата (до 15.09) — трета на +200 */
+    const nov123 = (k.dan && k.dan.mode === 'tp123') || (tp.length >= 3 && tp[2].pips <= 130);
+    const tri = tp.length > 2 && !nov123;              // старата карта с три цели
+    tp.splice(nov123 ? 3 : 2);
+    const v = { d: k.d, dir, entry, sl, slPips, tp, maxCel: 0, zatv: null, tri, mMax: 0, tp123: nov123 };
     return v;
   }
   function izhodOt(k) {
@@ -65,8 +96,11 @@ const PIP = 0.1;
       d: k.d, dir: m[1] === 'покупка' ? 1 : -1, from: num(f[1]), to: num(f[2]), vid,
       parts: parts && parts.every((v) => v !== null) ? parts : null,
       zatvarya: /СДЕЛКАТА ДОНЕСЕ/i.test(g) || /^(tp2|tp3|sl|flip|time|eod)$/.test(vid),
-      /* «✅ … стопът беше на входа» · стопът е ударен на входа → 0 (както сървърът · data.mjs) */
-      naVhoda: vid === 'sl' && (/^✅/.test(g.trim()) || /стопът беше на входа/.test(g)),
+      /* «✅ … стопът беше на входа» · стопът е ударен на входа → 0 (както сървърът · data.mjs) · 06.10 · и «🛑 СЛ на входа» */
+      naVhoda: vid === 'sl' && (/^✅/.test(g.trim()) || /стопът беше на входа/.test(g) || /СЛ на входа/.test(g)),
+      /* 06.10 · КАРТИТЕ В TELEGRAM (като app.js) · «СЛ на входа · 0 пипса» (без цел) · «сделката: ТПn +N пипса» (стигнатата) */
+      nula: /(?:СЛ на входа|стопът беше на входа)\s*·\s*0\s*пипса/.test(g),
+      tpN: +((g.match(/сделката:\s*ТП([123])\s*\+/) || [])[1] || 0),
     };
   }
   function beOt(k) {
@@ -81,7 +115,8 @@ const PIP = 0.1;
     const vhodove = [];
     karti.forEach((k) => {
       if (k.tag === 'signal') {
-        if (k.text.indexOf('ВЛЕЗ') >= 0) { const v = vhodOt(k); if (v) vhodove.push(v); }
+        /* 06.10 · КАРТИТЕ В TELEGRAM · и новата карта «ВХОД · КУПИ|ПРОДАЙ ЗЛАТО · N» */
+        if (k.text.indexOf('ВЛЕЗ') >= 0 || /ВХОД\s*·/.test(k.text)) { const v = vhodOt(k); if (v) vhodove.push(v); }
         return;
       }
       if (/^exit-be\b/.test(k.tag)) {
@@ -108,16 +143,14 @@ const PIP = 0.1;
       if (!t) return;
       const n = /^tp(\d)$/.exec(x.vid);
       if (n) t.maxCel = Math.max(t.maxCel, +n[1]);
-      /* 29.09 · бот v18.95 · сделка на ДВЕ ПОЛОВИНИ (като app.js): числото на СДЕЛКАТА е «сделката донесе N
-         пипса» на затварящата карта (средното на половините, и с .5) */
-      const gx = gol(k.text);
-      if (/прибери половината|половина\s+1:|ЦЕЛ 1 беше прибрана/.test(gx)) t.polovin = true;
-      if (x.zatvarya) {
-        t.zatv = { d: x.d, vid: x.vid, to: x.to, parts: x.parts, naVhoda: x.naVhoda };
-        if (t.polovin) {
-          const sb = gx.match(/сделката\s+донесе\s*([+−–\-]?[\d.,]+)\s*пипса/i);
-          t.zatv.sbor = sb ? num(sb[1]) : null;
-        }
+      /* 06.10 · ЗАКОНЪТ ТП 1·2·3 (като app.js) · ходът на ЦЕЛ-картата е доказателство за целта · цел 1 и цел 2 НЕ затварят */
+      if (n && Number.isFinite(x.to)) t.mMax = Math.max(t.mMax || 0, hodP(t.entry, x.to, t.dir));
+      const dn = k.dan && k.dan.mode === 'tp123' ? k.dan : null;
+      if (dn) t.tp123 = true;
+      const zatvaria = dn && typeof dn.closes === 'boolean' ? dn.closes : (x.zatvarya && !(t.tp123 && /^tp[12]$/.test(x.vid)));
+      if (zatvaria) {
+        t.zatv = { d: x.d, vid: x.vid, to: x.to, parts: x.parts, naVhoda: x.naVhoda, nula: x.nula, tpN: x.tpN };
+        if (dn && Number.isFinite(+dn.pips)) { t.zatv.sbor = +dn.pips; t.zatv.best = +dn.best || 0; }
       }
     });
     return { vhodove };
@@ -125,20 +158,28 @@ const PIP = 0.1;
   function chastiZatvorena(v) {
     const z = v.zatv;
     const k = Math.min(v.maxCel, v.tp.length);
-    const vid = z.vid === 'tp3' ? 'tp2' : z.vid;
-    /* 29.09 · бот v18.95 · сделка на две половини → числото, което ботът е написал за СДЕЛКАТА */
-    if (v.polovin && Number.isFinite(z.sbor)) return { ch: [z.sbor], otBota: false, halves: null, kind: vid, nv: k };
-    /* 29.09 · цел 1 = картата ЦЕЛ 1 или ✅ «стопът беше на входа» без карта «+40» (като app.js и сървъра) */
-    const nv = vid === 'sl' && z.naVhoda && !v.be40 ? Math.max(1, k) : k;
-    const hod = Number.isFinite(z.to) ? [hodP(v.entry, z.to, v.dir)] : (z.parts && z.parts.length ? z.parts : [0]);
-    const P = ednaPoz(hod, nv, vid, v.dir, !!(v.be40 || z.naVhoda) && nv < 1);
-    return { ch: [P.sbor], otBota: false, halves: P.halves, kind: P.kind, nv };
+    const vid = z.vid === 'tp3' && !v.tp123 ? 'tp2' : z.vid;   // 06.10 · старото «tp3» = остатък · по ТП 1·2·3 цел 3 затваря
+    if (Number.isFinite(z.sbor) && v.tp123) {
+      const Zb = zakonTp123({ mode: 'tp123', best: z.best || 0, pips: z.sbor, kind: vid });
+      return { ch: [Zb.pips], otBota: false, best: Zb.best, k: Zb.k, kind: vid, nv: Math.max(k, Zb.best) };
+    }
+    /* цел 1 = картата ЦЕЛ 1 или ✅ «стопът беше на входа» без карта «+40» (като app.js и сървъра) · 06.10 · ТП 1·2·3 ·
+       06.10 · КАРТИТЕ В TELEGRAM (като app.js) · «СЛ на входа · 0 пипса» = без цел · «сделката: ТПn» = цел n */
+    const nv0 = vid === 'sl' && z.naVhoda && !v.be40 && !(v.tp123 && z.nula) ? Math.max(1, k) : k;
+    const nv = v.tp123 && z.tpN ? Math.max(nv0, Math.min(z.tpN, v.tp.length || z.tpN)) : nv0;
+    const hodIzh = Number.isFinite(z.to) ? hodP(v.entry, z.to, v.dir) : null;
+    const h0 = hodIzh !== null ? hodIzh : (z.parts && z.parts.length ? z.parts[Math.min(1, z.parts.length - 1)] : 0);
+    const m = Math.max(naiDaleche(v.tp, nv, v.dir, vid, hodIzh), v.mMax || 0);
+    const Z = zakonTp123({ m, kind: vid, naVh: !!(v.be40 || z.naVhoda) && nv < 1, hod: h0 });
+    return { ch: [Z.pips === null ? 0 : Z.pips], otBota: false, best: Z.best, k: Z.k, kind: vid, nv };
   }
   const imeCeli = (k) => (k === 1 ? 'цел 1' : k === 2 ? 'цел 1 и цел 2' : 'целите');
   function prichinaZatv(v) {
     const z = v.zatv;
     const k0 = Math.min(v.maxCel, v.tp.length);
-    const k = z.vid === 'sl' && z.naVhoda && !v.be40 ? Math.max(1, k0) : k0;   // 29.09 · ✅ без «+40» = цел 1 (като app.js)
+    /* 29.09 · ✅ без «+40» = цел 1 (като app.js) · 06.10 · по закона ТП 1·2·3 «СЛ на входа · 0 пипса» е без цел, «сделката: ТПn» е цел n */
+    const k1 = z.vid === 'sl' && z.naVhoda && !v.be40 && !(v.tp123 && z.nula) ? Math.max(1, k0) : k0;
+    const k = v.tp123 && z.tpN ? Math.max(k1, Math.min(z.tpN, v.tp.length || z.tpN)) : k1;
     const naVh = !!(v.be40 || z.naVhoda);
     if (k >= v.tp.length) return 'всички цели взети';
     if (z.vid === 'sl') return k ? imeCeli(k) + ', после стоп на входа' : naVh ? 'стоп на входа след +40' : 'стоп преди цел 1';
@@ -147,7 +188,7 @@ const PIP = 0.1;
     if (z.vid === 'time') return pred + 'затворена по време';
     return pred + 'затворена';
   }
-  const CELI_K = ['tp1', 'tp2'];
+  const CELI_K = ['tp1', 'tp2', 'tp3'];
   function utcDate(s) {
     if (!s) return null;
     if (s instanceof Date) return isNaN(+s) ? null : s;
@@ -201,8 +242,9 @@ const PIP = 0.1;
       const kl = CELI_K.filter((k) => num(Lv[k]) !== null);
       let nv = 0;
       kl.forEach((k, i) => { if (hit[k]) nv = i + 1; });
-      const vid0 = String(x.exit_kind || x.vid || '').toLowerCase();
-      const vid = vid0 === 'tp3' ? 'tp2' : vid0;       // цел 3 няма → затваря се на цел 2
+      const e123 = x.mode === 'tp123';                   // 06.10 · ТП 1·2·3 · записът по новия закон има истинска цел 3
+      const vid0 = String(x.exit_kind || (e123 ? '' : x.vid) || '').toLowerCase();
+      const vid = vid0 === 'tp3' && !e123 ? 'tp2' : vid0;
       const mv = /^tp(\d)$/.exec(vid);
       if (mv) nv = Math.max(nv, Math.min(+mv[1], kl.length || BR_CELI));
       const tp = entry !== null ? kl.map((k, i) => ({ px: num(Lv[k]), pips: Math.round(Math.abs(num(Lv[k]) - entry) / PIP), vzeta: i < nv })) : [];
@@ -211,19 +253,23 @@ const PIP = 0.1;
       const naVh = !!(hit.be || hit.be40 || x.stop_at_entry === true || (entry !== null && slL !== null && Math.abs(slL - entry) < 0.01));
       /* 29.09 · законът на половините за цялата история (като app.js): записът на половини ("mode":"polovin") носи
          числото на СДЕЛКАТА (sum_pips); старият запис дава само изхода — числото му не се взима → ednaPoz */
-      const P = x.mode === 'polovin' && num(x.sum_pips) !== null
-        ? { sbor: num(x.sum_pips), halves: ch.length === 2 ? ch.slice() : null, kind: vid }
-        : ednaPoz(ch, nv, vid, dir, naVh);
+      /* 06.10 · ЗАКОНЪТ ТП 1·2·3 (като app.js · ledgerOt): записът по новия закон носи числото; всеки друг — само доказателството */
+      const izPx = vid0 === 'tp3' && !e123 ? null : num(x.exit_px);
+      const hodIzh = entry !== null && izPx !== null ? hodP(entry, izPx, dir) : null;
+      const h0 = ch.length === 1 ? ch[0] : ch[Math.min(1, ch.length - 1)];
+      const Z = zakonTp123({ mode: x.mode, best: num(x.best), pips: e123 ? num(x.sum_pips) : null, vid: x.vid,
+        m: naiDaleche(tp, nv, dir, vid, hodIzh), kind: vid, naVh, hod: hodIzh !== null ? hodIzh : h0 });
+      const P = { sbor: Z.pips === null ? 0 : Z.pips, best: Z.best, k: Z.k };
       const sbor = P.sbor;
       out.push({
         dir, entry, d: utcDate(x.opened || x.otvoreno || x.vhod_utc || x.opened_utc),
         zatvD, chasti: [sbor], sbor,
-        tp, vzeti: nv, sl: slL, vid, izhodPx: vid0 === 'tp3' ? null : num(x.exit_px), be40: naVh && nv < 1,
+        tp, vzeti: nv, sl: slL, vid, izhodPx: izPx, be40: naVh && nv < 1,
         prichina: (x.prichina || x.reason) ? bezZhargon(String(x.prichina || x.reason)) : prichinaLedger(vid, nv, tp.length, naVh),
-        tri: star || num(Lv.tp3) !== null || !!x.prebroeno,
+        tri: !e123 && (star || num(Lv.tp3) !== null || !!x.prebroeno),
       });
       /* 29.09 · ВСЯКА сделка носи режима, половините и вида до mod/core.js · krai (като app.js) */
-      { const o = out[out.length - 1]; o.mode = 'polovin'; o.halves = P.halves; o.exit_kind = P.kind; }
+      { const o = out[out.length - 1]; o.mode = 'tp123'; o.best = P.best; o.zakonVid = P.k; o.exit_kind = vid; }   // 06.10 · ТП 1·2·3 · видът за mod/core.js · krai
     });
     return out.length ? out.sort((p, q) => p.zatvD - q.zatvD) : null;
   }

@@ -22763,9 +22763,17 @@ try:
        len(_всички201) >= 20 and not _лоши201)
 
     # ══ Ж · платформата: трите четеца ═══════════════════════════════════
+    # 🔴 06.10 · v18.99 · ПЛАТФОРМАТА БРОИ ЦЯЛАТА ИСТОРИЯ ПО ЗАКОНА ТП1·ТП2·ТП3 (ЛОЦО/ЗАКОНЪТ_НА_СДЕЛКАТА_06-10.md,
+    # т. 4 и 6): сделката на половини вече не е +75/+25 на екрана, а НАЙ-ВИСОКАТА стигната цел — продажба
+    # до цел 2 (+100) → ЦЕЛ 2 · +100 · цел 1, после входът → ЦЕЛ 1 · +50 · +40, после входът → 0 · стоп → −130.
+    # Числото и целта са ИЗПИСАНИ тук от закона. Картата си остава каквато ботът я е пратил: poziciiOtKarti
+    # (числото, написано в картата) = числото на половините (+75 · +25 · 0 · −130).
+    _ТП201 = {"½ +40, цел 1 и цел 2 в един рън": (100, 2), "½ цел 1, после входът": (50, 1),
+              "½ +40, после входът": (0, 0), "½ стоп": (-130, 0)}
     _node201 = _пк201.намери_node()
     _кл201 = _пк201.намери_клиент(".")
     for _им201, (_гл201, _п201, _пол201, _в201) in _ОЧ201.items():
+        _тп201, _цл201 = _ТП201[_им201]
         for _ет201, _изв201 in [("снимка", "snimka")] + ([("живо", _кл201)] if _кл201 else []):
             _дд = _P194(_Д201[_им201]["д"])
             _пк201.пиши(_дд / "baza.jsonl", [])
@@ -22773,15 +22781,20 @@ try:
                                               "2026-09-23T00:00:00") if _node201 else (None, "няма node"))
             _р201 = _р201 or {}
             ck("П201 Ж · %s · %s · записът на истинския main() → data.mjs (%s), app.js (%s), profil2.js (%s) "
-               "= %s%s" % (_им201, _ет201, [_x.get("sum") for _x in _р201.get("sdelki", [])],
-                           [(_x.get("ch") or [None])[0] for _x in _р201.get("app_karti", []) if _x.get("zatv")],
-                           [(_x.get("ch") or [None])[0] for _x in _р201.get("profil2_karti", []) if _x.get("zatv")],
-                           _п201, (" · " + _гр201) if _гр201 else ""),
-               bool(_р201) and [_x.get("sum") for _x in _р201.get("sdelki", [])] == [_п201]
-               and [_x.get("mode") for _x in _р201.get("sdelki", [])] == ["polovin"]
-               and [(_x.get("ch") or [None])[0] for _x in _р201.get("app_karti", []) if _x.get("zatv")] == [_п201]
-               and [(_x.get("ch") or [None])[0] for _x in _р201.get("profil2_karti", []) if _x.get("zatv")] == [_п201]
-               and [_x.get("sbor") for _x in _р201.get("ledger", [])] == [_п201]
+               "= закона ТП1·ТП2·ТП3 %+d (ЦЕЛ %d) · картата (poziciiOtKarti %s) = написаното от бота %s%s"
+               % (_им201, _ет201, [(_x.get("sum"), _x.get("best")) for _x in _р201.get("sdelki", [])],
+                  [((_x.get("ch") or [None])[0], _x.get("best")) for _x in _р201.get("app_karti", []) if _x.get("zatv")],
+                  [((_x.get("ch") or [None])[0], _x.get("best")) for _x in _р201.get("profil2_karti", []) if _x.get("zatv")],
+                  _тп201, _цл201, [_x.get("pipsove") for _x in _р201.get("pozicii", [])], _п201,
+                  (" · " + _гр201) if _гр201 else ""),
+               bool(_р201) and [(_x.get("sum"), _x.get("best")) for _x in _р201.get("sdelki", [])] == [(_тп201, _цл201)]
+               and [_x.get("mode") for _x in _р201.get("sdelki", [])] == ["tp123"]
+               and [((_x.get("ch") or [None])[0], _x.get("best")) for _x in _р201.get("app_karti", [])
+                    if _x.get("zatv")] == [(_тп201, _цл201)]
+               and [((_x.get("ch") or [None])[0], _x.get("best")) for _x in _р201.get("profil2_karti", [])
+                    if _x.get("zatv")] == [(_тп201, _цл201)]
+               and [(_x.get("sbor"), _x.get("best")) for _x in _р201.get("ledger", [])] == [(_тп201, _цл201)]
+               and [(_x.get("sbor"), _x.get("best")) for _x in _р201.get("ledger_profil2", [])] == [(_тп201, _цл201)]
                and [_x.get("pipsove") for _x in _р201.get("pozicii", [])] == [_п201])
     for _с in _Д201.values():
         _sh201.rmtree(_с["д"], ignore_errors=True)

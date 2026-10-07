@@ -37,14 +37,18 @@ const IZVORI = {
     pat: "netlify/functions/_lib/data.mjs", snimka: "snimka_data.js",
     /* 30.09 · v18.97 · законът на половините за цялата история: sdelkiOtKarti вика polovinZakon
        (и неговите POL_CEL1 · POL_STOP · polCel2 · polDvoika) — без тях CI гърми с ReferenceError */
+    /* 06.10 · v18.99 · законът ТП1·ТП2·ТП3 за цялата история: sdelkiOtKarti вика tp123Zakon
+       (и неговите TP123_CELI · TP123_STOP · celPo) — без тях CI гърми с ReferenceError */
     imena: ["RE_CENI", "RE_VHOD", "golo", "chislo", "isoUtc", "celiOt", "ZAKON_BROENE",
-      "ZAKON_POZICII", "hodPips", "POL_CEL1", "POL_STOP", "polCel2", "polDvoika", "polovinZakon",
+      "ZAKON_POZICII", "hodPips", "TP123_CELI", "TP123_STOP", "celPo", "tp123Zakon",
+      "POL_CEL1", "POL_STOP", "polCel2", "polDvoika", "polovinZakon",
       "ZAPIS_D", "dOt", "sdelkiOtKarti", "RE_OBSHTO", "RE_KRAEN", "poziciiOtKarti"],
     vrashta: ["sdelkiOtKarti", "poziciiOtKarti"],
   },
   app: {
     pat: "app.js", snimka: "snimka_app.js",
-    imena: ["PIP", "BR_CELI", "CELI_K", "STOP_P", "CEL2_P", "ednaPoz", "hodP", "num", "utcDate",
+    /* 06.10 · v18.99 · законът ТП1·ТП2·ТП3: ledgerOt и chastiZatvorena викат zakonTp123 и naiDaleche */
+    imena: ["PIP", "BR_CELI", "CELI_K", "STOP_P", "CEL2_P", "zakonTp123", "naiDaleche", "ednaPoz", "hodP", "num", "utcDate",
       "ENT", "razEnt", "gol", "ZHARGON", "bezZhargon", "ledgerOt", "prichinaLedger", "RE_CEL",
       "RE_CEL_NOV", "vhodOt", "izhodOt", "beOt", "sglobiSdelki", "chastiZatvorena", "imeCeli",
       "prichinaZatv"],
@@ -53,7 +57,8 @@ const IZVORI = {
   profil2: {
     pat: "profil2.js", snimka: "snimka_profil2.js",
     /* 29.09 · v18.95 · и ledgerOt на профила (сделките на половини носят "mode" и sum_pips) */
-    imena: ["PIP", "BR_CELI", "STOP_P", "CEL2_P", "ednaPoz", "hodP", "num", "ENT", "razEnt", "gol",
+    /* 06.10 · v18.99 · законът ТП1·ТП2·ТП3: chastiZatvorena и ledgerOt викат zakonTp123 и naiDaleche */
+    imena: ["PIP", "BR_CELI", "STOP_P", "CEL2_P", "zakonTp123", "naiDaleche", "ednaPoz", "hodP", "num", "ENT", "razEnt", "gol",
       "RE_CEL", "vhodOt", "izhodOt", "beOt", "sglobiSdelki", "chastiZatvorena", "imeCeli",
       "prichinaZatv", "CELI_K", "utcDate", "fmt", "cena", "ZHARGON", "bezZhargon", "prichinaLedger", "ledgerOt"],
     /* 30.09 · fmt · cena: ZHARGON на профила преписва цената в причината («4,302.87» → «4 302,87») */
@@ -128,17 +133,25 @@ const zapisi = (t) => String(t).split(/\r?\n/).filter((l) => l.trim()).map((l) =
 const kartaOt = (k) => ({ d: new Date(String(k.utc) + (/(Z|[+\-]\d\d:?\d\d)$/i.test(String(k.utc)) ? "" : "Z")), tag: k.tag, text: k.text });
 const r2 = (x) => (Number.isFinite(x) ? Math.round(x * 100) / 100 : x);
 
+/* 06.10 · v18.99 · законът ТП1·ТП2·ТП3 · стигнатата цел (0–3), която четецът дава · null = не я дава */
+const celN = (x) => (x === null || x === undefined || !Number.isFinite(Number(x)) ? null : Number(x));
+
 function vhodoveOt(sglobiSdelki, chastiZatvorena, prichinaZatv, karti, otMs) {
   const r = sglobiSdelki(karti);
-  return (r.vhodove || []).filter((v) => +v.d >= otMs).map((v) => ({
-    dir: v.dir, entry: r2(v.entry), maxCel: v.maxCel, be40: !!v.be40,
-    tp: (v.tp || []).map((x) => r2(x.px)),
-    zatv: v.zatv ? v.zatv.vid : null,
-    ch: v.zatv ? chastiZatvorena(v).ch : null,
-    /* 30.09 · v18.97 · двете половини на сделката (законът на половините за цялата история) · null = четецът не ги дава */
-    halves: v.zatv ? (chastiZatvorena(v).halves || null) : null,
-    prichina: v.zatv ? prichinaZatv(v) : null,
-  }));
+  return (r.vhodove || []).filter((v) => +v.d >= otMs).map((v) => {
+    const c = v.zatv ? chastiZatvorena(v) : null;
+    return {
+      dir: v.dir, entry: r2(v.entry), maxCel: v.maxCel, be40: !!v.be40,
+      tp: (v.tp || []).map((x) => r2(x.px)),
+      zatv: v.zatv ? v.zatv.vid : null,
+      ch: c ? c.ch : null,
+      /* 30.09 · v18.97 · двете половини на сделката (законът на половините за цялата история) · null = четецът не ги дава */
+      halves: c ? (c.halves || null) : null,
+      best: c ? celN(c.best) : null,              // 06.10 · v18.99 · ТП1·ТП2·ТП3
+      k: c && typeof c.k === "string" ? c.k : null,
+      prichina: v.zatv ? prichinaZatv(v) : null,
+    };
+  });
 }
 
 async function cheti(izvor, bazaP, pylenP, ot) {
@@ -171,17 +184,20 @@ async function cheti(izvor, bazaP, pylenP, ot) {
     sdelki: noviS.map((x) => ({ direction: x.direction, entry: r2(x.entry), tp1: r2(x.levels.tp1),
       tp2: r2(x.levels.tp2), sl: r2(x.levels.sl), hit: x.hit, exit_kind: x.exit_kind, sum: x.sum_pips,
       mode: x.mode || null,                      // 29.09 · v18.95 · сделката на половини
-      parts: Array.isArray(x.parts) ? x.parts : null })),   // 30.09 · v18.97 · двете половини
+      parts: Array.isArray(x.parts) ? x.parts : null,       // 30.09 · v18.97 · двете половини
+      best: celN(x.best), vid: x.vid || null })),           // 06.10 · v18.99 · ТП1·ТП2·ТП3 · стигнатата цел и видът
     pozicii: p1.pozicii.filter((p) => String(p.closed) >= ot).map((p) => ({ slot: p.slot,
       direction: p.direction, entry: r2(p.entry), kraj: p.kraj, pipsove: p.pipsove, daden: p.daden })),
     vhod_app: vhod(C.app.vhodOt),
     vhod_profil2: vhod(C.profil2.vhodOt),
     ledger: L.map((x) => ({ dir: x.dir, entry: r2(x.entry), vid: x.vid, sbor: x.sbor, be40: !!x.be40,
       vzeti: x.vzeti, tp: x.tp.map((t) => r2(t.px)), prichina: x.prichina,
-      halves: Array.isArray(x.halves) ? x.halves : null })),   // 30.09 · v18.97
+      halves: Array.isArray(x.halves) ? x.halves : null,       // 30.09 · v18.97
+      best: celN(x.best), zakonVid: x.zakonVid || null })),    // 06.10 · v18.99 · ТП1·ТП2·ТП3
     /* 29.09 · v18.95 · и дневникът на профила (profil2.js · ledgerOt) върху сделките на сървъра */
     ledger_profil2: (C.profil2.ledgerOt(noviS) || []).map((x) => ({ dir: x.dir, entry: r2(x.entry), vid: x.vid,
-      sbor: x.sbor, halves: Array.isArray(x.halves) ? x.halves : null })),
+      sbor: x.sbor, halves: Array.isArray(x.halves) ? x.halves : null,
+      best: celN(x.best), zakonVid: x.zakonVid || null })),    // 06.10 · v18.99 · ТП1·ТП2·ТП3
     app_karti: vhodoveOt(C.app.sglobiSdelki, C.app.chastiZatvorena, C.app.prichinaZatv, karti, otMs),
     profil2_karti: vhodoveOt(C.profil2.sglobiSdelki, C.profil2.chastiZatvorena, C.profil2.prichinaZatv, karti, otMs),
   };
