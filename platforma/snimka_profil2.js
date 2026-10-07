@@ -1,4 +1,4 @@
-// СНИМКА · profil2.js на AERO_КЛИЕНТ · 2026-10-06T17:35 UTC · sha256 97cc5786534ac955
+// СНИМКА · profil2.js на AERO_КЛИЕНТ · 2026-10-07T14:26 UTC · sha256 075586318e7dea51
 // СНИМКА · дословни извадки, НЕ СЕ ПИШАТ НА РЪКА: node platforma/proba_karti.mjs snimka <AERO_КЛИЕНТ>
 const PIP = 0.1;
   const BR_CELI = 3;
@@ -179,9 +179,14 @@ const PIP = 0.1;
     const k0 = Math.min(v.maxCel, v.tp.length);
     /* 29.09 · ✅ без «+40» = цел 1 (като app.js) · 06.10 · по закона ТП 1·2·3 «СЛ на входа · 0 пипса» е без цел, «сделката: ТПn» е цел n */
     const k1 = z.vid === 'sl' && z.naVhoda && !v.be40 && !(v.tp123 && z.nula) ? Math.max(1, k0) : k0;
-    const k = v.tp123 && z.tpN ? Math.max(k1, Math.min(z.tpN, v.tp.length || z.tpN)) : k1;
+    const k2 = v.tp123 && z.tpN ? Math.max(k1, Math.min(z.tpN, v.tp.length || z.tpN)) : k1;
+    /* 07.10 · ЗАКОНЪТ ТП 1·2·3 · причината казва целта на числото (chastiZatvorena · best): старата «цел 2» на +130 е ТП3 ·
+       без «всички цели взети» (при две нива то казваше «всички» на цел 2) — G1-02 */
+    let kb = 0;
+    try { kb = +(chastiZatvorena(v).best) || 0; } catch (e) { kb = 0; }
+    const k = Math.max(k2, kb);
     const naVh = !!(v.be40 || z.naVhoda);
-    if (k >= v.tp.length) return 'всички цели взети';
+    if (k >= 3) return 'ТП3 — сделката е затворена';
     if (z.vid === 'sl') return k ? imeCeli(k) + ', после стоп на входа' : naVh ? 'стоп на входа след +40' : 'стоп преди цел 1';
     const pred = k ? imeCeli(k) + ', после ' : naVh ? 'стоп на входа след +40, после ' : '';
     if (z.vid === 'flip') return pred + 'затворена · посоката се обърна';
@@ -213,7 +218,7 @@ const PIP = 0.1;
   ];
   const bezZhargon = (t) => ZHARGON.reduce((s, z) => s.replace(z[0], z[1]), String(t));
   function prichinaLedger(vid, k, n, naVh) {
-    if (n && k >= n) return 'всички цели взети';
+    if (k >= 3) return 'ТП3 — сделката е затворена';   // 07.10 · G1-02 · беше «всички цели взети» при k ≥ броя нива
     if (vid === 'sl') return k ? imeCeli(k) + ', после стоп на входа' : naVh ? 'стоп на входа след +40' : 'стоп преди цел 1';
     const pred = k ? imeCeli(k) + ', после ' : naVh ? 'стоп на входа след +40, после ' : '';
     if (vid === 'flip') return pred + 'затворена · посоката се обърна';
@@ -265,7 +270,7 @@ const PIP = 0.1;
         dir, entry, d: utcDate(x.opened || x.otvoreno || x.vhod_utc || x.opened_utc),
         zatvD, chasti: [sbor], sbor,
         tp, vzeti: nv, sl: slL, vid, izhodPx: izPx, be40: naVh && nv < 1,
-        prichina: (x.prichina || x.reason) ? bezZhargon(String(x.prichina || x.reason)) : prichinaLedger(vid, nv, tp.length, naVh),
+        prichina: (x.prichina || x.reason) ? bezZhargon(String(x.prichina || x.reason)) : prichinaLedger(vid, Math.max(nv, P.best || 0), tp.length, naVh),   // 07.10 · целта на числото
         tri: !e123 && (star || num(Lv.tp3) !== null || !!x.prebroeno),
       });
       /* 29.09 · ВСЯКА сделка носи режима, половините и вида до mod/core.js · krai (като app.js) */

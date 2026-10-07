@@ -1,4 +1,4 @@
-// СНИМКА · netlify/functions/_lib/data.mjs на AERO_КЛИЕНТ · 2026-10-06T17:35 UTC · sha256 f2c734b0b975a880
+// СНИМКА · netlify/functions/_lib/data.mjs на AERO_КЛИЕНТ · 2026-10-07T14:26 UTC · sha256 f2c734b0b975a880
 // СНИМКА · дословни извадки, НЕ СЕ ПИШАТ НА РЪКА: node platforma/proba_karti.mjs snimka <AERO_КЛИЕНТ>
 const RE_CENI = /([\d,]+\.\d+)\s*(?:\([^)]*\))?\s*→\s*([\d,]+\.\d+)/;
 const RE_VHOD = /вход\s+<?c?o?d?e?>?\s*([\d,]+\.\d+)/;

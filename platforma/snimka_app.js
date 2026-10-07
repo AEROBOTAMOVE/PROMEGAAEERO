@@ -1,4 +1,4 @@
-// СНИМКА · app.js на AERO_КЛИЕНТ · 2026-10-06T17:35 UTC · sha256 4cc1aee6f8f9ef0e
+// СНИМКА · app.js на AERO_КЛИЕНТ · 2026-10-07T14:26 UTC · sha256 3dc0ed14f5425e29
 // СНИМКА · дословни извадки, НЕ СЕ ПИШАТ НА РЪКА: node platforma/proba_karti.mjs snimka <AERO_КЛИЕНТ>
 const PIP = 0.1;                 // 1 пипс = 0.10 $ на унция
   const BR_CELI = 3;
@@ -130,7 +130,7 @@ const PIP = 0.1;                 // 1 пипс = 0.10 $ на унция
         be40: naVh && nv < 1,
         /* zakon: 'star' · сделка отпреди 15.09, 14:12 (тогава с три позиции) · преброена по сегашния */
         starZakon: x.zakon === 'star', otKarti: x.izvor_zapis === 'karti',
-        prichina: (x.prichina || x.reason) ? bezZhargon(String(x.prichina || x.reason)) : prichinaLedger(vid, nv, tp.length, naVh),
+        prichina: (x.prichina || x.reason) ? bezZhargon(String(x.prichina || x.reason)) : prichinaLedger(vid, Math.max(nv, P.best || 0), tp.length, naVh),   // 07.10 · целта на числото (старата «цел 2» на +130 = ТП3)
       });
       /* 29.09 · ВСЯКА сделка носи режима, половините и вида до mod/core.js · krai (видът: «Цел 2» · «Цел 1 + вход» ·
          «На входа» · «Стоп» · «Друг изход») — старите вече са преброени на половини */
@@ -141,7 +141,7 @@ const PIP = 0.1;                 // 1 пипс = 0.10 $ на унция
   function prichinaLedger(vid, k, n, naVh) {
     const ime = (kk) => 'ТП' + Math.min(3, kk) + ' — най-високата стигната';
     if (k >= 3) return 'ТП3 — сделката е затворена';
-    if (vid === 'sl') return k ? ime(k) + ', после СЛ на входа' : naVh ? 'СЛ на входа след +40' : 'СЛ преди +40';
+    if (vid === 'sl') return k ? ime(k) + ', после СЛ на входа' : naVh ? 'СЛ на входа след +40' : 'СЛ преди ТП1';
     const pred = k ? ime(k) + ', после ' : naVh ? 'СЛ на входа след +40, после ' : '';
     if (vid === 'flip') return pred + 'затворена · посоката се обърна';
     if (vid === 'time') return pred + 'затворена по време';
@@ -292,10 +292,15 @@ const PIP = 0.1;                 // 1 пипс = 0.10 $ на унция
     /* 29.09 · ✅ «стопът беше на входа» без карта «+40» = цел 1 е взета (както chastiZatvorena и сървърът) ·
        06.10 · по закона ТП 1·2·3 «СЛ на входа · 0 пипса» е без цел, «сделката: ТПn» е цел n (като chastiZatvorena) */
     const k1 = z.vid === 'sl' && z.naVhoda && !v.be40 && !(v.tp123 && z.nula) ? Math.max(1, k0) : k0;
-    const k = v.tp123 && z.tpN ? Math.max(k1, Math.min(z.tpN, v.tp.length || z.tpN)) : k1;
+    const k2 = v.tp123 && z.tpN ? Math.max(k1, Math.min(z.tpN, v.tp.length || z.tpN)) : k1;
+    /* 07.10 · ЗАКОНЪТ ТП 1·2·3 · причината казва целта на числото (chastiZatvorena · best): старата «цел 2» на +130 при
+       покупка е ТП3 (+130), не «ТП2 — най-високата стигната» до резултат ТП3 · само текстът, числото не се пипа */
+    let kb = 0;
+    try { kb = +(chastiZatvorena(v).best) || 0; } catch (e) { kb = 0; }
+    const k = Math.max(k2, kb);
     const naVh = !!(v.be40 || z.naVhoda);
     if (k >= 3) return 'ТП3 — сделката е затворена';   // 06.10 · G1-02 (в) · беше «всички цели взети» при k ≥ броя нива
-    if (z.vid === 'sl') return k ? imeCeli(k) + ', после СЛ на входа' : naVh ? 'СЛ на входа след +40' : 'СЛ преди +40';
+    if (z.vid === 'sl') return k ? imeCeli(k) + ', после СЛ на входа' : naVh ? 'СЛ на входа след +40' : 'СЛ преди ТП1';
     const pred = k ? imeCeli(k) + ', после ' : naVh ? 'СЛ на входа след +40, после ' : '';
     if (z.vid === 'flip') return pred + 'затворена · посоката се обърна';
     if (z.vid === 'time') return pred + 'затворена по време';
