@@ -1,39 +1,52 @@
 {
- "kogato": "2026-10-09T04:21:10Z",
- "sekundi": 1.13,
+ "kogato": "2026-10-09T04:51:16Z",
+ "sekundi": 1.96,
  "broi": 200,
- "novi_tozi_pyt": 14,
+ "novi_tozi_pyt": 4,
  "iztochnici_ok": [
   "Fed всички",
-  "Fed речи",
   "Fed политика",
-  "Yahoo долар",
-  "Investing",
-  "Yahoo злато",
   "MarketWatch",
+  "Fed речи",
+  "Investing",
+  "Yahoo долар",
+  "Yahoo злато",
   "CNBC",
+  "Google Fed",
   "FT пазари",
   "Google злато",
-  "Google Fed",
   "Mining.com"
  ],
  "iztochnici_padnali": [],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.35с",
-  "новини · FT пазари · 25 бр. за 0.45с",
-  "новини · Fed всички · 5 бр. за 0.21с",
-  "новини · Fed политика · 15 бр. за 0.25с",
+  "новини · CNBC · 30 бр. за 0.45с",
+  "новини · FT пазари · 25 бр. за 0.65с",
+  "новини · Fed всички · 5 бр. за 0.19с",
+  "новини · Fed политика · 15 бр. за 0.21с",
   "новини · Fed речи · 15 бр. за 0.24с",
-  "новини · Google Fed · 40 бр. за 0.45с",
-  "новини · Google злато · 40 бр. за 0.61с",
-  "новини · Investing · 10 бр. за 0.33с",
-  "новини · MarketWatch · 10 бр. за 0.34с",
-  "новини · Mining.com · 36 бр. за 1.06с",
-  "новини · Yahoo долар · 12 бр. за 0.31с",
-  "новини · Yahoo злато · 14 бр. за 0.34с",
-  "новини · български ред: 94 от 200 · махнати по език: 0"
+  "новини · Google Fed · 40 бр. за 0.44с",
+  "новини · Google злато · 40 бр. за 0.68с",
+  "новини · Investing · 10 бр. за 0.29с",
+  "новини · MarketWatch · 10 бр. за 0.23с",
+  "новини · Mining.com · 36 бр. за 1.9с",
+  "новини · Yahoo долар · 12 бр. за 0.32с",
+  "новини · Yahoo злато · 14 бр. за 0.33с",
+  "новини · български ред: 93 от 200 · махнати по език: 0"
  ],
  "novini": [
+  {
+   "zaglavie": "India Gold price today: Gold rises, according to FXStreet data",
+   "vryzka": "https://news.google.com/rss/articles/CBMigwFBVV95cUxPMjZtYjR6b0J3Z0tON2pzTEF6NWViWkdwcVQzUU9GT25ETWhMUlVySVFLbUVYWFFDbzN3dnZIT2UyMHplR0lEUUdMOUNPa1ZMTVRPWDZNbGluTUdESWlveHJPOVM4QWpGclBfeGNtdHdLNmFHVkV2RjRDRThGdVhGQmtybw?oc=5",
+   "izvor": "Mitrade",
+   "chas": "2026-10-09T04:45:12Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": "Златото поскъпва"
+  },
   {
    "zaglavie": "Asia FX muted, dollar heads for fourth straight week of gains",
    "vryzka": "https://finance.yahoo.com/markets/currencies/articles/asia-fx-muted-dollar-heads-041449538.html?.tsrc=rss",
@@ -143,6 +156,19 @@
    "vryzka": "https://www.ft.com/content/c5a56603-be96-41bc-a00f-562f0407bedd?syn-25a6b1a6=1",
    "izvor": "Financial Times",
    "chas": "2026-10-09T04:00:03Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "FT пазари",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "SoftBank wants Gulf money to expand AI bet",
+   "vryzka": "https://www.ft.com/content/f9b00f7e-874a-44f5-9344-6fc262fa90bc?syn-25a6b1a6=1",
+   "izvor": "Financial Times",
+   "chas": "2026-10-09T04:00:00Z",
    "vazhnost": 1,
    "za": "общо",
    "emisiya": "FT пазари",
@@ -509,7 +535,7 @@
    "chas": "2026-10-08T23:21:26Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Google злато",
+   "emisiya": "Google Fed",
    "chas_ot_iztochnika": true,
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
@@ -540,6 +566,19 @@
    "duma": "rates",
    "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
    "bg": "Очаквания за по-висока лихва от Фед"
+  },
+  {
+   "zaglavie": "Fed’s Musalem Sees Potential Rate Hikes Within Six to Nine Months",
+   "vryzka": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFBwdFRoanltWnBUNXlZQkNYYnFZbGdCZDljUEJIOWRjU1gwd3lYNW5TQ09ZanRrX3k2UDJ6ZFY3SGtRSHJiX2VxTHowdE81cFpNdTBIaE9yTS1yYmM?oc=5",
+   "izvor": "www.tokenpost.com",
+   "chas": "2026-10-08T22:54:47Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": "Изказване на член на Фед (Musalem) за вдигане на лихвата"
   },
   {
    "zaglavie": "Nova Minerals advances Alaska antimony plant towards construction as Estelle drilling wraps up",
@@ -578,6 +617,19 @@
    "chas_ot_iztochnika": true,
    "duma": "gold",
    "zashto": "Пряко за златото.",
+   "bg": null
+  },
+  {
+   "zaglavie": "Gold Investing Leaps as Surging Interest Rates Zap Prices",
+   "vryzka": "https://news.google.com/rss/articles/CBMimgFBVV95cUxQd0lJSmNkQk9HRlM4UU81alVmM0tOTWdPY25vd20zamZiaUVaWi13UTVMMmo4c2kwNWxxVDM0c3lVV1gwN1ZKZGpTcmVQU2N3ZlJkT2ZwRV9pRnNxVFQ2cXZESVlWVGRIWUZobWJpVjJQSXNpd1VTVF9nZC1LVS1ROWpYUnViOThxWDVxWWlWSW9zYzQxRFl6VDln?oc=5",
+   "izvor": "BullionVault",
+   "chas": "2026-10-08T22:38:11Z",
+   "vazhnost": 3,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "rates",
+   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
    "bg": null
   },
   {
@@ -958,6 +1010,19 @@
    "bg": null
   },
   {
+   "zaglavie": "U.S. Interest Rates Could Rise Over Next Six to Nine Months, Fed’s Musalem Says",
+   "vryzka": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxOeHRyMnRQZ0p3RDBMZ2J3eDFvbXIwNFlMbWY0eE9GQnRMYVljeGZ0NlZKaVBGbkFnY090QzZHeE13c05hLUpTT3h6Rm9pcGtiOFBnUnI2RFcwVFlkUzk4MjNoY01PVlRLV0FMekNqVkdRRTFDZHVxNGFTQ0hLZEM4d1UzSHhBWF9scWh2d0txRW91emUzTzFIUEhKMVE2WUVpdmdlb0I3NGhHX0VCRV9yZTJlNmQyX3BRZVNuaDBVRjNtM2M?oc=5",
+   "izvor": "WSJ",
+   "chas": "2026-10-08T19:56:56Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "rates",
+   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
+   "bg": "Изказване на член на Фед (Musalem)"
+  },
+  {
    "zaglavie": "Canadian dollar gains as oil rally, narrower yield gap support loonie",
    "vryzka": "https://finance.yahoo.com/markets/currencies/articles/canadian-dollar-gains-oil-rally-195209037.html?.tsrc=rss",
    "izvor": "Yahoo Finance",
@@ -1190,19 +1255,6 @@
    "duma": "dollar",
    "zashto": "Златото се мери в долари: по-силен долар обикновено значи по-евтино злато.",
    "bg": null
-  },
-  {
-   "zaglavie": "U.S. Interest Rates Could Rise Over Next Six to Nine Months, Fed’s Musalem Says",
-   "vryzka": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxOeHRyMnRQZ0p3RDBMZ2J3eDFvbXIwNFlMbWY0eE9GQnRMYVljeGZ0NlZKaVBGbkFnY090QzZHeE13c05hLUpTT3h6Rm9pcGtiOFBnUnI2RFcwVFlkUzk4MjNoY01PVlRLV0FMekNqVkdRRTFDZHVxNGFTQ0hLZEM4d1UzSHhBWF9scWh2d0txRW91emUzTzFIUEhKMVE2WUVpdmdlb0I3NGhHX0VCRV9yZTJlNmQyX3BRZVNuaDBVRjNtM2M?oc=5",
-   "izvor": "WSJ",
-   "chas": "2026-10-08T18:45:00Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "rates",
-   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
-   "bg": "Изказване на член на Фед (Musalem)"
   },
   {
    "zaglavie": "Watch Musalem: Fed Rates Should Rise Over Next Six-to-Nine Months",
@@ -2427,58 +2479,6 @@
    "bg": "Очакванията за лихвата на Фед"
   },
   {
-   "zaglavie": "Gold Price Jumps Rs 3,600 to Rs 1.52 Lakh Ahead of Festive Season",
-   "vryzka": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxQck1FQ3NQV2psUVZmWGo2NnlBRGNMV3FOSVNuYWFzbmpXdXozNHo2c1E1c3RfVU5HNlJtMFNlUVVWMkhpNFJPX2ZEX2ZtZ3h3SVJfZXd2RWFkRGJpZDNUb1J2aDM3UUczTWxDNFkyeVJwems2R3ZQNlB4dmNFREpIRUVZREJtcnFLOWFYYTNPdEx5OFlzS1MwYXV2WDc0OWt4Wms0S1hKNFgySXQwU1djLXlVMDRqSXkz0gG-AUFVX3lxTE9ndm1JVlhlWnI3MEZfTEhtcjRFaE1WSk5sNGx5clFBM2xwUVMzeWdQcFhqY1Y2M3FXNjlpUVRPRG41Qmo3RjZjVHloZXB4RS0wMTBFMC1odUtqeU1BcVhraDNXQVlqWV9PdGtKQlVLY3pKVmlnZUx3N3lRNjlmRXZPckhPYzk2eVpKbGZMbkJPamtNblNnQV8yRldpeDhrUWlNNTRZUnJhSEJyVk90VkpnREEybmZsSGdJYUJuRnc?oc=5",
-   "izvor": "Rediff MoneyWiz",
-   "chas": "2026-10-08T12:41:59Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Златото поскъпва"
-  },
-  {
-   "zaglavie": "Oil prices jump on tanker attack and slowing flows through Strait of Hormuz",
-   "vryzka": "https://www.ft.com/content/ec860f96-5a2b-461a-a897-a957860c3dba?syn-25a6b1a6=1",
-   "izvor": "Financial Times",
-   "chas": "2026-10-08T12:40:44Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "FT пазари",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": "Петролът поскъпва на фона на напрежението в Близкия изток"
-  },
-  {
-   "zaglavie": "Fed’s Waller signals further rate hikes as inflation stalls, AI spending drives up costs",
-   "vryzka": "https://news.google.com/rss/articles/CBMixwFBVV95cUxOa1lKaVE3NWQxYlBrdjRLWDZ4SVZzQXFXc1RQMEhmVkpNcVFpaEh1U0JfekxzX3hYRmREMTNXMWp4WHRhNVVDckhrVm9XQ0lnRjNoeFVfUHpoUW8zM1lfMFZKZVZOMERFZDFjTGdIdzdtSkt4Z1RQSmhscFF1NUpieGRidHNFN05HU05EUEExWEZ1WjhyQjhRakhqdzNRT0VrRC1fYVdNRnRvYUd3Mm1SRl82RWpXZldvY0VReWVyVkJRcVZ4OHBr?oc=5",
-   "izvor": "Anadolu Ajansı",
-   "chas": "2026-10-08T12:34:21Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": "Изказване на член на Фед (Waller) за вдигане на лихвата и инфлацията"
-  },
-  {
-   "zaglavie": "Rising yields are quietly crashing the stock market’s earlier winners of 2026",
-   "vryzka": "https://www.marketwatch.com/story/rising-yields-are-quietly-crashing-the-stock-markets-earlier-winners-of-2026-a29f2863?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-10-08T12:32:00Z",
-   "vazhnost": 2,
-   "za": "лихви",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": "yields",
-   "zashto": "Доходността другаде е цената, която златото плаща — то самò не плаща лихва.",
-   "bg": null
-  },
-  {
    "zaglavie": "Waller, The Signaling Value of the Summary of Economic Projections",
    "vryzka": "https://www.federalreserve.gov/newsevents/speech/waller20261008a.htm",
    "izvor": "Fed",
@@ -2635,6 +2635,6 @@
    "bg": "Встъпително слово на член на Фед (Bowman)"
   }
  ],
- "s_bg_red": 94,
+ "s_bg_red": 93,
  "mahnati_ezik": 0
 }
