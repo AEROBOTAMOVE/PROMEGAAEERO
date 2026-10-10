@@ -1,39 +1,56 @@
 {
- "kogato": "2026-10-10T04:20:57Z",
- "sekundi": 0.94,
+ "kogato": "2026-10-10T04:50:59Z",
+ "sekundi": 0.87,
  "broi": 200,
- "novi_tozi_pyt": 4,
+ "novi_tozi_pyt": 1,
  "iztochnici_ok": [
-  "Fed всички",
-  "Fed речи",
-  "Fed политика",
   "MarketWatch",
+  "Fed речи",
+  "Investing",
+  "Fed политика",
   "Yahoo долар",
   "Yahoo злато",
-  "Investing",
   "CNBC",
   "FT пазари",
-  "Google злато",
   "Google Fed",
+  "Google злато",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Fed всички",
+   "greshka": "HTTPError: HTTP Error 404: Not Found"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.51с",
-  "новини · FT пазари · 25 бр. за 0.59с",
-  "новини · Fed всички · 6 бр. за 0.21с",
-  "новини · Fed политика · 15 бр. за 0.24с",
-  "новини · Fed речи · 15 бр. за 0.24с",
-  "новини · Google Fed · 40 бр. за 0.53с",
-  "новини · Google злато · 40 бр. за 0.65с",
-  "новини · Investing · 10 бр. за 0.32с",
-  "новини · MarketWatch · 10 бр. за 0.24с",
-  "новини · Mining.com · 36 бр. за 0.87с",
-  "новини · Yahoo долар · 16 бр. за 0.27с",
-  "новини · Yahoo злато · 16 бр. за 0.27с",
-  "новини · български ред: 87 от 200 · махнати по език: 2"
+  "новини · CNBC · 30 бр. за 0.37с",
+  "новини · FT пазари · 25 бр. за 0.42с",
+  "новини · Fed всички · ПАДНА: HTTPError: HTTP Error 404: Not Found",
+  "новини · Fed политика · 15 бр. за 0.21с",
+  "новини · Fed речи · 15 бр. за 0.17с",
+  "новини · Google Fed · 40 бр. за 0.37с",
+  "новини · Google злато · 40 бр. за 0.57с",
+  "новини · Investing · 10 бр. за 0.19с",
+  "новини · MarketWatch · 10 бр. за 0.15с",
+  "новини · Mining.com · 36 бр. за 0.8с",
+  "новини · Yahoo долар · 16 бр. за 0.25с",
+  "новини · Yahoo злато · 16 бр. за 0.3с",
+  "новини · български ред: 86 от 200 · махнати по език: 2"
  ],
  "novini": [
+  {
+   "zaglavie": "Gold (XAU/USD) Price Forecast: $4,226 Breakout Could Reverse Downtrend",
+   "vryzka": "https://news.google.com/rss/articles/CBMitwFBVV95cUxOUlpvUzRHZ0tBbGFEcWhSUjcwYlR1VGs0eXpyUk9fTmhSWEQtVlo3MU9DejczN2dqTnUzOE9QLXBQcF9yOE1iUVNtcWRKam1pS2dhcWxRdlo3ZWVWaWJtVVZfNHlNaThSa3dFU3hsUUxnTVFuazM5WU9XVnZrOG1DWEw1bFphVWNqbGhPdlRoRnZOQnVrcVEwZUloTmRRLVg2QXJTdjRnbmJTbjA4cTFHWDhqTmpMblE?oc=5",
+   "izvor": "FXEmpire",
+   "chas": "2026-10-10T04:15:00Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": "Анализ и прогноза за златото"
+  },
   {
    "zaglavie": "Natixis: September CPI Expected to Meet Forecasts; Fed Rate Hike Likely a One-and-Done Move",
    "vryzka": "https://news.google.com/rss/articles/CBMidkFVX3lxTFBreFpoSjRxZXNOSjdaZjVyT0gyT0VKU3ExUXpvZ04tMFppRUV2ZXFGY3NJUEN4T1hSMHNnUjAwbS1rTkN4YkdPWHhHVWVJcnBlS2JsRlBianNHTVJmbldrWmJ2TWFNZ3dCejR5Z3RDTnZtelNSZlE?oc=5",
@@ -61,19 +78,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Gold (XAU/USD) Price Forecast: $4,226 Breakout Could Reverse Downtrend",
-   "vryzka": "https://news.google.com/rss/articles/CBMitwFBVV95cUxOUlpvUzRHZ0tBbGFEcWhSUjcwYlR1VGs0eXpyUk9fTmhSWEQtVlo3MU9DejczN2dqTnUzOE9QLXBQcF9yOE1iUVNtcWRKam1pS2dhcWxRdlo3ZWVWaWJtVVZfNHlNaThSa3dFU3hsUUxnTVFuazM5WU9XVnZrOG1DWEw1bFphVWNqbGhPdlRoRnZOQnVrcVEwZUloTmRRLVg2QXJTdjRnbmJTbjA4cTFHWDhqTmpMblE?oc=5",
-   "izvor": "FXEmpire",
-   "chas": "2026-10-10T03:17:44Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Анализ и прогноза за златото"
-  },
-  {
    "zaglavie": "‘I feel like a loser’: My stock portfolio is swinging wildly. Should I be worried?",
    "vryzka": "https://www.marketwatch.com/story/i-feel-like-a-loser-my-etfs-go-up-one-day-and-crash-the-next-is-this-a-bad-sign-0c9848b2?mod=mw_rss_topstories",
    "izvor": "MarketWatch",
@@ -81,6 +85,19 @@
    "vazhnost": 1,
    "za": "общо",
    "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "Natural Gas Price Forecast: Bulls Target $3.32 Resistance",
+   "vryzka": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxPbno5SFhERTY3NmNYRG5EemJzZkhWQTlLNmdxV3l3RHdnaGxCYVVMZ1NzVmNLcXdqTTE2M1IyazFEX0hObDhPZFNUR2NCVDcxSDVad3c4Wmpwb0NqMHNiYzdMNnY0R3FmTVl4QjlEV1kxcUY1NzU3VUh5dHBSOFpDRGxuN3U4NWQ0c1ZXSHBHTHZvT0pvT0haOC1EQVNvaHZldFVOZ2swZUEtdw?oc=5",
+   "izvor": "FXEmpire",
+   "chas": "2026-10-10T03:07:22Z",
+   "vazhnost": 1,
+   "za": "злато",
+   "emisiya": "Google злато",
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null,
@@ -321,6 +338,19 @@
    "bg": null
   },
   {
+   "zaglavie": "Cotton Pushes Higher into the Weekend, Despite USDA Production Hike",
+   "vryzka": "https://www.barchart.com/story/news/5497584/cotton-pushes-higher-into-the-weekend-despite-usda-production-hike?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-10-09T22:11:57Z",
+   "vazhnost": 2,
+   "za": "долар",
+   "emisiya": "Yahoo долар",
+   "chas_ot_iztochnika": true,
+   "duma": "dollar",
+   "zashto": "Златото се мери в долари: по-силен долар обикновено значи по-евтино злато.",
+   "bg": null
+  },
+  {
    "zaglavie": "Trump Announces New Investigation of Federal Reserve Governor",
    "vryzka": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxOQ0xDMXViUUt0V2RVTHUwRzRVY1JIQlVleVlQTmFsZWxheGlXNWNCNUJLVFRUaWJQeDNVM3ZZSng4cnVRY1RocGM4VEFwaVRVemo4VklsR0V1WDBIOVVNYmJJMnJmbm9GWkRQWDhMdXRZZk5PTElCcXFUMEt2SzRDYXdBVGFNYV9VVnpaTmxYaVpTMDVXenlMcFNOMjdMdWtyMUlSUVZDV2Mwdw?oc=5",
    "izvor": "The Well News",
@@ -432,19 +462,6 @@
    "vazhnost": 1,
    "za": "общо",
    "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
-   "zaglavie": "Natural Gas Price Forecast: Bulls Target $3.32 Resistance",
-   "vryzka": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxPbno5SFhERTY3NmNYRG5EemJzZkhWQTlLNmdxV3l3RHdnaGxCYVVMZ1NzVmNLcXdqTTE2M1IyazFEX0hObDhPZFNUR2NCVDcxSDVad3c4Wmpwb0NqMHNiYzdMNnY0R3FmTVl4QjlEV1kxcUY1NzU3VUh5dHBSOFpDRGxuN3U4NWQ0c1ZXSHBHTHZvT0pvT0haOC1EQVNvaHZldFVOZ2swZUEtdw?oc=5",
-   "izvor": "FXEmpire",
-   "chas": "2026-10-09T21:25:46Z",
-   "vazhnost": 1,
-   "za": "злато",
-   "emisiya": "Google злато",
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null,
@@ -711,6 +728,19 @@
    "bg": null
   },
   {
+   "zaglavie": "US Dollar Strength Is Becoming Gold’s Biggest Near-Term Constraint",
+   "vryzka": "https://news.google.com/rss/articles/CBMirgFBVV95cUxNT3M4dlJXX3ZwYXF3SV9uNzVuUkVLVkZDeERYTllkY1hjZmJWQXBOOWNCOUFUZzVaT1ZIbnZJdUd4RVZWNVNpRjlyd0hOVy1yZ2EyNFJwLWFUaTMyMkEtOVVaNzlmbmtpd3Fjc3BXNGhPV2N3LVhfZHU3Q2NEa2xfblViNGpDSTZuNkZVS0pOZVVxNVpwUk5uS3EwTnhxSnN4S1BvRmowaS1RZWlpVEE?oc=5",
+   "izvor": "Investing.com",
+   "chas": "2026-10-09T18:47:21Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "dollar",
+   "zashto": "Златото се мери в долари: по-силен долар обикновено значи по-евтино злато.",
+   "bg": null
+  },
+  {
    "zaglavie": "Hurricane Isaias to ‘stress test’ oil markets already hobbled by tight fuel supplies",
    "vryzka": "https://www.marketwatch.com/story/hurricane-isaias-to-stress-test-oil-markets-already-hobbled-by-tight-fuel-supplies-ca90d4a5?mod=mw_rss_topstories",
    "izvor": "MarketWatch",
@@ -735,19 +765,6 @@
    "duma": "gold",
    "zashto": "Пряко за златото.",
    "bg": "Новина от минния бранш (злато)"
-  },
-  {
-   "zaglavie": "US Dollar Strength Is Becoming Gold’s Biggest Near-Term Constraint",
-   "vryzka": "https://www.investing.com/analysis/us-dollar-strength-is-becoming-golds-biggest-nearterm-constraint-200689299",
-   "izvor": "Investing.com",
-   "chas": "2026-10-09T18:28:00Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Investing",
-   "chas_ot_iztochnika": true,
-   "duma": "dollar",
-   "zashto": "Златото се мери в долари: по-силен долар обикновено значи по-евтино злато.",
-   "bg": null
   },
   {
    "zaglavie": "Gold prices today, October 9: Vietnam's SJC gold bars and 9999 gold rings both rise 800,000 dong per tael",
@@ -2479,19 +2496,6 @@
    "bg": "Доларът преди данните за доверието на потребителите в САЩ, на фона на Фед"
   },
   {
-   "zaglavie": "Dollar Falls Could Prove Limited",
-   "vryzka": "https://finance.yahoo.com/m/7a9fed6b-b40a-3ae0-bac2-acffd41bcd0f/dollar-falls-could-prove.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-10-09T10:17:14Z",
-   "vazhnost": 3,
-   "za": "долар",
-   "emisiya": "Yahoo долар",
-   "chas_ot_iztochnika": true,
-   "duma": "rates",
-   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
-   "bg": "Доларът поевтинява"
-  },
-  {
    "zaglavie": "Waller, The Signaling Value of the Summary of Economic Projections",
    "vryzka": "https://www.federalreserve.gov/newsevents/speech/waller20261008a.htm",
    "izvor": "Fed",
@@ -2511,10 +2515,10 @@
    "chas": "2026-10-07T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed всички",
+   "emisiya": "Fed политика",
    "chas_ot_iztochnika": true,
    "duma": "fed",
-   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
+   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
    "bg": "Протоколът от заседанието на Фед за лихвата (FOMC)"
   },
   {
@@ -2635,6 +2639,6 @@
    "bg": "Реч на член на Фед (Barr) за паричната политика и икономиката"
   }
  ],
- "s_bg_red": 87,
+ "s_bg_red": 86,
  "mahnati_ezik": 2
 }
