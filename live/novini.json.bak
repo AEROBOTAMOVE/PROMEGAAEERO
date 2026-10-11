@@ -1,37 +1,44 @@
 {
- "kogato": "2026-10-11T00:06:29Z",
- "sekundi": 0.99,
+ "kogato": "2026-10-11T00:41:01Z",
+ "sekundi": 7.02,
  "broi": 200,
- "novi_tozi_pyt": 4,
+ "novi_tozi_pyt": 0,
  "iztochnici_ok": [
-  "Fed речи",
   "Fed всички",
-  "Fed политика",
   "MarketWatch",
+  "Fed речи",
+  "Fed политика",
   "Investing",
   "Yahoo долар",
-  "CNBC",
   "Yahoo злато",
   "FT пазари",
-  "Mining.com",
-  "Google Fed",
-  "Google злато"
+  "CNBC",
+  "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google злато",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  },
+  {
+   "ime": "Google Fed",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.35с",
-  "новини · FT пазари · 25 бр. за 0.51с",
-  "новини · Fed всички · 6 бр. за 0.23с",
-  "новини · Fed политика · 15 бр. за 0.24с",
-  "новини · Fed речи · 15 бр. за 0.21с",
-  "новини · Google Fed · 40 бр. за 0.7с",
-  "новини · Google злато · 40 бр. за 0.91с",
-  "новини · Investing · 10 бр. за 0.29с",
-  "новини · MarketWatch · 10 бр. за 0.26с",
-  "новини · Mining.com · 36 бр. за 0.87с",
-  "новини · Yahoo долар · 16 бр. за 0.36с",
-  "новини · Yahoo злато · 16 бр. за 0.36с",
-  "новини · български ред: 95 от 200 · махнати по език: 4"
+  "новини · CNBC · 30 бр. за 0.63с",
+  "новини · FT пазари · 25 бр. за 0.43с",
+  "новини · Fed всички · 6 бр. за 0.18с",
+  "новини · Fed политика · 15 бр. за 0.23с",
+  "новини · Fed речи · 15 бр. за 0.23с",
+  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Investing · 10 бр. за 0.23с",
+  "новини · MarketWatch · 10 бр. за 0.17с",
+  "новини · Mining.com · 36 бр. за 0.82с",
+  "новини · Yahoo долар · 16 бр. за 0.44с",
+  "новини · Yahoo злато · 16 бр. за 0.45с",
+  "новини · български ред: 95 от 200 · махнати по език: 0"
  ],
  "novini": [
   {
@@ -104,19 +111,6 @@
    "vryzka": "https://news.google.com/rss/articles/CBMipgFBVV95cUxObXgzYUxHcXNKbnU4WmZyd2Nhbl9FUkZvaUlQeF94aXJOamFuOXJDSUpla280UXhRVTNPODdKMUxzdF96aTlsVlB6YmlaQkE2YkxReklnX2hITF9UMThlSWZSS2xPVHRIcG5oQU9WamRVaWUtazRNamlQNE1ITlpoWjNTMllvNTFzSWxFME9Ha3A1OVp2dmQ3TXNkc1p0V1F3bnV0dXVR?oc=5",
    "izvor": "Laodong.vn",
    "chas": "2026-10-10T23:00:00Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": null
-  },
-  {
-   "zaglavie": "Veteran Trader Gives Critical Warning for Gold Price",
-   "vryzka": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1YcmlnTDVPczVsN3RDS1l2el9mSmN5YjlITjJXZk05VkliOEJXWkRKc2ZoU1YzakdjcmlSTFRWcU0yNXN6Uldoczc4MFo5OUVxdWtZcC1vb3dTVkE?oc=5",
-   "izvor": "Cryptonews.net",
-   "chas": "2026-10-10T22:51:11Z",
    "vazhnost": 2,
    "za": "злато",
    "emisiya": "Google злато",
@@ -449,6 +443,19 @@
    "duma": "rate",
    "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
    "bg": "Цената на златото днес"
+  },
+  {
+   "zaglavie": "Veteran Trader Gives Critical Warning for Gold Price",
+   "vryzka": "https://beincrypto.com/peter-brandt-gold-price-warning/?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-10-10T18:37:35Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": null
   },
   {
    "zaglavie": "Will gold prices fall further? Check reasons behind the recent dip, forecasts and more",
@@ -2636,5 +2643,5 @@
   }
  ],
  "s_bg_red": 95,
- "mahnati_ezik": 4
+ "mahnati_ezik": 0
 }
