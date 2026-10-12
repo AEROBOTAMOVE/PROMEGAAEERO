@@ -1,34 +1,51 @@
 {
- "den": "2026-10-09",
- "sazdadeno_utc": "2026-10-09T04:01:00Z",
+ "den": "2026-10-12",
+ "sazdadeno_utc": "2026-10-12T04:01:00Z",
  "v": "v19.04",
- "cena": 4178.81,
- "bazis": 22.99,
+ "cena": 4203.35,
+ "bazis": 24.95,
  "nosht": {
-  "ot": null,
-  "do": null,
-  "shirina": null,
-  "atr": 80.85,
-  "dyal_atr": null,
-  "rezhim": "неясно"
+  "ot": 4183.85,
+  "do": 4219.42,
+  "shirina": 35.57,
+  "atr": 81.78,
+  "dyal_atr": 0.406,
+  "rezhim": "тясна"
  },
  "vchera": {
-  "vryh": 4147.71,
-  "dyno": 4105.11,
-  "zatvaryane": 4134.01
+  "vryh": 4213.63,
+  "dyno": 4131.15,
+  "zatvaryane": 4190.71
  },
- "idei": [],
- "sabitiya": [
+ "idei": [
   {
-   "ime": "Michigan Consumer Sentiment",
-   "utc": "2026-10-09T14:00:00Z",
-   "sila": "high",
-   "prozorec_min": [
-    20,
-    40
-   ]
+   "posoka": "long",
+   "nivo": 4183.85,
+   "stop": 4170.85,
+   "celi": [
+    4188.85,
+    4193.85,
+    4196.85
+   ],
+   "izvor": "нощно дъно",
+   "belezhka": "наблюдение, не вход: сигнал е само картата ВЛЕЗ · нивото е с разликата към борсата от своя час",
+   "nablyudenie": true
+  },
+  {
+   "posoka": "short",
+   "nivo": 4219.42,
+   "stop": 4232.42,
+   "celi": [
+    4214.42,
+    4209.42,
+    4206.42
+   ],
+   "izvor": "нощен връх",
+   "belezhka": "наблюдение, не вход: сигнал е само картата ВЛЕЗ · нивото е с разликата към борсата от своя час",
+   "nablyudenie": true
   }
  ],
- "yasna_ideya": false,
- "zashto_nyama": "нощта не се чете"
+ "sabitiya": [],
+ "yasna_ideya": true,
+ "zashto_nyama": ""
 }
