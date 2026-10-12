@@ -1,39 +1,137 @@
 {
- "kogato": "2026-10-12T10:36:05Z",
- "sekundi": 0.83,
+ "kogato": "2026-10-12T11:06:10Z",
+ "sekundi": 4.36,
  "broi": 200,
- "novi_tozi_pyt": 14,
+ "novi_tozi_pyt": 9,
  "iztochnici_ok": [
+  "Fed всички",
+  "Fed политика",
+  "Fed речи",
+  "Investing",
   "MarketWatch",
+  "CNBC",
   "Yahoo долар",
   "Yahoo злато",
-  "Investing",
-  "Fed всички",
-  "Fed речи",
-  "Fed политика",
   "FT пазари",
-  "CNBC",
-  "Google злато",
-  "Google Fed",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google злато",
+   "greshka": "празна емисия"
+  },
+  {
+   "ime": "Google Fed",
+   "greshka": "празна емисия"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.48с",
-  "новини · FT пазари · 25 бр. за 0.41с",
-  "новини · Fed всички · 6 бр. за 0.36с",
-  "новини · Fed политика · 15 бр. за 0.38с",
-  "новини · Fed речи · 15 бр. за 0.37с",
-  "новини · Google Fed · 40 бр. за 0.49с",
-  "новини · Google злато · 40 бр. за 0.57с",
+  "новини · CNBC · 30 бр. за 0.36с",
+  "новини · FT пазари · 25 бр. за 0.53с",
+  "новини · Fed всички · 6 бр. за 0.22с",
+  "новини · Fed политика · 15 бр. за 0.22с",
+  "новини · Fed речи · 15 бр. за 0.22с",
+  "новини · Google Fed · ПАДНА: празна емисия",
+  "новини · Google злато · ПАДНА: празна емисия",
   "новини · Investing · 10 бр. за 0.28с",
-  "новини · MarketWatch · 10 бр. за 0.22с",
-  "новини · Mining.com · 36 бр. за 0.76с",
-  "новини · Yahoo долар · 14 бр. за 0.24с",
-  "новини · Yahoo злато · 20 бр. за 0.27с",
-  "новини · български ред: 110 от 200 · махнати по език: 2"
+  "новини · MarketWatch · 10 бр. за 0.31с",
+  "новини · Mining.com · 36 бр. за 0.84с",
+  "новини · Yahoo долар · 14 бр. за 0.38с",
+  "новини · Yahoo злато · 20 бр. за 0.39с",
+  "новини · български ред: 108 от 200 · махнати по език: 0"
  ],
  "novini": [
+  {
+   "zaglavie": "Gold prices today, Monday, October 12, 2026: Gold opens at the highest point in over a week",
+   "vryzka": "https://finance.yahoo.com/personal-finance/investing/article/gold-prices-today-monday-october-12-2026-gold-opens-at-the-highest-point-in-over-a-week-110103415.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-10-12T11:01:03Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": "Цената на златото днес"
+  },
+  {
+   "zaglavie": "Private equity puts string of UK high street names up for sale",
+   "vryzka": "https://www.ft.com/content/48b8c4ce-b2bf-44e2-badf-8159a9d664e4?syn-25a6b1a6=1",
+   "izvor": "Financial Times",
+   "chas": "2026-10-12T11:00:02Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "FT пазари",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "Fed officials want to hold off a rate hike this month. Will this week’s inflation data let them?",
+   "vryzka": "https://www.marketwatch.com/story/fed-officials-want-to-hold-off-a-rate-hike-this-month-will-this-weeks-inflation-data-let-them-a82754d1?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-10-12T11:00:00Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": "Очакванията за лихвата на Фед"
+  },
+  {
+   "zaglavie": "World's Largest Stock Transfer Agent Computershare Begins Trading on OTCQX Best Market",
+   "vryzka": "https://finance.yahoo.com/markets/stocks/articles/worlds-largest-stock-transfer-agent-110000883.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-10-12T11:00:00Z",
+   "vazhnost": 1,
+   "za": "долар",
+   "emisiya": "Yahoo долар",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "This five-star money manager shares three stock picks, including one betting on dying American malls",
+   "vryzka": "https://www.marketwatch.com/story/this-five-star-money-manager-shares-three-stock-picks-including-one-betting-on-dying-american-malls-9253a787?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-10-12T10:52:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "Diesel prices slip after Trump claims ‘energy ceasefire’ in Ukraine war",
+   "vryzka": "https://www.ft.com/content/a663781e-2709-41f2-99df-4fb5a6162e6b?syn-25a6b1a6=1",
+   "izvor": "Financial Times",
+   "chas": "2026-10-12T10:44:13Z",
+   "vazhnost": 3,
+   "za": "общо",
+   "emisiya": "FT пазари",
+   "chas_ot_iztochnika": true,
+   "duma": "ceasefire",
+   "zashto": "Затихващо напрежение — страхът спада и златото често губи от това.",
+   "bg": null
+  },
+  {
+   "zaglavie": "Oil Futures Rise Amid Anticipation of Middle East Escalation Paths",
+   "vryzka": "https://www.investing.com/analysis/oil-futures-rise-amid-anticipation-of-middle-east-escalation-paths-200689397",
+   "izvor": "Investing.com",
+   "chas": "2026-10-12T10:33:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "Investing",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": "Петролът поскъпва на фона на напрежението в Близкия изток"
+  },
   {
    "zaglavie": "US mortgage rates near 7.5%: Why rising Treasury yields and Fed rate hike fears could push home loans towards 8% | Hindustan Times",
    "vryzka": "https://news.google.com/rss/articles/CBMijAJBVV95cUxQbTI2bTZuSmF5Y2ptWDluNm5kY3cxWnh4YUNSRmpBdlJ4ajNEYnNQdF9mQXBIOGprUkx6emdzRVZIdTJzREpYemFlR1VuU1pWUVVOLVNuMHpHUFNqN1hpWG1qZkZyZnVzejNCMDhpVGVEX01aNU0xbEJjNEtNMEdZSE9TUGVDQmNBRGlBMEkxZWdLb3pvUzVaOENadlFOdE9QZFlVS1laQk8xUGNFU1I3RUFDbFU1c1ZwMlI5Q0gxS0dGYTgwZTRtUllSd0kzSXhobm5TbFc0c0J3TmNOUzk4NUowTldRQWI3MWRGbFR3TU9oYU12YjEyYzBxQ0tOcExuWm9SVXBKRUhldDZn0gGSAkFVX3lxTE9pMXNENElZcEZIcERLQU0wVnhsdGlkd2FiUHY0QXJwZFUyT1d0Vncyc2Jsc29YbGJPeTM5S2tQQkJ0SEZDd2JNMmxpd21SUXdZeVN0VFBMd1EwajZQekc3MG5YbWx5dE9fLTNRQkxZZVVObF9iWDNHZFctNGVEMG84R0JFQXV1aFd3dDRZZHZfa2t",
@@ -165,6 +263,19 @@
    "bg": null
   },
   {
+   "zaglavie": "Gold Trade Nets 350 Ticks Profit",
+   "vryzka": "https://www.investing.com/analysis/gold-trade-nets-350-ticks-profit-200689393",
+   "izvor": "Investing.com",
+   "chas": "2026-10-12T09:56:00Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Investing",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": null
+  },
+  {
    "zaglavie": "Currency market: Gold drops in price as foreign exchange demand surges in Belarus",
    "vryzka": "https://news.google.com/rss/articles/CBMirwFBVV95cUxPLXg2RnhBVTdJeGx4dXpCREthaGVlWnV2cm83WGFSdmF3RnRBdEFmQ210cjRmajdWUmtnRFBlRkVweXBlay1mMDN5Z0JXYml6Z1loX2F5T3dKSllpdU9LTWM1bXBIZ1ZaeTRDTm00OS05andzRnYtSVpkNDhRRF9LdV9ONkFhOVVvTFRWYmx3aS1XbGM5ODFlNW1XUHk3VVFnQlgwNWJCTDlmSG5rdFo0?oc=5",
    "izvor": "Belsat",
@@ -176,6 +287,19 @@
    "duma": "gold",
    "zashto": "Пряко за златото.",
    "bg": "Златото поевтинява"
+  },
+  {
+   "zaglavie": "Oil Falls as Trump’s Russia-Ukraine Energy Ceasefire Raises Supply Hopes",
+   "vryzka": "https://www.investing.com/analysis/oil-falls-as-trumps-russiaukraine-energy-ceasefire-raises-supply-hopes-200689392",
+   "izvor": "Investing.com",
+   "chas": "2026-10-12T09:51:00Z",
+   "vazhnost": 3,
+   "za": "общо",
+   "emisiya": "Investing",
+   "chas_ot_iztochnika": true,
+   "duma": "ceasefire",
+   "zashto": "Затихващо напрежение — страхът спада и златото често губи от това.",
+   "bg": "Петролът поевтинява на фона на надеждите за мир в Украйна"
   },
   {
    "zaglavie": "Natural Gas: North American Supply Could Keep Prices Subdued Through 2027",
@@ -347,6 +471,19 @@
    "bg": null
   },
   {
+   "zaglavie": "Should you buy gold now?",
+   "vryzka": "https://moneyweek.com/investments/gold/is-now-a-good-time-to-invest-in-gold?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-10-12T08:54:08Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": null
+  },
+  {
    "zaglavie": "Gold Royalty Reports Q2 2026 Results: Full Earnings Call Transcript",
    "vryzka": "https://news.google.com/rss/articles/CBMisAFBVV95cUxQaGtzWlYzOG9DbVY3TU1jSXJ3eHZ0NjdCZm9vb3VSS3VUSUhoODZoOHc3YXlsV1RiUTk2VFltU3RQOHRsUmY0Nzg3WFJ5SVFCVG5MRWtNS2NUZXlWekdWRGpRb1daRXdxQ0t4T1dSWl9YOHVOM3JpNnM2c1BzOWVoOFUwbnBfcU9WcVR0NFlpd0JUWEp4bzNNT1NMVHBRTlRTbGNybU1EWWg3MDNRQUx5ZA?oc=5",
    "izvor": "Benzinga",
@@ -475,19 +612,6 @@
    "duma": "gold",
    "zashto": "Пряко за златото.",
    "bg": "Анализ и прогноза за златото"
-  },
-  {
-   "zaglavie": "Diesel prices slip after Trump claims ‘energy ceasefire’ in Ukraine war",
-   "vryzka": "https://www.ft.com/content/a663781e-2709-41f2-99df-4fb5a6162e6b?syn-25a6b1a6=1",
-   "izvor": "Financial Times",
-   "chas": "2026-10-12T07:22:42Z",
-   "vazhnost": 3,
-   "za": "общо",
-   "emisiya": "FT пазари",
-   "chas_ot_iztochnika": true,
-   "duma": "ceasefire",
-   "zashto": "Затихващо напрежение — страхът спада и златото често губи от това.",
-   "bg": null
   },
   {
    "zaglavie": "Oil prices volatile after Trump claims ‘energy ceasefire’ in Ukraine war",
@@ -2362,123 +2486,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Gold Rate Today in Nagpur 12th October 2026 : 22 & 24 Carat, Todays Gold Price in Nagpur",
-   "vryzka": "https://news.google.com/rss/articles/CBMickFVX3lxTE80OGU4WWtxb2hXd1dIN1VEYTRtWlFZSFZvaGZsUi1vcUl4MERnM2pCVHZRTllZcEUyV1NGNlplSzZMQTFIM2RaX3JNUjEtT25HZW1IRmtUVHcwS1J2WXByekpsZzZMU0RHNE95OFNlME9OZw?oc=5",
-   "izvor": "Business Today",
-   "chas": "2026-10-11T19:30:04Z",
-   "vazhnost": 3,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "rate",
-   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
-   "bg": "Цената на златото днес"
-  },
-  {
-   "zaglavie": "Gold Rate Today in Uttar Pradesh 12th October 2026 : 22 & 24 Carat, Todays Gold Price in Uttar Pradesh",
-   "vryzka": "https://news.google.com/rss/articles/CBMie0FVX3lxTE5SeGZIWl9hZERFamdMT3dQR0g5WUI3elBZYm54V2FuZlQ2ZUpuT0JlVG9NUkxwSXZieDZYeDlDdDR6Z0tyM2x6VWctQ3RIRGtRWXVDVkQwbTZyNW1vYWtxbjMyX3lHRW8wN0xuRFdNODdURVBlN1BmbVplZw?oc=5",
-   "izvor": "Business Today",
-   "chas": "2026-10-11T19:23:23Z",
-   "vazhnost": 3,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "rate",
-   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
-   "bg": "Цената на златото днес"
-  },
-  {
-   "zaglavie": "US Bond Traders Await CPI, Warsh For Insight on Fed’s Rate Path",
-   "vryzka": "https://news.google.com/rss/articles/CBMiswFBVV95cUxPM3lYa092MnRSV0FXYUtRRjVRSHN2akl0ZzM3UWlJcjh6bXNpbVE4dHJQUDM0bS1iWklWekQ0aENwMDRCdWhZbUZMTHFOMmVrZzZzYmFIMG5BamMzSTFfTE0wVjZsWjFBZ2ZQTmFWM0h4NUZkZlVseDlCM05QSFNyczJfdk5BV1IzVmd1NXlnaTdVVnNyOXV0TmxjSW9IRFZWWkEtZlZ1c25jcXU4WXQ1QmRNbw?oc=5",
-   "izvor": "Bloomberg.com",
-   "chas": "2026-10-11T19:00:00Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "cpi",
-   "zashto": "ЦПИ е измерването на инфлацията. Изненада в него мести златото в същия ден.",
-   "bg": "Данни за инфлацията в САЩ (CPI)"
-  },
-  {
-   "zaglavie": "Gold Rate Today in Mangalore 12th October 2026 : 22 & 24 Carat, Todays Gold Price in Mangalore",
-   "vryzka": "https://news.google.com/rss/articles/CBMidkFVX3lxTE9NeHBEOGNNYzZtT3lmZ2NhWXNSeHdLNkl4UnVPWEZ6blpzTlV6bXJLRnZ6dVNONTJQckg1aGhvaE5lZVNpOFM0MnRVSmpzakxHdlhUUGU1SzdJUkxzcnJ6aUJiNllNUEZwbnAtZk5aeTNFaWdsenc?oc=5",
-   "izvor": "Business Today",
-   "chas": "2026-10-11T18:56:54Z",
-   "vazhnost": 3,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "rate",
-   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
-   "bg": "Цената на златото днес"
-  },
-  {
-   "zaglavie": "Gold Rate Today in Madhya Pradesh 12th October 2026 : 22 & 24 Carat, Todays Gold Price in Madhya Pradesh",
-   "vryzka": "https://news.google.com/rss/articles/CBMifEFVX3lxTFBmTDJ2eXdhQ1E5OUdvMmRRR0lXTkJMMWJWbVRVaGkzUF9ZNEJjZ1BmbHo1SDRFc1lzdXMzSldQNUM1QTVIaXM0bm9jQVdHRkc2Tng5eFM2OWE2RXJaUmMzSnFmanJkc1Q3R1ZwSWJOcmFIQnZiTU85OE1HNGM?oc=5",
-   "izvor": "Business Today",
-   "chas": "2026-10-11T18:52:33Z",
-   "vazhnost": 3,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "rate",
-   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
-   "bg": "Цената на златото днес"
-  },
-  {
-   "zaglavie": "Gold Rate Today in Vadodara 12th October 2026 : 22 & 24 Carat, Todays Gold Price in Vadodara",
-   "vryzka": "https://news.google.com/rss/articles/CBMidEFVX3lxTE1nWEtqMFBqRTczVHZRYjNvU2c0OHNjR2plNnFSYS1GTUlYMUlLak5MQ013Tnp3dzFzUi10YmRjVWRidS1UVVhSYVV1Y1F0OHVGRVl3Y1ptX094ekVDR2lpZ28wV2RTSVoyNW9TTnhLc2V5bmpu?oc=5",
-   "izvor": "Business Today",
-   "chas": "2026-10-11T18:50:37Z",
-   "vazhnost": 3,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "rate",
-   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
-   "bg": "Цената на златото днес"
-  },
-  {
-   "zaglavie": "GOLD (GOLD) Price Prediction for 2026 to 2031",
-   "vryzka": "https://news.google.com/rss/articles/CBMiY0FVX3lxTFA2RGp0NF9LcEpNTkdlQU9hNUphVnJpYzNiVVRDZWpYajhDd0o2VEFzaThMNm9rODJTeklkZlBhbnZ6dEp2NVNZb0dXOGRkYjJsQlR0bHBnTHZ1N3doZnlRZGoyWQ?oc=5",
-   "izvor": "Bybit",
-   "chas": "2026-10-11T18:37:46Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": null
-  },
-  {
-   "zaglavie": "Back from Asiad gold, hockey captain eyes LA Olympics glory",
-   "vryzka": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxQQUFrazE4SnA1dDQ0TmQ1NkVCZFFReFBTeU9XVkl4anRuUHVxZjVvQzFCNmtNX2VUQ0pXQ0xtYlAxR0NmQkt2QjZ4WUZuT3dTbHBBTW51TVdNd2REb2RmZ3NQUmhHbzNjZmM5a0d4U2pZT2RLUy1QUzkwUnZHcVBwc3FnbVdKSW1LOUhtaUs1VDVyQk1aNXgtTG9WVnVVbVBKMWhESlcxUWliSXhFUlpuVlNoaUpSQUJ6QVJLcDNNR0xRM0Z5ZW41SWpmRjd0bzZ3Q3fSAdcBQVVfeXFMUGJ0MFZUbDJzQVkwYy1jc2lVVTVFcHJlT1ZHRy1DVW1iVFJfRGpmRlZMUHVCd2hQTS1vMUxyLWpFeXhLMDRXU1JSd0QxRnVidWphbU9tUkJNMFpxY0lZMzhMYzBqOUJGTjJIbG1EWll1SHVjb28wSDh1alM3dFRlWHNIcXBGN1JqeGpQM1RlYndJVTdYVHYwNUxjZ0JUNG9SVGdmeTY5VkRDWFV0TnhYOE56eGgxc2ZNUTBSRWNpNXhKU1hUeEZiNHlYRXR",
-   "izvor": "The Times of India",
-   "chas": "2026-10-11T18:30:00Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": null
-  },
-  {
-   "zaglavie": "No. 47 launches new inquiry into Lisa Cook in effort to remove her from Federal Reserve By Christopher Rugaber",
-   "vryzka": "https://news.google.com/rss/articles/CBMi4gFBVV95cUxNOTlvc2Vab3Nfd0FKcmhRdFBQdjJZUEZnTlVqNktoSFdrVU1DUFM0dFRVN25WN3djMHdOVjFzWEJCX3Q2ZjRCOThNMVl0dEk0UjNQRXRtbFdVanZzRnpabkp2S0lwS1RFUWEtUTZ6UHh5NEVtNUVxUXlhUlpreEd1ekFWd29CNUZHR2kzMVktMXRZdjdvYkZ2UFBFTzBIbi1LWXlENEV0b0hIS2ZZLUtTOHQzY1NWZ0V5c1dmUEVqZEFlcjIwMy1NckF5SEYyRl92NXJKZ3RRM2FHemRlOFlqdHp3?oc=5",
-   "izvor": "AFRO News",
-   "chas": "2026-10-11T18:07:12Z",
-   "vazhnost": 1,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
    "zaglavie": "Federal Reserve Board releases results of the 2025 Survey of Consumer Finances, which provides the public and policymakers with detailed insights into the economic condition of American families",
    "vryzka": "https://www.federalreserve.gov/newsevents/pressreleases/other20261009a.htm",
    "izvor": "Fed",
@@ -2635,6 +2642,6 @@
    "bg": "Реч на член на Фед (Barr) за паричната политика и икономиката"
   }
  ],
- "s_bg_red": 110,
- "mahnati_ezik": 2
+ "s_bg_red": 108,
+ "mahnati_ezik": 0
 }
