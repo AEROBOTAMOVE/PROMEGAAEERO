@@ -34,7 +34,7 @@ import pandas as pd
 # v9.5–v9.8 — всеки ред в дневника твърдеше грешна версия, а дневникът е
 # единственият начин отвън да се види какво работи. П47 пада, ако VERSION не се
 # среща в темата на последния commit.
-VERSION = "v19.05"
+VERSION = "v19.06"
 
 
 def _env(ключ, подразб):
@@ -4059,7 +4059,9 @@ def _basis_cap(цена, метал="XAUUSD"):
 # му бяха застояли. Новият праг е p90 = 6$: пали в ~10% от моментите,
 # което е «внимавай», а не тапет.
 БЪРЗ_ПРАГ = float(os.environ.get("БЪРЗ_ПРАГ", "6"))      # $ за 10 мин по ЖИВАТА цена
-БЪРЗ_ПАМЕТ = int(os.environ.get("БЪРЗ_ПАМЕТ", "16"))      # колко спот-проби се пазят
+# 🔴 13.10 · v19.06 · 16 → 80: при решение ВСЯКА МИНУТА 16 проби са ~16 мин, а ножът търси пробата отпреди
+# 30 мин (НОЖ_МИН) — без нея тихо не спира. 80 проби = 80 мин при 1 мин, ~6,5 ч при 5 мин. НАЗАД: БЪРЗ_ПАМЕТ=16.
+БЪРЗ_ПАМЕТ = int(os.environ.get("БЪРЗ_ПАМЕТ", "80"))      # колко спот-проби се пазят
 # О11 · колко месеца архив пазим. Мерено: 3352 KB за ЕДИН месец → ~40 MB/година
 # в git repo. АРХИВ_МЕСЕЦИ=0 изключва чистенето.
 АРХИВ_МЕСЕЦИ = int(os.environ.get("АРХИВ_МЕСЕЦИ", "3"))
@@ -4125,7 +4127,47 @@ def _retry(fn, tries=3, base_wait=4):
     raise last
 
 
+# 🔴🔴 13.10 · v19.06 · YF_CACHE_DIR · КЕШ НА YAHOO В РАМКИТЕ НА ЕДНА РАБОТА. Един рън тегли ~10 серии от Yahoo
+# (часовите за 2 г., 5-минутните за 60 дни, дневните, макрото). При решение всяка минута това са ~10 заявки на минута
+# — Yahoo вече е връщал 429 на този бот. Затова при цикъла (yml подава YF_CACHE_DIR = временна папка на работата,
+# изтрива се с нея) сериите, които не се менят за минута, се пазят до ЯХУ_КЕШ_СЕК (270 s): часовите, дневните,
+# макрото, среброто. ВИНАГИ свежи: минутните свещи (всяка серия «1m») и 5-минутните на златото (GC=F), които
+# решението и живата опашка лепят. Без YF_CACHE_DIR (LOOP_MIN=0, selftest) — дословно v19.05.
+ЯХУ_КЕШ_СЕК = 270
+
+
+def _yf_кеш_сек(sym, interval):
+    """v19.06 · колко секунди може да се ползва кешът за тази серия (0 = винаги свежа)."""
+    if str(interval) == "1m":
+        return 0
+    if str(sym) == "GC=F" and str(interval) == "5m":
+        return 0
+    return ЯХУ_КЕШ_СЕК
+
+
 def _yf(sym, period="2y", interval="1d"):
+    import re as _re_yf, time as _time_yf          # `re` и `time` не са на ниво модул в този файл
+    _папка = os.environ.get("YF_CACHE_DIR", "")
+    _сек = _yf_кеш_сек(sym, interval) if _папка else 0
+    _ф = None
+    if _сек > 0:
+        try:
+            _ф = Path(_папка) / ("%s_%s_%s.pkl" % (_re_yf.sub(r"[^A-Za-z0-9]+", "_", str(sym)), period, interval))
+            if _ф.exists() and (_time_yf.time() - _ф.stat().st_mtime) < _сек:
+                return pd.read_pickle(_ф)
+        except Exception:
+            _ф = _ф
+    _df = _yf_тегли(sym, period, interval)
+    if _ф is not None:
+        try:
+            _ф.parent.mkdir(parents=True, exist_ok=True)
+            _df.to_pickle(_ф)
+        except Exception:
+            pass
+    return _df
+
+
+def _yf_тегли(sym, period="2y", interval="1d"):
     def go():
         import yfinance as yf
         df = yf.download(sym, period=period, interval=interval, progress=False, auto_adjust=True)
@@ -15023,6 +15065,65 @@ def _живи_обратен_ред(сега, реално, закъснели, 
     return ред
 
 
+# ══════════════════════════════════════════════════════════════════════
+# 🔴🔴 13.10 · v19.06 · ДНЕВНИК_НА_МИН (vars.JOURNAL_EVERY_MIN) · «ДНЕВНИКЪТ НЕ РАСТЕ 5 ПЪТИ»
+# От v19.06 ботът решава всяка минута (цикълът в «run bot», vars.LOOP_MIN). live_journal.jsonl е ~2,3 KB на
+# рън (септември: 18,5 MB при 5 мин) — всяка минута той би минал ~75 MB за месец, на ръба на тавана на
+# GitHub за файл. ПРАВИЛОТО: редът се пише, ако е минал ≥ ДНЕВНИК_НА_МИН мин от последния записан ред, ИЛИ
+# рънът НЕ е тих (сделка, сигнал, изход, каквото и да е друго освен «тихо» и картите само за сайта).
+# Решенията не зависят от дневника (сънят се мери по meta «последен_рън»). Така плътността остава
+# като при 5 мин, а всяко събитие има своя ред. НАЗАД: JOURNAL_EVERY_MIN=0 → ред на всеки рън.
+ДНЕВНИК_НА_МИН = int(_env("ДНЕВНИК_НА_МИН", "5"))
+
+
+def _дневник_тих(statuses, exit_msgs):
+    """v19.06 · тих рън = няма изход и всички статуси са «тихо (без събития)» или «📵 … само за сайта»."""
+    if exit_msgs:
+        return False
+    _с = [str(x) for x in (statuses or [])]
+    if not _с:
+        return False
+    return all(x == "тихо (без събития)" or x.startswith("📵 ") for x in _с)
+
+
+def _дневник_последен(out):
+    """v19.06 · `run_utc` на последния записан ред в live_journal.jsonl (чете само края) или None."""
+    try:
+        _п = Path(out) / "live_journal.jsonl"
+        if not _п.exists():
+            return None
+        with _п.open("rb") as _ф:
+            _ф.seek(0, 2)
+            _р = _ф.tell()
+            _ф.seek(max(0, _р - 65536))
+            _опашка = _ф.read().decode("utf-8", errors="ignore")
+        for _ред in reversed(_опашка.splitlines()):
+            _ред = _ред.strip()
+            if not _ред:
+                continue
+            try:
+                return str(json.loads(_ред).get("run_utc") or "") or None
+            except Exception:
+                return None
+    except Exception:
+        return None
+    return None
+
+
+def _дневник_пиши(out, now_utc, statuses, exit_msgs):
+    """v19.06 · пише ли се редът в дневника този рън (виж ДНЕВНИК_НА_МИН). Никога не гърми → True."""
+    try:
+        if ДНЕВНИК_НА_МИН <= 0 or not _дневник_тих(statuses, exit_msgs):
+            return True
+        _посл = _дневник_последен(out)
+        if not _посл:
+            return True
+        _мин = (pd.Timestamp(str(now_utc)[:16]) - pd.Timestamp(str(_посл)[:16])).total_seconds() / 60.0
+        return not (0 <= _мин < ДНЕВНИК_НА_МИН)
+    except Exception:
+        return True
+
+
 # ══ v18.92 · ИЗХОД_ФЮЧЪРСИ / ИЗХОД_СЯНКА · GC=F 1m с базис по СЕКУНДАТА ══
 _ФЮЧ_ПРОБИ = "фюч_проби"      # meta: [[секундата на котировката, средата], …]
 _ФЮЧ_СЯНКА = "фюч_сянка"      # meta: сянката на главната сделка (ИЗХОД_СЯНКА)
@@ -17135,7 +17236,7 @@ def _мозък_рамки(frames, src, _мозък_h1):
     "ИЗХОД_ФЮЧЪРСИ", "ИЗХОД_СЯНКА", "ЗАПИС_Д", "ЗАПИС_ЦЕНА", "ПОЛОВИНИ", "СЯНКА_РАЗМЕР",
     "ИСТОРИЯ_ПОЛОВИНИ", "ДЕН_СЛЕД_ВХОД", "СЯНКА_К", "РАЗМЕР_ATR_СПОТ", "ЗАПИС_ПРОФИЛИ",
     "ЗАКОН_ТП123", "КАРТИ_ТП", "БЕЗ_ЛОНГ_10_12", "БЕЗ_НОЖ_ПОКУПКА", "ЖИВИ_СВЕЩИ", "БЕЗ_СРЕЩУ_МАКРО",
-    "СПАЛ_МИН", "КРАЙ_СЕДМИЦА", "БЕЗ_ЛОНГ_АЗИЯ", "ОБРАТНА_СЯНКА",
+    "СПАЛ_МИН", "КРАЙ_СЕДМИЦА", "БЕЗ_ЛОНГ_АЗИЯ", "ОБРАТНА_СЯНКА", "ДНЕВНИК_НА_МИН",
 )
 # 🔴 07.10 · v19.02 · КАНАРЧЕТО · ключ с кирилско име и НЕПРАЗНА буквална стойност (не `vars.`) в env на
 # «run bot» (`КАНАРЧЕ_ЛОСТОВЕ: "да"`). Празното `|| ''` на лостовете доказва само, че ИМЕТО стига до
@@ -20382,8 +20483,10 @@ def main():
     _запиши_атомарно((out / "meta.json"), json.dumps(meta))
 
     run_ended = datetime.now(timezone.utc).replace(tzinfo=None).isoformat(timespec="seconds")
+    # 🔴 13.10 · v19.06 · ДНЕВНИК_НА_МИН · тих рън по-рано от N мин след последния ред → без ред (виж горе)
+    _дн_пиши = _дневник_пиши(out, now_utc, statuses, exit_msgs)
     with (out / "live_journal.jsonl").open("a", encoding="utf-8") as fh:
-        fh.write(json.dumps({"run_utc": now_utc, "run_ended": run_ended, "date": date, "v": VERSION,
+        if _дн_пиши: fh.write(json.dumps({"run_utc": now_utc, "run_ended": run_ended, "date": date, "v": VERSION,
                              "bar": round(bar_price, 2), "bar_ts": str(bar_ts), "bar_age_min": bar_age_min,
                              "spot": (spot_g or {}).get("mid"), "spot_age_sec": (raw_g or {}).get("age_sec"),
                              "spot_src": (spot_g or {}).get("src"), "spot_rejected": spot_rejected_g,
