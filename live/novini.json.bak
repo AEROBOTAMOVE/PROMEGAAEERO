@@ -1,37 +1,44 @@
 {
- "kogato": "2026-10-18T22:43:50Z",
- "sekundi": 0.83,
+ "kogato": "2026-10-18T23:18:57Z",
+ "sekundi": 9.0,
  "broi": 200,
- "novi_tozi_pyt": 4,
+ "novi_tozi_pyt": 0,
  "iztochnici_ok": [
-  "MarketWatch",
   "Fed всички",
   "Fed политика",
   "Fed речи",
-  "Yahoo долар",
-  "CNBC",
+  "MarketWatch",
   "Investing",
+  "CNBC",
+  "Yahoo долар",
   "Yahoo злато",
   "FT пазари",
-  "Google Fed",
-  "Google злато",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google Fed",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  },
+  {
+   "ime": "Google злато",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.21с",
-  "новини · FT пазари · 25 бр. за 0.35с",
-  "новини · Fed всички · 7 бр. за 0.16с",
-  "новини · Fed политика · 15 бр. за 0.16с",
-  "новини · Fed речи · 15 бр. за 0.18с",
-  "новини · Google Fed · 40 бр. за 0.35с",
-  "новини · Google злато · 40 бр. за 0.52с",
-  "новини · Investing · 10 бр. за 0.22с",
-  "новини · MarketWatch · 10 бр. за 0.15с",
-  "новини · Mining.com · 36 бр. за 0.76с",
-  "новини · Yahoo долар · 15 бр. за 0.19с",
-  "новини · Yahoo злато · 17 бр. за 0.33с",
-  "новини · български ред: 92 от 200 · махнати по език: 3"
+  "новини · CNBC · 30 бр. за 0.33с",
+  "новини · FT пазари · 25 бр. за 0.44с",
+  "новини · Fed всички · 7 бр. за 0.14с",
+  "новини · Fed политика · 15 бр. за 0.15с",
+  "новини · Fed речи · 15 бр. за 0.15с",
+  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Investing · 10 бр. за 0.23с",
+  "новини · MarketWatch · 10 бр. за 0.16с",
+  "новини · Mining.com · 36 бр. за 0.79с",
+  "новини · Yahoo долар · 15 бр. за 0.37с",
+  "новини · Yahoo злато · 17 бр. за 0.37с",
+  "новини · български ред: 92 от 200 · махнати по език: 0"
  ],
  "novini": [
   {
@@ -2636,5 +2643,5 @@
   }
  ],
  "s_bg_red": 92,
- "mahnati_ezik": 3
+ "mahnati_ezik": 0
 }
