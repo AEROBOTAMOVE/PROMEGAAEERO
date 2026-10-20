@@ -34,7 +34,7 @@ import pandas as pd
 # v9.5–v9.8 — всеки ред в дневника твърдеше грешна версия, а дневникът е
 # единственият начин отвън да се види какво работи. П47 пада, ако VERSION не се
 # среща в темата на последния commit.
-VERSION = "v19.14"
+VERSION = "v19.15"
 
 
 def _env(ключ, подразб):
@@ -12474,6 +12474,8 @@ def _канон_час_ny(име):
     if _реч_на_член(име):
         return None             # v18.87 · РЕЧ_НЕ_FOMC · речта няма стандартен час — календарът
     _и = str(име or "").upper()
+    if "DALLAS" in _и:
+        return None             # v19.15 · «Dallas Fed PCE» излиза по своя час (10:00 Ню Йорк) — календарът
     for _к, _ч in НОВИНИ_ЧАС_NY:
         if _к in _и:
             return _ч
@@ -15635,6 +15637,40 @@ def _повод_всяка_минута(meta, spot, now_utc, out, notes):
 НОВИНИ_СЕРИЯ_ПРЕДИ_Ч = 2.0
 НОВИНИ_СЕРИЯ_СЛЕД_Ч = 2.0
 НОВИНИ_СЕРИЯ_ЗАЩО = "НЕ — серия важни новини (%s): нов вход няма до %s София"
+# 🔴 15.10 · v19.15 · ПАМЕТТА НА ВАЖНИТЕ НОВИНИ. На живо 15.10 15:23 София ботът даде ВХОД посред серията CPI → PPI:
+# календарът (live/cyberquant.json) пази САМО предстоящите — вчерашният CPI беше изчезнал и серията остана без
+# критична. Ботът вече помни сам важните новини от последните НОВИНИ_ПАМЕТ_Ч (48 ч) в meta.json («нс_памет»)
+# и серията се смята от календара + паметта. НАЗАД: NEWS_SERIES=0 (цялото правило).
+НОВИНИ_ПАМЕТ_Ч = 48.0
+_НС_ПАМЕТ_Х = {"с": []}     # паметта за този рън: main я пълни, огледалото на сенките я чете
+
+
+def _нс_важна(е):
+    """v19.15 · важна новина за серията: critical/high или голяма по `_ден_голяма`."""
+    _имп = str((е or {}).get("impact") or "").lower().strip()
+    return _имп in ("critical", "high") or _ден_голяма((е or {}).get("name") or "")
+
+
+def _нс_памет_обнови(стара, cq, now_utc):
+    """v19.15 · важните новини от календара + помнените, само от последните 48 ч, без дубли. Никога не гърми."""
+    try:
+        _сега = pd.Timestamp(str(now_utc)[:19])
+        if _сега.tzinfo is not None:
+            _сега = _сега.tz_convert("UTC").tz_localize(None)
+        _нови = (cq.get("events") or []) if isinstance(cq, dict) else []
+        _вс = {}
+        for _е in list(стара or []) + list(_нови):
+            if not isinstance(_е, dict) or not _нс_важна(_е):
+                continue
+            _т = _cq_evt_dt(_е)
+            if _т is None or _т < _сега - pd.Timedelta(hours=НОВИНИ_ПАМЕТ_Ч):
+                continue
+            _вс[(str(_е.get("name") or ""), str(_е.get("dt") or ""))] = {
+                "name": str(_е.get("name") or "")[:80], "dt": str(_е.get("dt") or ""),
+                "impact": str(_е.get("impact") or "").lower().strip()}
+        return list(_вс.values())[-60:]
+    except Exception:
+        return [x for x in (стара or []) if isinstance(x, dict)][-60:]
 
 
 def _соф_чд(ts):
@@ -15645,16 +15681,27 @@ def _соф_чд(ts):
         return "—"
 
 
-def _новини_серия(now_utc, cq):
-    """v19.14 · (спира_ли, етикет, до_кога като наивен UTC). Никога не гърми."""
-    if not НОВИНИ_СЕРИЯ or not isinstance(cq, dict) or not cq.get("events"):
+def _новини_серия(now_utc, cq, памет=None):
+    """v19.14 · (спира_ли, етикет, до_кога като наивен UTC). Никога не гърми.
+    v19.15 · събитията = календарът + паметта (`памет` или паметта на рънa `_НС_ПАМЕТ_Х`)."""
+    _пм = памет if памет is not None else _НС_ПАМЕТ_Х.get("с")
+    _кал = (cq.get("events") or []) if isinstance(cq, dict) else []
+    _ев, _вид = [], set()
+    for _е in list(_кал) + list(_пм or []):
+        if isinstance(_е, dict):
+            _к = (str(_е.get("name") or ""), str(_е.get("dt") or ""))
+            if _к in _вид:
+                continue
+            _вид.add(_к)
+        _ев.append(_е)
+    if not НОВИНИ_СЕРИЯ or not _ев:
         return False, None, None
     try:
         _сега = pd.Timestamp(str(now_utc)[:19])
         if _сега.tzinfo is not None:
             _сега = _сега.tz_convert("UTC").tz_localize(None)
         _в = []
-        for _е in cq.get("events") or []:
+        for _е in _ев:
             if not isinstance(_е, dict):
                 continue
             _имп = str(_е.get("impact") or "").lower().strip()
@@ -19551,6 +19598,13 @@ def main():
             advice_txt = ТЕЖЪК_ДЕН_ЗАЩО % _тд_име
             notes.append("⛔ " + advice_txt)
             _бтд = True
+    # 🔴 15.10 · v19.15 · паметта на важните новини (календарът пази само предстоящите) — преди серията
+    if НОВИНИ_СЕРИЯ:          # лост 0 → meta.json дословно като v19.13 (стендовете байт по байт)
+        try:
+            _НС_ПАМЕТ_Х["с"] = _нс_памет_обнови(meta.get("нс_памет"), cq, now_utc)
+            meta["нс_памет"] = _НС_ПАМЕТ_Х["с"]
+        except Exception:
+            pass
     # 🔴 15.10 · v19.14 · НОВИНИ_СЕРИЯ · серия важни новини с поне една критична — без нов вход (двете посоки)
     if _adv_ok and new_dir:
         _нс, _нс_ет, _нс_до = _новини_серия(now_utc, cq)
