@@ -1,39 +1,65 @@
 {
- "kogato": "2026-10-20T02:46:13Z",
- "sekundi": 0.96,
+ "kogato": "2026-10-20T03:21:34Z",
+ "sekundi": 0.97,
  "broi": 200,
- "novi_tozi_pyt": 10,
+ "novi_tozi_pyt": 5,
  "iztochnici_ok": [
-  "Fed всички",
-  "MarketWatch",
   "Fed речи",
-  "Investing",
+  "MarketWatch",
+  "Fed всички",
   "Fed политика",
-  "Google злато",
-  "CNBC",
+  "Investing",
   "Yahoo злато",
   "Yahoo долар",
+  "CNBC",
   "FT пазари",
   "Google Fed",
+  "Google злато",
   "Mining.com"
  ],
  "iztochnici_padnali": [],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.29с",
-  "новини · FT пазари · 25 бр. за 0.46с",
-  "новини · Fed всички · 7 бр. за 0.14с",
+  "новини · CNBC · 30 бр. за 0.42с",
+  "новини · FT пазари · 25 бр. за 0.56с",
+  "новини · Fed всички · 7 бр. за 0.24с",
   "новини · Fed политика · 15 бр. за 0.24с",
-  "новини · Fed речи · 15 бр. за 0.18с",
-  "новини · Google Fed · 40 бр. за 0.56с",
-  "новини · Google злато · 40 бр. за 0.26с",
-  "новини · Investing · 10 бр. за 0.22с",
-  "новини · MarketWatch · 10 бр. за 0.16с",
-  "новини · Mining.com · 36 бр. за 0.89с",
-  "новини · Yahoo долар · 15 бр. за 0.34с",
-  "новини · Yahoo злато · 17 бр. за 0.32с",
-  "новини · български ред: 80 от 200 · махнати по език: 5"
+  "новини · Fed речи · 15 бр. за 0.22с",
+  "новини · Google Fed · 40 бр. за 0.41с",
+  "новини · Google злато · 40 бр. за 0.62с",
+  "новини · Investing · 10 бр. за 0.34с",
+  "новини · MarketWatch · 10 бр. за 0.23с",
+  "новини · Mining.com · 36 бр. за 0.91с",
+  "новини · Yahoo долар · 15 бр. за 0.41с",
+  "новини · Yahoo злато · 17 бр. за 0.41с",
+  "новини · български ред: 82 от 200 · махнати по език: 5"
  ],
  "novini": [
+  {
+   "zaglavie": "Gold dips as oil prices fuel inflation fears, Fed outlook in focus",
+   "vryzka": "https://finance.yahoo.com/economy/policy/articles/gold-dips-oil-prices-fuel-030209379.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-10-20T03:02:09Z",
+   "vazhnost": 3,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": "inflation",
+   "zashto": "Инфлацията е основната причина да се държи злато — то пази стойност, когато парите я губят.",
+   "bg": "Златото поевтинява на фона на очакванията за лихвата на Фед и цената на петрола"
+  },
+  {
+   "zaglavie": "Dollar Slips as Investors Assess Fed Rate Outlook",
+   "vryzka": "https://news.google.com/rss/articles/CBMiogFBVV95cUxQWXlfeFN5Vjc5dW9iZmxXWDZaNFJVakJIRXhuS3lISXEzQXY4ZTkyX3MxZGptY2NaOW1hU3owaXAxc3VPR2JpMWRZb2VfeGRnV28ycHFKeFlvY1pIUjVhcnkxUE8tUEh4b2d3TFc1V3VtaUVDQ3p1WjVsYllqd2R4bnNPRF92MF84OVh3RXFjOU5HdlpVZ1Y1YzVhU21WamxJM1E?oc=5",
+   "izvor": "TradingView",
+   "chas": "2026-10-20T02:46:00Z",
+   "vazhnost": 3,
+   "za": "долар",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": "Доларът поевтинява на фона на очакванията за лихвата на Фед"
+  },
   {
    "zaglavie": "Horizon Gold DFS: Eyes 2028 production at Gum Creek",
    "vryzka": "https://finance.yahoo.com/video/horizon-gold-dfs-eyes-2028-021838922.html?.tsrc=rss",
@@ -145,7 +171,7 @@
    "chas": "2026-10-20T01:05:00Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Google злато",
+   "emisiya": "Google Fed",
    "chas_ot_iztochnika": true,
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
@@ -431,7 +457,7 @@
    "chas": "2026-10-19T21:55:48Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Google злато",
+   "emisiya": "Google Fed",
    "chas_ot_iztochnika": true,
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
@@ -750,6 +776,19 @@
    "bg": "Анализ и прогноза за златото"
   },
   {
+   "zaglavie": "Peter Grandich Sold Gold, But He’s Buying On the Dip",
+   "vryzka": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQT203X2M1dXNVWTNvb01SQ001bWxjb3UxNFlBckFYQlhvX3FIUVlLNWs3R0h4Y1J0Sjlzdld6dWVYdHFscVlNb2tlc1JUUDFPODNYbno2cVRnRHRsRE1CRU5LeTNMeC13eTVZREtzMEdzU0FJaXdxdTRQUElHcGNJQkN5MVRIY1A5?oc=5",
+   "izvor": "GoldSilver",
+   "chas": "2026-10-19T20:19:51Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": null
+  },
+  {
    "zaglavie": "Gold Price Today | Price of Gold Per Ounce | 24 Hour Spot Chart",
    "vryzka": "https://news.google.com/rss/articles/CBMiSEFVX3lxTFBnU2dTNUduLWh4WmxVQy1ndS1jN01abVlCeTNTMnFMbFdmS1d6TnFCekxTZVlXNGtKdnNRN3plT00yZm5LQmh6Rg?oc=5",
    "izvor": "Kitco",
@@ -813,6 +852,19 @@
    "duma": null,
    "zashto": null,
    "bg": null
+  },
+  {
+   "zaglavie": "Gold and silver prices pressured by hot inflation, but gold ETF holdings buck trend to hit 2026 highs – Heraeus",
+   "vryzka": "https://news.google.com/rss/articles/CBMivgFBVV95cUxQWS1XbUdWTEt4Vjd3MHRGSWhndDhGUFNnaDR1OExpajlpX1kwVVAxZXpPb1l5N1dPRm5QRTkyRjRVc0dKRDdiTVJ0Z09nQmpzaU9Ub2M3MVhDYksxelZOc1htWXg0UlIydGE4VE1iVkplbnFDWDVJMG1UWVNESk1TUmZRQWdzWUF0SWVaQTl1Zk1jLTZadlRRaWN6ZjVPS2drM1NvQ1Z4SHh6dHdjWXB2WjltU2VzU2RjY0VzQXV3?oc=5",
+   "izvor": "Kitco",
+   "chas": "2026-10-19T19:59:57Z",
+   "vazhnost": 3,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "inflation",
+   "zashto": "Инфлацията е основната причина да се държи злато — то пази стойност, когато парите я губят.",
+   "bg": "Златото и среброто са под натиск"
   },
   {
    "zaglavie": "Fed officials flag AI boom as inflation driver before October vote",
@@ -1042,7 +1094,7 @@
    "chas": "2026-10-19T18:32:10Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Google злато",
+   "emisiya": "Google Fed",
    "chas_ot_iztochnika": true,
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
@@ -1203,19 +1255,6 @@
    "duma": "gold",
    "zashto": "Пряко за златото.",
    "bg": "Новина от минния бранш (злато)"
-  },
-  {
-   "zaglavie": "Gold and silver prices pressured by hot inflation, but gold ETF holdings buck trend to hit 2026 highs – Heraeus",
-   "vryzka": "https://news.google.com/rss/articles/CBMivgFBVV95cUxQWS1XbUdWTEt4Vjd3MHRGSWhndDhGUFNnaDR1OExpajlpX1kwVVAxZXpPb1l5N1dPRm5QRTkyRjRVc0dKRDdiTVJ0Z09nQmpzaU9Ub2M3MVhDYksxelZOc1htWXg0UlIydGE4VE1iVkplbnFDWDVJMG1UWVNESk1TUmZRQWdzWUF0SWVaQTl1Zk1jLTZadlRRaWN6ZjVPS2drM1NvQ1Z4SHh6dHdjWXB2WjltU2VzU2RjY0VzQXV3?oc=5",
-   "izvor": "Kitco",
-   "chas": "2026-10-19T17:30:52Z",
-   "vazhnost": 3,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "inflation",
-   "zashto": "Инфлацията е основната причина да се държи злато — то пази стойност, когато парите я губят.",
-   "bg": "Златото и среброто са под натиск"
   },
   {
    "zaglavie": "‘My husband suffered a massive stroke at 53’: I’m 64 and will rent for the rest of my life — but I’m still hopeful",
@@ -1439,19 +1478,6 @@
    "bg": null
   },
   {
-   "zaglavie": "B2Gold Corp. (BTG) Stock Price, News, Quote & History",
-   "vryzka": "https://news.google.com/rss/articles/CBMiUEFVX3lxTFBhNlN0eTkya1ZjaV9fVzNaZTMzT3I2WXZhb21PMERLZlFwME5vc21QR1QzS0VvM2NTX1lTTUJxbkJ0WTI3TENBQWNmVnE1aEps?oc=5",
-   "izvor": "Yahoo! Finance Canada",
-   "chas": "2026-10-19T16:00:31Z",
-   "vazhnost": 1,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
    "zaglavie": "Unlocking Digital Gold’s US$700bn Opportunity",
    "vryzka": "https://finance.yahoo.com/markets/commodities/articles/unlocking-digital-gold-us-700bn-160000711.html?.tsrc=rss",
    "izvor": "Yahoo Finance",
@@ -1606,6 +1632,19 @@
    "duma": "rate",
    "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
    "bg": "Цената на златото днес"
+  },
+  {
+   "zaglavie": "B2Gold Corp. (BTG) Stock Price, News, Quote & History",
+   "vryzka": "https://news.google.com/rss/articles/CBMiUEFVX3lxTFBhNlN0eTkya1ZjaV9fVzNaZTMzT3I2WXZhb21PMERLZlFwME5vc21QR1QzS0VvM2NTX1lTTUJxbkJ0WTI3TENBQWNmVnE1aEps?oc=5",
+   "izvor": "Yahoo! Finance Canada",
+   "chas": "2026-10-19T15:26:22Z",
+   "vazhnost": 1,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
   },
   {
    "zaglavie": "McFarlane Lake Mining Plans 50,000-Meter Drilling Campaign For Juby Gold Project",
@@ -1788,6 +1827,19 @@
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
    "bg": "Какво значи вдигане на лихвата от Фед"
+  },
+  {
+   "zaglavie": "Market Minute 10-19-26- Riots, Inflation Pressure Government Bonds",
+   "vryzka": "https://finance.yahoo.com/markets/stocks/articles/market-minute-10-19-26-141500488.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-10-19T14:15:00Z",
+   "vazhnost": 3,
+   "za": "злато",
+   "emisiya": "Yahoo долар",
+   "chas_ot_iztochnika": true,
+   "duma": "inflation",
+   "zashto": "Инфлацията е основната причина да се държи злато — то пази стойност, когато парите я губят.",
+   "bg": null
   },
   {
    "zaglavie": "Billionaire CEO: AI Is “The Biggest Bubble Of Our Lifetime,” But Investors Should Keep Buying During The Melt-Up",
@@ -2128,6 +2180,19 @@
    "bg": "Анализ и прогноза за златото"
   },
   {
+   "zaglavie": "Gold Price Forecast: XAU/USD bids its time below $4,200 in a dozy week opening",
+   "vryzka": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxNR2hmUThubG5LVlQzZnBZQ21mMXctRjFlakVMOUVPemdiZG5oeGF3bkFjV2Y3Y3B1eTVJRnFEYzQxZDdOZEs3RmVPNTVDc3FZeGc2RlFqUExibHRvWHk0dkgwd0EycmxKVS1fS2VwbHpjclV6amVZSjlJT29CZ2ZDNVZKZEJiSUljdm00M29kV0pCWUdteUc1WFEyZUxVVUFwZVdZSWp3SWFBcURidi1hZ1pJNzFvcVpLZ0Rua1M1VkZ0OHJqZ0dVQXNlbGM4RXlPdHIzcDhpS0d6QQ?oc=5",
+   "izvor": "www.tmgm.com",
+   "chas": "2026-10-19T12:39:30Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": "Анализ и прогноза за златото"
+  },
+  {
    "zaglavie": "The Missile Race Is Becoming a Race for Critical Minerals",
    "vryzka": "https://www.investing.com/analysis/the-missile-race-is-becoming-a-race-for-critical-minerals-200689831",
    "izvor": "Investing.com",
@@ -2414,71 +2479,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Posthaste: How a 'leaky loonie' could sway Bank of Canada interest rates",
-   "vryzka": "https://financialpost.com/news/canadian-dollar-sway-bank-of-canada-interest-rates?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-10-19T11:55:32Z",
-   "vazhnost": 3,
-   "za": "долар",
-   "emisiya": "Yahoo долар",
-   "chas_ot_iztochnika": true,
-   "duma": "rates",
-   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
-   "bg": null
-  },
-  {
-   "zaglavie": "Zijin Gold International Reports $2.015 Billion Net Profit Attributable to Owners for First Three Quarters, Up 123% Year-on-Year",
-   "vryzka": "https://news.google.com/rss/articles/CBMidkFVX3lxTE84dENZaXZSOEdUcF9KWFJPVGVnSHpkbHBlVEpRY3VfaGxKZXZaMEtsQXc1T1RqOGIxVnVEbjBoTG03MFl4NW43ell4d0hwendJbGp4bUttQnVIZC1FcjN2VElaRjFvaDdNT0tzX1dZeHotV3FuOVE?oc=5",
-   "izvor": "BigGo Finance",
-   "chas": "2026-10-19T11:55:00Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": null
-  },
-  {
-   "zaglavie": "Gold Eyes a Technical Rebound — but the Real Test Is Still Ahead",
-   "vryzka": "https://www.investing.com/analysis/gold-eyes-a-technical-rebound--but-the-real-test-is-still-ahead-200689830",
-   "izvor": "Investing.com",
-   "chas": "2026-10-19T11:53:00Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Investing",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": null
-  },
-  {
-   "zaglavie": "Stocks are heading for a high-stakes showdown, as strong earnings collide with rising borrowing costs",
-   "vryzka": "https://www.marketwatch.com/story/stocks-are-heading-for-a-high-stakes-showdown-as-strong-earnings-collide-with-rising-borrowing-costs-6f8ea5b8?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-10-19T11:53:00Z",
-   "vazhnost": 2,
-   "za": "лихви",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": "yields",
-   "zashto": "Доходността другаде е цената, която златото плаща — то самò не плаща лихва.",
-   "bg": null
-  },
-  {
-   "zaglavie": "Gold Rate Today In Pune, Check Live 22 And 24 Carat Gold Price",
-   "vryzka": "https://news.google.com/rss/articles/CBMib0FVX3lxTE9XSW8wNUNGWVRjVlVlZjREaXg1RWpXVFIyaGdid05yZFhFZWV2Vzh3cE5oblhvamF0UjlIZ2tmZWk0VVhkaUVJWEJkdHpkUzZqNmVzRzZQQ1dIczlsaXNJOXF0ZTRpT192Nkc5UTBrZw?oc=5",
-   "izvor": "NDTV Profit",
-   "chas": "2026-10-19T11:47:14Z",
-   "vazhnost": 3,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "rate",
-   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
-   "bg": "Цената на златото днес"
-  },
-  {
    "zaglavie": "Bowman, Supervisory Modernization After Silicon Valley Bank",
    "vryzka": "https://www.federalreserve.gov/newsevents/speech/bowman20261014a.htm",
    "izvor": "Fed",
@@ -2635,6 +2635,6 @@
    "bg": "Съобщение на Фед — централната банка на САЩ"
   }
  ],
- "s_bg_red": 80,
+ "s_bg_red": 82,
  "mahnati_ezik": 5
 }
