@@ -1,0 +1,1898 @@
+{
+ "versiya": "1.0",
+ "edinici": "пипс = 0,10 $; σ в пипса/√мин; T в минути; \"inf\" = без таван",
+ "tochnost": "изходите са закръглени до 6 знака; близнакът ги възпроизвежда с |разлика| ≤ 1e-6",
+ "verdict_pragove_po_podrazbirane": {
+  "X": 50,
+  "Y": 130,
+  "T": 60,
+  "prag_mrtvo": 0.25,
+  "prag_skapo": 0.12,
+  "prag_shok": 3.0,
+  "T_vzriv": 5,
+  "prag_vzriv": 0.05
+ },
+ "broy": 53,
+ "vektori": [
+  {
+   "id": 1,
+   "fn": "erfc_prenosim",
+   "in": {
+    "x": 0.0
+   },
+   "out": {
+    "erfc": 1.0
+   }
+  },
+  {
+   "id": 2,
+   "fn": "erfc_prenosim",
+   "in": {
+    "x": 0.5
+   },
+   "out": {
+    "erfc": 0.4795
+   }
+  },
+  {
+   "id": 3,
+   "fn": "erfc_prenosim",
+   "in": {
+    "x": 1.0
+   },
+   "out": {
+    "erfc": 0.157299
+   }
+  },
+  {
+   "id": 4,
+   "fn": "erfc_prenosim",
+   "in": {
+    "x": 2.5
+   },
+   "out": {
+    "erfc": 0.000407
+   }
+  },
+  {
+   "id": 5,
+   "fn": "erfc_prenosim",
+   "in": {
+    "x": 2.999
+   },
+   "out": {
+    "erfc": 2.2e-05
+   }
+  },
+  {
+   "id": 6,
+   "fn": "erfc_prenosim",
+   "in": {
+    "x": 3.0
+   },
+   "out": {
+    "erfc": 2.2e-05
+   }
+  },
+  {
+   "id": 7,
+   "fn": "erfc_prenosim",
+   "in": {
+    "x": 4.5
+   },
+   "out": {
+    "erfc": 0.0
+   }
+  },
+  {
+   "id": 8,
+   "fn": "erfc_prenosim",
+   "in": {
+    "x": 6.0
+   },
+   "out": {
+    "erfc": 0.0
+   }
+  },
+  {
+   "id": 9,
+   "fn": "p_first",
+   "in": {
+    "X": 50,
+    "Y": 130,
+    "s": 0.0
+   },
+   "out": {
+    "p": 0.722222
+   }
+  },
+  {
+   "id": 10,
+   "fn": "p_first",
+   "in": {
+    "X": 50,
+    "Y": 130,
+    "s": 4.56
+   },
+   "out": {
+    "p": 0.696889
+   }
+  },
+  {
+   "id": 11,
+   "fn": "p_first",
+   "in": {
+    "X": 50,
+    "Y": 130,
+    "s": 5.04
+   },
+   "out": {
+    "p": 0.694222
+   }
+  },
+  {
+   "id": 12,
+   "fn": "p_first",
+   "in": {
+    "X": 50,
+    "Y": 130,
+    "s": 7.21
+   },
+   "out": {
+    "p": 0.682167
+   }
+  },
+  {
+   "id": 13,
+   "fn": "p_first",
+   "in": {
+    "X": 100,
+    "Y": 130,
+    "s": 5.0
+   },
+   "out": {
+    "p": 0.543478
+   }
+  },
+  {
+   "id": 14,
+   "fn": "p_first",
+   "in": {
+    "X": 130,
+    "Y": 130,
+    "s": 5.04
+   },
+   "out": {
+    "p": 0.480615
+   }
+  },
+  {
+   "id": 15,
+   "fn": "p_within",
+   "in": {
+    "X": 50,
+    "Y": 130,
+    "s": 5.04,
+    "sigma": 10.0,
+    "T": 5.0
+   },
+   "out": {
+    "p_first_within": 0.013837,
+    "p_stop_within": 0.0,
+    "p_none_within": 0.986163
+   }
+  },
+  {
+   "id": 16,
+   "fn": "p_within",
+   "in": {
+    "X": 50,
+    "Y": 130,
+    "s": 5.04,
+    "sigma": 10.0,
+    "T": 15.0
+   },
+   "out": {
+    "p_first_within": 0.15528,
+    "p_stop_within": 0.001253,
+    "p_none_within": 0.843467
+   }
+  },
+  {
+   "id": 17,
+   "fn": "p_within",
+   "in": {
+    "X": 50,
+    "Y": 130,
+    "s": 5.04,
+    "sigma": 10.0,
+    "T": 30.0
+   },
+   "out": {
+    "p_first_within": 0.314951,
+    "p_stop_within": 0.022504,
+    "p_none_within": 0.662545
+   }
+  },
+  {
+   "id": 18,
+   "fn": "p_within",
+   "in": {
+    "X": 50,
+    "Y": 130,
+    "s": 5.04,
+    "sigma": 10.0,
+    "T": 60.0
+   },
+   "out": {
+    "p_first_within": 0.477272,
+    "p_stop_within": 0.104285,
+    "p_none_within": 0.418443
+   }
+  },
+  {
+   "id": 19,
+   "fn": "p_within",
+   "in": {
+    "X": 50,
+    "Y": 130,
+    "s": 5.04,
+    "sigma": 10.0,
+    "T": 240.0
+   },
+   "out": {
+    "p_first_within": 0.680735,
+    "p_stop_within": 0.29229,
+    "p_none_within": 0.026975
+   }
+  },
+  {
+   "id": 20,
+   "fn": "p_within",
+   "in": {
+    "X": 50,
+    "Y": 130,
+    "s": 5.04,
+    "sigma": 10.0,
+    "T": 1440.0
+   },
+   "out": {
+    "p_first_within": 0.694222,
+    "p_stop_within": 0.305778,
+    "p_none_within": 0.0
+   }
+  },
+  {
+   "id": 21,
+   "fn": "p_within",
+   "in": {
+    "X": 50,
+    "Y": 130,
+    "s": 7.21,
+    "sigma": 6.0,
+    "T": 60.0
+   },
+   "out": {
+    "p_first_within": 0.218337,
+    "p_stop_within": 0.008241,
+    "p_none_within": 0.773422
+   }
+  },
+  {
+   "id": 22,
+   "fn": "p_within",
+   "in": {
+    "X": 50,
+    "Y": 130,
+    "s": 4.56,
+    "sigma": 25.0,
+    "T": 10.0
+   },
+   "out": {
+    "p_first_within": 0.489997,
+    "p_stop_within": 0.109572,
+    "p_none_within": 0.40043
+   }
+  },
+  {
+   "id": 23,
+   "fn": "p_within",
+   "in": {
+    "X": 50,
+    "Y": 130,
+    "s": 5.04,
+    "sigma": 3.0,
+    "T": 60.0
+   },
+   "out": {
+    "p_first_within": 0.017858,
+    "p_stop_within": 0.0,
+    "p_none_within": 0.982142
+   }
+  },
+  {
+   "id": 24,
+   "fn": "p_within",
+   "in": {
+    "X": 100,
+    "Y": 130,
+    "s": 5.04,
+    "sigma": 12.0,
+    "T": 120.0
+   },
+   "out": {
+    "p_first_within": 0.417341,
+    "p_stop_within": 0.331003,
+    "p_none_within": 0.251656
+   }
+  },
+  {
+   "id": 25,
+   "fn": "p_within",
+   "in": {
+    "X": 130,
+    "Y": 130,
+    "s": 5.04,
+    "sigma": 15.0,
+    "T": 30.0
+   },
+   "out": {
+    "p_first_within": 0.100245,
+    "p_stop_within": 0.128267,
+    "p_none_within": 0.771488
+   }
+  },
+  {
+   "id": 26,
+   "fn": "p_within",
+   "in": {
+    "X": 50,
+    "Y": 130,
+    "s": 5.04,
+    "sigma": 10.0,
+    "T": 0.0
+   },
+   "out": {
+    "p_first_within": 0.0,
+    "p_stop_within": 0.0,
+    "p_none_within": 1.0
+   }
+  },
+  {
+   "id": 27,
+   "fn": "p_within",
+   "in": {
+    "X": 50,
+    "Y": 130,
+    "s": 5.04,
+    "sigma": 0.0,
+    "T": 60.0
+   },
+   "out": {
+    "p_first_within": 0.0,
+    "p_stop_within": 0.0,
+    "p_none_within": 1.0
+   }
+  },
+  {
+   "id": 28,
+   "fn": "p_within",
+   "in": {
+    "X": 50,
+    "Y": 130,
+    "s": 5.04,
+    "sigma": 10.0,
+    "T": "inf"
+   },
+   "out": {
+    "p_first_within": 0.694222,
+    "p_stop_within": 0.305778,
+    "p_none_within": 0.0
+   }
+  },
+  {
+   "id": 29,
+   "fn": "exp_time",
+   "in": {
+    "X": 50,
+    "Y": 130,
+    "s": 5.04,
+    "sigma": 10.0
+   },
+   "out": {
+    "exp_time": 68.777984,
+    "ako_cel": 55.949995,
+    "ako_stop": 97.901995
+   }
+  },
+  {
+   "id": 30,
+   "fn": "exp_time",
+   "in": {
+    "X": 50,
+    "Y": 130,
+    "s": 7.21,
+    "sigma": 6.0
+   },
+   "out": {
+    "exp_time": 195.133775,
+    "ako_cel": 160.394592,
+    "ako_stop": 269.694592
+   }
+  },
+  {
+   "id": 31,
+   "fn": "exp_time",
+   "in": {
+    "X": 100,
+    "Y": 130,
+    "s": 5.0,
+    "sigma": 20.0
+   },
+   "out": {
+    "exp_time": 32.8125,
+    "ako_cel": 31.0625,
+    "ako_stop": 34.895833
+   }
+  },
+  {
+   "id": 32,
+   "fn": "exp_time",
+   "in": {
+    "X": 50,
+    "Y": 130,
+    "s": 0.0,
+    "sigma": 1.0
+   },
+   "out": {
+    "exp_time": 6500.0,
+    "ako_cel": 5166.666667,
+    "ako_stop": 9966.666667
+   }
+  },
+  {
+   "id": 33,
+   "fn": "ladder",
+   "in": {
+    "tp1": 50,
+    "tp2": 100,
+    "tp3": 130,
+    "sl": 130,
+    "s": 5.04,
+    "sigma": 10.0,
+    "T": "inf",
+    "be_at": null
+   },
+   "out": {
+    "p": {
+     "tp1": 0.694222,
+     "tp2": 0.347111,
+     "tp3": 0.267009,
+     "stop": 0.305778,
+     "bez_risk": 0.694222,
+     "nishto_e0": 0.0
+    },
+    "po_zakona": {
+     "+130": 0.267009,
+     "+100": 0.080103,
+     "+50": 0.347111,
+     "0": 0.0,
+     "drugo": 0.0,
+     "-130": 0.305778
+    },
+    "E_zakon": 20.325812,
+    "E_poziciya": -5.04,
+    "uspevaemost": 0.694222,
+    "nuzhna_zakon": 0.600355,
+    "nuzhna_poziciya": 0.722222,
+    "vremena_bez_tavan": {
+     "zhivot": 96.546873,
+     "do_tp1_ako_dojde": 55.949995,
+     "do_stop_ako_dojde": 97.901995,
+     "e0_izhod": 68.777984
+    },
+    "izhodi": {
+     "cel3": {
+      "p": 0.267009,
+      "zakon": 130.0,
+      "poziciya": 130.0
+     },
+     "cel2_vhod": {
+      "p": 0.080103,
+      "zakon": 100.0,
+      "poziciya": 0.0
+     },
+     "cel2_vreme": {
+      "p": 0.0,
+      "zakon": 100.0,
+      "poziciya": null
+     },
+     "cel1_vhod": {
+      "p": 0.347111,
+      "zakon": 50.0,
+      "poziciya": 0.0
+     },
+     "cel1_vreme": {
+      "p": 0.0,
+      "zakon": 50.0,
+      "poziciya": null
+     },
+     "vhod": {
+      "p": 0.0,
+      "zakon": 0.0,
+      "poziciya": 0.0
+     },
+     "vreme_bez_risk": {
+      "p": 0.0,
+      "zakon": null,
+      "poziciya": null
+     },
+     "vreme_predi_cel": {
+      "p": 0.0,
+      "zakon": null,
+      "poziciya": null
+     },
+     "stop": {
+      "p": 0.305778,
+      "zakon": -130.0,
+      "poziciya": -130.0
+     }
+    }
+   }
+  },
+  {
+   "id": 34,
+   "fn": "ladder",
+   "in": {
+    "tp1": 50,
+    "tp2": 100,
+    "tp3": 130,
+    "sl": 130,
+    "s": 5.04,
+    "sigma": 10.0,
+    "T": 60.0,
+    "be_at": null
+   },
+   "out": {
+    "p": {
+     "tp1": 0.477272,
+     "tp2": 0.167038,
+     "tp3": 0.07886,
+     "stop": 0.104285,
+     "bez_risk": 0.477272,
+     "nishto_e0": 0.418443
+    },
+    "po_zakona": {
+     "+130": 0.07886,
+     "+100": 0.088178,
+     "+50": 0.310235,
+     "0": 0.0,
+     "drugo": 0.418443,
+     "-130": 0.104285
+    },
+    "E_zakon": 5.677686,
+    "E_poziciya": -5.04,
+    "uspevaemost": 0.82068,
+    "nuzhna_zakon": 0.642114,
+    "nuzhna_poziciya": 0.722222,
+    "vremena_bez_tavan": {
+     "zhivot": 96.546873,
+     "do_tp1_ako_dojde": 55.949995,
+     "do_stop_ako_dojde": 97.901995,
+     "e0_izhod": 68.777984
+    },
+    "izhodi": {
+     "cel3": {
+      "p": 0.07886,
+      "zakon": 130.0,
+      "poziciya": 130.0
+     },
+     "cel2_vhod": {
+      "p": 0.007418,
+      "zakon": 100.0,
+      "poziciya": 0.0
+     },
+     "cel2_vreme": {
+      "p": 0.08076,
+      "zakon": 100.0,
+      "poziciya": 79.890558
+     },
+     "cel1_vhod": {
+      "p": 0.167038,
+      "zakon": 50.0,
+      "poziciya": 0.0
+     },
+     "cel1_vreme": {
+      "p": 0.143197,
+      "zakon": 50.0,
+      "poziciya": 50.0
+     },
+     "vhod": {
+      "p": 0.0,
+      "zakon": 0.0,
+      "poziciya": 0.0
+     },
+     "vreme_bez_risk": {
+      "p": 0.0,
+      "zakon": null,
+      "poziciya": null
+     },
+     "vreme_predi_cel": {
+      "p": 0.418443,
+      "zakon": -36.675513,
+      "poziciya": -36.675513
+     },
+     "stop": {
+      "p": 0.104285,
+      "zakon": -130.0,
+      "poziciya": -130.0
+     }
+    }
+   }
+  },
+  {
+   "id": 35,
+   "fn": "ladder",
+   "in": {
+    "tp1": 50,
+    "tp2": 100,
+    "tp3": 130,
+    "sl": 130,
+    "s": 5.04,
+    "sigma": 10.0,
+    "T": 240.0,
+    "be_at": null
+   },
+   "out": {
+    "p": {
+     "tp1": 0.680735,
+     "tp2": 0.336615,
+     "tp3": 0.253591,
+     "stop": 0.29229,
+     "bez_risk": 0.680735,
+     "nishto_e0": 0.026975
+    },
+    "po_zakona": {
+     "+130": 0.253591,
+     "+100": 0.083023,
+     "+50": 0.34412,
+     "0": 0.0,
+     "drugo": 0.026975,
+     "-130": 0.29229
+    },
+    "E_zakon": 19.398461,
+    "E_poziciya": -5.04,
+    "uspevaemost": 0.699606,
+    "nuzhna_zakon": 0.60213,
+    "nuzhna_poziciya": 0.722222,
+    "vremena_bez_tavan": {
+     "zhivot": 96.546873,
+     "do_tp1_ako_dojde": 55.949995,
+     "do_stop_ako_dojde": 97.901995,
+     "e0_izhod": 68.777984
+    },
+    "izhodi": {
+     "cel3": {
+      "p": 0.253591,
+      "zakon": 130.0,
+      "poziciya": 130.0
+     },
+     "cel2_vhod": {
+      "p": 0.07333,
+      "zakon": 100.0,
+      "poziciya": 0.0
+     },
+     "cel2_vreme": {
+      "p": 0.009694,
+      "zakon": 100.0,
+      "poziciya": 71.656999
+     },
+     "cel1_vhod": {
+      "p": 0.336615,
+      "zakon": 50.0,
+      "poziciya": 0.0
+     },
+     "cel1_vreme": {
+      "p": 0.007505,
+      "zakon": 50.0,
+      "poziciya": 50.0
+     },
+     "vhod": {
+      "p": 0.0,
+      "zakon": 0.0,
+      "poziciya": 0.0
+     },
+     "vreme_bez_risk": {
+      "p": 0.0,
+      "zakon": null,
+      "poziciya": null
+     },
+     "vreme_predi_cel": {
+      "p": 0.026975,
+      "zakon": -39.999109,
+      "poziciya": -39.999109
+     },
+     "stop": {
+      "p": 0.29229,
+      "zakon": -130.0,
+      "poziciya": -130.0
+     }
+    }
+   }
+  },
+  {
+   "id": 36,
+   "fn": "ladder",
+   "in": {
+    "tp1": 50,
+    "tp2": 100,
+    "tp3": 130,
+    "sl": 130,
+    "s": 4.56,
+    "sigma": 8.0,
+    "T": 120.0,
+    "be_at": null
+   },
+   "out": {
+    "p": {
+     "tp1": 0.533073,
+     "tp2": 0.213694,
+     "tp3": 0.117231,
+     "stop": 0.144882,
+     "bez_risk": 0.533073,
+     "nishto_e0": 0.322045
+    },
+    "po_zakona": {
+     "+130": 0.117231,
+     "+100": 0.096463,
+     "+50": 0.319379,
+     "0": 0.0,
+     "drugo": 0.322045,
+     "-130": 0.144882
+    },
+    "E_zakon": 9.641599,
+    "E_poziciya": -4.56,
+    "uspevaemost": 0.786295,
+    "nuzhna_zakon": 0.62911,
+    "nuzhna_poziciya": 0.722222,
+    "vremena_bez_tavan": {
+     "zhivot": 150.493156,
+     "do_tp1_ako_dojde": 86.795867,
+     "do_stop_ako_dojde": 153.245867,
+     "e0_izhod": 106.9376
+    },
+    "izhodi": {
+     "cel3": {
+      "p": 0.117231,
+      "zakon": 130.0,
+      "poziciya": 130.0
+     },
+     "cel2_vhod": {
+      "p": 0.016573,
+      "zakon": 100.0,
+      "poziciya": 0.0
+     },
+     "cel2_vreme": {
+      "p": 0.07989,
+      "zakon": 100.0,
+      "poziciya": 76.722372
+     },
+     "cel1_vhod": {
+      "p": 0.213694,
+      "zakon": 50.0,
+      "poziciya": 0.0
+     },
+     "cel1_vreme": {
+      "p": 0.105686,
+      "zakon": 50.0,
+      "poziciya": 50.0
+     },
+     "vhod": {
+      "p": 0.0,
+      "zakon": 0.0,
+      "poziciya": 0.0
+     },
+     "vreme_bez_risk": {
+      "p": 0.0,
+      "zakon": null,
+      "poziciya": null
+     },
+     "vreme_predi_cel": {
+      "p": 0.322045,
+      "zakon": -38.43854,
+      "poziciya": -38.43854
+     },
+     "stop": {
+      "p": 0.144882,
+      "zakon": -130.0,
+      "poziciya": -130.0
+     }
+    }
+   }
+  },
+  {
+   "id": 37,
+   "fn": "ladder",
+   "in": {
+    "tp1": 50,
+    "tp2": 100,
+    "tp3": 130,
+    "sl": 130,
+    "s": 7.21,
+    "sigma": 6.0,
+    "T": 60.0,
+    "be_at": null
+   },
+   "out": {
+    "p": {
+     "tp1": 0.218337,
+     "tp2": 0.021058,
+     "tp3": 0.003154,
+     "stop": 0.008241,
+     "bez_risk": 0.218337,
+     "nishto_e0": 0.773422
+    },
+    "po_zakona": {
+     "+130": 0.003154,
+     "+100": 0.017904,
+     "+50": 0.197278,
+     "0": 0.0,
+     "drugo": 0.773422,
+     "-130": 0.008241
+    },
+    "E_zakon": -6.062473,
+    "E_poziciya": -7.21,
+    "uspevaemost": 0.963628,
+    "nuzhna_zakon": 0.701733,
+    "nuzhna_poziciya": 0.722222,
+    "vremena_bez_tavan": {
+     "zhivot": 270.930071,
+     "do_tp1_ako_dojde": 160.394592,
+     "do_stop_ako_dojde": 269.694592,
+     "e0_izhod": 195.133775
+    },
+    "izhodi": {
+     "cel3": {
+      "p": 0.003154,
+      "zakon": 130.0,
+      "poziciya": 130.0
+     },
+     "cel2_vhod": {
+      "p": 8e-06,
+      "zakon": 100.0,
+      "poziciya": 0.0
+     },
+     "cel2_vreme": {
+      "p": 0.017896,
+      "zakon": 100.0,
+      "poziciya": 94.758957
+     },
+     "cel1_vhod": {
+      "p": 0.021058,
+      "zakon": 50.0,
+      "poziciya": 0.0
+     },
+     "cel1_vreme": {
+      "p": 0.17622,
+      "zakon": 50.0,
+      "poziciya": 50.0
+     },
+     "vhod": {
+      "p": 0.0,
+      "zakon": 0.0,
+      "poziciya": 0.0
+     },
+     "vreme_bez_risk": {
+      "p": 0.0,
+      "zakon": null,
+      "poziciya": null
+     },
+     "vreme_predi_cel": {
+      "p": 0.773422,
+      "zakon": -22.051991,
+      "poziciya": -22.051991
+     },
+     "stop": {
+      "p": 0.008241,
+      "zakon": -130.0,
+      "poziciya": -130.0
+     }
+    }
+   }
+  },
+  {
+   "id": 38,
+   "fn": "ladder",
+   "in": {
+    "tp1": 50,
+    "tp2": 100,
+    "tp3": 130,
+    "sl": 130,
+    "s": 5.04,
+    "sigma": 25.0,
+    "T": 30.0,
+    "be_at": null
+   },
+   "out": {
+    "p": {
+     "tp1": 0.664213,
+     "tp2": 0.323707,
+     "tp3": 0.23733,
+     "stop": 0.275775,
+     "bez_risk": 0.664213,
+     "nishto_e0": 0.060011
+    },
+    "po_zakona": {
+     "+130": 0.23733,
+     "+100": 0.086377,
+     "+50": 0.340506,
+     "0": 0.0,
+     "drugo": 0.060011,
+     "-130": 0.275775
+    },
+    "E_zakon": 18.265253,
+    "E_poziciya": -5.04,
+    "uspevaemost": 0.706618,
+    "nuzhna_zakon": 0.604407,
+    "nuzhna_poziciya": 0.722222,
+    "vremena_bez_tavan": {
+     "zhivot": 15.4475,
+     "do_tp1_ako_dojde": 8.951999,
+     "do_stop_ako_dojde": 15.664319,
+     "e0_izhod": 11.004477
+    },
+    "izhodi": {
+     "cel3": {
+      "p": 0.23733,
+      "zakon": 130.0,
+      "poziciya": 130.0
+     },
+     "cel2_vhod": {
+      "p": 0.065257,
+      "zakon": 100.0,
+      "poziciya": 0.0
+     },
+     "cel2_vreme": {
+      "p": 0.021119,
+      "zakon": 100.0,
+      "poziciya": 71.866202
+     },
+     "cel1_vhod": {
+      "p": 0.323707,
+      "zakon": 50.0,
+      "poziciya": 0.0
+     },
+     "cel1_vreme": {
+      "p": 0.016799,
+      "zakon": 50.0,
+      "poziciya": 50.0
+     },
+     "vhod": {
+      "p": 0.0,
+      "zakon": 0.0,
+      "poziciya": 0.0
+     },
+     "vreme_bez_risk": {
+      "p": 0.0,
+      "zakon": null,
+      "poziciya": null
+     },
+     "vreme_predi_cel": {
+      "p": 0.060011,
+      "zakon": -39.990191,
+      "poziciya": -39.990191
+     },
+     "stop": {
+      "p": 0.275775,
+      "zakon": -130.0,
+      "poziciya": -130.0
+     }
+    }
+   }
+  },
+  {
+   "id": 39,
+   "fn": "ladder",
+   "in": {
+    "tp1": 50,
+    "tp2": 100,
+    "tp3": 130,
+    "sl": 130,
+    "s": 5.04,
+    "sigma": 10.0,
+    "T": 1440.0,
+    "be_at": null
+   },
+   "out": {
+    "p": {
+     "tp1": 0.694222,
+     "tp2": 0.347111,
+     "tp3": 0.267009,
+     "stop": 0.305778,
+     "bez_risk": 0.694222,
+     "nishto_e0": 0.0
+    },
+    "po_zakona": {
+     "+130": 0.267009,
+     "+100": 0.080103,
+     "+50": 0.347111,
+     "0": 0.0,
+     "drugo": 0.0,
+     "-130": 0.305778
+    },
+    "E_zakon": 20.325812,
+    "E_poziciya": -5.04,
+    "uspevaemost": 0.694222,
+    "nuzhna_zakon": 0.600355,
+    "nuzhna_poziciya": 0.722222,
+    "vremena_bez_tavan": {
+     "zhivot": 96.546873,
+     "do_tp1_ako_dojde": 55.949995,
+     "do_stop_ako_dojde": 97.901995,
+     "e0_izhod": 68.777984
+    },
+    "izhodi": {
+     "cel3": {
+      "p": 0.267009,
+      "zakon": 130.0,
+      "poziciya": 130.0
+     },
+     "cel2_vhod": {
+      "p": 0.080103,
+      "zakon": 100.0,
+      "poziciya": 0.0
+     },
+     "cel2_vreme": {
+      "p": 0.0,
+      "zakon": 100.0,
+      "poziciya": 71.54184
+     },
+     "cel1_vhod": {
+      "p": 0.347111,
+      "zakon": 50.0,
+      "poziciya": 0.0
+     },
+     "cel1_vreme": {
+      "p": 0.0,
+      "zakon": 50.0,
+      "poziciya": 50.00001
+     },
+     "vhod": {
+      "p": 0.0,
+      "zakon": 0.0,
+      "poziciya": 0.0
+     },
+     "vreme_bez_risk": {
+      "p": 0.0,
+      "zakon": null,
+      "poziciya": null
+     },
+     "vreme_predi_cel": {
+      "p": 0.0,
+      "zakon": -40.000007,
+      "poziciya": -40.000007
+     },
+     "stop": {
+      "p": 0.305778,
+      "zakon": -130.0,
+      "poziciya": -130.0
+     }
+    }
+   }
+  },
+  {
+   "id": 40,
+   "fn": "ladder",
+   "in": {
+    "tp1": 50,
+    "tp2": 100,
+    "tp3": 130,
+    "sl": 130,
+    "s": 7.21,
+    "sigma": 15.0,
+    "T": 120.0,
+    "be_at": 40.0
+   },
+   "out": {
+    "p": {
+     "tp1": 0.57374,
+     "tp2": 0.285519,
+     "tp3": 0.217435,
+     "stop": 0.272855,
+     "bez_risk": 0.717444,
+     "nishto_e0": 0.009701
+    },
+    "po_zakona": {
+     "+130": 0.217435,
+     "+100": 0.068084,
+     "+50": 0.288221,
+     "0": 0.143342,
+     "drugo": 0.010062,
+     "-130": 0.272855
+    },
+    "E_zakon": 13.589027,
+    "E_poziciya": -7.21,
+    "uspevaemost": 0.724472,
+    "nuzhna_zakon": 0.653298,
+    "nuzhna_poziciya": 0.764706,
+    "vremena_bez_tavan": {
+     "zhivot": 37.320777,
+     "do_tp1_ako_dojde": 21.811283,
+     "do_stop_ako_dojde": 39.512912,
+     "e0_izhod": 25.764071
+    },
+    "izhodi": {
+     "cel3": {
+      "p": 0.217435,
+      "zakon": 130.0,
+      "poziciya": 130.0
+     },
+     "cel2_vhod": {
+      "p": 0.064061,
+      "zakon": 100.0,
+      "poziciya": 0.0
+     },
+     "cel2_vreme": {
+      "p": 0.004023,
+      "zakon": 100.0,
+      "poziciya": 70.924034
+     },
+     "cel1_vhod": {
+      "p": 0.285519,
+      "zakon": 50.0,
+      "poziciya": 0.0
+     },
+     "cel1_vreme": {
+      "p": 0.002702,
+      "zakon": 50.0,
+      "poziciya": 50.0
+     },
+     "vhod": {
+      "p": 0.143342,
+      "zakon": 0.0,
+      "poziciya": 0.0
+     },
+     "vreme_bez_risk": {
+      "p": 0.000361,
+      "zakon": 29.684573,
+      "poziciya": 29.684573
+     },
+     "vreme_predi_cel": {
+      "p": 0.009701,
+      "zakon": -44.999946,
+      "poziciya": -44.999946
+     },
+     "stop": {
+      "p": 0.272855,
+      "zakon": -130.0,
+      "poziciya": -130.0
+     }
+    }
+   }
+  },
+  {
+   "id": 41,
+   "fn": "ladder",
+   "in": {
+    "tp1": 50,
+    "tp2": 100,
+    "tp3": 130,
+    "sl": 130,
+    "s": 5.04,
+    "sigma": 10.0,
+    "T": "inf",
+    "be_at": 40.0
+   },
+   "out": {
+    "p": {
+     "tp1": 0.588047,
+     "tp2": 0.294024,
+     "tp3": 0.226172,
+     "stop": 0.264941,
+     "bez_risk": 0.735059,
+     "nishto_e0": 0.0
+    },
+    "po_zakona": {
+     "+130": 0.226172,
+     "+100": 0.067852,
+     "+50": 0.294024,
+     "0": 0.147012,
+     "drugo": 0.0,
+     "-130": 0.264941
+    },
+    "E_zakon": 16.446335,
+    "E_poziciya": -5.04,
+    "uspevaemost": 0.735059,
+    "nuzhna_zakon": 0.65251,
+    "nuzhna_poziciya": 0.764706,
+    "vremena_bez_tavan": {
+     "zhivot": 82.744102,
+     "do_tp1_ako_dojde": 47.283328,
+     "do_stop_ako_dojde": 89.571328,
+     "e0_izhod": 56.281984
+    },
+    "izhodi": {
+     "cel3": {
+      "p": 0.226172,
+      "zakon": 130.0,
+      "poziciya": 130.0
+     },
+     "cel2_vhod": {
+      "p": 0.067852,
+      "zakon": 100.0,
+      "poziciya": 0.0
+     },
+     "cel2_vreme": {
+      "p": 0.0,
+      "zakon": 100.0,
+      "poziciya": null
+     },
+     "cel1_vhod": {
+      "p": 0.294024,
+      "zakon": 50.0,
+      "poziciya": 0.0
+     },
+     "cel1_vreme": {
+      "p": 0.0,
+      "zakon": 50.0,
+      "poziciya": null
+     },
+     "vhod": {
+      "p": 0.147012,
+      "zakon": 0.0,
+      "poziciya": 0.0
+     },
+     "vreme_bez_risk": {
+      "p": 0.0,
+      "zakon": null,
+      "poziciya": null
+     },
+     "vreme_predi_cel": {
+      "p": 0.0,
+      "zakon": null,
+      "poziciya": null
+     },
+     "stop": {
+      "p": 0.264941,
+      "zakon": -130.0,
+      "poziciya": -130.0
+     }
+    }
+   }
+  },
+  {
+   "id": 42,
+   "fn": "ladder",
+   "in": {
+    "tp1": 50,
+    "tp2": 100,
+    "tp3": 130,
+    "sl": 130,
+    "s": 0.0,
+    "sigma": 10.0,
+    "T": 60.0,
+    "be_at": null
+   },
+   "out": {
+    "p": {
+     "tp1": 0.518542,
+     "tp2": 0.186986,
+     "tp3": 0.090305,
+     "stop": 0.090305,
+     "bez_risk": 0.518542,
+     "nishto_e0": 0.391153
+    },
+    "po_zakona": {
+     "+130": 0.090305,
+     "+100": 0.096681,
+     "+50": 0.331556,
+     "0": 0.0,
+     "drugo": 0.391153,
+     "-130": 0.090305
+    },
+    "E_zakon": 12.058463,
+    "E_poziciya": 0.0,
+    "uspevaemost": 0.851679,
+    "nuzhna_zakon": 0.639592,
+    "nuzhna_poziciya": 0.722222,
+    "vremena_bez_tavan": {
+     "zhivot": 93.888889,
+     "do_tp1_ako_dojde": 51.666667,
+     "do_stop_ako_dojde": 99.666667,
+     "e0_izhod": 65.0
+    },
+    "izhodi": {
+     "cel3": {
+      "p": 0.090305,
+      "zakon": 130.0,
+      "poziciya": 130.0
+     },
+     "cel2_vhod": {
+      "p": 0.00893,
+      "zakon": 100.0,
+      "poziciya": 0.0
+     },
+     "cel2_vreme": {
+      "p": 0.087751,
+      "zakon": 100.0,
+      "poziciya": 79.303627
+     },
+     "cel1_vhod": {
+      "p": 0.186986,
+      "zakon": 50.0,
+      "poziciya": 0.0
+     },
+     "cel1_vreme": {
+      "p": 0.14457,
+      "zakon": 50.0,
+      "poziciya": 50.0
+     },
+     "vhod": {
+      "p": 0.0,
+      "zakon": 0.0,
+      "poziciya": 0.0
+     },
+     "vreme_bez_risk": {
+      "p": 0.0,
+      "zakon": null,
+      "poziciya": null
+     },
+     "vreme_predi_cel": {
+      "p": 0.391153,
+      "zakon": -36.270912,
+      "poziciya": -36.270912
+     },
+     "stop": {
+      "p": 0.090305,
+      "zakon": -130.0,
+      "poziciya": -130.0
+     }
+    }
+   }
+  },
+  {
+   "id": 43,
+   "fn": "ladder",
+   "in": {
+    "tp1": 50,
+    "tp2": 100,
+    "tp3": 130,
+    "sl": 130,
+    "s": 5.04,
+    "sigma": 4.0,
+    "T": 30.0,
+    "be_at": null
+   },
+   "out": {
+    "p": {
+     "tp1": 0.011997,
+     "tp2": 2e-06,
+     "tp3": 0.0,
+     "stop": 0.0,
+     "bez_risk": 0.011997,
+     "nishto_e0": 0.988003
+    },
+    "po_zakona": {
+     "+130": 0.0,
+     "+100": 2e-06,
+     "+50": 0.011996,
+     "0": 0.0,
+     "drugo": 0.988003,
+     "-130": 0.0
+    },
+    "E_zakon": -5.039918,
+    "E_poziciya": -5.04,
+    "uspevaemost": 0.999999,
+    "nuzhna_zakon": 0.722195,
+    "nuzhna_poziciya": 0.722222,
+    "vremena_bez_tavan": {
+     "zhivot": 603.417956,
+     "do_tp1_ako_dojde": 349.687467,
+     "do_stop_ako_dojde": 611.887467,
+     "e0_izhod": 429.8624
+    },
+    "izhodi": {
+     "cel3": {
+      "p": 0.0,
+      "zakon": 130.0,
+      "poziciya": 130.0
+     },
+     "cel2_vhod": {
+      "p": 0.0,
+      "zakon": 100.0,
+      "poziciya": 0.0
+     },
+     "cel2_vreme": {
+      "p": 2e-06,
+      "zakon": 100.0,
+      "poziciya": 99.986928
+     },
+     "cel1_vhod": {
+      "p": 2e-06,
+      "zakon": 50.0,
+      "poziciya": 0.0
+     },
+     "cel1_vreme": {
+      "p": 0.011994,
+      "zakon": 50.0,
+      "poziciya": 50.0
+     },
+     "vhod": {
+      "p": 0.0,
+      "zakon": 0.0,
+      "poziciya": 0.0
+     },
+     "vreme_bez_risk": {
+      "p": 0.0,
+      "zakon": null,
+      "poziciya": null
+     },
+     "vreme_predi_cel": {
+      "p": 0.988003,
+      "zakon": -5.708354,
+      "poziciya": -5.708354
+     },
+     "stop": {
+      "p": 0.0,
+      "zakon": -130.0,
+      "poziciya": -130.0
+     }
+    }
+   }
+  },
+  {
+   "id": 44,
+   "fn": "sigma_per_min",
+   "in": {
+    "ime": "спокойни",
+    "ohlc": [
+     [
+      4130.0,
+      4130.42,
+      4129.71,
+      4130.18
+     ],
+     [
+      4130.18,
+      4130.55,
+      4129.9,
+      4130.02
+     ],
+     [
+      4130.02,
+      4130.31,
+      4129.6,
+      4129.75
+     ],
+     [
+      4129.75,
+      4130.2,
+      4129.52,
+      4130.11
+     ],
+     [
+      4130.11,
+      4130.64,
+      4130.0,
+      4130.49
+     ],
+     [
+      4130.49,
+      4130.8,
+      4130.12,
+      4130.33
+     ],
+     [
+      4130.33,
+      4130.47,
+      4129.88,
+      4129.95
+     ],
+     [
+      4129.95,
+      4130.26,
+      4129.7,
+      4130.2
+     ],
+     [
+      4130.2,
+      4130.58,
+      4130.05,
+      4130.41
+     ],
+     [
+      4130.41,
+      4130.7,
+      4130.15,
+      4130.29
+     ]
+    ],
+    "minuti": 1.0,
+    "polu_zhivot": 5.0,
+    "metod": "gk"
+   },
+   "out": {
+    "sigma": 4.14524,
+    "sigma_predi": 4.191868,
+    "shok": 0.910549,
+    "hod_z": 0.286269,
+    "n_polzvani": 10.0,
+    "n_propusnati": 0.0
+   }
+  },
+  {
+   "id": 45,
+   "fn": "sigma_per_min",
+   "in": {
+    "ime": "капани",
+    "ohlc": [
+     [
+      4130.0,
+      4130.42,
+      4129.71,
+      4130.18
+     ],
+     [
+      4130.18,
+      4130.55,
+      4129.9,
+      4130.02
+     ],
+     [
+      4130.02,
+      4130.31,
+      4129.6,
+      4129.75
+     ],
+     [
+      4129.75,
+      4130.2,
+      4129.52,
+      4130.11
+     ],
+     [
+      4130.11,
+      4130.64,
+      4130.0,
+      4130.49
+     ],
+     [
+      4130.49,
+      4130.8,
+      4130.12,
+      4130.33
+     ],
+     [
+      null,
+      4130.5,
+      4130.1,
+      4130.3
+     ],
+     [
+      4130.33,
+      4130.33,
+      4130.33,
+      4130.33
+     ],
+     [
+      4130.33,
+      4129.0,
+      4131.0,
+      4130.1
+     ],
+     [
+      4135.8,
+      4136.2,
+      4135.55,
+      4136.05
+     ],
+     [
+      4130.33,
+      4130.47,
+      4129.88,
+      4129.95
+     ],
+     [
+      4129.95,
+      4130.26,
+      4129.7,
+      4130.2
+     ],
+     [
+      4130.2,
+      4130.58,
+      4130.05,
+      4130.41
+     ],
+     [
+      4130.41,
+      4130.7,
+      4130.15,
+      4130.29
+     ]
+    ],
+    "minuti": 1.0,
+    "polu_zhivot": 5.0,
+    "metod": "gk"
+   },
+   "out": {
+    "sigma": 4.131972,
+    "sigma_predi": 4.176793,
+    "shok": 0.913835,
+    "hod_z": 0.287302,
+    "n_polzvani": 11.0,
+    "n_propusnati": 3.0
+   }
+  },
+  {
+   "id": 46,
+   "fn": "sigma_per_min",
+   "in": {
+    "ime": "шок",
+    "ohlc": [
+     [
+      4130.0,
+      4130.42,
+      4129.71,
+      4130.18
+     ],
+     [
+      4130.18,
+      4130.55,
+      4129.9,
+      4130.02
+     ],
+     [
+      4130.02,
+      4130.31,
+      4129.6,
+      4129.75
+     ],
+     [
+      4129.75,
+      4130.2,
+      4129.52,
+      4130.11
+     ],
+     [
+      4130.11,
+      4130.64,
+      4130.0,
+      4130.49
+     ],
+     [
+      4130.49,
+      4130.8,
+      4130.12,
+      4130.33
+     ],
+     [
+      4130.33,
+      4130.47,
+      4129.88,
+      4129.95
+     ],
+     [
+      4129.95,
+      4130.26,
+      4129.7,
+      4130.2
+     ],
+     [
+      4130.2,
+      4130.58,
+      4130.05,
+      4130.41
+     ],
+     [
+      4130.41,
+      4130.7,
+      4130.15,
+      4130.29
+     ],
+     [
+      4130.29,
+      4132.9,
+      4129.95,
+      4132.6
+     ]
+    ],
+    "minuti": 1.0,
+    "polu_zhivot": 5.0,
+    "metod": "gk"
+   },
+   "out": {
+    "sigma": 6.678465,
+    "sigma_predi": 4.14524,
+    "shok": 3.650588,
+    "hod_z": 5.572657,
+    "n_polzvani": 11.0,
+    "n_propusnati": 0.0
+   }
+  },
+  {
+   "id": 47,
+   "fn": "sigma_per_min",
+   "in": {
+    "ime": "5м parkinson",
+    "ohlc": [
+     [
+      4130.0,
+      4131.2,
+      4129.1,
+      4130.9
+     ],
+     [
+      4130.9,
+      4132.4,
+      4130.2,
+      4131.0
+     ],
+     [
+      4131.0,
+      4131.9,
+      4129.6,
+      4129.8
+     ],
+     [
+      4129.8,
+      4130.6,
+      4128.4,
+      4128.9
+     ],
+     [
+      4128.9,
+      4130.3,
+      4128.5,
+      4130.1
+     ],
+     [
+      4130.1,
+      4131.5,
+      4129.9,
+      4131.3
+     ]
+    ],
+    "minuti": 5.0,
+    "polu_zhivot": 3.0,
+    "metod": "parkinson"
+   },
+   "out": {
+    "sigma": 5.445594,
+    "sigma_predi": 5.706356,
+    "shok": 0.753067,
+    "hod_z": 0.940454,
+    "n_polzvani": 6.0,
+    "n_propusnati": 0.0
+   }
+  },
+  {
+   "id": 48,
+   "fn": "verdict",
+   "in": {
+    "s": 4.56,
+    "sigma": 10.0
+   },
+   "out": {
+    "sastoyanie": "ЧИСТО",
+    "vsichki": [
+     "ЧИСТО"
+    ],
+    "p_tp1_do_T": 0.481124,
+    "p_stop_do_T_vzriv": 0.0,
+    "p_tp1_bez_tavan": 0.696889,
+    "spred_dyal": 0.0912,
+    "vreme_do_izhod": 68.440064,
+    "net": -4.56,
+    "matematika": "срещу"
+   }
+  },
+  {
+   "id": 49,
+   "fn": "verdict",
+   "in": {
+    "s": 7.21,
+    "sigma": 10.0
+   },
+   "out": {
+    "sastoyanie": "СКЪПО",
+    "vsichki": [
+     "СКЪПО"
+    ],
+    "p_tp1_do_T": 0.460071,
+    "p_stop_do_T_vzriv": 0.0,
+    "p_tp1_bez_tavan": 0.682167,
+    "spred_dyal": 0.1442,
+    "vreme_do_izhod": 70.248159,
+    "net": -7.21,
+    "matematika": "срещу"
+   }
+  },
+  {
+   "id": 50,
+   "fn": "verdict",
+   "in": {
+    "s": 5.04,
+    "sigma": 4.0
+   },
+   "out": {
+    "sastoyanie": "МЪРТВО",
+    "vsichki": [
+     "МЪРТВО"
+    ],
+    "p_tp1_do_T": 0.075666,
+    "p_stop_do_T_vzriv": 0.0,
+    "p_tp1_bez_tavan": 0.694222,
+    "spred_dyal": 0.1008,
+    "vreme_do_izhod": 429.8624,
+    "net": -5.04,
+    "matematika": "срещу"
+   }
+  },
+  {
+   "id": 51,
+   "fn": "verdict",
+   "in": {
+    "s": 5.04,
+    "sigma": 35.0
+   },
+   "out": {
+    "sastoyanie": "ВЗРИВ",
+    "vsichki": [
+     "ВЗРИВ"
+    ],
+    "p_tp1_do_T": 0.694215,
+    "p_stop_do_T_vzriv": 0.107666,
+    "p_tp1_bez_tavan": 0.694222,
+    "spred_dyal": 0.1008,
+    "vreme_do_izhod": 5.614529,
+    "net": -5.04,
+    "matematika": "срещу"
+   }
+  },
+  {
+   "id": 52,
+   "fn": "verdict",
+   "in": {
+    "s": 5.04,
+    "sigma": 10.0,
+    "shok": 4.0
+   },
+   "out": {
+    "sastoyanie": "ВЗРИВ",
+    "vsichki": [
+     "ВЗРИВ"
+    ],
+    "p_tp1_do_T": 0.477272,
+    "p_stop_do_T_vzriv": 0.0,
+    "p_tp1_bez_tavan": 0.694222,
+    "spred_dyal": 0.1008,
+    "vreme_do_izhod": 68.777984,
+    "net": -5.04,
+    "matematika": "срещу"
+   }
+  },
+  {
+   "id": 53,
+   "fn": "verdict",
+   "in": {
+    "s": 4.56,
+    "sigma": 10.0,
+    "rab_mid": 6.0
+   },
+   "out": {
+    "sastoyanie": "ЧИСТО",
+    "vsichki": [
+     "ЧИСТО"
+    ],
+    "p_tp1_do_T": 0.481124,
+    "p_stop_do_T_vzriv": 0.0,
+    "p_tp1_bez_tavan": 0.696889,
+    "spred_dyal": 0.0912,
+    "vreme_do_izhod": 68.440064,
+    "net": 1.44,
+    "matematika": "за"
+   }
+  }
+ ]
+}
