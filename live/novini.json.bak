@@ -1,10 +1,11 @@
 {
- "kogato": "2026-10-23T00:50:13Z",
- "sekundi": 1.17,
+ "kogato": "2026-10-23T01:25:30Z",
+ "sekundi": 1.0,
  "broi": 200,
- "novi_tozi_pyt": 4,
+ "novi_tozi_pyt": 2,
  "iztochnici_ok": [
   "Investing",
+  "Fed всички",
   "Fed политика",
   "Fed речи",
   "Yahoo долар",
@@ -13,31 +14,39 @@
   "MarketWatch",
   "FT пазари",
   "Google Fed",
-  "Google злато",
-  "Mining.com"
+  "Mining.com",
+  "Google злато"
  ],
- "iztochnici_padnali": [
-  {
-   "ime": "Fed всички",
-   "greshka": "HTTPError: HTTP Error 404: Not Found"
-  }
- ],
+ "iztochnici_padnali": [],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.31с",
-  "новини · FT пазари · 25 бр. за 0.49с",
-  "новини · Fed всички · ПАДНА: HTTPError: HTTP Error 404: Not Found",
-  "новини · Fed политика · 15 бр. за 0.21с",
-  "новини · Fed речи · 15 бр. за 0.22с",
-  "новини · Google Fed · 40 бр. за 0.49с",
-  "новини · Google злато · 40 бр. за 0.75с",
+  "новини · CNBC · 30 бр. за 0.32с",
+  "новини · FT пазари · 25 бр. за 0.43с",
+  "новини · Fed всички · 7 бр. за 0.23с",
+  "новини · Fed политика · 15 бр. за 0.24с",
+  "новини · Fed речи · 15 бр. за 0.25с",
+  "новини · Google Fed · 40 бр. за 0.48с",
+  "новини · Google злато · 40 бр. за 0.94с",
   "новини · Investing · 10 бр. за 0.2с",
   "новини · MarketWatch · 10 бр. за 0.38с",
-  "новини · Mining.com · 36 бр. за 1.12с",
-  "новини · Yahoo долар · 14 бр. за 0.29с",
-  "новини · Yahoo злато · 14 бр. за 0.31с",
-  "новини · български ред: 82 от 200 · махнати по език: 0"
+  "новини · Mining.com · 36 бр. за 0.88с",
+  "новини · Yahoo долар · 14 бр. за 0.26с",
+  "новини · Yahoo злато · 14 бр. за 0.27с",
+  "новини · български ред: 83 от 200 · махнати по език: 0"
  ],
  "novini": [
+  {
+   "zaglavie": "Newmont Q3 Earnings Call Highlights",
+   "vryzka": "https://www.marketbeat.com/instant-alerts/transcript-newmont-q3-earnings-call-highlights-2026-10-22/?utm_source=yahoofinance&utm_medium=yahoofinance&.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-10-23T01:04:19Z",
+   "vazhnost": 1,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
   {
    "zaglavie": "Agnico Eagle (AEM) Stock Looks Undervalued Despite Fresh Macassa Area Gold News",
    "vryzka": "https://finance.yahoo.com/markets/stocks/articles/agnico-eagle-aem-stock-looks-001849488.html?.tsrc=rss",
@@ -377,6 +386,19 @@
    "bg": "Новина от минния бранш (злато)"
   },
   {
+   "zaglavie": "Newmont beats quarterly profit estimates on higher gold prices",
+   "vryzka": "https://news.google.com/rss/articles/CBMibkFVX3lxTE5ZWnprYlZsYzktTjN3MU5aRVpSWlQ2SjNqT0lJTHlzT2cxU2JZR1k2dEZPQWlJTFQ5UldlcnlEdk8yTjR0MmZZc2ZtZWdPV0JvSmRaaDZNZjZWT0M0MWRNaGlFeUpQLTM0elR5Ylln?oc=5",
+   "izvor": "Durham Herald Sun",
+   "chas": "2026-10-22T20:53:12Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": null
+  },
+  {
    "zaglavie": "War in Iran, higher energy prices are only delaying gold's rally to $5,000; mining stocks remain undervalued – Gabelli",
    "vryzka": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxNXy1KLUdfVklTU19ybkZVc3VVVy1JakVKZHB1SlNKR2NJNEg0cVpSR3VnTVZhSFZzaWNPbWR1Y0c3MVJZSGRSdTVwMGk2X1FBRTFRZjdReEpWbk1aSTJicnhlaFlQcG1TM3JNcnpQdDZQanRiTGd3cG9kUXVsZ0c3VnZ6Ujd3M1JFbW5nT0VYdktQaWdwNHIzdnZPMEFuUDVhTnRJbGt1WVEyQzk5SWRCM2QxelNYSmk2?oc=5",
    "izvor": "Kitco",
@@ -401,19 +423,6 @@
    "duma": "war",
    "zashto": "Война значи страх, а страхът гони парите към златото.",
    "bg": "Петролът и напрежението в Близкия изток"
-  },
-  {
-   "zaglavie": "Newmont beats quarterly profit estimates on higher gold prices",
-   "vryzka": "https://news.google.com/rss/articles/CBMipwFBVV95cUxNajFlVFVVNzNoeTg5cTNJM2ZuNjZoU3RBUVUwdnZOUXljd2tpM2dHbDhjbUU4V0JCZkZMWmlrNWlTeHJLM2g0aE01MGE1VkZndzdPb2J0R2Q3bjJtWkJvMG5DeWdLUmJwamw3ckpNeG9jb3RYSFFiLW5PanFLdlRUUXNvN3ptWDBjZ01aR1JMaFRwXzd5RE1jWnNqMDhTWU1SZmp5ekxrWQ?oc=5",
-   "izvor": "Reuters",
-   "chas": "2026-10-22T20:45:01Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": null
   },
   {
    "zaglavie": "Newmont beats quarterly profit estimates as company benefits from higher gold prices",
@@ -1470,7 +1479,7 @@
   },
   {
    "zaglavie": "Rob Kaplan Sees Fed Hike Likely In December — Warns Aggressive Tightening May Hurt Jobs Without Taming Inflation",
-   "vryzka": "https://news.google.com/rss/articles/CBMi_wFBVV95cUxQQnVYby1lWnBQUFJoYW9za2oyMGgtb1JfSUJQM1RVTHJOVjFCOEY5bV9QYW1zNjBOUlNMWW94b1NUZnlWYmc0YjdGYUZNU2pTcHNyTEdxRVg4UjVZdm10Vko5RG5WYThocE4wOFFOZ3BqeUlFSGxSTUZ5aEhDU2J4aGtWakVDN3VDbkJ5TG5ZNUxTMnFua1JvQ05qOFNSMWxZeGZDbjluRmV4QjJNS1NQQTNzeGw2c3Vyd0M3OHRhYTRtemc5LUJQSGszc0x2WWFLMVJTbVFnVV9sM1FlWHFhaXBmSk4yM01taGNkODYxSDBuTm9UQ2o2NXdyaURlNDg?oc=5",
+   "vryzka": "https://news.google.com/rss/articles/CBMigAJBVV95cUxQY3dZYmtNSThJUVdDU0NxeC10MExrN1RVUHBCdEZWMF9sTUQycTY5OURObGNBcXphbDB0Qm5KejdnVXlUTFg1OE43Z2RNLWtvRzU0WkFFdVdoRkFSdXVqUkh1MldGRVprWUxzaWZGOUpLOHJKOEdKRHdrTXJfNExxOE9XYngzSzhNOW1OaTB2SlozeXZ2Zm51TUROLUhudThfSzFhOTB3cnlSTmpGYm9sOFJqY2dmdUk5aVZqVm1lUm1DbDU1eDJfQVJ3MzJ6MWYybW1jUklDMmYzNGNNaGdGREpNQjBONGxPeWd4Y2g1THIxV0h3YnN2SFltTmVTVXpO?oc=5",
    "izvor": "TradingView",
    "chas": "2026-10-22T14:56:15Z",
    "vazhnost": 3,
@@ -1740,6 +1749,19 @@
    "duma": "gold",
    "zashto": "Пряко за златото.",
    "bg": null
+  },
+  {
+   "zaglavie": "The price of gold today, Oct. 22, 2026 — and the best places to buy",
+   "vryzka": "https://news.google.com/rss/articles/CBMickFVX3lxTE9DdjRtT3hfbU9KTzBBVGh1VEJvbVg3cU9lRXVteml0R1RPYUpfNWdkRnBtSVhhb0R6Y0dMdGEwbk9xeVAyQzB2bWZ5LU5BbzlvYVlwMW1NOWxrV01tOE5wMDc4dUl2eExTclBib0I4MFNJQdIBd0FVX3lxTFBFdkVERlYxZTBKOU9wYWs2eVRGdDhLR21ZNC1RT1NqUGNJUUg1cXlNdlpmM19sY0l1cmlJZ0dQUXU2ZlQ5SFZ1akhZSURPb2xXT0s2d2RDM09RRWl3QWREa3BqYUZnNmE5SkNKVXJkOFRCRE9QWUF3?oc=5",
+   "izvor": "CNBC",
+   "chas": "2026-10-22T13:42:23Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": "Цената на златото днес"
   },
   {
    "zaglavie": "Gold drops below $4,070 as Hormuz crisis pushes oil above $112",
@@ -2535,32 +2557,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Why climate could soon move back up the global agenda",
-   "vryzka": "https://www.ft.com/content/e6185f87-0f7a-4e95-80db-94462133c266?syn-25a6b1a6=1",
-   "izvor": "Financial Times",
-   "chas": "2026-10-22T11:00:03Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "FT пазари",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
-   "zaglavie": "Is Sticky Inflation Here to Stay? ETF Areas to Watch",
-   "vryzka": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxQUVBxRldBUWs1M0x4Q1JtVHdiUGFOeXZqRHdYSC0zLTBRN0RDWE5KOHlYcGVfdFdYMDJrZUpOcUtIRDRJX3dnRjM3R1ZIRlVxMktWZVRKVHhJbGRQWVl2V1pZd3VFSGZDbmxobUdRVEJWLTAwZDRBbXozTHBXTVh3SXliMWFES2d2YzhzUGdMeXNuUGc1OXBVU2hoS1hNSEVvM0MtLXVYY3Bvb1k?oc=5",
-   "izvor": "TradingView",
-   "chas": "2026-10-22T11:00:00Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "inflation",
-   "zashto": "Инфлацията е основната причина да се държи злато — то пази стойност, когато парите я губят.",
-   "bg": null
-  },
-  {
    "zaglavie": "Bowman, Supervisory Modernization After Silicon Valley Bank",
    "vryzka": "https://www.federalreserve.gov/newsevents/speech/bowman20261014a.htm",
    "izvor": "Fed",
@@ -2580,10 +2576,10 @@
    "chas": "2026-10-13T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed политика",
+   "emisiya": "Fed всички",
    "chas_ot_iztochnika": true,
    "duma": "rate",
-   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
+   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
    "bg": "Протокол на Фед за сконтовия процент (лихвата по заемите за банките)"
   },
   {
@@ -2619,10 +2615,10 @@
    "chas": "2026-10-07T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed политика",
+   "emisiya": "Fed всички",
    "chas_ot_iztochnika": true,
    "duma": "fed",
-   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
+   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
    "bg": "Протоколът от заседанието на Фед за лихвата (FOMC)"
   },
   {
@@ -2639,6 +2635,6 @@
    "bg": "Реч на член на Фед (Bowman)"
   }
  ],
- "s_bg_red": 82,
+ "s_bg_red": 83,
  "mahnati_ezik": 0
 }
