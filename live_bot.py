@@ -34,7 +34,7 @@ import pandas as pd
 # v9.5–v9.8 — всеки ред в дневника твърдеше грешна версия, а дневникът е
 # единственият начин отвън да се види какво работи. П47 пада, ако VERSION не се
 # среща в темата на последния commit.
-VERSION = "v19.26"
+VERSION = "v19.27"
 
 
 def _env(ключ, подразб):
@@ -12319,6 +12319,84 @@ def _макро_ли(име):
     return _важно, _крит
 
 
+# 🔴🔴 23.10 · v19.27 · ФАКТ_НОВИНА (vars.NEWS_FACTS) · «КАКВО ИЗЛЕЗЕ»
+# Nasdaq дава за всяко събитие actual / consensus / previous (проверено на живо 23.10: Initial Jobless Claims —
+# 194K · 200K · 200K). Ботът ги изхвърляше, а платформата вече ги чете (profil2.js — известието «Новината излезе»,
+# календарът, Oracle) — затова «излезе» никога не звънеше. Сега: (1) дневното дърпане пази трите полета;
+# (2) до ФАКТ_ПРОЗОРЕЦ_МИН след важна новина без факт ботът пита Nasdaq за деня ѝ най-много веднъж на
+# ФАКТ_ЧЕСТОТА_МИН и попълва полетата в cyberquant.json. Само данни: решенията, картите и каналът не се пипат.
+# В кода подразбирането е 0, в yml — 1 (живото пише; старите проби не ходят в мрежата). НАЗАД: NEWS_FACTS=0.
+ФАКТ_НОВИНА = int(_env("ФАКТ_НОВИНА", "0"))
+ФАКТ_ПРОЗОРЕЦ_МИН = 120
+ФАКТ_ЧЕСТОТА_МИН = 5
+_ФАКТ_ПОЛЕТА = ("actual", "consensus", "previous")
+
+
+def _нзд_числа(ред):
+    """v19.27 · трите полета на реда на Nasdaq, изчистени (празно · «-» · &nbsp; → няма), до 16 знака. Никога не гърми."""
+    out = {}
+    try:
+        for к in _ФАКТ_ПОЛЕТА:
+            в = (str((ред or {}).get(к) or "").replace("&nbsp;", " ").replace("&amp;", "&")
+                 .replace("\xa0", " ").strip())
+            if в and в not in ("-", "--", "N/A", "n/a"):
+                out[к] = в[:16]
+    except Exception:
+        return {}
+    return out
+
+
+def _факт_новини(cq, now_utc, meta, notes):
+    """v19.27 · ФАКТ_НОВИНА · до ФАКТ_ПРОЗОРЕЦ_МИН след важна новина без «actual» → Nasdaq за деня ѝ (най-много
+    веднъж на ФАКТ_ЧЕСТОТА_МИН) и трите полета по часа (dt). True, ако календарът е сменен. Никога не гърми."""
+    if not ФАКТ_НОВИНА or not isinstance(cq, dict):
+        return False
+    try:
+        _с = pd.Timestamp(str(now_utc).replace("Z", ""))
+        _с = _с.tz_convert(None) if _с.tzinfo is not None else _с
+        _чакат = []
+        for _е in (cq.get("events") or []):
+            if not isinstance(_е, dict) or _е.get("actual") or str(_е.get("по", "")) != "nasdaq":
+                continue
+            _т = pd.Timestamp(str(_е.get("dt", "")).replace("Z", ""))
+            _мин = (_с - _т).total_seconds() / 60.0
+            if 1 <= _мин <= ФАКТ_ПРОЗОРЕЦ_МИН:
+                _чакат.append(_т)
+        if not _чакат:
+            return False
+        _посл = meta.get("факт_опит") if isinstance(meta, dict) else None
+        if _посл:
+            try:
+                if (_с - pd.Timestamp(_посл)).total_seconds() / 60.0 < ФАКТ_ЧЕСТОТА_МИН:
+                    return False
+            except Exception:
+                pass
+        if isinstance(meta, dict):
+            meta["факт_опит"] = _с.isoformat(timespec="minutes")
+        _нови = _nasdaq_fetch(min(_чакат).normalize().isoformat(), дни=1)
+        _по_час = {str(_н.get("dt")): _н for _н in (_нови or []) if isinstance(_н, dict)}
+        _смени = []
+        for _е in (cq.get("events") or []):
+            if not isinstance(_е, dict) or _е.get("actual"):
+                continue
+            _н = _по_час.get(str(_е.get("dt")))
+            if _н and _н.get("actual"):
+                for _к in _ФАКТ_ПОЛЕТА:
+                    if _н.get(_к):
+                        _е[_к] = _н[_к]
+                _смени.append("%s %s" % (_е.get("name", "?"), _е.get("actual")))
+        if _смени:
+            notes.append("📅 фактът излезе: " + " · ".join(_смени[:3]))
+            return True
+        return False
+    except Exception as _ф:
+        try:
+            notes.append("фактът на новината се спъна (%s)" % type(_ф).__name__)
+        except Exception:
+            pass
+        return False
+
+
 def _nasdaq_fetch(now_utc, дни=None):
     """Икономическият календар на Nasdaq → списък събития като на `cq`.
 
@@ -12389,10 +12467,13 @@ def _nasdaq_fetch(now_utc, дни=None):
                 if _кл in _видени:               # Nasdaq дублира редове (YoY/MoM)
                     continue
                 _видени.add(_кл)
-                events.append({"name": _име[:60],
-                               "dt": _utc.isoformat(timespec="seconds") + "Z",
-                               "impact": "critical" if _крит else "high",
-                               "по": "nasdaq"})
+                _сб = {"name": _име[:60],
+                       "dt": _utc.isoformat(timespec="seconds") + "Z",
+                       "impact": "critical" if _крит else "high",
+                       "по": "nasdaq"}
+                if ФАКТ_НОВИНА:                  # v19.27 · фактът, прогнозата и предишното (лост 0 → дословно v19.26)
+                    _сб.update(_нзд_числа(_ред))
+                events.append(_сб)
             except Exception:
                 continue
     # 🔴 05.09 · ЕДНО СЪБИТИЕ НА ЧАС. Nasdaq дава ШЕСТ реда за CPI в един и
@@ -19087,7 +19168,7 @@ def _мозък_рамки(frames, src, _мозък_h1):
     "ИМПУЛС_СЯНКА", "НОЩ_ОТ_СПОТА", "ЗАПИС_ПОВОД", "ПОСОКА_СЯНКА", "ВХОД_СЯНКА", "ТЕЖЪК_ДЕН", "ПОДДРЪЖКА_ПРОБА", "БЕЗ_АЗИЯ", "НОВИНИ_СЕРИЯ", "НОВИНИ_СЕРИЯ_ПРОЦЕП_Ч",
     "ЦЕЛ_МИГ", "ДНЕВНИК_ЩИТ", "ПАЗАЧ_СЯНКА", "ПАУЗА_2ТП3", "ПРОБЕН_РЕД", "ПАУЗА_СЛЕД_СТОП", "БЕЗ_1МИН_СРЕЩУ",
     "ПАУЗА_ТП3", "БЪРЗ_БЕЗ_ВХОД", "ПАУЗА_СЛЕД_НУЛА", "ОКОЛО_НОВИНА", "ВЕРОЯТНОСТ_СЯНКА",
-    "ОТВАРЯНЕ_БЕЗ_ВХОД", "СРЕЩУ_ДЕНЯ",
+    "ОТВАРЯНЕ_БЕЗ_ВХОД", "СРЕЩУ_ДЕНЯ", "ФАКТ_НОВИНА",
 )
 # 🔴 07.10 · v19.02 · КАНАРЧЕТО · ключ с кирилско име и НЕПРАЗНА буквална стойност (не `vars.`) в env на
 # «run bot» (`КАНАРЧЕ_ЛОСТОВЕ: "да"`). Празното `|| ''` на лостовете доказва само, че ИМЕТО стига до
@@ -19770,6 +19851,14 @@ def main():
                 notes.append("CyberQuant недостъпен този опит — ползвам кеш/прескачам")
     # 🔴 15.09 · КАЛЕНДАРНИЯТ ПАЗАЧ · веднъж на рън, върху заредения календар,
     # ПРЕДИ щита — добавеното FOMC трябва да вдигне щита. Виж КАЛЕНДАР_ПАЗАЧ.
+    # 🔴 23.10 · v19.27 · ФАКТ_НОВИНА · до 120 мин след важна новина — фактът, прогнозата и предишното от Nasdaq
+    # (най-много веднъж на 5 мин). Само календарът; решенията не се пипат. Лост 0 → нищо.
+    if ФАКТ_НОВИНА and НОВИНИ_ИЗТОЧНИК != "cq" and cq:
+        try:
+            if _факт_новини(cq, now_utc, meta, notes):
+                _запиши_атомарно((out / "cyberquant.json"), json.dumps(cq, ensure_ascii=False))
+        except Exception:
+            pass
     _календар_пазач(cq, now_utc, notes=notes)
     cq_block, cq_ev = _cq_macro_block(cq, now_utc)        # голямо макро събитие СЕГА? (блокира двете посоки)
 
