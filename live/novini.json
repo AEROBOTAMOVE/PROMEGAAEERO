@@ -1,39 +1,98 @@
 {
- "kogato": "2026-10-23T15:02:19Z",
- "sekundi": 0.97,
+ "kogato": "2026-10-23T15:37:35Z",
+ "sekundi": 9.99,
  "broi": 200,
- "novi_tozi_pyt": 19,
+ "novi_tozi_pyt": 5,
  "iztochnici_ok": [
-  "Fed всички",
   "MarketWatch",
   "Fed речи",
-  "Yahoo злато",
+  "Fed всички",
+  "Fed политика",
   "Investing",
   "Yahoo долар",
+  "Yahoo злато",
   "CNBC",
-  "Fed политика",
   "FT пазари",
-  "Google Fed",
-  "Google злато",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google Fed",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  },
+  {
+   "ime": "Google злато",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.33с",
-  "новини · FT пазари · 25 бр. за 0.47с",
-  "новини · Fed всички · 7 бр. за 0.12с",
-  "новини · Fed политика · 15 бр. за 0.41с",
-  "новини · Fed речи · 15 бр. за 0.16с",
-  "новини · Google Fed · 40 бр. за 0.45с",
-  "новини · Google злато · 40 бр. за 0.58с",
-  "новини · Investing · 10 бр. за 0.25с",
-  "новини · MarketWatch · 10 бр. за 0.15с",
-  "новини · Mining.com · 36 бр. за 0.9с",
-  "новини · Yahoo долар · 15 бр. за 0.26с",
-  "новини · Yahoo злато · 18 бр. за 0.24с",
-  "новини · български ред: 95 от 200 · махнати по език: 1"
+  "новини · CNBC · 30 бр. за 0.35с",
+  "новини · FT пазари · 25 бр. за 0.61с",
+  "новини · Fed всички · 7 бр. за 0.16с",
+  "новини · Fed политика · 15 бр. за 0.16с",
+  "новини · Fed речи · 15 бр. за 0.15с",
+  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Investing · 10 бр. за 0.23с",
+  "новини · MarketWatch · 10 бр. за 0.14с",
+  "новини · Mining.com · 36 бр. за 0.91с",
+  "новини · Yahoo долар · 16 бр. за 0.33с",
+  "новини · Yahoo злато · 18 бр. за 0.34с",
+  "новини · български ред: 94 от 200 · махнати по език: 0"
  ],
  "novini": [
+  {
+   "zaglavie": "My spouse was awarded $90,000 from my 401(k) in our divorce. How is that fair?",
+   "vryzka": "https://www.marketwatch.com/story/my-spouse-was-awarded-90-000-from-my-401-k-in-our-divorce-how-is-that-fair-dc839aa3?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-10-23T15:31:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "Newmont Sinks 4%4 Despite Record Third-Quarter Profit as Gold Slides Back Toward $4,000",
+   "vryzka": "https://www.tikr.com/blog/newmont-sinks-44-despite-record-third-quarter-profit-as-gold-slides-back-toward-4000?ref=yahoofinance&.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-10-23T15:16:20Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": null
+  },
+  {
+   "zaglavie": "Why OpenAI could be in trouble if Anthropic's IPO doesn't go well",
+   "vryzka": "https://finance.yahoo.com/video/why-openai-could-be-in-trouble-if-anthropics-ipo-doesnt-go-well-151151294.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-10-23T15:11:51Z",
+   "vazhnost": 1,
+   "za": "долар",
+   "emisiya": "Yahoo долар",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "Slam Exploration to Start Drill Campaign at Moose Lake Project in New Brunswick",
+   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/slam-exploration-start-drill-campaign-150722098.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-10-23T15:07:22Z",
+   "vazhnost": 1,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
   {
    "zaglavie": "Everyone’s talking about Roth conversions, but here’s how few people really do them — and why you shouldn’t have FOMO about it",
    "vryzka": "https://www.marketwatch.com/story/everyones-talking-about-roth-conversions-but-heres-how-few-people-really-do-them-and-why-you-shouldnt-have-fomo-about-it-1b50db07?mod=mw_rss_topstories",
@@ -334,6 +393,19 @@
    "bg": "Канадският долар и очакванията за лихвата на Фед"
   },
   {
+   "zaglavie": "Could Metals One deal trigger a rerating? Broker takes a deep dive",
+   "vryzka": "https://www.proactiveinvestors.com/companies/news/1100627/could-metals-one-deal-trigger-a-rerating-broker-takes-a-deep-dive-1100627.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-10-23T13:31:00Z",
+   "vazhnost": 1,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
    "zaglavie": "We have a $300,000 mortgage with a 2.75% interest rate. I want to pay it off. My husband says I’m crazy. Who’s right?",
    "vryzka": "https://www.marketwatch.com/story/we-have-a-300-000-mortgage-with-a-2-75-interest-rate-i-want-to-pay-it-off-my-husband-says-im-crazy-whos-right-4ed15226?mod=mw_rss_topstories",
    "izvor": "MarketWatch",
@@ -386,19 +458,6 @@
    "bg": "Златото поевтинява"
   },
   {
-   "zaglavie": "NEM Q3 Earnings Beat Estimates on Higher Gold Prices, Strong Sales",
-   "vryzka": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxQY2xzNk5WWTNVcndadmRmWkpvU1Q5WnZBenB3bFc3UDIxSk5QUllWbzBKRElLUWhYM1J1QlFZUFZSOExkbWhOYm00WVpfN0g5MkpHX3BxZU1mTVlzYktaWElpZmVLV1BhdS1xemktRDhJUkJ1RkMya2pza3ZUSWN3aUpwUVZSVkFBbWNvZ1pRWWFhTlNmalRKMUNiMlVVMS1nV3g2SXpXaTRsQQ?oc=5",
-   "izvor": "Zacks Investment Research",
-   "chas": "2026-10-23T13:17:17Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": null
-  },
-  {
    "zaglavie": "My father-in-law, 81, sold his $75,000 home to pay his daughter’s $50,000 debt. How can I keep him from becoming destitute?",
    "vryzka": "https://www.marketwatch.com/story/my-father-in-law-81-sold-his-75-000-home-and-paid-off-his-daughters-50-000-debt-what-happens-to-him-now-60e8fc72?mod=mw_rss_topstories",
    "izvor": "MarketWatch",
@@ -412,6 +471,19 @@
    "bg": null
   },
   {
+   "zaglavie": "Central banks pile into gold as China leads buying spree",
+   "vryzka": "https://www.mining.com/central-banks-pile-into-gold-as-china-leads-buying-spree/",
+   "izvor": "Mining.com",
+   "chas": "2026-10-23T13:10:00Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Mining.com",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": "Централни банки купуват злато"
+  },
+  {
    "zaglavie": "Gold Rate Today Live, Latest 22 And 24 Carat Gold Price In India",
    "vryzka": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE5ieHFlWW9CNF9vaC03ME9mY29vZnpqTzdmcFpOZ3BfcEQxY3RXamt4VUI3cDBFTTQ3VzIxczNSUlBYTGdhMi1nT01HOUNXUQ?oc=5",
    "izvor": "NDTV Profit",
@@ -423,6 +495,19 @@
    "duma": "rate",
    "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
    "bg": "Цената на златото днес"
+  },
+  {
+   "zaglavie": "NEM Q3 Earnings Beat Estimates on Higher Gold Prices, Strong Sales",
+   "vryzka": "https://finance.yahoo.com/markets/stocks/articles/nem-q3-earnings-beat-estimates-130400422.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-10-23T13:04:00Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": null
   },
   {
    "zaglavie": "Over 40% of Americans are heading toward retirement ‘blind’ — with no plan",
@@ -503,19 +588,6 @@
    "bg": "Цената на златото днес"
   },
   {
-   "zaglavie": "Smart financial advisers are dropping ROI, NAV and QCD for plain English when talking to clients",
-   "vryzka": "https://www.marketwatch.com/story/smart-financial-advisers-are-dropping-roi-nav-and-qcd-for-plain-english-when-talking-to-clients-2a16fc6f?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-10-23T12:30:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
    "zaglavie": "Red Metal Resources to Present at the Emerging Growth Conference on Wednesday October 28th, 2026",
    "vryzka": "https://finance.yahoo.com/markets/stocks/articles/red-metal-resources-present-emerging-123000034.html?.tsrc=rss",
    "izvor": "Yahoo Finance",
@@ -523,6 +595,19 @@
    "vazhnost": 1,
    "za": "злато",
    "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "Smart financial advisers are dropping ROI, NAV and QCD for plain English when talking to clients",
+   "vryzka": "https://www.marketwatch.com/story/smart-financial-advisers-are-dropping-roi-nav-and-qcd-for-plain-english-when-talking-to-clients-2a16fc6f?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-10-23T12:30:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "MarketWatch",
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null,
@@ -553,19 +638,6 @@
    "duma": "gold",
    "zashto": "Пряко за златото.",
    "bg": "Цената на златото днес"
-  },
-  {
-   "zaglavie": "My spouse was awarded $90,000 from my 401(k) in our divorce. How is that fair?",
-   "vryzka": "https://www.marketwatch.com/story/my-spouse-was-awarded-90-000-from-my-401-k-in-our-divorce-how-is-that-fair-dc839aa3?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-10-23T12:16:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
   },
   {
    "zaglavie": "Expect The Fed To Start Cutting Rates - As Soon As Next Week",
@@ -750,19 +822,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Check your mail now — US insurers are canceling Medicare Advantage for the millions. Make this 1 key move today",
-   "vryzka": "https://finance.yahoo.com/healthcare/articles/check-mail-now-us-insurers-113000077.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-10-23T11:30:00Z",
-   "vazhnost": 1,
-   "za": "злато",
-   "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
    "zaglavie": "Manulife Investments Announces October 2026 Cash Distributions for Manulife Exchange Traded Funds and ETF Series of Manulife Funds",
    "vryzka": "https://finance.yahoo.com/markets/stocks/articles/manulife-investments-announces-october-2026-113000513.html?.tsrc=rss",
    "izvor": "Yahoo Finance",
@@ -770,6 +829,19 @@
    "vazhnost": 1,
    "za": "долар",
    "emisiya": "Yahoo долар",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "Check your mail now — US insurers are canceling Medicare Advantage for the millions. Make this 1 key move today",
+   "vryzka": "https://finance.yahoo.com/healthcare/articles/check-mail-now-us-insurers-113000077.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-10-23T11:30:00Z",
+   "vazhnost": 1,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null,
@@ -2492,71 +2564,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Gold heads for sharpest weekly decline in four months on Fed rate outlook",
-   "vryzka": "https://news.google.com/rss/articles/CBMizgFBVV95cUxOVkhhbFRLM1FxU1kyVXk3N3VkZlg5NFE3MXZDNXBwMWIyck5JdzlKaC1NU1NkTXp5SHl6U190c3J2ZndiU20xVDFkN29KNWFPdU05LUFBam1QT2hGVUJmekRyN3VtRGY3ZnZlSi1sTDRnS19FdVIzNUxMQnhyZVpBMndnUWxweGtmTXFXdGN1V2hfV1Bfa1lOb0xzRlQ0aV9MbDFaVnpoOUtGMUQycVcxVUxLMHlISmdJY3lMWUFxWFd3YldjdjhqcjYwTGpIUQ?oc=5",
-   "izvor": "The Business Times",
-   "chas": "2026-10-23T03:01:00Z",
-   "vazhnost": 3,
-   "za": "злато",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": "Златото и очакванията за лихвата на Фед"
-  },
-  {
-   "zaglavie": "Gold on track for sharp weekly drop as oil price surge fuels rate concerns",
-   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/gold-hits-3-mth-low-022145269.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-10-23T02:21:45Z",
-   "vazhnost": 3,
-   "za": "злато",
-   "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": "rate",
-   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
-   "bg": "Златото и цената на петрола"
-  },
-  {
-   "zaglavie": "Premiums, Storage and Heirs: The True Price of Owning Gold You Can Touch",
-   "vryzka": "https://news.google.com/rss/articles/CBMipgFBVV95cUxNWDRudGlwQ3VSNlBOelBkdk5DbXdVd3JaZ2wzUEJBLTVkUW1SZ2JGQk5LaUU1bm5wcFhTOTBBWDIza1dMeXhSUlFNc3Nhd3lUNGVVWTVpX2twR0ZMd2cwOXhPUkdfYzAxTzREM3J1QWtyS0hpdDM3VHIwd0dsTjE1Ujhfb1g1bEUtYVYzdTJQUXI5U3Y5QTB4VlFZTXh4T2xYbk5Jc293?oc=5",
-   "izvor": "CEOWORLD magazine",
-   "chas": "2026-10-23T02:14:15Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": null
-  },
-  {
-   "zaglavie": "Bitcoin Faces 2 December Rate Hikes as Japan’s Inflation Clears the BOJ’s Target",
-   "vryzka": "https://news.google.com/rss/articles/CBMibkFVX3lxTE82R2RRVGdBY3ZLZnVIX182NWFXOGYxODI4N3M0bnBLd2JmSlVFQ0d1d0lKd051RnBHazI4bUh6cmo1bklrVm9SOFlqVE5RMmczMDZjVnpwM1diSTNKU3pudDVaX2doQWdUWTEzY3NR?oc=5",
-   "izvor": "BeInCrypto",
-   "chas": "2026-10-23T02:08:00Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "rate",
-   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
-   "bg": null
-  },
-  {
-   "zaglavie": "Gold Price Reaches Our Target – Analysis –23-10-2026",
-   "vryzka": "https://news.google.com/rss/articles/CBMixgFBVV95cUxOY2FRSE1NRmhza25OTUhUY09VSlM3czNSQS1JeE9waVZXdE5MQW9iY3R6c25zcUZaeWo2ZGEtUWxBYVdtRzAzUEpDMEN2b2YyU3oyY3ltYmxWYzkzMmo5Y1k1WVpCS3Vxb1hWbFVJcEIxQWlLMHJ4YWlScmRRT1FyVFlHUTFWTnJtVkEyVGxheFJqaWhxS0pham9OLWtBSXJjSV9oYzgtSW5WWjNTOEVJZlBITzROSzIzMF9OVjRQeUdYNGYzTEE?oc=5",
-   "izvor": "Economies.com",
-   "chas": "2026-10-23T01:50:00Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": null
-  },
-  {
    "zaglavie": "Bowman, Supervisory Modernization After Silicon Valley Bank",
    "vryzka": "https://www.federalreserve.gov/newsevents/speech/bowman20261014a.htm",
    "izvor": "Fed",
@@ -2635,6 +2642,6 @@
    "bg": "Реч на член на Фед (Bowman)"
   }
  ],
- "s_bg_red": 95,
- "mahnati_ezik": 1
+ "s_bg_red": 94,
+ "mahnati_ezik": 0
 }
