@@ -1,39 +1,56 @@
 {
- "kogato": "2026-10-24T05:56:15Z",
- "sekundi": 0.97,
+ "kogato": "2026-10-24T06:30:36Z",
+ "sekundi": 12.33,
  "broi": 200,
- "novi_tozi_pyt": 5,
+ "novi_tozi_pyt": 1,
  "iztochnici_ok": [
-  "MarketWatch",
-  "Fed политика",
-  "Yahoo долар",
-  "Yahoo злато",
-  "Investing",
-  "Fed речи",
   "Fed всички",
-  "CNBC",
-  "FT пазари",
-  "Google Fed",
+  "Fed политика",
+  "Fed речи",
   "Google злато",
-  "Mining.com"
+  "Investing",
+  "MarketWatch",
+  "CNBC",
+  "Yahoo злато",
+  "Yahoo долар",
+  "FT пазари",
+  "Google Fed"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Mining.com",
+   "greshka": "TimeoutError: The read operation timed out"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.35с",
-  "новини · FT пазари · 25 бр. за 0.43с",
-  "новини · Fed всички · 7 бр. за 0.28с",
+  "новини · CNBC · 30 бр. за 0.22с",
+  "новини · FT пазари · 25 бр. за 0.34с",
+  "новини · Fed всички · 7 бр. за 0.15с",
   "новини · Fed политика · 15 бр. за 0.16с",
-  "новини · Fed речи · 15 бр. за 0.26с",
-  "новини · Google Fed · 40 бр. за 0.37с",
-  "новини · Google злато · 40 бр. за 0.55с",
-  "новини · Investing · 10 бр. за 0.2с",
-  "новини · MarketWatch · 10 бр. за 0.15с",
-  "новини · Mining.com · 36 бр. за 0.89с",
-  "новини · Yahoo долар · 16 бр. за 0.18с",
-  "новини · Yahoo злато · 18 бр. за 0.2с",
-  "новини · български ред: 73 от 200 · махнати по език: 1"
+  "новини · Fed речи · 15 бр. за 0.16с",
+  "новини · Google Fed · 40 бр. за 0.34с",
+  "новини · Google злато · 40 бр. за 0.15с",
+  "новини · Investing · 10 бр. за 0.19с",
+  "новини · MarketWatch · 10 бр. за 0.2с",
+  "новини · Mining.com · ПАДНА: TimeoutError: The read operation timed out",
+  "новини · Yahoo долар · 16 бр. за 0.32с",
+  "новини · Yahoo злато · 18 бр. за 0.27с",
+  "новини · български ред: 73 от 200 · махнати по език: 2"
  ],
  "novini": [
+  {
+   "zaglavie": "Gold Rate Today In Pune, Check Live 22 And 24 Carat Gold Price",
+   "vryzka": "https://news.google.com/rss/articles/CBMib0FVX3lxTE9XSW8wNUNGWVRjVlVlZjREaXg1RWpXVFIyaGdid05yZFhFZWV2Vzh3cE5oblhvamF0UjlIZ2tmZWk0VVhkaUVJWEJkdHpkUzZqNmVzRzZQQ1dIczlsaXNJOXF0ZTRpT192Nkc5UTBrZw?oc=5",
+   "izvor": "NDTV Profit",
+   "chas": "2026-10-24T05:23:16Z",
+   "vazhnost": 3,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "rate",
+   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
+   "bg": "Цената на златото днес"
+  },
   {
    "zaglavie": "Gold rate today in Hyderabad, October 24, 2026: Check 22K, 24K and 18K gold prices",
    "vryzka": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxNM2xHX3hRdDcxaGdFal9ROXFSTnc4OUFUVGM0S25DYjVaU250RDByVFR4ck5DNi1iLWJVYVUzOWJ5OEJDZ2JJQS1IT2VkY1pGcmhsQTRBQjJqWE5xb01HRE9UTmZaVC1qYUMxSm8tcVV4TjhLbHRFSGU1a20xU2hDbnBCWXc2Um5hSHlQb2dZZzNpVUU5bVM4Qm5LNlJELV9qV3JDV2tYcWU?oc=5",
@@ -150,6 +167,19 @@
    "duma": "inflation",
    "zashto": "Инфлацията е основната причина да се държи злато — то пази стойност, когато парите я губят.",
    "bg": "Анализ и прогноза за среброто"
+  },
+  {
+   "zaglavie": "Gold (XAUUSD), Silver, Platinum Forecasts – Gold Tests $4000 As Pullback Continues",
+   "vryzka": "https://news.google.com/rss/articles/CBMixAFBVV95cUxPU19Ra2otVFVKRTlhaW5MYjdLMVhxd1BTaWN0Z3Y0eFBKc1FLbnZJOTVIaTFJUW1xYTlZTW5XWG9JUFVtaW54ZWxMTm50MWY4U1hBYUpqR0otRElyci0tNTQxc1VIQVNLU3RYcVM1d3MwQUdXMDNUdFZ2bS11d19TcXRtMVM0MVhSdXhDaWdITU1EUzl5SkNrYmowbFNXVkZRMzI0YWdZMFIwaW5KbUVpM3p4bVo1bkE5MzFWdC01MXZYa0oz?oc=5",
+   "izvor": "FXEmpire",
+   "chas": "2026-10-24T01:07:00Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": null
   },
   {
    "zaglavie": "Stocktwits Weekly Spread: What Shaped Treasury Yields And The Dollar This Week",
@@ -613,7 +643,7 @@
    "chas": "2026-10-23T20:08:51Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Google Fed",
+   "emisiya": "Google злато",
    "chas_ot_iztochnika": true,
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
@@ -634,12 +664,12 @@
   },
   {
    "zaglavie": "Gold Breaks Below $4,000 as Oil Surge Fuels Fed Rate Fears",
-   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/gold-breaks-below-4-000-200321300.html?.tsrc=rss",
+   "vryzka": "https://news.google.com/rss/articles/CBMimAFBVV95cUxQTVc1d3pIcXZabFljWEZBMjdTZENVaU5yeDR4dllWSVNrTUFFY2tnWlpYaTdiVWh6MElPMkFpTUlCUjlRNFpDVVkxWFUwVk0yY3Ewa3hNR3dldHE4ZEdDYVR6Y3JHVWd3c3pDTWFGeFM3blVxTFlFY0ttWWw5bjNnbHdlSlRtUml6bzIxeG44TFA2Y3ZlSUtqSw?oc=5",
    "izvor": "Yahoo Finance",
    "chas": "2026-10-23T20:03:21Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Yahoo долар",
+   "emisiya": "Google злато",
    "chas_ot_iztochnika": true,
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
@@ -916,19 +946,6 @@
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null,
-   "bg": null
-  },
-  {
-   "zaglavie": "Gold (XAUUSD), Silver, Platinum Forecasts – Gold Tests $4000 As Pullback Continues",
-   "vryzka": "https://news.google.com/rss/articles/CBMixAFBVV95cUxPU19Ra2otVFVKRTlhaW5MYjdLMVhxd1BTaWN0Z3Y0eFBKc1FLbnZJOTVIaTFJUW1xYTlZTW5XWG9JUFVtaW54ZWxMTm50MWY4U1hBYUpqR0otRElyci0tNTQxc1VIQVNLU3RYcVM1d3MwQUdXMDNUdFZ2bS11d19TcXRtMVM0MVhSdXhDaWdITU1EUzl5SkNrYmowbFNXVkZRMzI0YWdZMFIwaW5KbUVpM3p4bVo1bkE5MzFWdC01MXZYa0oz?oc=5",
-   "izvor": "FXEmpire",
-   "chas": "2026-10-23T18:07:04Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
    "bg": null
   },
   {
@@ -1288,8 +1305,8 @@
    "izvor": "Yahoo Finance",
    "chas": "2026-10-23T16:07:00Z",
    "vazhnost": 1,
-   "za": "долар",
-   "emisiya": "Yahoo долар",
+   "za": "злато",
+   "emisiya": "Yahoo злато",
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null,
@@ -1466,12 +1483,12 @@
   },
   {
    "zaglavie": "Gold drops below $4,000 as ‘haven’ asset joins market sell-off",
-   "vryzka": "https://www.ft.com/content/5a6e15e9-249d-4d59-a140-c51302930a9f?syn-25a6b1a6=1",
+   "vryzka": "https://news.google.com/rss/articles/CBMihAFBVV95cUxNREJiUTlBN3JzcUxxMzV0ZkI2Qkc3UjlydG5yRWtzTDZGZzJnMHF3ampSSW1YblM1aEQxck9vMjF5dFBZdUpBWDVNY2Y1cEZXMk5td09NclZ1T0E3eG1KY2JLZG83SE14TUtSWTJmeGRwSzNIYjBkRDJqaXFXSVhvSmhsUy0?oc=5",
    "izvor": "Financial Times",
    "chas": "2026-10-23T14:37:46Z",
    "vazhnost": 2,
    "za": "злато",
-   "emisiya": "FT пазари",
+   "emisiya": "Google злато",
    "chas_ot_iztochnika": true,
    "duma": "gold",
    "zashto": "Пряко за златото.",
@@ -2544,19 +2561,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Gold Price Forecast: XAU/USD picks up from the $4,000 area with bears still in control",
-   "vryzka": "https://news.google.com/rss/articles/CBMixgFBVV95cUxOQUpUbEtObkhna1NlSFEzQVB3WWZOV2U3ZHBMNHAwY1FQeXRSNXhaTkpUNzBoUTVSaHZCVjRhQjZTU0RvajkzU2I2SmdzSVBKVkJybW0xNnh4TnBmR2lGOTQxNGMtRmRmUEVNZW1mdWR1TmZHNk04SVVtdDk5Zk9GTUVQb2tYOURoU2ZHUFJZLURHN3ZkZUlKb3YyVlAtRTV1cWVNbkk4aXNHMWNGZjI2X2k2NXpNQTZOcXByLUxrQVppN3pnenc?oc=5",
-   "izvor": "FXStreet",
-   "chas": "2026-10-23T10:16:48Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Анализ и прогноза за златото"
-  },
-  {
    "zaglavie": "Bowman, Supervisory Modernization After Silicon Valley Bank",
    "vryzka": "https://www.federalreserve.gov/newsevents/speech/bowman20261014a.htm",
    "izvor": "Fed",
@@ -2576,10 +2580,10 @@
    "chas": "2026-10-13T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed политика",
+   "emisiya": "Fed всички",
    "chas_ot_iztochnika": true,
    "duma": "rate",
-   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
+   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
    "bg": "Протокол на Фед за сконтовия процент (лихвата по заемите за банките)"
   },
   {
@@ -2615,10 +2619,10 @@
    "chas": "2026-10-07T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed политика",
+   "emisiya": "Fed всички",
    "chas_ot_iztochnika": true,
    "duma": "fed",
-   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
+   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
    "bg": "Протоколът от заседанието на Фед за лихвата (FOMC)"
   },
   {
@@ -2636,5 +2640,5 @@
   }
  ],
  "s_bg_red": 73,
- "mahnati_ezik": 1
+ "mahnati_ezik": 2
 }
