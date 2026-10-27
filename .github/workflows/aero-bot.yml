@@ -999,6 +999,59 @@ jobs:
             -H "Accept: application/vnd.github+json" \
             "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/workflows/audit.yml/dispatches" \
             -d '{"ref":"main"}' -w "HTTP %{http_code}\n"
+      # ═══ 26.10 · v19.34 · САМОБУД (vars.SELF_WAKE) · БОТЪТ БУДИ СЛЕДВАЩИЯ СИ РЪН ═══
+      # 26.10: външният будилник (cron-job.org) мълчи от 24.10 15:45 UTC; разписанието на GitHub пусна бота 3 пъти за 12 ч
+      # (дупки 125–196 мин) и продажбата 4008,15 мина стопа, докато ботът спеше. Сега всеки рън в края пуска следващия
+      # (workflow_dispatch с GITHUB_TOKEN — както будилника на одит-робота горе), ако в опашката няма чакащ рън; в уикенда
+      # (от петък 17:00 до неделя 17:50 Ню Йорк) — след 14 мин чакане, за да не спира веригата до понеделник. Опашката `concurrency: aero-bot` пази от двойни рънове;
+      # външният будилник и разписанието остават втори и трети колан. НАЗАД: SELF_WAKE=0.
+      - name: wake the next bot run
+        if: always()
+        continue-on-error: true          # будилникът НИКОГА не бива да вали сигналния рън
+        timeout-minutes: 20
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SAMOBUD: ${{ vars.SELF_WAKE || '' }}
+        run: |
+          if [ "$SAMOBUD" = "0" ]; then echo "лостът SELF_WAKE е 0 — не будя"; exit 0; fi
+          OTV=$(python -c "from zoneinfo import ZoneInfo
+          from datetime import datetime, timezone
+          n = datetime.now(timezone.utc).astimezone(ZoneInfo('America/New_York'))
+          w, hm = n.weekday(), n.hour * 60 + n.minute
+          print('0' if (w == 4 and hm >= 17 * 60) or w == 5 or (w == 6 and hm < 17 * 60 + 50) else '1')" 2>/dev/null || echo 1)
+          # уикенд: пазарът е затворен — веригата не спира (иначе понеделник чака разписанието на GitHub), а буди на 15 мин
+          if [ "$OTV" != "1" ]; then echo "уикенд — будя след 14 мин"; sleep 840; fi
+          # чакащ рън = queued/pending/waiting/requested, създаден в последните 30 мин и различен от този. НЕ по общия брой:
+          # GitHub пази «призрачни» queued рънове от август–септември (видяно 27.10: 3 бр.) и броят им никога не пада.
+          CHAKA=$(python - <<'PY'
+          import json, os, urllib.request
+          from datetime import datetime, timezone, timedelta
+          try:
+              r = urllib.request.Request(
+                  "https://api.github.com/repos/%s/actions/workflows/aero-bot.yml/runs?per_page=30" % os.environ["GITHUB_REPOSITORY"],
+                  headers={"Authorization": "Bearer " + os.environ["GH_TOKEN"], "Accept": "application/vnd.github+json", "User-Agent": "aero-bot"})
+              runs = json.load(urllib.request.urlopen(r, timeout=20)).get("workflow_runs", [])
+          except Exception:
+              print(-1)
+              raise SystemExit
+          pred = datetime.now(timezone.utc) - timedelta(minutes=30)
+          moi = str(os.environ.get("GITHUB_RUN_ID", ""))
+          n = 0
+          for x in runs:
+              if str(x.get("id")) == moi or x.get("status") not in ("queued", "pending", "waiting", "requested"):
+                  continue
+              if datetime.fromisoformat(str(x.get("created_at")).replace("Z", "+00:00")) >= pred:
+                  n += 1
+          print(n)
+          PY
+          )
+          echo "чакащи рънове от последните 30 мин: ${CHAKA:-?}"
+          if [ "${CHAKA:-0}" -gt 0 ] 2>/dev/null; then echo "в опашката чака рън — не будя"; exit 0; fi
+          echo "будя следващия рън на бота"
+          curl -s -X POST -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/workflows/aero-bot.yml/dispatches" \
+            -d '{"ref":"main"}' -w "HTTP %{http_code}\n"
       - name: alarm on barrier failure                    # защита срещу ТИХ престой (selftest/зависимост счупени)
         # ОДИТ-19: ЗАГЛУШАВАНЕ. Съобщение само ако и предишните два ръна са паднали.
         # Едно мигване не е новина; три поредни са. Дотук стреляше на всяко падане —
