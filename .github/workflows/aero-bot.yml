@@ -928,6 +928,9 @@ jobs:
           KOD0=$(kod_sha); T0=$(date +%s); n=0
           while true; do
             t=$(date +%s); n=$((n+1))
+            # 27.10 · v19.38 · новините се събират и В цикъла (спирачката --na-vseki 10 е в събирача; таван 60 s; никога не
+            # спира цикъла) — ИЗВЪНРЕДНА вижда заглавието до ~10 мин след излизането му, не чак в следващата работа. НАЗАД: махни реда
+            timeout 60 python novini_sbirach.py live --na-vseki 10 > /dev/null 2>&1 || true
             edin_run || exit 1
             el=$(( $(date +%s) - T0 ))
             if [ $(( el + 60 )) -ge $(( LOOP_MIN * 60 )) ]; then echo "цикъл: $n пускания за ${el} s"; break; fi
