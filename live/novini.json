@@ -1,43 +1,78 @@
 {
- "kogato": "2026-10-27T20:28:06Z",
- "sekundi": 0.96,
+ "kogato": "2026-10-27T20:39:06Z",
+ "sekundi": 0.91,
  "broi": 200,
- "novi_tozi_pyt": 4,
+ "novi_tozi_pyt": 2,
  "iztochnici_ok": [
-  "Fed политика",
-  "Fed речи",
+  "Fed всички",
   "MarketWatch",
+  "Fed речи",
+  "Fed политика",
   "Investing",
-  "CNBC",
-  "Yahoo долар",
   "Yahoo злато",
+  "Yahoo долар",
+  "CNBC",
   "FT пазари",
-  "Google злато",
   "Google Fed",
+  "Google злато",
   "Mining.com"
  ],
- "iztochnici_padnali": [
-  {
-   "ime": "Fed всички",
-   "greshka": "HTTPError: HTTP Error 404: Not Found"
-  }
- ],
+ "iztochnici_padnali": [],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.34с",
-  "новини · FT пазари · 25 бр. за 0.44с",
-  "новини · Fed всички · ПАДНА: HTTPError: HTTP Error 404: Not Found",
-  "новини · Fed политика · 15 бр. за 0.18с",
+  "новини · CNBC · 30 бр. за 0.44с",
+  "новини · FT пазари · 25 бр. за 0.52с",
+  "новини · Fed всички · 7 бр. за 0.18с",
+  "новини · Fed политика · 15 бр. за 0.21с",
   "новини · Fed речи · 15 бр. за 0.2с",
-  "новини · Google Fed · 40 бр. за 0.47с",
-  "новини · Google злато · 40 бр. за 0.47с",
-  "новини · Investing · 10 бр. за 0.22с",
-  "новини · MarketWatch · 10 бр. за 0.2с",
-  "новини · Mining.com · 36 бр. за 0.91с",
-  "новини · Yahoo долар · 13 бр. за 0.38с",
-  "новини · Yahoo злато · 17 бр. за 0.4с",
-  "новини · български ред: 83 от 200 · махнати по език: 1"
+  "новини · Google Fed · 40 бр. за 0.36с",
+  "новини · Google злато · 40 бр. за 0.54с",
+  "новини · Investing · 10 бр. за 0.25с",
+  "новини · MarketWatch · 10 бр. за 0.19с",
+  "новини · Mining.com · 36 бр. за 0.86с",
+  "новини · Yahoo долар · 13 бр. за 0.39с",
+  "новини · Yahoo злато · 17 бр. за 0.38с",
+  "новини · български ред: 83 от 200 · махнати по език: 0"
  ],
  "novini": [
+  {
+   "zaglavie": "We stopped helping our neighbors with free home repairs and our friendship cooled. Who’s to blame?",
+   "vryzka": "https://www.marketwatch.com/story/we-stopped-helping-our-neighbors-with-free-home-repairs-and-our-friendship-cooled-whos-to-blame-d20b0720?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-10-27T20:30:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "What gold and platinum are telling us about the stock market’s direction",
+   "vryzka": "https://www.marketwatch.com/story/what-gold-and-platinum-are-telling-us-about-the-stock-markets-direction-81405633?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-10-27T20:30:00Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": null
+  },
+  {
+   "zaglavie": "Gold’s Correction Creates a Potential Buying Zone for Miners and Silver",
+   "vryzka": "https://www.investing.com/analysis/golds-correction-creates-a-potential-buying-zone-for-miners-and-silver-200690384",
+   "izvor": "Investing.com",
+   "chas": "2026-10-27T20:29:00Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Investing",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": "Новина от минния бранш (злато)"
+  },
   {
    "zaglavie": "Fed’s Rate Decision Lands Days Before Midterm Elections",
    "vryzka": "https://news.google.com/rss/articles/CBMitwFBVV95cUxOUlI3SHJwYTFtNE1fLThJc2UtVTNQRGRfWFBaSFBaVDB6NzNJekFHUkduWU02OXNDaFhibks1bzJ1NGpDQTN3SFg5T2FXbGo2R1dSS0FQT01OZUpDWWl0Q2cwWkE3eFdieE5xa3BIT2w2SmJ1R3VpbWk5dXRwczV2cVFnUnlhYXpmNEJabUtKNnJySWJaa2V2NjQ5c0lBUElkdEFJMXo1RnY0NFVrVHBUZkFtbGlZQ1k?oc=5",
@@ -448,7 +483,7 @@
    "chas": "2026-10-27T17:31:17Z",
    "vazhnost": 2,
    "za": "долар",
-   "emisiya": "Yahoo долар",
+   "emisiya": "Yahoo злато",
    "chas_ot_iztochnika": true,
    "duma": "dollar",
    "zashto": "Златото се мери в долари: по-силен долар обикновено значи по-евтино злато.",
@@ -962,19 +997,6 @@
    "bg": null
   },
   {
-   "zaglavie": "We stopped helping our neighbors with free home repairs and our friendship cooled. Who’s to blame?",
-   "vryzka": "https://www.marketwatch.com/story/we-stopped-helping-our-neighbors-with-free-home-repairs-and-our-friendship-cooled-whos-to-blame-d20b0720?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-10-27T15:30:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
    "zaglavie": "McDonald’s new bet on chicken hits a snag as franchisees say the birds are too big",
    "vryzka": "https://www.marketwatch.com/story/mcdonalds-new-bet-on-chicken-hits-a-snag-as-franchisees-say-the-birds-are-too-big-c3e8dd77?mod=mw_rss_topstories",
    "izvor": "MarketWatch",
@@ -1145,8 +1167,8 @@
   },
   {
    "zaglavie": "The Fed raised rates for the first time since 2023. What it means for car loans",
-   "vryzka": "https://news.google.com/rss/articles/CBMi_wFBVV95cUxPUDRic2hDOUlRMWk4ZzNrekFzNUZvM25ITjJJSnk1bFRIVF8zcFk3RDRXOVBodE1QN3Q2OHdzV0NzQVo2VTBmR1NzQlhvTzh4QXRxaFhmTm9pRVlDd3MxZnkzSjYwZEstN0F1andwNFVCUF9SRU9uUDVHaW1pZDdNb3hHbXd6X1ZCRy01Mm5zNy1sUE9hUk5nalFQZDlyMzh6eEQ5aVFxTmRKQVBlNlFJSE9wRGoxRXJ1VGtlbE9TNHV3UlVnN0xqeEJweHRQSDlvU2dyc3RKUHI3SGdnN2prQ3BBYm1BWEgxcnBIQS1XUkl4cTNtenF4NncySTh0MW8?oc=5",
-   "izvor": "Santa Fe New Mexican",
+   "vryzka": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxQR0VoREk2TnA2TGtNaHo3dXJUWkN4YnVpd2ZTOGpyMldjMzNwNDN3TFFBcVdBa3NGOWZPRFk5X0l0Q2p1c1VTQWdFUVBoOWdlTkVldmJHZlBEcDMtM1k3TU92OGhfMVBvSTU4azljWVo5eFlQYnlnbzdnTXBmQ1JSdlBQNkhLYS0tNGI4TEZBR2lnMEh5djNZYWNsVU5VTm9nMmJ5aEg5WnhJYVlFTzNtbFpzV2NWdG9NbHliQkloMUZmSFN2SUFxOGZZdUdhLURieTQ1NzkyZFhqbXRWMEctag?oc=5",
+   "izvor": "Cashmere Valley Record",
    "chas": "2026-10-27T15:00:05Z",
    "vazhnost": 3,
    "za": "лихви",
@@ -2548,32 +2570,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Alamos Gold Inc. (AGI) Stock Price, News, Quote & History",
-   "vryzka": "https://news.google.com/rss/articles/CBMiUEFVX3lxTFBPdWFrZnlTNjJHOTdham9iUlJ5cGpnMm5FM0g2aXUtRjRFeUxUamRsb2ExODd4NG1QM0NpOXFtT2ZjZUF5SHNCd3lqNVI1N19z?oc=5",
-   "izvor": "Yahoo! Finance Canada",
-   "chas": "2026-10-27T10:38:07Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": null
-  },
-  {
-   "zaglavie": "Gold Trades Below $4,000 as Fed Rate Outlook and Iran Diplomacy Shape Market Attention",
-   "vryzka": "https://news.google.com/rss/articles/CBMifEFVX3lxTE9aMUN1QWFDTFJLZ0lQU3FZRFVHSkFPVEhTRWdITUtFZlJOczM3TWhzX0J2dXVkS0g2N2twWTdrOWp6QUkta1JaUDllNUtIUFhkZGJtSUpxQWNZeklwYVBPZk1tMGJNYVJiNlBOR2tYX3lKXzFsNkRKamRDM1I?oc=5",
-   "izvor": "Yahoo Finance UK",
-   "chas": "2026-10-27T10:36:56Z",
-   "vazhnost": 3,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": "Златото, очакванията за лихвата на Фед и дипломатическите усилия в Близкия изток"
-  },
-  {
    "zaglavie": "Bowman, Supervisory Modernization After Silicon Valley Bank",
    "vryzka": "https://www.federalreserve.gov/newsevents/speech/bowman20261014a.htm",
    "izvor": "Fed",
@@ -2593,10 +2589,10 @@
    "chas": "2026-10-13T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed политика",
+   "emisiya": "Fed всички",
    "chas_ot_iztochnika": true,
    "duma": "rate",
-   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
+   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
    "bg": "Протокол на Фед за сконтовия процент (лихвата по заемите за банките)"
   },
   {
@@ -2632,13 +2628,13 @@
    "chas": "2026-10-07T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed политика",
+   "emisiya": "Fed всички",
    "chas_ot_iztochnika": true,
    "duma": "fed",
-   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
+   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
    "bg": "Протоколът от заседанието на Фед за лихвата (FOMC)"
   }
  ],
  "s_bg_red": 83,
- "mahnati_ezik": 1
+ "mahnati_ezik": 0
 }
