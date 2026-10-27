@@ -1,39 +1,56 @@
 {
- "kogato": "2026-10-27T20:49:17Z",
- "sekundi": 0.85,
+ "kogato": "2026-10-27T21:00:28Z",
+ "sekundi": 12.27,
  "broi": 200,
- "novi_tozi_pyt": 2,
+ "novi_tozi_pyt": 3,
  "iztochnici_ok": [
-  "Fed политика",
   "MarketWatch",
   "Fed всички",
   "Fed речи",
   "Investing",
+  "Fed политика",
   "Yahoo злато",
   "Yahoo долар",
   "CNBC",
   "FT пазари",
   "Google злато",
-  "Google Fed",
-  "Mining.com"
+  "Google Fed"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Mining.com",
+   "greshka": "TimeoutError: The read operation timed out"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.37с",
-  "новини · FT пазари · 25 бр. за 0.51с",
-  "новини · Fed всички · 7 бр. за 0.19с",
-  "новини · Fed политика · 15 бр. за 0.15с",
-  "новини · Fed речи · 15 бр. за 0.19с",
-  "новини · Google Fed · 40 бр. за 0.5с",
-  "новини · Google злато · 40 бр. за 0.57с",
-  "новини · Investing · 10 бр. за 0.25с",
-  "новини · MarketWatch · 10 бр. за 0.16с",
-  "новини · Mining.com · 36 бр. за 0.81с",
-  "новини · Yahoo долар · 13 бр. за 0.36с",
-  "новини · Yahoo злато · 17 бр. за 0.31с",
+  "новини · CNBC · 30 бр. за 0.38с",
+  "новини · FT пазари · 25 бр. за 0.54с",
+  "новини · Fed всички · 7 бр. за 0.15с",
+  "новини · Fed политика · 15 бр. за 0.25с",
+  "новини · Fed речи · 15 бр. за 0.15с",
+  "новини · Google Fed · 40 бр. за 0.58с",
+  "новини · Google злато · 40 бр. за 0.7с",
+  "новини · Investing · 10 бр. за 0.21с",
+  "новини · MarketWatch · 10 бр. за 0.13с",
+  "новини · Mining.com · ПАДНА: TimeoutError: The read operation timed out",
+  "новини · Yahoo долар · 13 бр. за 0.32с",
+  "новини · Yahoo злато · 18 бр. за 0.32с",
   "новини · български ред: 84 от 200 · махнати по език: 0"
  ],
  "novini": [
+  {
+   "zaglavie": "Panoro Minerals Reports High-Grade Skarn Mineralization Outcrops at Cotabambas in Peru",
+   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/panoro-minerals-reports-high-grade-204856576.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-10-27T20:48:56Z",
+   "vazhnost": 1,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
   {
    "zaglavie": "The big reason Boeing’s stock is falling so hard after earnings",
    "vryzka": "https://www.marketwatch.com/story/the-big-reason-boeings-stock-is-falling-so-hard-after-earnings-d31b400d?mod=mw_rss_topstories",
@@ -46,6 +63,19 @@
    "duma": null,
    "zashto": null,
    "bg": null
+  },
+  {
+   "zaglavie": "Markets Predict Over 90% Odds Fed Will Leave Rates Unchanged This Month",
+   "vryzka": "https://news.google.com/rss/articles/CBMixAFBVV95cUxQcGdNRFRYOFBzXzg1RnUxSXVyYU9xenFndXgxaHJnZC1USklYanFYbVpGSU1nQ1ZiLW1WbjZWRUlIR1BlbVFmX3l3Zk51OTlLakFyakg4RjQtYkRjeFpQbnZFYWlHcXBBcF9POVlvSXZXWTZTOUM5OWdySnl0LVFoQWdqSkY0eFBzbzNmWFFVaTJndkJDUjJYcnV2ZFItQjR4clg3WXJKUmVOcDZ2Y3BlZVBvWFVfbDY5RXRuNTJ1aS0xR3Ay?oc=5",
+   "izvor": "Forbes",
+   "chas": "2026-10-27T20:42:38Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": "Очакванията за лихвата на Фед"
   },
   {
    "zaglavie": "How Broadcom’s stock can surge and overcome ‘the biggest dislocation in the market’",
@@ -111,6 +141,19 @@
    "duma": "gold",
    "zashto": "Пряко за златото.",
    "bg": "Новина от минния бранш (злато)"
+  },
+  {
+   "zaglavie": "Federal Reserve to announce decision on interest rates ahead of midterms",
+   "vryzka": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxNY1VYVTFMWVhrU2FvVWx4WjM2UGY0VzhUUElvMFh0TFNRRHBlcXkycElkU01kUnRGWXJlQzRueEpNQUlRSlZldjlhQlhqT2UwbkFYX1B1WllhZ3YxT1Y1eEU2bXNZWDJadDhfQTdLd0VmYVp1Rkt6RldkeGV3Rk5FR29UWkFpSm40a3hhVmJzR1NfcnhfandqZkhqd0syaDBZNXlFS2Z5LTVUQQ?oc=5",
+   "izvor": "Spectrum News",
+   "chas": "2026-10-27T20:29:00Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "rates",
+   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
+   "bg": "За лихвата на Фед"
   },
   {
    "zaglavie": "Gold and silver ALERT: The next rally is close but price drops are still possible",
@@ -1193,8 +1236,8 @@
   },
   {
    "zaglavie": "The Fed raised rates for the first time since 2023. What it means for car loans",
-   "vryzka": "https://news.google.com/rss/articles/CBMi_wFBVV95cUxPUDRic2hDOUlRMWk4ZzNrekFzNUZvM25ITjJJSnk1bFRIVF8zcFk3RDRXOVBodE1QN3Q2OHdzV0NzQVo2VTBmR1NzQlhvTzh4QXRxaFhmTm9pRVlDd3MxZnkzSjYwZEstN0F1andwNFVCUF9SRU9uUDVHaW1pZDdNb3hHbXd6X1ZCRy01Mm5zNy1sUE9hUk5nalFQZDlyMzh6eEQ5aVFxTmRKQVBlNlFJSE9wRGoxRXJ1VGtlbE9TNHV3UlVnN0xqeEJweHRQSDlvU2dyc3RKUHI3SGdnN2prQ3BBYm1BWEgxcnBIQS1XUkl4cTNtenF4NncySTh0MW8?oc=5",
-   "izvor": "Santa Fe New Mexican",
+   "vryzka": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxQR0VoREk2TnA2TGtNaHo3dXJUWkN4YnVpd2ZTOGpyMldjMzNwNDN3TFFBcVdBa3NGOWZPRFk5X0l0Q2p1c1VTQWdFUVBoOWdlTkVldmJHZlBEcDMtM1k3TU92OGhfMVBvSTU4azljWVo5eFlQYnlnbzdnTXBmQ1JSdlBQNkhLYS0tNGI4TEZBR2lnMEh5djNZYWNsVU5VTm9nMmJ5aEg5WnhJYVlFTzNtbFpzV2NWdG9NbHliQkloMUZmSFN2SUFxOGZZdUdhLURieTQ1NzkyZFhqbXRWMEctag?oc=5",
+   "izvor": "Cashmere Valley Record",
    "chas": "2026-10-27T15:00:05Z",
    "vazhnost": 3,
    "za": "лихви",
@@ -2531,45 +2574,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Bitcoin Price: Will the Fed Rate Decision Trigger a BTC Sell-Off or Recovery?",
-   "vryzka": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxQcDl4UWdlbWlnUUtabUIxQnpSX1JEWGtnUkp6S3pTSzlhc3UxM19faW5iUjlveC1hOGlSMTBPMVk4Wkt0TDVCdkNNWFYwTWVCUFljUHFIVktES09yVnZOZVlYN0xsVklPSWtzMVZFdVR6bUh0cWpNeXM0VUFyLXZKcjluX3FRQWtITHF0QjJHWTFBVnNQN3k3VFFkUVJTYldGcVY2UkJpWXpMODEwX0ZNOWUzMzdMQW9vWThz?oc=5",
-   "izvor": "Investing.com",
-   "chas": "2026-10-27T10:53:14Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": "Биткойн и решението на Фед за лихвата"
-  },
-  {
-   "zaglavie": "Capstone to invest $3B in Chile to double copper production",
-   "vryzka": "https://www.mining.com/capstone-to-invest-3b-in-chile-to-double-copper-production/",
-   "izvor": "Mining.com",
-   "chas": "2026-10-27T10:53:00Z",
-   "vazhnost": 1,
-   "za": "злато",
-   "emisiya": "Mining.com",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
-   "zaglavie": "Gold prices have plunged: Should you buy yellow metal this Diwali?",
-   "vryzka": "https://news.google.com/rss/articles/CBMi5AFBVV95cUxQQVRIWkZ1eER4NXNxSzN6WFUyOUMyQ1JMbzdIZk1MQnp0ak5kVlF6cWpZdWNoZEVQMmZFSmZWVjd6by1fVFp6UDEwMWtZdjhhWVZHb1AwZE1VMzlVd243Zkt3Vi1CS2ljYWc4UjBtcktoRWlxSVVlTnhLak91UHhVZm05Z0RfdXVYS1AxTEkxcVdMYVhaWi1YdHRZdGk3TVhZUWo1S3VYUmtQTmhSNUYybkxadjJHdVR5UHgyZTNhclByNTR3WEhTN0FVSzNVR1VEV0VJOWI2NUNIUGZwQVU5c0VWY2w?oc=5",
-   "izvor": "The Times of India",
-   "chas": "2026-10-27T10:51:00Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Златото поевтинява"
-  },
-  {
    "zaglavie": "Bowman, Supervisory Modernization After Silicon Valley Bank",
    "vryzka": "https://www.federalreserve.gov/newsevents/speech/bowman20261014a.htm",
    "izvor": "Fed",
@@ -2589,10 +2593,10 @@
    "chas": "2026-10-13T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed политика",
+   "emisiya": "Fed всички",
    "chas_ot_iztochnika": true,
    "duma": "rate",
-   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
+   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
    "bg": "Протокол на Фед за сконтовия процент (лихвата по заемите за банките)"
   },
   {
@@ -2628,10 +2632,10 @@
    "chas": "2026-10-07T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed политика",
+   "emisiya": "Fed всички",
    "chas_ot_iztochnika": true,
    "duma": "fed",
-   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
+   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
    "bg": "Протоколът от заседанието на Фед за лихвата (FOMC)"
   }
  ],
