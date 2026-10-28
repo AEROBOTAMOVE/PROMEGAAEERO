@@ -1,37 +1,44 @@
 {
- "kogato": "2026-10-28T04:43:49Z",
- "sekundi": 0.84,
+ "kogato": "2026-10-28T04:54:50Z",
+ "sekundi": 7.45,
  "broi": 200,
- "novi_tozi_pyt": 3,
+ "novi_tozi_pyt": 1,
  "iztochnici_ok": [
-  "Fed политика",
   "Fed всички",
+  "Fed политика",
   "Fed речи",
   "MarketWatch",
   "Investing",
-  "CNBC",
   "Yahoo долар",
   "Yahoo злато",
+  "CNBC",
   "FT пазари",
-  "Google злато",
-  "Google Fed",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google Fed",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  },
+  {
+   "ime": "Google злато",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.33с",
-  "новини · FT пазари · 25 бр. за 0.4с",
-  "новини · Fed всички · 7 бр. за 0.15с",
-  "новини · Fed политика · 15 бр. за 0.15с",
-  "новини · Fed речи · 15 бр. за 0.15с",
-  "новини · Google Fed · 40 бр. за 0.4с",
-  "новини · Google злато · 40 бр. за 0.52с",
-  "новини · Investing · 10 бр. за 0.23с",
-  "новини · MarketWatch · 10 бр. за 0.23с",
-  "новини · Mining.com · 36 бр. за 0.79с",
-  "новини · Yahoo долар · 8 бр. за 0.36с",
-  "новини · Yahoo злато · 15 бр. за 0.37с",
-  "новини · български ред: 98 от 200 · махнати по език: 0"
+  "новини · CNBC · 30 бр. за 0.48с",
+  "новини · FT пазари · 25 бр. за 0.5с",
+  "новини · Fed всички · 7 бр. за 0.13с",
+  "новини · Fed политика · 15 бр. за 0.14с",
+  "новини · Fed речи · 15 бр. за 0.16с",
+  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Investing · 10 бр. за 0.22с",
+  "новини · MarketWatch · 10 бр. за 0.16с",
+  "новини · Mining.com · 36 бр. за 0.86с",
+  "новини · Yahoo долар · 9 бр. за 0.23с",
+  "новини · Yahoo злато · 15 бр. за 0.27с",
+  "новини · български ред: 97 от 200 · махнати по език: 0"
  ],
  "novini": [
   {
@@ -45,6 +52,19 @@
    "chas_ot_iztochnika": true,
    "duma": "rates",
    "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
+   "bg": null
+  },
+  {
+   "zaglavie": "Asia FX mixed as dollar holds near two-week high, kiwi sinks after RBNZ hold",
+   "vryzka": "https://finance.yahoo.com/markets/currencies/articles/asia-fx-mixed-dollar-holds-043526495.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-10-28T04:35:26Z",
+   "vazhnost": 2,
+   "za": "долар",
+   "emisiya": "Yahoo долар",
+   "chas_ot_iztochnika": true,
+   "duma": "dollar",
+   "zashto": "Златото се мери в долари: по-силен долар обикновено значи по-евтино злато.",
    "bg": null
   },
   {
@@ -906,19 +926,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Tokenized Gold’s Next Growth Test Is Its Role in Collateralized Lending",
-   "vryzka": "https://news.google.com/rss/articles/CBMitgFBVV95cUxQcVpvSGllVG5xekFTd2VYcUpydVQ2UDJJRkYzdUppZ1ZacThaUjBLTVE3dUJOUkQ0d0ZEcTNmUHEweFh5QVVzMTZxUEctWHFLelltQkZhQVN4SXlSRXlFem9Zc2prcVBWQ3Z6QkMyOHY1YlotelRIWmFyX0lOeEdzRWhjb1pKdEZ0NkpudWFmZXMzQnNQa1l2Z2QzbzF3MDU2emxXQ3Vva1VfRElTS3N4TS03MUVRQQ?oc=5",
-   "izvor": "Investing.com",
-   "chas": "2026-10-27T20:21:14Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": null
-  },
-  {
    "zaglavie": "Fed’s Rate Decision Lands Days Before Midterm Elections",
    "vryzka": "https://news.google.com/rss/articles/CBMitwFBVV95cUxOUlI3SHJwYTFtNE1fLThJc2UtVTNQRGRfWFBaSFBaVDB6NzNJekFHUkduWU02OXNDaFhibks1bzJ1NGpDQTN3SFg5T2FXbGo2R1dSS0FQT01OZUpDWWl0Q2cwWkE3eFdieE5xa3BIT2w2SmJ1R3VpbWk5dXRwczV2cVFnUnlhYXpmNEJabUtKNnJySWJaa2V2NjQ5c0lBUElkdEFJMXo1RnY0NFVrVHBUZkFtbGlZQ1k?oc=5",
    "izvor": "Bloomberg.com",
@@ -982,6 +989,19 @@
    "duma": "gold",
    "zashto": "Пряко за златото.",
    "bg": "Новина от минния бранш (злато)"
+  },
+  {
+   "zaglavie": "Tokenized Gold’s Next Growth Test Is Its Role in Collateralized Lending",
+   "vryzka": "https://www.investing.com/analysis/tokenized-golds-next-growth-test-is-its-role-in-collateralized-lending-200690365",
+   "izvor": "Investing.com",
+   "chas": "2026-10-27T20:04:00Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Investing",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": null
   },
   {
    "zaglavie": "How investors can position ahead of the Fed's next policy decision",
@@ -2557,19 +2577,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Gold Price Analysis Today | Forex Gold Analysis | XAU/USD Analysis - October 26, 2026",
-   "vryzka": "https://news.google.com/rss/articles/CBMinAFBVV95cUxPbkdYUzVoQUswT080NDdmemtqeEh6NDlJLTA1LWU2enN2em5qSVd5by1iNFVLU1FieEt5c2syRnk3TXVHRWJjb3VTSVpKa1hMX3RnVFJsX1UtQ2ZqV25aemRGT1ptTUtfcU1ERGRoQkJJdVFNNl9DdGVxZG4xaGdITXdqc3RTWUJkaGFUbV9LZHhyQ2NMbGVqV2wtUHA?oc=5",
-   "izvor": "Mitrade",
-   "chas": "2026-10-27T13:29:17Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Анализ и прогноза за златото"
-  },
-  {
    "zaglavie": "Bowman, Supervisory Modernization After Silicon Valley Bank",
    "vryzka": "https://www.federalreserve.gov/newsevents/speech/bowman20261014a.htm",
    "izvor": "Fed",
@@ -2589,10 +2596,10 @@
    "chas": "2026-10-13T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed политика",
+   "emisiya": "Fed всички",
    "chas_ot_iztochnika": true,
    "duma": "rate",
-   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
+   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
    "bg": "Протокол на Фед за сконтовия процент (лихвата по заемите за банките)"
   },
   {
@@ -2628,13 +2635,13 @@
    "chas": "2026-10-07T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed политика",
+   "emisiya": "Fed всички",
    "chas_ot_iztochnika": true,
    "duma": "fed",
-   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
+   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
    "bg": "Протоколът от заседанието на Фед за лихвата (FOMC)"
   }
  ],
- "s_bg_red": 98,
+ "s_bg_red": 97,
  "mahnati_ezik": 0
 }
