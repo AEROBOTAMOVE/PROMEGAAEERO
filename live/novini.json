@@ -1,16 +1,16 @@
 {
- "kogato": "2026-10-29T07:02:37Z",
- "sekundi": 0.85,
+ "kogato": "2026-10-29T07:13:29Z",
+ "sekundi": 1.01,
  "broi": 200,
- "novi_tozi_pyt": 1,
+ "novi_tozi_pyt": 3,
  "iztochnici_ok": [
   "Fed всички",
-  "Investing",
   "Fed политика",
-  "Fed речи",
   "MarketWatch",
-  "Yahoo злато",
+  "Fed речи",
+  "Investing",
   "Yahoo долар",
+  "Yahoo злато",
   "CNBC",
   "FT пазари",
   "Google злато",
@@ -19,21 +19,47 @@
  ],
  "iztochnici_padnali": [],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.33с",
-  "новини · FT пазари · 25 бр. за 0.33с",
+  "новини · CNBC · 30 бр. за 0.41с",
+  "новини · FT пазари · 25 бр. за 0.45с",
   "новини · Fed всички · 8 бр. за 0.14с",
-  "новини · Fed политика · 15 бр. за 0.18с",
-  "новини · Fed речи · 15 бр. за 0.18с",
-  "новини · Google Fed · 40 бр. за 0.49с",
+  "новини · Fed политика · 15 бр. за 0.15с",
+  "новини · Fed речи · 15 бр. за 0.21с",
+  "новини · Google Fed · 40 бр. за 0.53с",
   "новини · Google злато · 40 бр. за 0.57с",
-  "новини · Investing · 10 бр. за 0.16с",
-  "новини · MarketWatch · 10 бр. за 0.21с",
-  "новини · Mining.com · 36 бр. за 0.8с",
-  "новини · Yahoo долар · 14 бр. за 0.33с",
-  "новини · Yahoo злато · 17 бр. за 0.28с",
-  "новини · български ред: 126 от 200 · махнати по език: 1"
+  "новини · Investing · 10 бр. за 0.24с",
+  "новини · MarketWatch · 10 бр. за 0.2с",
+  "новини · Mining.com · 36 бр. за 0.94с",
+  "новини · Yahoo долар · 14 бр. за 0.27с",
+  "новини · Yahoo злато · 17 бр. за 0.27с",
+  "новини · български ред: 126 от 200 · махнати по език: 0"
  ],
  "novini": [
+  {
+   "zaglavie": "Gold Outlook: Fed Credibility Takes a Hit, but Buyers Aren’t Biting",
+   "vryzka": "https://www.investing.com/analysis/gold-outlook-fed-credibility-takes-a-hit-but-buyers-arent-biting-200690470",
+   "izvor": "Investing.com",
+   "chas": "2026-10-29T07:02:00Z",
+   "vazhnost": 3,
+   "za": "злато",
+   "emisiya": "Investing",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": "Анализ и прогноза за златото"
+  },
+  {
+   "zaglavie": "Oil Refineries Become Prime Targets as Global Fuel Shortage Worsens",
+   "vryzka": "https://www.investing.com/analysis/oil-refineries-become-prime-targets-as-global-fuel-shortage-worsens-200690484",
+   "izvor": "Investing.com",
+   "chas": "2026-10-29T07:00:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "Investing",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
   {
    "zaglavie": "US tech stocks set to fall after earnings fuel AI spending concerns",
    "vryzka": "https://www.ft.com/content/1639620b-99e7-47ed-8484-49646816489e?syn-25a6b1a6=1",
@@ -124,6 +150,19 @@
    "duma": "gold",
    "zashto": "Пряко за златото.",
    "bg": "Анализ и прогноза за златото"
+  },
+  {
+   "zaglavie": "Gold price rises, silver price falls in domestic market",
+   "vryzka": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE1adDJ2SHZqRWdueWtCS0J4NHlyVmFBWG5jT09xcXFkNkJ3Z1FYdVp2VVoySUhuZFF2VjRuS0VfbllHTHdtS2tIejF1bGFQbzJrTmRGaS1NcUM?oc=5",
+   "izvor": "Khabarhub",
+   "chas": "2026-10-29T05:33:14Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": "Златото поскъпва"
   },
   {
    "zaglavie": "Gold price rises, silver falls",
@@ -444,7 +483,7 @@
    "chas": "2026-10-29T01:51:15Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Yahoo злато",
+   "emisiya": "Yahoo долар",
    "chas_ot_iztochnika": true,
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
@@ -478,9 +517,9 @@
   },
   {
    "zaglavie": "Gold slips after Fed holds rates, PCE inflation data in focus",
-   "vryzka": "https://news.google.com/rss/articles/CBMitwFBVV95cUxQcUpsZi16cVBvbXg5bWFlS2ZDOUM1R1N2QnVTYUEzSzJQVFZqaWFCd1RKTFBTNTZjTl9IZFJfVmVPblpfRHdENlAwVVpFV3ZQbEJLcVlGOHJsWEFSeTduMk15V2t1UngwaVJzUnZYUnI1ejF1Y0QxY0FHYUdqLURVNTNoRmZRY0w1d1VOVkpQUERkU2hGMW81TmZ0dHhvcjU5cmgzdEtobzNPR0JrdjAwZjktbUFRYlU?oc=5",
-   "izvor": "Investing.com",
-   "chas": "2026-10-29T01:22:36Z",
+   "vryzka": "https://news.google.com/rss/articles/CBMitgFBVV95cUxNejJNUlZIRzU4VEJ1LW5nMDJGTFhoZ1p5ajNuelpHWVdwN2lGTHR6aE84RnpBZGxxd0ZDMy1OY0REd1dwNWdXNWFZZUxNRERoZVdBLW1WTWg4eDFLZlJaM2ZaMFZHUlFncE8wcTV6Z1BnQVZiNEtjMVRpS2dLMXpiR0VVcDVTdGxoQ2FBS3FYOHgwZXdxYUFNMXhMMjdYMzZUTTlOU091dDliWmVVeFgwaUlkbHhnUQ?oc=5",
+   "izvor": "Investing.com Nigeria",
+   "chas": "2026-10-29T01:24:06Z",
    "vazhnost": 3,
    "za": "злато",
    "emisiya": "Google злато",
@@ -1127,19 +1166,6 @@
    "bg": "Очакванията за лихвата на Фед"
   },
   {
-   "zaglavie": "Gold Price Forecast: XAU/USD recovery halts below previous support around $4,070",
-   "vryzka": "https://news.google.com/rss/articles/CBMi3AFBVV95cUxQbDUxVzBiOWk3Y0pMOGc1dm9jN1d1ZWNzZmJKZm44bnZNdFQxSFd3LVUxTkhmZUtIaE81Tjlha0I4UjRocXU5eS0zdmJRZkMyNTgyUEZETjJxWjNYU0VSZEpETkg4SnFjYm5GeGNuc3RtbDZXWUhMZm5ydmZDSXlVMHJZMVU2bmk1V2RzbnRKV21sWFF3RUxOYU41S3g3Y2poelZvaWtwOVNHLWgycTh0VDVqV2FWTGw3ekdVYjFWTEpDdUdHSkUtVjJqOEVsVDFZT0VlODRZTW9Cbzhp?oc=5",
-   "izvor": "www.tmgm.com",
-   "chas": "2026-10-28T21:24:02Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Анализ и прогноза за златото"
-  },
-  {
    "zaglavie": "Federal Reserve holds interest rates steady despite elevated inflation",
    "vryzka": "https://news.google.com/rss/articles/CBMimgFBVV95cUxNWWx5T3J6azZ4Y0loQlpjNXM2LWRCaGtwUGhHWU51dWxZbl9lNXgtWlZ2QVYyZHFwanpHSEg0X0tyNFdUekhXSnFCZUtwS2w3QXUwal9RQ1dBaUQ3U3A1dzhtZGhFNXFYUUlBRERJU3RwbE1QNGFsYkppczVGamNTR2RGTU9BUEMxQi15RUN5SkpxMC01V2hTdk93?oc=5",
    "izvor": "MS NOW",
@@ -1296,6 +1322,19 @@
    "bg": null
   },
   {
+   "zaglavie": "Alamos Gold Reports Third Quarter 2026 Results",
+   "vryzka": "https://news.google.com/rss/articles/CBMi4gFBVV95cUxNVUtKZTZtaU54Qkt4RTFmR2cxcnZOUVJVZl9TcjdZTGhIVmU0clptc2JMZkpwSV9qNVFycXZVdXpkTWRmcUM5Wm1kT1hod3UweHRRZl9haU0weTBfblZ6Y1Z1TW8xMjhKODRvY0ROeDc5SFRLaHhIOTNCTkppQk1xUG51MGdGZThNVmkwWVJvcTU5dG5vbmltMDJpYjRUZ1lybkJYZDdxdDYxVDhNa2ZJWFV3YWd1TU1KcUw3ZUZjRVQ2WWVpVHJqekU3UUZNbHBmNUhMdFY1QnZPS2ZNMW1oQ2h3?oc=5",
+   "izvor": "WBOC TV",
+   "chas": "2026-10-28T21:00:00Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": null
+  },
+  {
    "zaglavie": "AGNICO EAGLE REPORTS THIRD QUARTER 2026 RESULTS - STRONG FREE CASH FLOW GENERATION DRIVEN BY SOLID OPERATIONAL PERFORMANCE; ON TRACK TO ACHIEVE 2026 PRODUCTION AND COST GUIDANCE",
    "vryzka": "https://news.google.com/rss/articles/CBMi1gJBVV95cUxPODN0dGhOaURDUHRjZUVYTHNCeFk4WjR6dG1SU3hUS3BMajF1aWplSHY1T3kxZFRiTFlfQ2ZFWUZlS1FQbFRkV1k2ZFQ5RFZ1YXdKOC1GY0xrblREWWJDVmMza3pJT2ZzTHlqOGpCNExnSWxEN0VkaTdHZ3RjQ2hZTjV2Wm5mdkYta0ppOU1OVVczRlZicWdOYjJmM0RBUnhWRktuV2UxcHFLUUtseTlJYy1QVVNJWGVSSHlXUS1ySFM4dFloU2dDNzBnNmI0cmNfUEdLMmxGWnQ1ZG9pTU5RbEJrTnJoTzVnTTJ4S2k4WUtfUlo4aVdaWW5vMmtfNl8ycE5jNS1MbndoRWJlV1ZvdGltN19GOGVsUzJUX3dzbTViSFpYQm1wWWZLbE5wYlg3YjZHUms5cC1JZHpuYkdYdFFjd3BKV2l1S25ZSjhEenpjS1FVakE?oc=5",
    "izvor": "Morningstar",
@@ -1319,19 +1358,6 @@
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null,
-   "bg": null
-  },
-  {
-   "zaglavie": "Alamos Gold Reports Third Quarter 2026 Results",
-   "vryzka": "https://news.google.com/rss/articles/CBMi4gFBVV95cUxNVUtKZTZtaU54Qkt4RTFmR2cxcnZOUVJVZl9TcjdZTGhIVmU0clptc2JMZkpwSV9qNVFycXZVdXpkTWRmcUM5Wm1kT1hod3UweHRRZl9haU0weTBfblZ6Y1Z1TW8xMjhKODRvY0ROeDc5SFRLaHhIOTNCTkppQk1xUG51MGdGZThNVmkwWVJvcTU5dG5vbmltMDJpYjRUZ1lybkJYZDdxdDYxVDhNa2ZJWFV3YWd1TU1KcUw3ZUZjRVQ2WWVpVHJqekU3UUZNbHBmNUhMdFY1QnZPS2ZNMW1oQ2h3?oc=5",
-   "izvor": "WBOC TV",
-   "chas": "2026-10-28T21:00:00Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
    "bg": null
   },
   {
@@ -2544,32 +2570,6 @@
    "bg": "Фед запази лихвата"
   },
   {
-   "zaglavie": "Oil exploration opens door to Brazil offshore potash",
-   "vryzka": "https://www.mining.com/oil-exploration-opens-door-to-brazil-offshore-potash/",
-   "izvor": "Mining.com",
-   "chas": "2026-10-28T18:02:17Z",
-   "vazhnost": 1,
-   "za": "злато",
-   "emisiya": "Mining.com",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
-   "zaglavie": "Federal Reserve holds interest rates steady even as inflation remains high",
-   "vryzka": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxPSk1RMm9QTGg5a0ZmU1d1OXRGZlFMZjJwZ0pHczhCR3ZHNjdNT0R6ZnhPRjJfMlY3SFB0RzFUcjJQMWQzM01TREpIRlNaaXRYVTVQRXI3S0tTVUJSWkZuMnRHY3JaeVB0cEQ1RmJUSnZZT2prSFk0Z0Z0eFNvREs4Ti1FcWtjNjZSUEJF?oc=5",
-   "izvor": "CBS News",
-   "chas": "2026-10-28T18:02:00Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "rates",
-   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
-   "bg": "Фед запази лихвата"
-  },
-  {
    "zaglavie": "Federal Reserve issues FOMC statement",
    "vryzka": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm",
    "izvor": "Fed",
@@ -2636,5 +2636,5 @@
   }
  ],
  "s_bg_red": 126,
- "mahnati_ezik": 1
+ "mahnati_ezik": 0
 }
