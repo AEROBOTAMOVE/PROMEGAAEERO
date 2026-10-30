@@ -34,7 +34,7 @@ import pandas as pd
 # v9.5–v9.8 — всеки ред в дневника твърдеше грешна версия, а дневникът е
 # единственият начин отвън да се види какво работи. П47 пада, ако VERSION не се
 # среща в темата на последния commit.
-VERSION = "v19.46"
+VERSION = "v19.47"
 
 
 def _env(ключ, подразб):
@@ -14650,6 +14650,14 @@ def _basis_v_moment(hist, ts, rezerva, prozorec=None):
 ЗЛАТЕН_ПЪТ = int(_env("ЗЛАТЕН_ПЪТ", "1"))                 # 0 = само фючърсните барове
 ЗЛАТЕН_ПЪТ_МИН = int(_env("ЗЛАТЕН_ПЪТ_МИН", "240"))       # колко минути назад да се търси
 ЗЛАТЕН_ПЪТ_ОТМ_МАКС = float(_env("ЗЛАТЕН_ПЪТ_ОТМ_МАКС", "12"))   # $ · над това отместването е глич
+# 🔴 30.10 · v19.47 · ПЪТ_ОПАШКА · В 07:09 София минутата на Kraken PAXG показа връх 4024.46 при
+# затваряне 3999.95 (185 PAXG през тънката книга; Coinbase в същата минута 4001.07; спотът 4000.33) и шорт 3998.19
+# беше затворен на СЛ 4011.19, който пазарът не докосна. Опашка над прага се приема САМО ако друга борса я потвърди;
+# непотвърдената се реже до опората (затварянията преди и след нея). Няма свидетел → барът остава непипнат.
+# ПЪТ НАЗАД: ПЪТ_ОПАШКА = 0 → дословно v19.46 (константа, не лост: ЛОСТОВЕ_ОТ_YML е заковано на 242).
+ПЪТ_ОПАШКА = 1
+ПЪТ_ОПАШКА_МИН = 5.0      # $ · по-малка опашка не се проверява
+ПЪТ_ОПАШКА_ПЪТИ = 6.0    # × медианния размах на последните 60 минути (и празните: самата опашка да не вдига прага)
 # 🔴🔴 22.09 · v18.85 · ФАНТОМНИТЕ УДАРИ ПРИ ЗАТВОРЕН ПАЗАР.
 # Минутният път идва от PAXG — токен, който върви 24/7. Златото (спот и GC)
 # е затворено в дневната пауза 17:00–18:00 Ню Йорк и от петък 17:00 до неделя
@@ -14705,6 +14713,60 @@ def _злато_изрежи(df, notes=None):
                      % (изр, len(маска), "пауза/уикенд/празник на CME" if _пр_м
                         else "пауза/уикенд"))
     return df[маска] if изр else df
+
+
+def _пъть_чисти(df, свидетел, notes=None):
+    """v19.47 · ПЪТ_ОПАШКА · реже опашките на минутния път, които никоя друга борса не е видяла.
+
+    `свидетел()` връща минутите на друга борса (High/Low/Close) или None и се вика само при съмнителна опашка.
+    Сравнението е след отместването между двете борси; потвърдена = другата стигна поне половината от опашката.
+    """
+    if not ПЪТ_ОПАШКА or df is None or len(df) < 3:
+        return df
+    c, h, l = df["Close"].values, df["High"].values, df["Low"].values
+    размах = sorted(float(x) for x in (df["High"] - df["Low"]).values[-60:])
+    праг = max(ПЪТ_ОПАШКА_МИН, ПЪТ_ОПАШКА_ПЪТИ * размах[len(размах) // 2] if размах else 0.0)
+    съмнителни = []
+    for i in range(1, len(df)):
+        сл = float(c[i + 1]) if i + 1 < len(df) else float(c[i])
+        горе, долу = max(float(c[i - 1]), сл), min(float(c[i - 1]), сл)
+        if float(h[i]) - горе > праг:
+            съмнителни.append((i, 1, горе))
+        if долу - float(l[i]) > праг:
+            съмнителни.append((i, -1, долу))
+    if not съмнителни:
+        return df
+    try:
+        др = свидетел()
+    except Exception:
+        др = None
+    общи = df.index.intersection(др.index) if др is not None and len(др) else []
+    if len(общи) < 5:
+        if notes is not None:
+            notes.append("⚠️ минутният път: %d опашки над %.2f$ без свидетел — оставам ги" % (len(съмнителни), праг))
+        return df
+    разл = float((df.loc[общи, "Close"] - др.loc[общи, "Close"]).median())
+    df = df.copy()
+    мин1 = pd.Timedelta(minutes=1)
+    for i, пос, опора in съмнителни:
+        t = df.index[i]
+        край = float(h[i]) if пос > 0 else float(l[i])
+        пр = др.loc[t - мин1:t + мин1]
+        видя = (float(пр["High"].max()) + разл if пос > 0 else float(пр["Low"].min()) + разл) if len(пр) else None
+        if видя is not None and (видя - опора) * пос >= 0.5 * (край - опора) * пос:
+            continue                        # и другата борса я видя → истинска
+        if пос > 0:
+            df.at[t, "High"] = опора
+            df.at[t, "Open"] = min(float(df.at[t, "Open"]), опора)
+            df.at[t, "Close"] = min(float(df.at[t, "Close"]), опора)
+        else:
+            df.at[t, "Low"] = опора
+            df.at[t, "Open"] = max(float(df.at[t, "Open"]), опора)
+            df.at[t, "Close"] = max(float(df.at[t, "Close"]), опора)
+        if notes is not None:
+            notes.append("🧹 минутният път: опашка %s до %.2f, другата борса %s → рязана до %.2f"
+                         % (str(t)[11:16], край, "%.2f" % видя if видя is not None else "без сделки", опора))
+    return df
 
 
 def _zlaten_pyt(minuti=None, notes=None):
@@ -14770,6 +14832,21 @@ def _zlaten_pyt(minuti=None, notes=None):
         return [(int(a[0]) // 1000, float(a[1]), float(a[2]), float(a[3]), float(a[4]))
                 for a in j]
 
+    def _свидетел(изв):
+        # v19.47 · другата борса — тегли се само при съмнителна опашка
+        for и2, ф2 in (("coinbase", _coinbase), ("kraken", _kraken), ("binance", _binance)):
+            if и2 == изв:
+                continue
+            try:
+                р = ф2()
+                if р and len(р) >= 5:
+                    кд = pd.DataFrame({"High": [x[2] for x in р], "Low": [x[3] for x in р], "Close": [x[4] for x in р]},
+                                      index=pd.DatetimeIndex([pd.Timestamp(x[0], unit="s") for x in р]))
+                    return кд[~кд.index.duplicated(keep="last")].sort_index()
+            except Exception:
+                continue
+        return None
+
     for ime, fn in (("kraken", _kraken), ("coinbase", _coinbase), ("binance", _binance)):
         try:
             редове = fn()
@@ -14785,6 +14862,7 @@ def _zlaten_pyt(minuti=None, notes=None):
             # 🔴 22.09 · v18.85 · минутите при затворено злато излизат ТУК,
             # преди пътят да стигне до `track_trade` (виж ЗЛАТО_ЧАСОВЕ).
             df = _злато_изрежи(df, notes)
+            df = _пъть_чисти(df, lambda: _свидетел(ime), notes)   # v19.47
             return df, ime
         except Exception as e:
             if notes is not None:
