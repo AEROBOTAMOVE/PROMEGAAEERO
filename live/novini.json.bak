@@ -1,16 +1,16 @@
 {
- "kogato": "2026-10-30T11:37:25Z",
- "sekundi": 0.87,
+ "kogato": "2026-10-30T11:47:25Z",
+ "sekundi": 0.73,
  "broi": 200,
- "novi_tozi_pyt": 7,
+ "novi_tozi_pyt": 4,
  "iztochnici_ok": [
   "Fed всички",
-  "Fed речи",
+  "MarketWatch",
   "Fed политика",
+  "Fed речи",
   "Investing",
   "Yahoo злато",
   "Yahoo долар",
-  "MarketWatch",
   "FT пазари",
   "CNBC",
   "Google злато",
@@ -19,21 +19,47 @@
  ],
  "iztochnici_padnali": [],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.34с",
-  "новини · FT пазари · 25 бр. за 0.29с",
+  "новини · CNBC · 30 бр. за 0.39с",
+  "новини · FT пазари · 25 бр. за 0.28с",
   "новини · Fed всички · 7 бр. за 0.07с",
   "новини · Fed политика · 15 бр. за 0.09с",
-  "новини · Fed речи · 15 бр. за 0.07с",
-  "новини · Google Fed · 40 бр. за 0.45с",
-  "новини · Google злато · 40 бр. за 0.47с",
-  "новини · Investing · 10 бр. за 0.09с",
-  "новини · MarketWatch · 10 бр. за 0.2с",
-  "новини · Mining.com · 36 бр. за 0.8с",
-  "новини · Yahoo долар · 16 бр. за 0.14с",
-  "новини · Yahoo злато · 17 бр. за 0.14с",
-  "новини · български ред: 71 от 200 · махнати по език: 0"
+  "новини · Fed речи · 15 бр. за 0.08с",
+  "новини · Google Fed · 40 бр. за 0.43с",
+  "новини · Google злато · 40 бр. за 0.48с",
+  "новини · Investing · 10 бр. за 0.13с",
+  "новини · MarketWatch · 10 бр. за 0.07с",
+  "новини · Mining.com · 36 бр. за 0.65с",
+  "новини · Yahoo долар · 16 бр. за 0.19с",
+  "новини · Yahoo злато · 17 бр. за 0.17с",
+  "новини · български ред: 73 от 200 · махнати по език: 0"
  ],
  "novini": [
+  {
+   "zaglavie": "Sterling today: Pound firms as dollar slips on midterm, AI jitters",
+   "vryzka": "https://finance.yahoo.com/markets/currencies/articles/sterling-today-pound-firms-dollar-114015706.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-10-30T11:40:15Z",
+   "vazhnost": 2,
+   "za": "долар",
+   "emisiya": "Yahoo долар",
+   "chas_ot_iztochnika": true,
+   "duma": "dollar",
+   "zashto": "Златото се мери в долари: по-силен долар обикновено значи по-евтино злато.",
+   "bg": "Британската лира поскъпва на фона на движението на долара"
+  },
+  {
+   "zaglavie": "What does shake-up of future Federal Reserve meetings mean for interest rates?",
+   "vryzka": "https://news.google.com/rss/articles/CBMiugFBVV95cUxNOFBUN2E2OXM5Ymc1RzBaXzVQWmJMNXVkVE5sRGREZXV5Rm1rc0x5ZFl5ajd0Y2YxRmdrcEpzR2x0aUZEVWdHektLTVhsaVFwVE5zNXdJN0JuT1VrYnoxUUV4WGVXQXZMTkNmcE9DeFdfczZEa2ZQRzdDQTNoRGJZOThxZ1VhM0VTeXczekNvampuQkdSVkZIekhjenJTM2VOWklmdXNyY0ROMlRjaUw4SnlKWmlqb0VLaHc?oc=5",
+   "izvor": "Baltimore Sun",
+   "chas": "2026-10-30T11:37:30Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "rates",
+   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
+   "bg": "Решението на Фед за лихвата"
+  },
   {
    "zaglavie": "Global tech rout deepens as US earnings stoke AI spending fears",
    "vryzka": "https://www.ft.com/content/3ba953ae-84bb-4de4-959e-baec3e908fb3?syn-25a6b1a6=1",
@@ -308,19 +334,6 @@
    "bg": null
   },
   {
-   "zaglavie": "'Worrisome': Jim Cramer warns chip stocks have gone 'parabolic' — here are the defensive moves he's making now",
-   "vryzka": "https://finance.yahoo.com/markets/stocks/articles/worrisome-jim-cramer-warns-chip-101500680.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-10-30T10:15:00Z",
-   "vazhnost": 1,
-   "za": "злато",
-   "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
    "zaglavie": "‘He was heartbroken’: My husband’s kids abandoned him when he was dying. Was he right to leave everything to me?",
    "vryzka": "https://www.marketwatch.com/story/he-was-heartbroken-my-husbands-kids-never-helped-when-he-was-gravely-ill-was-he-right-to-leave-everything-to-me-1ad0616b?mod=mw_rss_topstories",
    "izvor": "MarketWatch",
@@ -328,6 +341,19 @@
    "vazhnost": 1,
    "za": "общо",
    "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "'Worrisome': Jim Cramer warns chip stocks have gone 'parabolic' — here are the defensive moves he's making now",
+   "vryzka": "https://finance.yahoo.com/markets/stocks/articles/worrisome-jim-cramer-warns-chip-101500680.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-10-30T10:15:00Z",
+   "vazhnost": 1,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null,
@@ -370,6 +396,19 @@
    "chas_ot_iztochnika": true,
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": null
+  },
+  {
+   "zaglavie": "symbol__ Stock Quote Price and Forecast",
+   "vryzka": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE8yNThEVHlHQXBXc181WmppZUd1TjdYZngzRV9SYWw0VWhCMEJCazVzMlV1eTJHOGV4UF9ic0h3X1hOU0tZV1BvaTU0UVRWQjA?oc=5",
+   "izvor": "CNN",
+   "chas": "2026-10-30T10:08:37Z",
+   "vazhnost": 1,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
    "bg": null
   },
   {
@@ -494,6 +533,19 @@
    "vryzka": "https://news.google.com/rss/articles/CBMi3wFBVV95cUxPMW1xUXZFVVhkeW03S1V6RzNJVzVTTC0yeDZVNXdKYzFYYUhmQjZmdllKZzJXUV8xcXJtN2NWU01aLXdodHpvdEZhbVNtSXQwV1Bkb18zOTNNZnFVYUtPc2VucE5GaF91a2xuc3VVQ1V4QXM1TWZPb2E1THVOMDJaWDM0SHNMVzhiYTJqMWZESEw5aElEVVdRZEs2cGtJMktaVGRJbnhQMUQwa0t1eWRVc2U5X3hYWnlHMUU3TEdHa0tuTmw0aHpReW00RzJLRTRfaGsyLXY3aEJOVWZ3VFJR?oc=5",
    "izvor": "investingLive",
    "chas": "2026-10-30T09:27:06Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": null
+  },
+  {
+   "zaglavie": "Orezone Gold Corporation (ORE.TO) Stock Price, News, Quote & History",
+   "vryzka": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5FMllBankwbVBVUzBNNzgwenlJRjRlVjR0QV8ydE14WmdKN242WndmSHllTFBLLW9jUzF0MVlBMkdzNjRzdVphWWZNWlZUV2hPcGZOWg?oc=5",
+   "izvor": "Yahoo! Finance Canada",
+   "chas": "2026-10-30T09:16:31Z",
    "vazhnost": 2,
    "za": "злато",
    "emisiya": "Google злато",
@@ -2531,58 +2583,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Microsoft to raise up to $25 billion in bond market as investors get pickier about AI debt binge",
-   "vryzka": "https://www.marketwatch.com/story/microsoft-to-raise-up-to-25-billion-in-bond-market-as-investors-get-pickier-about-ai-debt-binge-7c6ae777?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-10-29T20:01:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
-   "zaglavie": "80% of workers make this 401(k) mistake when they retire",
-   "vryzka": "https://www.marketwatch.com/story/whats-the-first-thing-most-people-do-with-their-401-k-after-they-retire-nothing-8a606518?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-10-29T19:56:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
-   "zaglavie": "What’s the first thing most people do with their 401(k) after they retire? Nothing.",
-   "vryzka": "https://www.marketwatch.com/story/whats-the-first-thing-most-people-do-with-their-401-k-after-they-retire-nothing-8a606518?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-10-29T19:56:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
-   "zaglavie": "DoorDash and Instacart want to join forces. Will the U.S. government get in their way?",
-   "vryzka": "https://www.marketwatch.com/story/doordash-and-instacart-want-to-join-forces-will-the-u-s-government-get-in-their-way-0c065bee?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-10-29T19:49:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
    "zaglavie": "Federal Reserve issues FOMC statement",
    "vryzka": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm",
    "izvor": "Fed",
@@ -2635,6 +2635,6 @@
    "bg": "Съобщение на Фед — централната банка на САЩ"
   }
  ],
- "s_bg_red": 71,
+ "s_bg_red": 73,
  "mahnati_ezik": 0
 }
