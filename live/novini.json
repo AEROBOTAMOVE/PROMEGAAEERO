@@ -1,39 +1,56 @@
 {
- "kogato": "2026-10-30T13:56:03Z",
- "sekundi": 0.93,
+ "kogato": "2026-10-30T14:06:45Z",
+ "sekundi": 0.8,
  "broi": 200,
- "novi_tozi_pyt": 1,
+ "novi_tozi_pyt": 2,
  "iztochnici_ok": [
-  "Fed всички",
-  "Investing",
   "Fed речи",
-  "Fed политика",
   "MarketWatch",
+  "Fed политика",
+  "Investing",
+  "CNBC",
   "Yahoo злато",
   "Yahoo долар",
   "FT пазари",
-  "CNBC",
-  "Google Fed",
   "Google злато",
+  "Google Fed",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Fed всички",
+   "greshka": "HTTPError: HTTP Error 404: Not Found"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.53с",
-  "новини · FT пазари · 25 бр. за 0.35с",
-  "новини · Fed всички · 7 бр. за 0.1с",
-  "новини · Fed политика · 15 бр. за 0.13с",
-  "новини · Fed речи · 15 бр. за 0.13с",
-  "новини · Google Fed · 40 бр. за 0.43с",
-  "новини · Google злато · 40 бр. за 0.55с",
-  "новини · Investing · 10 бр. за 0.12с",
-  "новини · MarketWatch · 10 бр. за 0.22с",
-  "новини · Mining.com · 36 бр. за 0.89с",
-  "новини · Yahoo долар · 17 бр. за 0.31с",
-  "новини · Yahoo злато · 18 бр. за 0.27с",
-  "новини · български ред: 86 от 200 · махнати по език: 0"
+  "новини · CNBC · 30 бр. за 0.21с",
+  "новини · FT пазари · 25 бр. за 0.31с",
+  "новини · Fed всички · ПАДНА: HTTPError: HTTP Error 404: Not Found",
+  "новини · Fed политика · 15 бр. за 0.08с",
+  "новини · Fed речи · 15 бр. за 0.07с",
+  "новини · Google Fed · 40 бр. за 0.66с",
+  "новини · Google злато · 40 бр. за 0.65с",
+  "новини · Investing · 10 бр. за 0.11с",
+  "новини · MarketWatch · 10 бр. за 0.07с",
+  "новини · Mining.com · 36 бр. за 0.73с",
+  "новини · Yahoo долар · 17 бр. за 0.25с",
+  "новини · Yahoo злато · 18 бр. за 0.24с",
+  "новини · български ред: 84 от 200 · махнати по език: 0"
  ],
  "novini": [
+  {
+   "zaglavie": "Is lab-grown gold coming, too?",
+   "vryzka": "https://news.google.com/rss/articles/CBMidEFVX3lxTE5LNDdxcFY0OGlLMXYwLVNwc01saWhicTdFc3h1UnA2c1BNdzh0N2Q5R3lhS2tCeF9FUjN2ZE1UdFd2azA0bVZHNDVZUm01b09lRjRPZFpCSzc4X1QzdWJraXVOVjk5dl9DQ0hTclZYcDVER0VV?oc=5",
+   "izvor": "The Jewelry Wire",
+   "chas": "2026-10-30T13:56:17Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": null
+  },
   {
    "zaglavie": "AMD’s stock slides after Intel earnings reveal two big issues",
    "vryzka": "https://www.marketwatch.com/story/amds-stock-slides-after-intel-earnings-reveal-two-big-issues-d3afed91?mod=mw_rss_topstories",
@@ -555,6 +572,19 @@
    "bg": null
   },
   {
+   "zaglavie": "Big Tech’s scary October has a twist: Dow on track for biggest monthly lead over Nasdaq since 2022",
+   "vryzka": "https://www.marketwatch.com/story/amazons-and-intels-stocks-are-set-to-plunge-but-wall-streets-october-winners-may-surprise-you-4d74e4d4?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-10-30T11:32:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
    "zaglavie": "Amazon’s and Intel’s stocks are set to plunge. But Wall Street’s October winners may surprise you.",
    "vryzka": "https://www.marketwatch.com/story/amazons-and-intels-stocks-are-set-to-plunge-but-wall-streets-october-winners-may-surprise-you-4d74e4d4?mod=mw_rss_topstories",
    "izvor": "MarketWatch",
@@ -776,6 +806,19 @@
    "bg": null
   },
   {
+   "zaglavie": "New economic data challenges Fed chief's not-too-hot perspective",
+   "vryzka": "https://news.google.com/rss/articles/CBMiakFVX3lxTE5sRG90NGtJT3FkUGVSajUzdU5hMVV5RWFhRWRwOUJ4WTZCN2NWcVJGUm5tRVJaYjlqR0FXdllpa1NuYUlta0VDbVBvRnB4a3Q0b2x3MzRiTkN6Mjk1ZVpCX1psT3JvZnlLZmc?oc=5",
+   "izvor": "Wichita Eagle",
+   "chas": "2026-10-30T10:41:06Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": null
+  },
+  {
    "zaglavie": "ExxonMobil and Chevron post bumper profits and warn on diesel supplies",
    "vryzka": "https://www.ft.com/content/e934d2dd-9d6c-4099-95a5-1c300ed28cbb?syn-25a6b1a6=1",
    "izvor": "Financial Times",
@@ -880,19 +923,6 @@
    "bg": null
   },
   {
-   "zaglavie": "New economic data challenges Fed chief's not-too-hot perspective",
-   "vryzka": "https://news.google.com/rss/articles/CBMirAFBVV95cUxNNV9seWt5MjlGeDJNRkdKLWxjUHQyb2R4QmUtM0ZvOU5hUExsYmpuVkhyZ2RnSGtPajEzZEFFRUluX0xHdTlaQ1NKc0JKcXhQTXB6NGJ4VXJ5NVhNWkZzTTU2WFplQl9zWUFtT3hmWG9FQXhyYVBWN1V4MEhoaGVEd2pfQWRDakQxcExBc3VjQmNNSzhEUDZjMEMwQnpVV1NTMEhZb0Q2LWF1SUZi?oc=5",
-   "izvor": "Reuters",
-   "chas": "2026-10-30T10:12:09Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": null
-  },
-  {
    "zaglavie": "symbol__ Stock Quote Price and Forecast",
    "vryzka": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE8yNThEVHlHQXBXc181WmppZUd1TjdYZngzRV9SYWw0VWhCMEJCazVzMlV1eTJHOGV4UF9ic0h3X1hOU0tZV1BvaTU0UVRWQjA?oc=5",
    "izvor": "CNN",
@@ -925,7 +955,7 @@
    "chas": "2026-10-30T10:07:00Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Google Fed",
+   "emisiya": "Google злато",
    "chas_ot_iztochnika": true,
    "duma": "inflation",
    "zashto": "Инфлацията е основната причина да се държи злато — то пази стойност, когато парите я губят.",
@@ -2570,29 +2600,16 @@
    "bg": "Фед запази лихвата"
   },
   {
-   "zaglavie": "Gold falls even as the Dollar and yields drop",
-   "vryzka": "https://news.google.com/rss/articles/CBMilwFBVV95cUxNWHBwWFJJRkJZd3g3WUgtVGpucVRTSzNZRWJQN2ZjTTgtM1duX0xsT0lVU2tnR2RRRGFVSW0yUWlwa21aUXlmcG9RX1V4UjBQWld1NW5LbENOZ3VPd1RSX1BPTHc4MnQ1OWdwb2RfdDJUWXJKWUZ6blJ2MExLNEpvOXp3OGNQd1BvOUVqaGt2bVNOamFqWC1j?oc=5",
-   "izvor": "FXStreet",
-   "chas": "2026-10-29T22:51:33Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Златото поевтинява на фона на движението на долара и доходността на облигациите"
-  },
-  {
    "zaglavie": "Federal Reserve issues FOMC statement",
    "vryzka": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm",
    "izvor": "Fed",
    "chas": "2026-10-28T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed всички",
+   "emisiya": "Fed политика",
    "chas_ot_iztochnika": true,
    "duma": "fomc",
-   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
+   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   },
   {
@@ -2615,26 +2632,13 @@
    "chas": "2026-10-13T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed всички",
+   "emisiya": "Fed политика",
    "chas_ot_iztochnika": true,
    "duma": "rate",
-   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
+   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
    "bg": "Протокол на Фед за сконтовия процент (лихвата по заемите за банките)"
-  },
-  {
-   "zaglavie": "Federal Reserve Board releases results of the 2025 Survey of Consumer Finances, which provides the public and policymakers with detailed insights into the economic condition of American families",
-   "vryzka": "https://www.federalreserve.gov/newsevents/pressreleases/other20261009a.htm",
-   "izvor": "Fed",
-   "chas": "2026-10-09T14:00:00Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Fed всички",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
-   "bg": "Съобщение на Фед — централната банка на САЩ"
   }
  ],
- "s_bg_red": 86,
+ "s_bg_red": 84,
  "mahnati_ezik": 0
 }
