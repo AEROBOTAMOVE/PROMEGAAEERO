@@ -1,19 +1,18 @@
 {
- "kogato": "2026-10-31T22:14:40Z",
- "sekundi": 8.74,
+ "kogato": "2026-10-31T22:25:43Z",
+ "sekundi": 12.12,
  "broi": 200,
  "novi_tozi_pyt": 0,
  "iztochnici_ok": [
   "MarketWatch",
+  "Fed политика",
   "Fed всички",
   "Yahoo долар",
   "Yahoo злато",
   "Investing",
   "Fed речи",
-  "Fed политика",
   "CNBC",
-  "FT пазари",
-  "Mining.com"
+  "FT пазари"
  ],
  "iztochnici_padnali": [
   {
@@ -23,21 +22,25 @@
   {
    "ime": "Google Fed",
    "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  },
+  {
+   "ime": "Mining.com",
+   "greshka": "TimeoutError: The read operation timed out"
   }
  ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.39с",
-  "новини · FT пазари · 25 бр. за 0.54с",
+  "новини · CNBC · 30 бр. за 0.3с",
+  "новини · FT пазари · 25 бр. за 0.33с",
   "новини · Fed всички · 7 бр. за 0.05с",
-  "новини · Fed политика · 15 бр. за 0.15с",
+  "новини · Fed политика · 15 бр. за 0.05с",
   "новини · Fed речи · 15 бр. за 0.13с",
   "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
   "новини · Google злато · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
   "новини · Investing · 10 бр. за 0.09с",
-  "новини · MarketWatch · 10 бр. за 0.04с",
-  "новини · Mining.com · 36 бр. за 0.7с",
+  "новини · MarketWatch · 10 бр. за 0.02с",
+  "новини · Mining.com · ПАДНА: TimeoutError: The read operation timed out",
   "новини · Yahoo долар · 17 бр. за 0.08с",
-  "новини · Yahoo злато · 17 бр. за 0.09с",
+  "новини · Yahoo злато · 17 бр. за 0.1с",
   "новини · български ред: 80 от 200 · махнати по език: 0"
  ],
  "novini": [
@@ -2609,10 +2612,10 @@
    "chas": "2026-10-28T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed всички",
+   "emisiya": "Fed политика",
    "chas_ot_iztochnika": true,
    "duma": "fomc",
-   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
+   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   },
   {
@@ -2635,10 +2638,10 @@
    "chas": "2026-10-13T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed всички",
+   "emisiya": "Fed политика",
    "chas_ot_iztochnika": true,
    "duma": "rate",
-   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
+   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
    "bg": "Протокол на Фед за сконтовия процент (лихвата по заемите за банките)"
   }
  ],
