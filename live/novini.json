@@ -1,43 +1,52 @@
 {
- "kogato": "2026-10-31T08:31:40Z",
- "sekundi": 0.8,
+ "kogato": "2026-10-31T08:42:40Z",
+ "sekundi": 0.83,
  "broi": 200,
- "novi_tozi_pyt": 2,
+ "novi_tozi_pyt": 1,
  "iztochnici_ok": [
   "Investing",
-  "Fed речи",
-  "Fed политика",
-  "CNBC",
-  "Yahoo долар",
-  "Yahoo злато",
-  "FT пазари",
   "MarketWatch",
+  "Fed всички",
+  "Fed политика",
+  "Fed речи",
+  "Yahoo злато",
+  "Yahoo долар",
+  "FT пазари",
+  "CNBC",
   "Google злато",
   "Google Fed",
   "Mining.com"
  ],
- "iztochnici_padnali": [
-  {
-   "ime": "Fed всички",
-   "greshka": "HTTPError: HTTP Error 404: Not Found"
-  }
- ],
+ "iztochnici_padnali": [],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.19с",
-  "новини · FT пазари · 25 бр. за 0.24с",
-  "новини · Fed всички · ПАДНА: HTTPError: HTTP Error 404: Not Found",
+  "новини · CNBC · 30 бр. за 0.3с",
+  "новини · FT пазари · 25 бр. за 0.28с",
+  "новини · Fed всички · 7 бр. за 0.12с",
   "новини · Fed политика · 15 бр. за 0.13с",
-  "новини · Fed речи · 15 бр. за 0.12с",
-  "новини · Google Fed · 40 бр. за 0.48с",
-  "новини · Google злато · 40 бр. за 0.48с",
-  "новини · Investing · 10 бр. за 0.11с",
-  "новини · MarketWatch · 10 бр. за 0.34с",
-  "новини · Mining.com · 36 бр. за 0.72с",
-  "новини · Yahoo долар · 18 бр. за 0.21с",
-  "новини · Yahoo злато · 16 бр. за 0.23с",
-  "новини · български ред: 90 от 200 · махнати по език: 0"
+  "новини · Fed речи · 15 бр. за 0.13с",
+  "новини · Google Fed · 40 бр. за 0.45с",
+  "новини · Google злато · 40 бр. за 0.52с",
+  "новини · Investing · 10 бр. за 0.09с",
+  "новини · MarketWatch · 10 бр. за 0.1с",
+  "новини · Mining.com · 36 бр. за 0.75с",
+  "новини · Yahoo долар · 18 бр. за 0.24с",
+  "новини · Yahoo злато · 16 бр. за 0.22с",
+  "новини · български ред: 91 от 200 · махнати по език: 0"
  ],
  "novini": [
+  {
+   "zaglavie": "Federal Reserve Releases Interest Rate Decision",
+   "vryzka": "https://news.google.com/rss/articles/CBMinwFBVV95cUxPbUVDM0hOS2pBZ2owQWFjektBYWFUUS0tY1NKVkhlN0xVaXlhR0tfOXhEc2JyeFA5ZlpycGpnTFQ0VzdCZFhDUTZYbklNMlNFYVBJZGY3TEE3TzZpVEU5NXY4Qjg3dEhPM19uZlZiUjFaY3NXSmtJQ1o1NlRoTTdBaDIwLTI2dGU3ak10SkVMUVpMazVOUlVXNktQMlhET3M?oc=5",
+   "izvor": "The Presidential Prayer Team",
+   "chas": "2026-10-31T08:30:00Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "rate",
+   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
+   "bg": "За лихвата на Фед"
+  },
   {
    "zaglavie": "Greatland Resources And 2 More Australian Undervalued Stocks",
    "vryzka": "https://finance.yahoo.com/markets/stocks/articles/greatland-resources-2-more-australian-081107148.html?.tsrc=rss",
@@ -1436,7 +1445,7 @@
    "chas": "2026-10-30T18:21:53Z",
    "vazhnost": 2,
    "za": "злато",
-   "emisiya": "Yahoo долар",
+   "emisiya": "Yahoo злато",
    "chas_ot_iztochnika": true,
    "duma": "gold",
    "zashto": "Пряко за златото.",
@@ -1527,7 +1536,7 @@
    "chas": "2026-10-30T18:15:41Z",
    "vazhnost": 2,
    "za": "долар",
-   "emisiya": "Yahoo долар",
+   "emisiya": "Yahoo злато",
    "chas_ot_iztochnika": true,
    "duma": "dollar",
    "zashto": "Златото се мери в долари: по-силен долар обикновено значи по-евтино злато.",
@@ -2587,29 +2596,16 @@
    "bg": "Златото поевтинява"
   },
   {
-   "zaglavie": "This one chart tells you everything you need to know about Exxon, Chevron and BP’s forecast-beating earnings",
-   "vryzka": "https://www.marketwatch.com/story/this-one-chart-tells-you-everything-you-need-to-know-about-exxon-chevron-and-bps-forecasting-beating-earnings-24babdfc?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-10-30T14:17:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
    "zaglavie": "Federal Reserve issues FOMC statement",
    "vryzka": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm",
    "izvor": "Fed",
    "chas": "2026-10-28T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed политика",
+   "emisiya": "Fed всички",
    "chas_ot_iztochnika": true,
    "duma": "fomc",
-   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
+   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   },
   {
@@ -2632,13 +2628,13 @@
    "chas": "2026-10-13T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed политика",
+   "emisiya": "Fed всички",
    "chas_ot_iztochnika": true,
    "duma": "rate",
-   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
+   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
    "bg": "Протокол на Фед за сконтовия процент (лихвата по заемите за банките)"
   }
  ],
- "s_bg_red": 90,
+ "s_bg_red": 91,
  "mahnati_ezik": 0
 }

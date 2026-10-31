@@ -1,39 +1,56 @@
 {
- "kogato": "2026-10-31T08:16:05Z",
- "sekundi": 0.84,
+ "kogato": "2026-10-31T08:31:40Z",
+ "sekundi": 0.8,
  "broi": 200,
- "novi_tozi_pyt": 0,
+ "novi_tozi_pyt": 2,
  "iztochnici_ok": [
-  "MarketWatch",
-  "Fed всички",
-  "Fed политика",
-  "Fed речи",
   "Investing",
+  "Fed речи",
+  "Fed политика",
+  "CNBC",
   "Yahoo долар",
   "Yahoo злато",
-  "CNBC",
   "FT пазари",
+  "MarketWatch",
   "Google злато",
   "Google Fed",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Fed всички",
+   "greshka": "HTTPError: HTTP Error 404: Not Found"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.27с",
-  "новини · FT пазари · 25 бр. за 0.36с",
-  "новини · Fed всички · 7 бр. за 0.09с",
-  "новини · Fed политика · 15 бр. за 0.09с",
-  "новини · Fed речи · 15 бр. за 0.1с",
-  "новини · Google Fed · 40 бр. за 0.59с",
-  "новини · Google злато · 40 бр. за 0.49с",
-  "новини · Investing · 10 бр. за 0.18с",
-  "новини · MarketWatch · 10 бр. за 0.04с",
-  "новини · Mining.com · 36 бр. за 0.78с",
-  "новини · Yahoo долар · 18 бр. за 0.26с",
-  "новини · Yahoo злато · 16 бр. за 0.27с",
+  "новини · CNBC · 30 бр. за 0.19с",
+  "новини · FT пазари · 25 бр. за 0.24с",
+  "новини · Fed всички · ПАДНА: HTTPError: HTTP Error 404: Not Found",
+  "новини · Fed политика · 15 бр. за 0.13с",
+  "новини · Fed речи · 15 бр. за 0.12с",
+  "новини · Google Fed · 40 бр. за 0.48с",
+  "новини · Google злато · 40 бр. за 0.48с",
+  "новини · Investing · 10 бр. за 0.11с",
+  "новини · MarketWatch · 10 бр. за 0.34с",
+  "новини · Mining.com · 36 бр. за 0.72с",
+  "новини · Yahoo долар · 18 бр. за 0.21с",
+  "новини · Yahoo злато · 16 бр. за 0.23с",
   "новини · български ред: 90 от 200 · махнати по език: 0"
  ],
  "novini": [
+  {
+   "zaglavie": "Greatland Resources And 2 More Australian Undervalued Stocks",
+   "vryzka": "https://finance.yahoo.com/markets/stocks/articles/greatland-resources-2-more-australian-081107148.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-10-31T08:11:07Z",
+   "vazhnost": 1,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
   {
    "zaglavie": "China reports sharp increase in gold, nickel and strategic minerals - Xinhua",
    "vryzka": "https://finance.yahoo.com/markets/commodities/articles/china-reports-sharp-increase-gold-070904245.html?.tsrc=rss",
@@ -906,19 +923,6 @@
    "bg": null
   },
   {
-   "zaglavie": "AMD’s stock slides after Intel earnings reveal two big issues",
-   "vryzka": "https://www.marketwatch.com/story/amds-stock-slides-after-intel-earnings-reveal-two-big-issues-d3afed91?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-10-30T20:28:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
    "zaglavie": "Silver Is Falling Despite Lower Treasury Yields and a Persistent Supply Deficit",
    "vryzka": "https://www.investing.com/analysis/silver-is-falling-despite-lower-treasury-yields-and-a-persistent-supply-deficit-200690614",
    "izvor": "Investing.com",
@@ -930,6 +934,19 @@
    "duma": "treasury",
    "zashto": "Доходността на американския дълг е прякото сравнение за златото — качи ли се тя, златото обикновено пада.",
    "bg": "Среброто поевтинява на фона на доходността на облигациите"
+  },
+  {
+   "zaglavie": "AMD’s stock slides after Intel earnings reveal two big issues",
+   "vryzka": "https://www.marketwatch.com/story/amds-stock-slides-after-intel-earnings-reveal-two-big-issues-d3afed91?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-10-30T20:28:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
   },
   {
    "zaglavie": "The selloff in tech stocks is shifting into overdrive",
@@ -1764,19 +1781,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Goldman Sachs Revises China Jewelry Stocks Amid Gold Price Retreat",
-   "vryzka": "https://finance.yahoo.com/markets/stocks/articles/goldman-sachs-revises-china-jewelry-172512898.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-10-30T17:25:12Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": null
-  },
-  {
    "zaglavie": "Apollo and Thrive capitalise on private equity’s generational shift",
    "vryzka": "https://www.ft.com/content/95480c09-5018-4400-b9c1-f2d53373a47c?syn-25a6b1a6=1",
    "izvor": "Financial Times",
@@ -1881,6 +1885,19 @@
    "bg": null
   },
   {
+   "zaglavie": "Inflation ticked up to 3.6% a day after the Fed held rates",
+   "vryzka": "https://news.google.com/rss/articles/CBMiswFBVV95cUxQb0xDNGhFQlpzVHRSa2k4Nl83bHVyZ3lSOWxsTGRDZFg0Z00yRlQ4WTd1Uk9ELVBOMzdSemsyRzllR2RUMHdFeVZ3STk3VVRCZ1VtWl9FWmc0SEpWVEQ1dE0xU0h2LUJtUzNjU2YwYXB6MEZMTWZHSnNDOVczXy14YVNhOE10RnpWam8tbDZrZmw1aWlTV2cyT3lIYWZFLUlSUEc4czRLZ0M0bTQ4Q196WWJtTQ?oc=5",
+   "izvor": "MarketScale",
+   "chas": "2026-10-30T16:59:03Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "inflation",
+   "zashto": "Инфлацията е основната причина да се държи злато — то пази стойност, когато парите я губят.",
+   "bg": "Данни за инфлацията в САЩ"
+  },
+  {
    "zaglavie": "Fed’s Musalem calls for rate hike soon as policy remains too loose",
    "vryzka": "https://news.google.com/rss/articles/CBMirAFBVV95cUxOVzNfYXJRTDktMU9BaEJ3U1lFLWR5VmtTTTUyM2Z0YXNoTTRJVG5GRzhEaEE2NVM5S0JmWmhpclhwbFZaMlEwNUpwcDB2aVJhZDhmeGVEa1Y1Umk1azhpemZ1NVlZQXp5TExkY1pST3cwWnhNTTB6eE1aMkhfX2V1Q2RRanlzYWNIUWlUejQzdTNQbmN2aHJ3ZzZRbnE0TUFiYlQ5NG5MY2ZoZXdS?oc=5",
    "izvor": "FXStreet",
@@ -1892,6 +1909,19 @@
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
    "bg": "Изказване на член на Фед (Musalem) за вдигане на лихвата"
+  },
+  {
+   "zaglavie": "Goldman Sachs Revises China Jewelry Stocks Amid Gold Price Retreat",
+   "vryzka": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxNNEswTUNhbjhuTTVLcm12M29FN3JTRk9HR0JLVkFtbU9mcUpybUVXRFcyY1RqQ1lhaHFzeGl5cm8wdGY4bGpxcFBzZExCX0dLa3FpOGRFM0hyRjhtWGxPUnNCUVNabGNFMm5yZ1Ayb0hBZzJtdER4U3JIblJLeFl3RFgxUEdYT2VCeXB2bVBTSDRyNG9jZGNHMEZ3Q0NwNkFQY2VlMnZsUnFMVjZTRzM0Z3NkNVlpYVZnVTNBMG94M3A?oc=5",
+   "izvor": "Investing.com",
+   "chas": "2026-10-30T16:56:47Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": null
   },
   {
    "zaglavie": "The Fed’s AI Puzzle: Will High Rates Slow the Boom?",
@@ -2570,42 +2600,16 @@
    "bg": null
   },
   {
-   "zaglavie": "Largo Begins Copper, Gold and PGM Production in Q3 2026, Revises Vanadium Guidance",
-   "vryzka": "https://investorshub.advfn.com/market-news/article/38983/largo-begins-copper-gold-and-pgm-production-in-q3-2026-revises-vanadium-guidance?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-10-30T14:16:37Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": null
-  },
-  {
-   "zaglavie": "Gold Faces Further Losses as Traders Brace for a Possible Iran Escalation",
-   "vryzka": "https://www.investing.com/analysis/gold-faces-further-losses-as-traders-brace-for-a-possible-iran-escalation-200690591",
-   "izvor": "Investing.com",
-   "chas": "2026-10-30T14:16:00Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Investing",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Златото и напрежението в Близкия изток"
-  },
-  {
    "zaglavie": "Federal Reserve issues FOMC statement",
    "vryzka": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm",
    "izvor": "Fed",
    "chas": "2026-10-28T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed всички",
+   "emisiya": "Fed политика",
    "chas_ot_iztochnika": true,
    "duma": "fomc",
-   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
+   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   },
   {
@@ -2628,10 +2632,10 @@
    "chas": "2026-10-13T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed всички",
+   "emisiya": "Fed политика",
    "chas_ot_iztochnika": true,
    "duma": "rate",
-   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
+   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
    "bg": "Протокол на Фед за сконтовия процент (лихвата по заемите за банките)"
   }
  ],
