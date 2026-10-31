@@ -1,36 +1,40 @@
 {
- "kogato": "2026-10-31T08:42:40Z",
- "sekundi": 0.83,
+ "kogato": "2026-10-31T08:58:11Z",
+ "sekundi": 0.71,
  "broi": 200,
- "novi_tozi_pyt": 1,
+ "novi_tozi_pyt": 0,
  "iztochnici_ok": [
-  "Investing",
-  "MarketWatch",
-  "Fed всички",
   "Fed политика",
   "Fed речи",
-  "Yahoo злато",
+  "MarketWatch",
+  "Investing",
   "Yahoo долар",
-  "FT пазари",
+  "Yahoo злато",
   "CNBC",
+  "FT пазари",
   "Google злато",
   "Google Fed",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Fed всички",
+   "greshka": "HTTPError: HTTP Error 404: Not Found"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.3с",
-  "новини · FT пазари · 25 бр. за 0.28с",
-  "новини · Fed всички · 7 бр. за 0.12с",
-  "новини · Fed политика · 15 бр. за 0.13с",
-  "новини · Fed речи · 15 бр. за 0.13с",
-  "новини · Google Fed · 40 бр. за 0.45с",
-  "новини · Google злато · 40 бр. за 0.52с",
-  "новини · Investing · 10 бр. за 0.09с",
-  "новини · MarketWatch · 10 бр. за 0.1с",
-  "новини · Mining.com · 36 бр. за 0.75с",
-  "новини · Yahoo долар · 18 бр. за 0.24с",
-  "новини · Yahoo злато · 16 бр. за 0.22с",
+  "новини · CNBC · 30 бр. за 0.17с",
+  "новини · FT пазари · 25 бр. за 0.22с",
+  "новини · Fed всички · ПАДНА: HTTPError: HTTP Error 404: Not Found",
+  "новини · Fed политика · 15 бр. за 0.06с",
+  "новини · Fed речи · 15 бр. за 0.06с",
+  "новини · Google Fed · 40 бр. за 0.44с",
+  "новини · Google злато · 40 бр. за 0.45с",
+  "новини · Investing · 10 бр. за 0.08с",
+  "новини · MarketWatch · 10 бр. за 0.06с",
+  "новини · Mining.com · 36 бр. за 0.64с",
+  "новини · Yahoo долар · 18 бр. за 0.14с",
+  "новини · Yahoo злато · 16 бр. за 0.18с",
   "новини · български ред: 91 от 200 · махнати по език: 0"
  ],
  "novini": [
@@ -59,6 +63,19 @@
    "duma": null,
    "zashto": null,
    "bg": null
+  },
+  {
+   "zaglavie": "Gold Rate Today, October 31: Check 18, 22 and 24 carat gold prices in Chennai, Mumbai, Delhi, Kolkata and other cities",
+   "vryzka": "https://news.google.com/rss/articles/CBMi9AFBVV95cUxOZF9QLTcxajAtQ0JTN1R6c2U4MTA4cXlDXzgzWldXRldaYjlRYUg0cG9DQUdWUE9xLUNRcU9aSnFXQ0kwNXFzYWx4S3ROVTFySFNnQ2xtSzJUUEkzRUdUNkhhek5aNnBRZ2dhSGNMNEJEakJhRFlRelNKQnlMUUM4R21aQWNxUkM3THh3andsMllBMjRTaWlXUWVnT1BJXzRmR0VMcFMyY0NHbFcxYUxEWVpYcDRjUmdrWjVwSjZLbGJ4RC15M0d3WUQ4VG13MFBPRklFUHU4WUtKckZrRjZPVmJ6clVoZEJIWUhnTVhMSkd5c2Q30gH7AUFVX3lxTE9aS2JTNHJfcVJlcGdZTjd4OVYwczdhR184Wk5EbnF6a2FwX0I0NlBwaWFXTW54bXJ3cWNib0JCNkNhcmMxY0p3SGluWlhwTnp6bi11UWFRZGRJZEZzUnItbmVKRXZUUWtJcDhiY1RtdzlCV3lwZkk2Y0xGT1NBRVNDek56T05HOUVPZ2l3NmFKeVdUTHhoMjc5ZFQzaFRrNkhUUkxMaEdZMUs",
+   "izvor": "The Indian Express",
+   "chas": "2026-10-31T08:02:20Z",
+   "vazhnost": 3,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "rate",
+   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
+   "bg": "Цената на златото днес"
   },
   {
    "zaglavie": "China reports sharp increase in gold, nickel and strategic minerals - Xinhua",
@@ -254,19 +271,6 @@
    "duma": null,
    "zashto": null,
    "bg": null
-  },
-  {
-   "zaglavie": "Gold Rate Today, October 31: Check 18, 22 and 24 carat gold prices in Chennai, Mumbai, Delhi, Kolkata and other cities",
-   "vryzka": "https://news.google.com/rss/articles/CBMi9AFBVV95cUxOZF9QLTcxajAtQ0JTN1R6c2U4MTA4cXlDXzgzWldXRldaYjlRYUg0cG9DQUdWUE9xLUNRcU9aSnFXQ0kwNXFzYWx4S3ROVTFySFNnQ2xtSzJUUEkzRUdUNkhhek5aNnBRZ2dhSGNMNEJEakJhRFlRelNKQnlMUUM4R21aQWNxUkM3THh3andsMllBMjRTaWlXUWVnT1BJXzRmR0VMcFMyY0NHbFcxYUxEWVpYcDRjUmdrWjVwSjZLbGJ4RC15M0d3WUQ4VG13MFBPRklFUHU4WUtKckZrRjZPVmJ6clVoZEJIWUhnTVhMSkd5c2Q30gH7AUFVX3lxTE9aS2JTNHJfcVJlcGdZTjd4OVYwczdhR184Wk5EbnF6a2FwX0I0NlBwaWFXTW54bXJ3cWNib0JCNkNhcmMxY0p3SGluWlhwTnp6bi11UWFRZGRJZEZzUnItbmVKRXZUUWtJcDhiY1RtdzlCV3lwZkk2Y0xGT1NBRVNDek56T05HOUVPZ2l3NmFKeVdUTHhoMjc5ZFQzaFRrNkhUUkxMaEdZMUs",
-   "izvor": "The Indian Express",
-   "chas": "2026-10-31T04:48:06Z",
-   "vazhnost": 3,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "rate",
-   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
-   "bg": "Цената на златото днес"
   },
   {
    "zaglavie": "Grand Theft Callout: ‘GTA 6’ fans are missing work on the game’s release day because they ‘don’t want to wait’ anymore",
@@ -932,19 +936,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Silver Is Falling Despite Lower Treasury Yields and a Persistent Supply Deficit",
-   "vryzka": "https://www.investing.com/analysis/silver-is-falling-despite-lower-treasury-yields-and-a-persistent-supply-deficit-200690614",
-   "izvor": "Investing.com",
-   "chas": "2026-10-30T20:28:00Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Investing",
-   "chas_ot_iztochnika": true,
-   "duma": "treasury",
-   "zashto": "Доходността на американския дълг е прякото сравнение за златото — качи ли се тя, златото обикновено пада.",
-   "bg": "Среброто поевтинява на фона на доходността на облигациите"
-  },
-  {
    "zaglavie": "AMD’s stock slides after Intel earnings reveal two big issues",
    "vryzka": "https://www.marketwatch.com/story/amds-stock-slides-after-intel-earnings-reveal-two-big-issues-d3afed91?mod=mw_rss_topstories",
    "izvor": "MarketWatch",
@@ -956,6 +947,19 @@
    "duma": null,
    "zashto": null,
    "bg": null
+  },
+  {
+   "zaglavie": "Silver Is Falling Despite Lower Treasury Yields and a Persistent Supply Deficit",
+   "vryzka": "https://www.investing.com/analysis/silver-is-falling-despite-lower-treasury-yields-and-a-persistent-supply-deficit-200690614",
+   "izvor": "Investing.com",
+   "chas": "2026-10-30T20:28:00Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Investing",
+   "chas_ot_iztochnika": true,
+   "duma": "treasury",
+   "zashto": "Доходността на американския дълг е прякото сравнение за златото — качи ли се тя, златото обикновено пада.",
+   "bg": "Среброто поевтинява на фона на доходността на облигациите"
   },
   {
    "zaglavie": "The selloff in tech stocks is shifting into overdrive",
@@ -1445,7 +1449,7 @@
    "chas": "2026-10-30T18:21:53Z",
    "vazhnost": 2,
    "za": "злато",
-   "emisiya": "Yahoo злато",
+   "emisiya": "Yahoo долар",
    "chas_ot_iztochnika": true,
    "duma": "gold",
    "zashto": "Пряко за златото.",
@@ -1536,7 +1540,7 @@
    "chas": "2026-10-30T18:15:41Z",
    "vazhnost": 2,
    "za": "долар",
-   "emisiya": "Yahoo злато",
+   "emisiya": "Yahoo долар",
    "chas_ot_iztochnika": true,
    "duma": "dollar",
    "zashto": "Златото се мери в долари: по-силен долар обикновено значи по-евтино злато.",
@@ -2602,10 +2606,10 @@
    "chas": "2026-10-28T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed всички",
+   "emisiya": "Fed политика",
    "chas_ot_iztochnika": true,
    "duma": "fomc",
-   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
+   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   },
   {
@@ -2628,10 +2632,10 @@
    "chas": "2026-10-13T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed всички",
+   "emisiya": "Fed политика",
    "chas_ot_iztochnika": true,
    "duma": "rate",
-   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
+   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
    "bg": "Протокол на Фед за сконтовия процент (лихвата по заемите за банките)"
   }
  ],
