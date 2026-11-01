@@ -1,39 +1,56 @@
 {
- "kogato": "2026-11-01T11:08:11Z",
- "sekundi": 0.93,
+ "kogato": "2026-11-01T11:19:11Z",
+ "sekundi": 0.77,
  "broi": 200,
- "novi_tozi_pyt": 4,
+ "novi_tozi_pyt": 0,
  "iztochnici_ok": [
-  "Fed всички",
   "Fed политика",
   "Fed речи",
-  "Investing",
   "MarketWatch",
+  "Investing",
   "Yahoo долар",
   "Yahoo злато",
-  "CNBC",
   "FT пазари",
+  "CNBC",
   "Google Fed",
   "Google злато",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Fed всички",
+   "greshka": "HTTPError: HTTP Error 404: Not Found"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.25с",
-  "новини · FT пазари · 25 бр. за 0.27с",
-  "новини · Fed всички · 7 бр. за 0.06с",
-  "новини · Fed политика · 15 бр. за 0.06с",
-  "новини · Fed речи · 15 бр. за 0.07с",
-  "новини · Google Fed · 40 бр. за 0.37с",
-  "новини · Google злато · 40 бр. за 0.46с",
-  "новини · Investing · 10 бр. за 0.08с",
-  "новини · MarketWatch · 10 бр. за 0.11с",
-  "новини · Mining.com · 36 бр. за 0.85с",
-  "новини · Yahoo долар · 17 бр. за 0.15с",
+  "новини · CNBC · 30 бр. за 0.2с",
+  "новини · FT пазари · 25 бр. за 0.19с",
+  "новини · Fed всички · ПАДНА: HTTPError: HTTP Error 404: Not Found",
+  "новини · Fed политика · 15 бр. за 0.04с",
+  "новини · Fed речи · 15 бр. за 0.04с",
+  "новини · Google Fed · 40 бр. за 0.38с",
+  "новини · Google злато · 40 бр. за 0.43с",
+  "новини · Investing · 10 бр. за 0.11с",
+  "новини · MarketWatch · 10 бр. за 0.05с",
+  "новини · Mining.com · 36 бр. за 0.7с",
+  "новини · Yahoo долар · 17 бр. за 0.14с",
   "новини · Yahoo злато · 17 бр. за 0.15с",
-  "новини · български ред: 94 от 200 · махнати по език: 1"
+  "новини · български ред: 94 от 200 · махнати по език: 0"
  ],
  "novini": [
+  {
+   "zaglavie": "Why Did The Fed Hold Rates Steady? Experts Split On Whether It Should Have Hiked",
+   "vryzka": "https://news.google.com/rss/articles/CBMigAJBVV95cUxOYUdrLU9vZkRoOFExUXlJRGludFgyRzlhU3BPZVc1ZlM2Qlp2alJuRTloajJiMEpwZzhWQ0hnZFNPa0hjWFpienFmZTVtWmJ1V0RhaTY3aTNnVTBMVjBzSTY4NThwZnIwdEswa2dId2c4SjdYZlM3NlRqOVJpeTVjM01SZXk3MktlT1VBcHp2SUl1ZHNEVVpJd1lLUTBGcmJoajYwSGZOZHNBWlN2M2xPX3FXOUZ1UHhMdU1UWmRJWl90WDAydzB6YlBLYmQtNUZGVTBUaUg1MlhzUl9hUklKdXhWcmpVZ19yREYxbTVVZmVqb2J2MEY1dlJ0ZDViVFR4?oc=5",
+   "izvor": "Stocktwits",
+   "chas": "2026-11-01T11:02:55Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": "За лихвата на Фед"
+  },
   {
    "zaglavie": "Why Earnings Strength Could Change The Case For Freeport McMoRan Stock",
    "vryzka": "https://finance.yahoo.com/markets/stocks/articles/why-earnings-strength-could-change-101200634.html?.tsrc=rss",
@@ -97,6 +114,19 @@
    "chas_ot_iztochnika": true,
    "duma": "inflation",
    "zashto": "Инфлацията е основната причина да се държи злато — то пази стойност, когато парите я губят.",
+   "bg": null
+  },
+  {
+   "zaglavie": "Orezone Gold Corporation (ORE.TO) Stock Price, News, Quote & History",
+   "vryzka": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5FMllBankwbVBVUzBNNzgwenlJRjRlVjR0QV8ydE14WmdKN242WndmSHllTFBLLW9jUzF0MVlBMkdzNjRzdVphWWZNWlZUV2hPcGZOWg?oc=5",
+   "izvor": "Yahoo! Finance Canada",
+   "chas": "2026-11-01T09:39:01Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
    "bg": null
   },
   {
@@ -182,19 +212,6 @@
    "vryzka": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxNVV9sRU83T0IxUWNjcWdld2UtN05GQU1mMUk4ZnA2LWgwbjNOekt0UF80UUtCRnI3cTZENTg2NEJYQjF6cVJoWFJRQU01YmE0RERSeXdWWmFnMGpFVzJUcUtvWkYzbDdaUTd1M2U5cWxwWDRlRjhJV1NRRnZWLUU4blN4cGMwd28zbTRvTWlLbnRSemh1RjVuS1ktcVJud1o2emNYT1FORUdram8?oc=5",
    "izvor": "Laodong.vn",
    "chas": "2026-11-01T08:40:35Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": null
-  },
-  {
-   "zaglavie": "Orezone Gold Corporation (ORE.TO) Stock Price, News, Quote & History",
-   "vryzka": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5FMllBankwbVBVUzBNNzgwenlJRjRlVjR0QV8ydE14WmdKN242WndmSHllTFBLLW9jUzF0MVlBMkdzNjRzdVphWWZNWlZUV2hPcGZOWg?oc=5",
-   "izvor": "Yahoo! Finance Canada",
-   "chas": "2026-11-01T08:38:13Z",
    "vazhnost": 2,
    "za": "злато",
    "emisiya": "Google злато",
@@ -1112,19 +1129,6 @@
    "duma": "gold",
    "zashto": "Пряко за златото.",
    "bg": "Цената на златото днес"
-  },
-  {
-   "zaglavie": "Why Did The Fed Hold Rates Steady? Experts Split On Whether It Should Have Hiked",
-   "vryzka": "https://news.google.com/rss/articles/CBMigAJBVV95cUxOYUdrLU9vZkRoOFExUXlJRGludFgyRzlhU3BPZVc1ZlM2Qlp2alJuRTloajJiMEpwZzhWQ0hnZFNPa0hjWFpienFmZTVtWmJ1V0RhaTY3aTNnVTBMVjBzSTY4NThwZnIwdEswa2dId2c4SjdYZlM3NlRqOVJpeTVjM01SZXk3MktlT1VBcHp2SUl1ZHNEVVpJd1lLUTBGcmJoajYwSGZOZHNBWlN2M2xPX3FXOUZ1UHhMdU1UWmRJWl90WDAydzB6YlBLYmQtNUZGVTBUaUg1MlhzUl9hUklKdXhWcmpVZ19yREYxbTVVZmVqb2J2MEY1dlJ0ZDViVFR4?oc=5",
-   "izvor": "Stocktwits",
-   "chas": "2026-11-01T00:09:11Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": "За лихвата на Фед"
   },
   {
    "zaglavie": "Gold Price Canada Today | Live Gold Price in CAD",
@@ -2602,10 +2606,10 @@
    "chas": "2026-10-28T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed всички",
+   "emisiya": "Fed политика",
    "chas_ot_iztochnika": true,
    "duma": "fomc",
-   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
+   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   },
   {
@@ -2628,13 +2632,13 @@
    "chas": "2026-10-13T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed всички",
+   "emisiya": "Fed политика",
    "chas_ot_iztochnika": true,
    "duma": "rate",
-   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
+   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
    "bg": "Протокол на Фед за сконтовия процент (лихвата по заемите за банките)"
   }
  ],
  "s_bg_red": 94,
- "mahnati_ezik": 1
+ "mahnati_ezik": 0
 }
