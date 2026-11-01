@@ -1,43 +1,65 @@
 {
- "kogato": "2026-11-01T17:30:48Z",
- "sekundi": 0.76,
+ "kogato": "2026-11-01T17:46:16Z",
+ "sekundi": 0.85,
  "broi": 200,
  "novi_tozi_pyt": 2,
  "iztochnici_ok": [
-  "MarketWatch",
-  "Fed речи",
-  "Yahoo долар",
-  "Yahoo злато",
+  "Fed всички",
   "Investing",
   "Fed политика",
-  "FT пазари",
+  "Fed речи",
+  "MarketWatch",
+  "Yahoo долар",
+  "Yahoo злато",
   "CNBC",
-  "Google Fed",
+  "FT пазари",
   "Google злато",
+  "Google Fed",
   "Mining.com"
  ],
- "iztochnici_padnali": [
-  {
-   "ime": "Fed всички",
-   "greshka": "HTTPError: HTTP Error 404: Not Found"
-  }
- ],
+ "iztochnici_padnali": [],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.33с",
-  "новини · FT пазари · 25 бр. за 0.3с",
-  "новини · Fed всички · ПАДНА: HTTPError: HTTP Error 404: Not Found",
-  "новини · Fed политика · 15 бр. за 0.29с",
+  "новини · CNBC · 30 бр. за 0.38с",
+  "новини · FT пазари · 25 бр. за 0.41с",
+  "новини · Fed всички · 7 бр. за 0.11с",
+  "новини · Fed политика · 15 бр. за 0.13с",
   "новини · Fed речи · 15 бр. за 0.14с",
-  "новини · Google Fed · 39 бр. за 0.33с",
-  "новини · Google злато · 40 бр. за 0.53с",
-  "новини · Investing · 10 бр. за 0.25с",
-  "новини · MarketWatch · 10 бр. за 0.13с",
-  "новини · Mining.com · 36 бр. за 0.7с",
-  "новини · Yahoo долар · 17 бр. за 0.18с",
-  "новини · Yahoo злато · 17 бр. за 0.23с",
+  "новини · Google Fed · 40 бр. за 0.4с",
+  "новини · Google злато · 40 бр. за 0.43с",
+  "новини · Investing · 10 бр. за 0.1с",
+  "новини · MarketWatch · 10 бр. за 0.15с",
+  "новини · Mining.com · 36 бр. за 0.8с",
+  "новини · Yahoo долар · 17 бр. за 0.3с",
+  "новини · Yahoo злато · 17 бр. за 0.32с",
   "новини · български ред: 95 от 200 · махнати по език: 2"
  ],
  "novini": [
+  {
+   "zaglavie": "My father has Alzheimer’s and his caregiver is using his debit card for DoorDash. Do I intervene?",
+   "vryzka": "https://www.marketwatch.com/story/theres-a-lot-of-hurt-between-us-my-fathers-caregiver-is-using-his-debit-card-for-doordash-orders-what-can-i-do-714de7a5?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-11-01T17:30:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "Oil, Inflation, and Fed Risk. Why MicroStrategy Still Wants More Bitcoin Now?",
+   "vryzka": "https://news.google.com/rss/articles/CBMib0FVX3lxTE9rOGNSSmgxbmhDbWdvbWdTZ0JsU2ZGT1lvd1FIRGRxWHBCRjk2Y2dFMWZSNmwwbi1QLTlhb2lGbTZxQmtGOW83RThNWlhWVVc4eE54T3laMXlRQkwtZUJueFhSV0F3NXVVZUtKMmhRMA?oc=5",
+   "izvor": "BeInCrypto",
+   "chas": "2026-11-01T17:23:00Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "inflation",
+   "zashto": "Инфлацията е основната причина да се държи злато — то пази стойност, когато парите я губят.",
+   "bg": "Петролът и Фед"
+  },
   {
    "zaglavie": "Binance restarts customer withdrawals after $6.3bn heist",
    "vryzka": "https://www.ft.com/content/1d4dd7b2-9dee-433b-ac2a-e8022af1dd07?syn-25a6b1a6=1",
@@ -1040,6 +1062,19 @@
    "bg": "Доходността на американските облигации е без голяма промяна"
   },
   {
+   "zaglavie": "Gold price drops by Rs 8,300 per tola in a single day",
+   "vryzka": "https://news.google.com/rss/articles/CBMimgFBVV95cUxPbXZLcVpUWjVhdUdiSE5OTmNnZUtXakN4bFdjSkpKU3MwYUhkWkxIWktVQTFtOGhuNHJ5bGNoWXFrangyd0RFbDBrRW5JNTFxbkJwRG4wM1ltNTNrUGNocXJDR3Rhb2R2Rm91YWEwOU1SdUc5ZVJpZFUwZWctREVUUTg1SlJSTVJFNVZQMUxOTWZabUpFOFZHZzJ3?oc=5",
+   "izvor": "Nepalnews.com",
+   "chas": "2026-11-01T05:54:57Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": "Златото поевтинява"
+  },
+  {
    "zaglavie": "Fed leaves interest rates unchanged as inflation concerns persist",
    "vryzka": "https://news.google.com/rss/articles/CBMi3AFBVV95cUxNTERSUUhZLTB6dDFFY2g3a1NXbElfZXZieWtaUVp0ZEk3c0lPdjRrcnRlT1NWajZxTF9yX2k4VExPTWYwZ1JNSVhqdmY5d2pBLWZ2WDJodXpvQ1JUaGJiTUw4R2xjVnVsbXlmZ24zNE41Z29wRWpGQ256WlIyNUhFQXlGMU1RVVdJWDl1bUtwMnB1cV9nUjMzcGlncWxibmloVUJWVWVmSXNzcE5mYzZzb3gxc1dGNVd1Q29SaG1jOVBRdGJ6STRndDBBOHcwel8wdWdKaVVZajlkVzBl?oc=5",
    "izvor": "cbs19.tv",
@@ -1116,19 +1151,6 @@
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
    "bg": "Златото и среброто поевтиняват на фона на очакванията за по-висока лихва от Фед"
-  },
-  {
-   "zaglavie": "Gold price drops by Rs 8,300 per tola in a single day",
-   "vryzka": "https://news.google.com/rss/articles/CBMic0FVX3lxTFBMdE0wT212aXF2bzg3UGh5Zlk3OERhY1VVR1pWcVVBbk9aS0hMcklGSkI0bTNCQUVMenRVTE5IRXluX3VBSG1VbkxDYlc2YWJMRkZBN3U1cFVqLW9GYWNscDQ5YV90ay0tendyU3NDZ2dxNEk?oc=5",
-   "izvor": "OnlineKhabar English News",
-   "chas": "2026-11-01T05:14:05Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Златото поевтинява"
   },
   {
    "zaglavie": "Gold prices last week (October 26-31): Buyers lost 2.7 million VND per tael.",
@@ -1966,7 +1988,7 @@
    "zaglavie": "Trump Blinks as Big, Bad Bond Market Bares its Teeth: McGeever",
    "vryzka": "https://news.google.com/rss/articles/CBMilgFBVV95cUxOLVJkUmZZZ3R3RmtzNkIwYnpHdmd2dVVNSVBlS3RpWGNhcjFTYXZXbk42QmJPdHBDOTRYNnJRVkt6WEp5ZlBEd0w4ZGwybHo4QTVtVXk3YUpIdmVvaThNdnNZTXNJNlpIYTk3ODQ1LWVvMGxNaDZaLUNBZGJjMURXTURrZW1hRjJRcm9kMFNDbldkVlpLY2c?oc=5",
    "izvor": "EnergyNow.com",
-   "chas": "2026-10-31T22:03:33Z",
+   "chas": "2026-10-31T22:07:57Z",
    "vazhnost": 1,
    "za": "лихви",
    "emisiya": "Google Fed",
@@ -2013,19 +2035,6 @@
    "duma": null,
    "zashto": null,
    "bg": null
-  },
-  {
-   "zaglavie": "Gold Price Forecast: XAU/USD 17% Plunge Threatens Multi-Year Uptrend",
-   "vryzka": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxPVnc5cXAzUlp4YXFoWWdfdTdENVJibnpKMU5sV3BOWXkydVJhaS1RZTgzNW9WLWV5UlBlUHFlVkpxU3VGN2tWVGVuM0p1WWZ2S1k2YWItcmdXZUlkYlhWWW12NjhvVVhTWUJ5bTEyZWsxRWxyNkE0X1dwZXdYb05uWE9VemtpYVRDNXhIMlZsNlBURU50anZOdzRZbm43V3lsRDNvSDA5VEd1bDI2OWNIbV94MG8ydGhSVWI5T0ZSdkdvUQ?oc=5",
-   "izvor": "FOREX.com",
-   "chas": "2026-10-31T19:55:29Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Анализ и прогноза за златото"
   },
   {
    "zaglavie": "Bitcoin, Gold, Silver & Stocks Face a Market-Wide Sell-Off: Why Is Everything Falling at Once?",
@@ -2247,6 +2256,19 @@
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
    "bg": "Очаквания за по-висока лихва от Фед"
+  },
+  {
+   "zaglavie": "Gold Price Forecast: XAU/USD 17% Plunge Threatens Multi-Year Uptrend",
+   "vryzka": "https://news.google.com/rss/articles/CBMixgFBVV95cUxPaXZSODk0azFJVE1OQm5ha1RNVnNFaWgwV0dUVHo4NW8tR2piVHBRWk16YlpSVEhfLWFWaGdONXZlLUZoQk4zbWs5WmMyOXd5WDMtT2xheWpkYjYwRTVidTV0cVBYaWZvSWc2V2JYVmZwdDU2Nm5qN2oyaW8zSlhNN29jV0VOMkJHS0xiTXpJV21DTnhoMUp3M29hUzM2NnRaV1V6TkxLdG1zUVFwUTBiMXhsdWVLY0xtVk9MelRPNGg3RG82V0HSAdIBQVVfeXFMTnc4QmFoQ2Y1dUU1aWlxU2FncmxSM0lYZ2tPS0xaQVppVTJTemdXY2wxTWxWaDhtUXhiYktPVTJudmRnX1paOF94MG1qUTVQXy1wc2tMNTRRTnhaYVQ0UjU2QVNfamhFNXFfM1dHRF9kaXBFVnRGWG52SlBqSU9kWjBvV0FtakN3ZzhpYzd3a3JGeVNuRzRkVm9JeEQtcmhwNjhMRG5fazlIQ1Z1aGxHMHUyZXdHdW4yUG5RM2tidE5MSUNsbnRuYXVEM2JkM1JtU1dn?oc=5",
+   "izvor": "FOREX.com",
+   "chas": "2026-10-31T18:11:44Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": "Анализ и прогноза за златото"
   },
   {
    "zaglavie": "Caregivers are now spending more than $11,000 a year out of pocket—up 60% in five years",
@@ -2574,42 +2596,16 @@
    "bg": "За вдигане на лихвата от Фед"
   },
   {
-   "zaglavie": "What gave this city its ‘best place to retire’ crown? You can actually afford to live there.",
-   "vryzka": "https://www.marketwatch.com/story/what-gave-this-city-its-best-place-to-retire-crown-you-can-actually-afford-to-live-there-a06f8f4d?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-10-31T15:25:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
-   "zaglavie": "Gold prices plummeted today, November 1, 2026, falling to their lowest level of the year, as the world's leading consumer market unexpectedly halted purchases.",
-   "vryzka": "https://news.google.com/rss/articles/CBMi6wFBVV95cUxQMHl5ZWVuZDRSUkQ0ZlhyaFZYR2U4UXB2S3BHcndkTXV4N1VZS0lDRkdpY1RuNVFiTDV6MzJIeUlJTF8tTmh2NWl3VS1sckVJWG4yY3hCT21PWFVoU0NiUGRKRngyeEpENllpZk9nRHl1M1l0MEZHVlYwWEhULVhvdnUxdThONmxCbkFFUjVoeDBfTmtja0xyZ3pWMHBLN1BLWWhHdkxGdFVZRTRSR085WjJKZ3Q1bmxwbUJ4cDgxU080MTM2dmVkdUhWTDBNVkh3b0hTSVFpWUdWa056dmY1NUYtU002RHpxaXIw?oc=5",
-   "izvor": "Vietnam.vn",
-   "chas": "2026-10-31T15:08:17Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Златото поевтинява"
-  },
-  {
    "zaglavie": "Federal Reserve issues FOMC statement",
    "vryzka": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm",
    "izvor": "Fed",
    "chas": "2026-10-28T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed политика",
+   "emisiya": "Fed всички",
    "chas_ot_iztochnika": true,
    "duma": "fomc",
-   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
+   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   },
   {
@@ -2632,10 +2628,10 @@
    "chas": "2026-10-13T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed политика",
+   "emisiya": "Fed всички",
    "chas_ot_iztochnika": true,
    "duma": "rate",
-   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
+   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
    "bg": "Протокол на Фед за сконтовия процент (лихвата по заемите за банките)"
   }
  ],
