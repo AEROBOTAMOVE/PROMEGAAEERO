@@ -1,39 +1,56 @@
 {
- "kogato": "2026-11-02T04:09:54Z",
- "sekundi": 0.79,
+ "kogato": "2026-11-02T04:20:42Z",
+ "sekundi": 0.9,
  "broi": 200,
- "novi_tozi_pyt": 1,
+ "novi_tozi_pyt": 2,
  "iztochnici_ok": [
-  "Fed политика",
-  "Fed всички",
-  "MarketWatch",
-  "Fed речи",
-  "Investing",
   "Yahoo долар",
+  "MarketWatch",
   "Yahoo злато",
+  "Fed речи",
+  "Fed политика",
+  "Investing",
   "CNBC",
-  "FT пазари",
   "Google Fed",
+  "FT пазари",
   "Google злато",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Fed всички",
+   "greshka": "HTTPError: HTTP Error 404: Not Found"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.2с",
-  "новини · FT пазари · 25 бр. за 0.26с",
-  "новини · Fed всички · 7 бр. за 0.06с",
-  "новини · Fed политика · 15 бр. за 0.05с",
-  "новини · Fed речи · 15 бр. за 0.06с",
-  "новини · Google Fed · 33 бр. за 0.32с",
-  "новини · Google злато · 40 бр. за 0.44с",
-  "новини · Investing · 10 бр. за 0.11с",
-  "новини · MarketWatch · 10 бр. за 0.05с",
-  "новини · Mining.com · 36 бр. за 0.71с",
-  "новини · Yahoo долар · 16 бр. за 0.15с",
-  "новини · Yahoo злато · 19 бр. за 0.17с",
-  "новини · български ред: 95 от 200 · махнати по език: 3"
+  "новини · CNBC · 30 бр. за 0.22с",
+  "новини · FT пазари · 25 бр. за 0.38с",
+  "новини · Fed всички · ПАДНА: HTTPError: HTTP Error 404: Not Found",
+  "новини · Fed политика · 15 бр. за 0.14с",
+  "новини · Fed речи · 15 бр. за 0.14с",
+  "новини · Google Fed · 31 бр. за 0.26с",
+  "новини · Google злато · 40 бр. за 0.45с",
+  "новини · Investing · 10 бр. за 0.19с",
+  "новини · MarketWatch · 10 бр. за 0.09с",
+  "новини · Mining.com · 36 бр. за 0.82с",
+  "новини · Yahoo долар · 16 бр. за 0.1с",
+  "новини · Yahoo злато · 19 бр. за 0.12с",
+  "новини · български ред: 94 от 200 · махнати по език: 3"
  ],
  "novini": [
+  {
+   "zaglavie": "Gold prices today, November 2nd, have dropped by over $1,000/ounce, hitting a one-year low. Does its role as a store of value remain intact?",
+   "vryzka": "https://news.google.com/rss/articles/CBMi1wFBVV95cUxOeWxaNG9GVEJrLVU1Ym1kbjhUV0IxSE53VGZYRE9sQTRmYXItNzVKVFU3SmxYb2ZTM19ld0lMUHk0ajJZbUcxaThqMUdadzAzY0o4cm93bnpITXk4SmZMTnBFb2ktNWEyamNxMGF3bHdFaEl3ZTdRME94bkZWZ19jMXl2NHlnNUVkMjNkOG42aW44bDJsMENZREg5VERTX3dkWFR4ZGYteVpRZGRybUg3blNQLXdnTUdfdlBQU1hMZExqMlB3RGc0MEx0aTlDaWVESElnaVlRZw?oc=5",
+   "izvor": "Vietnam.vn",
+   "chas": "2026-11-02T04:11:38Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": "Цената на златото днес"
+  },
   {
    "zaglavie": "Asian currencies mixed as yuan holds near four-year high, dollar steadies",
    "vryzka": "https://finance.yahoo.com/markets/currencies/articles/asian-currencies-mixed-yuan-holds-040237175.html?.tsrc=rss",
@@ -45,6 +62,19 @@
    "chas_ot_iztochnika": true,
    "duma": "dollar",
    "zashto": "Златото се мери в долари: по-силен долар обикновено значи по-евтино злато.",
+   "bg": null
+  },
+  {
+   "zaglavie": "Gold, silver prices today, 2 November: Check retail rates of 24K, 22K gold, 999 silver in Delhi, Mumbai and Kolkata",
+   "vryzka": "https://news.google.com/rss/articles/CBMiiAJBVV95cUxNSEo1LWhIT0d3dG9oMXoxaFhONXJ5dHBfYlFxTnlVcE41Qk5JdDU1MW5Pb3BZb2NKdU01YkIyVkVrWG9lREZDd0tPRDVnd3FCWUlMVzYzek5KUUNGX1Z5M1pBWmVVbTZYQW42aHdWV1N5aTgyX1o0YzdxeWotRWItcHFzaTN1NUhiVGVlT1ZhODctVEFRejRxSW9ZV3ZSVURoNjM1bnJvN1FNMHZOTzlOb2ZXYkJPZjduWVBQd3llTk1qQXZVVF9JR0ZDVWdIOWUweWptVmZCNTYwV2lmcFlKeXp4NURlTnlPaXpETkZEZGNpOWtiQ1Y0TnlCeVQ1d2gxMjFDTGQzSkrSAY4CQVVfeXFMUDdpZXZDeV9SeDE4MlAzNUw1ZGtpQzJfVklscmZNcG9rZGxfVE5jYWh2emdlUjhoMlAwVVJGclV2RjFHRXVEOU9PSnZkT1VHRFBMZHhySy1saGpXM0tCUlZMRmQ1aXFXS0xDY3lmQ3VtR2Z2c05nd2xkdmptSjEtckY2LWx2X0VDUm43aVZVSVIwelN6V25",
+   "izvor": "Livemint",
+   "chas": "2026-11-02T04:01:43Z",
+   "vazhnost": 3,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "rates",
+   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
    "bg": null
   },
   {
@@ -2570,32 +2600,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Gold prices fall sharply by 30%, analysts disagree on the next bottom",
-   "vryzka": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxPQUszWVBJeEl6SjVZaE5GQ3J5dEE5V0xKM2JLTGRWN2pXVllyc1pQODVzZ2pKal81Y3VVV29RQmo4QmcwejhLVDU1X29ZX1NxM1ZMTlFmalE3SUk2WjVCUkJDNmJGa3k0SmQyOHhMTl95LWZEQXA5em1TRmpfM19hY0ltZnY5bUdqM1ZvSDYxZ1YzZ21Qb1NSQVZsOERZTURRYVJFUmRQWmdtUk0?oc=5",
-   "izvor": "Laodong.vn",
-   "chas": "2026-11-01T04:10:49Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Златото поевтинява"
-  },
-  {
-   "zaglavie": "Binance’s $6.3B breach, Fed rate pause, CFTC plans | Weekly recap: Guest Post by crypto.news",
-   "vryzka": "https://news.google.com/rss/articles/CBMiekFVX3lxTE9hYlZaeTRXNC1raVhQUi1ON09hZFBIcUltZG5MNE8zS1lleG1qNWVxU0lMWm16ajEwUUVmWWJPdU0tQVhPZ3ZyNk9kdkszOEp1WTFsWEVmbWlINFFzSFlpWmJ0djJQQTZBUkJ3TVVxX09UX1JsWTQ0aVFR?oc=5",
-   "izvor": "CoinMarketCap",
-   "chas": "2026-11-01T04:06:34Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": "За лихвата на Фед"
-  },
-  {
    "zaglavie": "Federal Reserve issues FOMC statement",
    "vryzka": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm",
    "izvor": "Fed",
@@ -2635,6 +2639,6 @@
    "bg": "Протокол на Фед за сконтовия процент (лихвата по заемите за банките)"
   }
  ],
- "s_bg_red": 95,
+ "s_bg_red": 94,
  "mahnati_ezik": 3
 }
