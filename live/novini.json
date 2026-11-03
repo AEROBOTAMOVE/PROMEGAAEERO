@@ -1,37 +1,41 @@
 {
- "kogato": "2026-11-03T12:37:56Z",
- "sekundi": 0.89,
+ "kogato": "2026-11-03T12:48:39Z",
+ "sekundi": 0.84,
  "broi": 200,
- "novi_tozi_pyt": 7,
+ "novi_tozi_pyt": 2,
  "iztochnici_ok": [
   "MarketWatch",
   "Fed речи",
-  "Fed политика",
-  "Fed всички",
   "Investing",
-  "Yahoo долар",
+  "Fed политика",
   "CNBC",
-  "Yahoo злато",
   "FT пазари",
   "Google Fed",
+  "Yahoo злато",
+  "Yahoo долар",
   "Google злато",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Fed всички",
+   "greshka": "HTTPError: HTTP Error 404: Not Found"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.23с",
-  "новини · FT пазари · 25 бр. за 0.38с",
-  "новини · Fed всички · 7 бр. за 0.11с",
-  "новини · Fed политика · 15 бр. за 0.1с",
-  "новини · Fed речи · 15 бр. за 0.1с",
-  "новини · Google Fed · 40 бр. за 0.38с",
-  "новини · Google злато · 40 бр. за 0.47с",
-  "новини · Investing · 10 бр. за 0.17с",
-  "новини · MarketWatch · 10 бр. за 0.05с",
-  "новини · Mining.com · 36 бр. за 0.83с",
-  "новини · Yahoo долар · 11 бр. за 0.24с",
-  "новини · Yahoo злато · 18 бр. за 0.25с",
-  "новини · български ред: 78 от 200 · махнати по език: 0"
+  "новини · CNBC · 30 бр. за 0.2с",
+  "новини · FT пазари · 25 бр. за 0.31с",
+  "новини · Fed всички · ПАДНА: HTTPError: HTTP Error 404: Not Found",
+  "новини · Fed политика · 15 бр. за 0.15с",
+  "новини · Fed речи · 15 бр. за 0.11с",
+  "новини · Google Fed · 40 бр. за 0.29с",
+  "новини · Google злато · 40 бр. за 0.44с",
+  "новини · Investing · 10 бр. за 0.14с",
+  "новини · MarketWatch · 10 бр. за 0.08с",
+  "новини · Mining.com · 36 бр. за 0.8с",
+  "новини · Yahoo долар · 11 бр. за 0.43с",
+  "новини · Yahoo злато · 18 бр. за 0.42с",
+  "новини · български ред: 79 от 200 · махнати по език: 0"
  ],
  "novini": [
   {
@@ -72,6 +76,19 @@
    "duma": "bullion",
    "zashto": "Пряко за физическото злато.",
    "bg": "Новина от минния бранш (злато)"
+  },
+  {
+   "zaglavie": "Thunder Gold Intersects Continuous Gold Mineralization Averaging 0.456 g/t Au Over 451.5 Metres at Tower Mountain, Ontario",
+   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/thunder-gold-intersects-continuous-gold-123000095.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-03T12:30:00Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": "Минна компания съобщава резултати от сондажи за злато"
   },
   {
    "zaglavie": "Weaker dollar views stick running into US midterms, but strategists brace for resilience: Reuters poll",
@@ -133,6 +150,19 @@
    "vazhnost": 1,
    "za": "общо",
    "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "Oil prices edge back above $106 after sharp declines",
+   "vryzka": "https://www.ft.com/content/d0ab9542-8542-4357-a534-ddbdd1a9678d?syn-25a6b1a6=1",
+   "izvor": "Financial Times",
+   "chas": "2026-11-03T12:19:25Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "FT пазари",
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null,
@@ -373,19 +403,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Vext Reports Q3 2026 Financial Results; Record Quarterly Revenue of $14.9 Million; Operating Cash Flow of $2.4 Million",
-   "vryzka": "https://finance.yahoo.com/markets/stocks/articles/vext-reports-q3-2026-financial-113000444.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-11-03T11:30:00Z",
-   "vazhnost": 1,
-   "za": "долар",
-   "emisiya": "Yahoo долар",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
    "zaglavie": "Azimut Undertakes New Mineral Resource Estimate on the Patwon Gold Deposit, James Bay Region, Québec",
    "vryzka": "https://finance.yahoo.com/markets/commodities/articles/azimut-undertakes-mineral-estimate-patwon-113000572.html?.tsrc=rss",
    "izvor": "Yahoo Finance",
@@ -397,6 +414,19 @@
    "duma": "gold",
    "zashto": "Пряко за златото.",
    "bg": "Новина от минния бранш (злато)"
+  },
+  {
+   "zaglavie": "Vext Reports Q3 2026 Financial Results; Record Quarterly Revenue of $14.9 Million; Operating Cash Flow of $2.4 Million",
+   "vryzka": "https://finance.yahoo.com/markets/stocks/articles/vext-reports-q3-2026-financial-113000444.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-03T11:30:00Z",
+   "vazhnost": 1,
+   "za": "долар",
+   "emisiya": "Yahoo долар",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
   },
   {
    "zaglavie": "Gold and silver rate today (November 3, 2026): Check 24K, 22K, 20K and 18K gold prices at IBJA, Malabar Gold & Diamonds, Joyalukkas, Kalyan Jewellers",
@@ -620,7 +650,7 @@
    "bg": null
   },
   {
-   "zaglavie": "Wall Street braces as voters head to high-stakes polls",
+   "zaglavie": "Wall Street braces as voters go to polls in high-stakes US midterm elections",
    "vryzka": "https://www.ft.com/content/c8a092e5-c1e4-46b8-83e1-73404900a0c5?syn-25a6b1a6=1",
    "izvor": "Financial Times",
    "chas": "2026-11-03T10:27:49Z",
@@ -633,7 +663,7 @@
    "bg": null
   },
   {
-   "zaglavie": "Wall Street braces as voters go to polls in high-stakes US midterm elections",
+   "zaglavie": "Wall Street braces as voters head to high-stakes polls",
    "vryzka": "https://www.ft.com/content/c8a092e5-c1e4-46b8-83e1-73404900a0c5?syn-25a6b1a6=1",
    "izvor": "Financial Times",
    "chas": "2026-11-03T10:27:49Z",
@@ -1094,7 +1124,7 @@
    "chas": "2026-11-03T08:00:00Z",
    "vazhnost": 2,
    "za": "злато",
-   "emisiya": "Yahoo долар",
+   "emisiya": "Yahoo злато",
    "chas_ot_iztochnika": true,
    "duma": "gold",
    "zashto": "Пряко за златото.",
@@ -2570,32 +2600,6 @@
    "bg": "Акциите се качват на фона на цената на петрола"
   },
   {
-   "zaglavie": "Business loan demand softened last quarter, Fed survey shows",
-   "vryzka": "https://news.google.com/rss/articles/CBMioAFBVV95cUxNdFExdzNmcUVBcEU3SnNXTEg2TVRoT3gwWkg0MWhWeVhUeUdpTHhZUkg0UWRnS0ZqMUx6MkJObTJlY001cDc3RWxRTUJBb1VQQUJITXRRdlhKcnFsTWpqV3U3MGVpLTJqbXVCemxmbi1talEwZ3oyV0c5TGhfWFZVeHdZU21oMHJKck5ET2l1T00zbzJNbXB5T0JRSWtDOHZX?oc=5",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-11-02T21:52:55Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": null
-  },
-  {
-   "zaglavie": "Gold prices push above $3,900 but still face significant headwinds - Pepperstone’s Wu",
-   "vryzka": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxQdjh4dmNGSTktempWNGs5QWtDYWJwRzZ1OW9nUExXTnVtNXo2OGpSeXJsTTFaeThmLW1lcFpHZDZGSjcyVlR2aUl3UUZFLW13YWtwVDJ5S0VkX0c4YU1ESl9fdC1BN2JYRjR6RHhzM3JWZ1RTVEtXNGEyTEplNXFGQjFwaTUzTWp2bFlOMUNXLXlZYVBvY2JoSV9jak1DZ2xjV196NUhfbEU1bXJmOFZMdmJEbDJZSHpLZ1c4?oc=5",
-   "izvor": "Kitco",
-   "chas": "2026-11-02T21:50:06Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": null
-  },
-  {
    "zaglavie": "Federal Reserve issues FOMC statement",
    "vryzka": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm",
    "izvor": "Fed",
@@ -2635,6 +2639,6 @@
    "bg": "Протокол на Фед за сконтовия процент (лихвата по заемите за банките)"
   }
  ],
- "s_bg_red": 78,
+ "s_bg_red": 79,
  "mahnati_ezik": 0
 }
