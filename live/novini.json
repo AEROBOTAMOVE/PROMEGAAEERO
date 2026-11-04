@@ -1,37 +1,44 @@
 {
- "kogato": "2026-11-04T01:53:59Z",
- "sekundi": 0.84,
+ "kogato": "2026-11-04T02:04:53Z",
+ "sekundi": 8.04,
  "broi": 200,
- "novi_tozi_pyt": 1,
+ "novi_tozi_pyt": 0,
  "iztochnici_ok": [
-  "Fed всички",
   "MarketWatch",
+  "Fed всички",
   "Fed речи",
-  "Fed политика",
   "Investing",
-  "CNBC",
+  "Fed политика",
   "Yahoo злато",
-  "FT пазари",
   "Yahoo долар",
-  "Google злато",
-  "Google Fed",
+  "CNBC",
+  "FT пазари",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google Fed",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  },
+  {
+   "ime": "Google злато",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.27с",
-  "новини · FT пазари · 25 бр. за 0.35с",
-  "новини · Fed всички · 7 бр. за 0.1с",
-  "новини · Fed политика · 15 бр. за 0.15с",
-  "новини · Fed речи · 15 бр. за 0.13с",
-  "новини · Google Fed · 40 бр. за 0.41с",
-  "новини · Google злато · 40 бр. за 0.41с",
-  "новини · Investing · 10 бр. за 0.15с",
-  "новини · MarketWatch · 10 бр. за 0.12с",
+  "новини · CNBC · 30 бр. за 0.29с",
+  "новини · FT пазари · 25 бр. за 0.4с",
+  "новини · Fed всички · 7 бр. за 0.09с",
+  "новини · Fed политика · 15 бр. за 0.17с",
+  "новини · Fed речи · 15 бр. за 0.1с",
+  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Investing · 10 бр. за 0.12с",
+  "новини · MarketWatch · 10 бр. за 0.06с",
   "новини · Mining.com · 36 бр. за 0.76с",
-  "новини · Yahoo долар · 15 бр. за 0.37с",
-  "новини · Yahoo злато · 18 бр. за 0.36с",
-  "новини · български ред: 53 от 200 · махнати по език: 2"
+  "новини · Yahoo долар · 15 бр. за 0.27с",
+  "новини · Yahoo злато · 18 бр. за 0.26с",
+  "новини · български ред: 53 от 200 · махнати по език: 0"
  ],
  "novini": [
   {
@@ -2636,5 +2643,5 @@
   }
  ],
  "s_bg_red": 53,
- "mahnati_ezik": 2
+ "mahnati_ezik": 0
 }
