@@ -1,43 +1,52 @@
 {
- "kogato": "2026-11-04T22:35:54Z",
- "sekundi": 0.78,
+ "kogato": "2026-11-04T22:46:05Z",
+ "sekundi": 0.76,
  "broi": 200,
- "novi_tozi_pyt": 4,
+ "novi_tozi_pyt": 1,
  "iztochnici_ok": [
   "Fed речи",
+  "Fed всички",
   "Fed политика",
-  "MarketWatch",
   "Investing",
+  "MarketWatch",
   "Yahoo злато",
   "Yahoo долар",
   "FT пазари",
-  "Google Fed",
   "Google злато",
-  "Mining.com",
-  "CNBC"
+  "Google Fed",
+  "CNBC",
+  "Mining.com"
  ],
- "iztochnici_padnali": [
-  {
-   "ime": "Fed всички",
-   "greshka": "HTTPError: HTTP Error 404: Not Found"
-  }
- ],
+ "iztochnici_padnali": [],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.71с",
+  "новини · CNBC · 30 бр. за 0.64с",
   "новини · FT пазари · 25 бр. за 0.3с",
-  "новини · Fed всички · ПАДНА: HTTPError: HTTP Error 404: Not Found",
-  "новини · Fed политика · 15 бр. за 0.05с",
+  "новини · Fed всички · 7 бр. за 0.06с",
+  "новини · Fed политика · 15 бр. за 0.07с",
   "новини · Fed речи · 15 бр. за 0.05с",
-  "новини · Google Fed · 36 бр. за 0.34с",
-  "новини · Google злато · 40 бр. за 0.45с",
-  "новини · Investing · 10 бр. за 0.1с",
-  "новини · MarketWatch · 10 бр. за 0.1с",
-  "новини · Mining.com · 36 бр. за 0.59с",
-  "новини · Yahoo долар · 14 бр. за 0.3с",
-  "новини · Yahoo злато · 15 бр. за 0.26с",
+  "новини · Google Fed · 32 бр. за 0.55с",
+  "новини · Google злато · 40 бр. за 0.4с",
+  "новини · Investing · 10 бр. за 0.11с",
+  "новини · MarketWatch · 10 бр. за 0.12с",
+  "новини · Mining.com · 36 бр. за 0.7с",
+  "новини · Yahoo долар · 14 бр. за 0.23с",
+  "новини · Yahoo злато · 15 бр. за 0.2с",
   "новини · български ред: 64 от 200 · махнати по език: 1"
  ],
  "novini": [
+  {
+   "zaglavie": "Lundin Mining Reports Third Quarter 2026 Results, Delivering Strong Financial Performance Amidst Record Copper Prices",
+   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/lundin-mining-reports-third-quarter-223000734.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-04T22:30:00Z",
+   "vazhnost": 1,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
   {
    "zaglavie": "Allied Gold Reports Q3 2026 Results, Begins Production at the Kurmuk Mine and Delivers Strong Performance at the Côte D’Ivoire Complex",
    "vryzka": "https://finance.yahoo.com/markets/commodities/articles/allied-gold-reports-q3-2026-222400129.html?.tsrc=rss",
@@ -1014,19 +1023,6 @@
    "bg": null
   },
   {
-   "zaglavie": "What the Fed Can and Cannot Fix in Today’s Inflation",
-   "vryzka": "https://news.google.com/rss/articles/CBMigAFBVV95cUxQRWhtTS1YbVhTR3pwUnJ0Q3J5Y0tKRXNqZE9HMDA1eXQ5aWtCZGwzbk5HdVVwM2cwME1XMFBPVFJOMzBPT3ZXcE1qZDFmcnh4Tm0yYWNRSVRTX2JqVHA5bEhibEtOaWVfLUVRdGhoa2VLRmRUVUZqVXhxaE1BbGwyYw?oc=5",
-   "izvor": "ETF Database",
-   "chas": "2026-11-04T17:31:50Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": null
-  },
-  {
    "zaglavie": "New Study Finds Union Pacific-Norfolk Southern Merger Could Deliver Up to $5.8 Billion a Year in Economic and Health Benefits",
    "vryzka": "https://finance.yahoo.com/economy/policy/articles/study-finds-union-pacific-norfolk-173100987.html?.tsrc=rss",
    "izvor": "Yahoo Finance",
@@ -1752,6 +1748,19 @@
    "chas_ot_iztochnika": true,
    "duma": "tariffs",
    "zashto": "Митата вдигат цените и карат страните да търсят убежище — и двете стигат до златото.",
+   "bg": null
+  },
+  {
+   "zaglavie": "What the Fed Can and Cannot Fix in Today’s Inflation",
+   "vryzka": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxPSkpPenRFZHV5cUxqRjJQQWtnLVhqRWtkZW5tMnBPM3J2cTVCcnc4dUFiNkM2MEZqNWJObFRCbnJaMzlsQURlVk9FYWMzYmg5bmlGN0t3cHh2OU9RNHFFMmZYc3dTUUVvNVhjT0FWLXZ3M3ZWQ3dqbVRiV3FJTmo2eEJ2Yzg5dGRqX2hCX0lJeUl2blFMTzhCUHp3UnBBNkdULVFKbUNoc2LSAa4BQVVfeXFMTkJfSW10ZFVWalB4R1p2UG5DT3ZtMWw1aHA4SWZJb1pYLS0ySWd0bGRaLWFDQXJVMmpRVmozX1h6ZGJodzAtR1lmVkNENlpZOGI4aG12OGFzM1k0Y3oyTWVIbDBiWmJNQ2F4alRXdTIxU0RNbkx6XzhSekFMZHdSMFJ0TjJTSml6TlpwZm5ncHdLYzJpdXYwSy14RUp2clpCZm01UndranJ6WloxTnp3?oc=5",
+   "izvor": "ETF Trends",
+   "chas": "2026-11-04T14:15:43Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
    "bg": null
   },
   {
@@ -2600,29 +2609,16 @@
    "bg": "Доларът поевтинява"
   },
   {
-   "zaglavie": "SSR Mining Inc (SSRM) (Q3 2026) Earnings Call Highlights: Strong Balance Sheet and Marigold ...",
-   "vryzka": "https://finance.yahoo.com/markets/stocks/articles/ssr-mining-inc-ssrm-q3-110713134.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-11-04T11:07:13Z",
-   "vazhnost": 1,
-   "za": "злато",
-   "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
    "zaglavie": "Federal Reserve issues FOMC statement",
    "vryzka": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm",
    "izvor": "Fed",
    "chas": "2026-10-28T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed политика",
+   "emisiya": "Fed всички",
    "chas_ot_iztochnika": true,
    "duma": "fomc",
-   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
+   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   },
   {
