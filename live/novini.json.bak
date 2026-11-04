@@ -1,39 +1,134 @@
 {
- "kogato": "2026-11-04T21:10:33Z",
- "sekundi": 0.69,
+ "kogato": "2026-11-04T21:21:23Z",
+ "sekundi": 0.77,
  "broi": 200,
- "novi_tozi_pyt": 2,
+ "novi_tozi_pyt": 4,
  "iztochnici_ok": [
-  "Fed речи",
-  "Fed всички",
-  "MarketWatch",
   "Fed политика",
+  "Fed речи",
   "Investing",
+  "CNBC",
   "Yahoo долар",
   "Yahoo злато",
+  "MarketWatch",
   "FT пазари",
   "Google Fed",
-  "CNBC",
   "Google злато",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Fed всички",
+   "greshka": "HTTPError: HTTP Error 404: Not Found"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.39с",
-  "новини · FT пазари · 25 бр. за 0.22с",
-  "новини · Fed всички · 7 бр. за 0.06с",
-  "новини · Fed политика · 15 бр. за 0.06с",
-  "новини · Fed речи · 15 бр. за 0.05с",
-  "новини · Google Fed · 31 бр. за 0.32с",
-  "новини · Google злато · 40 бр. за 0.53с",
-  "новини · Investing · 10 бр. за 0.08с",
-  "новини · MarketWatch · 10 бр. за 0.06с",
-  "новини · Mining.com · 36 бр. за 0.63с",
-  "новини · Yahoo долар · 11 бр. за 0.12с",
-  "новини · Yahoo злато · 14 бр. за 0.18с",
-  "новини · български ред: 68 от 200 · махнати по език: 1"
+  "новини · CNBC · 30 бр. за 0.24с",
+  "новини · FT пазари · 25 бр. за 0.28с",
+  "новини · Fed всички · ПАДНА: HTTPError: HTTP Error 404: Not Found",
+  "новини · Fed политика · 15 бр. за 0.07с",
+  "новини · Fed речи · 15 бр. за 0.08с",
+  "новини · Google Fed · 32 бр. за 0.3с",
+  "новини · Google злато · 40 бр. за 0.45с",
+  "новини · Investing · 10 бр. за 0.1с",
+  "новини · MarketWatch · 10 бр. за 0.29с",
+  "новини · Mining.com · 36 бр. за 0.71с",
+  "новини · Yahoo долар · 12 бр. за 0.27с",
+  "новини · Yahoo злато · 14 бр. за 0.27с",
+  "новини · български ред: 65 от 200 · махнати по език: 1"
  ],
  "novini": [
+  {
+   "zaglavie": "10-year Treasury yield slides as traders mull over Democrats' midterm victories, oil prices drop",
+   "vryzka": "https://www.cnbc.com/2026/11/03/treasury-yields-fall-as-democrats-win-big-in-us-midterm-elections.html",
+   "izvor": "CNBC",
+   "chas": "2026-11-04T21:18:44Z",
+   "vazhnost": 2,
+   "za": "лихви",
+   "emisiya": "CNBC",
+   "chas_ot_iztochnika": true,
+   "duma": "treasury",
+   "zashto": "Доходността на американския дълг е прякото сравнение за златото — качи ли се тя, златото обикновено пада.",
+   "bg": "Доходността на американските облигации спада на фона на цената на петрола"
+  },
+  {
+   "zaglavie": "Apple cements its status as tech’s biggest heavyweight with the stock’s best day in over a year",
+   "vryzka": "https://www.marketwatch.com/story/apple-cements-its-status-as-techs-biggest-heavyweight-with-the-stocks-best-day-in-over-a-year-c7fd9e6f?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-11-04T21:17:00Z",
+   "vazhnost": 2,
+   "za": "общо",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": "safe haven",
+   "zashto": "Точно това е ролята на златото в такъв ден — убежище.",
+   "bg": null
+  },
+  {
+   "zaglavie": "‘I have no financial safety net’: I’m 66, rely on Social Security and have $500 in savings. What politician speaks for me?",
+   "vryzka": "https://www.marketwatch.com/story/i-have-no-financial-safety-net-im-66-rely-on-social-security-and-have-500-in-savings-what-politician-speaks-for-me-be2126cb?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-11-04T21:16:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "Diversified Energy Announces Third Quarter Dividend",
+   "vryzka": "https://finance.yahoo.com/energy/articles/diversified-energy-announces-third-quarter-211500051.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-04T21:15:00Z",
+   "vazhnost": 1,
+   "za": "долар",
+   "emisiya": "Yahoo долар",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "Hospital stocks rallied while drugmakers brace for scrutiny. Here’s what the Democratic wave means for healthcare.",
+   "vryzka": "https://www.marketwatch.com/story/hospital-stocks-rally-while-drugmakers-brace-for-scrutiny-heres-what-the-democratic-wave-means-for-healthcare-625b79f3?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-11-04T21:10:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "Billionaires aren’t off the hook for higher taxes, even if they did dodge California’s wealth tax",
+   "vryzka": "https://www.marketwatch.com/story/billionaires-arent-off-the-hook-for-higher-taxes-even-if-they-did-dodge-californias-wealth-tax-a73f9045?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-11-04T21:10:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "Three things that explain what’s changing with Obamacare in 2027",
+   "vryzka": "https://www.marketwatch.com/story/three-things-that-explain-whats-changing-with-obamacare-in-2027-7c94585b?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-11-04T21:09:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
   {
    "zaglavie": "CVS Health plans to split in two. Here’s what is driving the massive healthcare breakup.",
    "vryzka": "https://www.marketwatch.com/story/cvs-health-plans-to-split-in-two-heres-what-is-driving-the-massive-healthcare-breakup-27c0d6be?mod=mw_rss_topstories",
@@ -45,6 +140,19 @@
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "Treasuries Advance as Traders Eye US Votes, Refinancing Plans",
+   "vryzka": "https://news.google.com/rss/articles/CBMisAFBVV95cUxNZzN0NVZRRWVGTGRucWE0c2lMNmdFU3BGaS1kVlhzMDAyZUNRZjA1SWlORHJIWlotVXdWLVNqN3NMX3h3U2tISkRod0l5YXpDdzZLOWNhYmhPd2hPU3UzUE9wZmdEQ0VBWjRfZi15SmJsclVuS1lwZHcwakdPdk5pbW5ha1NhMm5SdUpBUmdDUzMxT3YxNWg3dlRHeUxjeGFPOV83bjUyNlY0ZktBSFF0Uw?oc=5",
+   "izvor": "Bloomberg",
+   "chas": "2026-11-04T20:52:02Z",
+   "vazhnost": 2,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "treasuries",
+   "zashto": "Доходността на американския дълг е прякото сравнение за златото — качи ли се тя, златото обикновено пада.",
    "bg": null
   },
   {
@@ -360,19 +468,6 @@
    "bg": null
   },
   {
-   "zaglavie": "‘I have no financial safety net’: I’m 66, rely on Social Security and have $500 in savings. What politician speaks for me?",
-   "vryzka": "https://www.marketwatch.com/story/i-have-no-financial-safety-net-im-66-rely-on-social-security-and-have-500-in-savings-what-politician-speaks-for-me-be2126cb?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-11-04T18:37:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
    "zaglavie": "Gold’s Historical Midterm Performance Returns to Focus as Democrats Take Congress",
    "vryzka": "https://www.investing.com/analysis/golds-historical-midterm-performance-returns-to-focus-as-democrats-take-congress-200690879",
    "izvor": "Investing.com",
@@ -422,19 +517,6 @@
    "chas_ot_iztochnika": true,
    "duma": "gold",
    "zashto": "Пряко за златото.",
-   "bg": null
-  },
-  {
-   "zaglavie": "Treasuries Advance as Traders Eye US Votes, Refinancing Plans",
-   "vryzka": "https://news.google.com/rss/articles/CBMisAFBVV95cUxNZzN0NVZRRWVGTGRucWE0c2lMNmdFU3BGaS1kVlhzMDAyZUNRZjA1SWlORHJIWlotVXdWLVNqN3NMX3h3U2tISkRod0l5YXpDdzZLOWNhYmhPd2hPU3UzUE9wZmdEQ0VBWjRfZi15SmJsclVuS1lwZHcwakdPdk5pbW5ha1NhMm5SdUpBUmdDUzMxT3YxNWg3dlRHeUxjeGFPOV83bjUyNlY0ZktBSFF0Uw?oc=5",
-   "izvor": "Bloomberg",
-   "chas": "2026-11-04T18:17:31Z",
-   "vazhnost": 2,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "treasuries",
-   "zashto": "Доходността на американския дълг е прякото сравнение за златото — качи ли се тя, златото обикновено пада.",
    "bg": null
   },
   {
@@ -581,19 +663,6 @@
    "bg": null
   },
   {
-   "zaglavie": "What the Fed Can and Cannot Fix in Today’s Inflation",
-   "vryzka": "https://news.google.com/rss/articles/CBMigAFBVV95cUxQRWhtTS1YbVhTR3pwUnJ0Q3J5Y0tKRXNqZE9HMDA1eXQ5aWtCZGwzbk5HdVVwM2cwME1XMFBPVFJOMzBPT3ZXcE1qZDFmcnh4Tm0yYWNRSVRTX2JqVHA5bEhibEtOaWVfLUVRdGhoa2VLRmRUVUZqVXhxaE1BbGwyYw?oc=5",
-   "izvor": "ETF Database",
-   "chas": "2026-11-04T17:31:50Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": null
-  },
-  {
    "zaglavie": "New Study Finds Union Pacific-Norfolk Southern Merger Could Deliver Up to $5.8 Billion a Year in Economic and Health Benefits",
    "vryzka": "https://finance.yahoo.com/economy/policy/articles/study-finds-union-pacific-norfolk-173100987.html?.tsrc=rss",
    "izvor": "Yahoo Finance",
@@ -696,19 +765,6 @@
    "duma": null,
    "zashto": null,
    "bg": null
-  },
-  {
-   "zaglavie": "10-year Treasury yield slides as traders mull over Democrats' midterm victories, oil prices drop",
-   "vryzka": "https://www.cnbc.com/2026/11/03/treasury-yields-fall-as-democrats-win-big-in-us-midterm-elections.html",
-   "izvor": "CNBC",
-   "chas": "2026-11-04T17:11:00Z",
-   "vazhnost": 2,
-   "za": "лихви",
-   "emisiya": "CNBC",
-   "chas_ot_iztochnika": true,
-   "duma": "treasury",
-   "zashto": "Доходността на американския дълг е прякото сравнение за златото — качи ли се тя, златото обикновено пада.",
-   "bg": "Доходността на американските облигации спада на фона на цената на петрола"
   },
   {
    "zaglavie": "Stocks climb after Democrats’ sweep",
@@ -1127,19 +1183,6 @@
    "bg": "Акциите се качват"
   },
   {
-   "zaglavie": "Three things that explain what’s changing with Obamacare in 2027",
-   "vryzka": "https://www.marketwatch.com/story/three-things-that-explain-whats-changing-with-obamacare-in-2027-7c94585b?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-11-04T15:03:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
    "zaglavie": "BC-Gold Futures",
    "vryzka": "https://finance.yahoo.com/markets/commodities/articles/bc-gold-futures-150022375.html?.tsrc=rss",
    "izvor": "Yahoo Finance",
@@ -1345,6 +1388,19 @@
    "chas_ot_iztochnika": true,
    "duma": "tariffs",
    "zashto": "Митата вдигат цените и карат страните да търсят убежище — и двете стигат до златото.",
+   "bg": null
+  },
+  {
+   "zaglavie": "What the Fed Can and Cannot Fix in Today’s Inflation",
+   "vryzka": "https://news.google.com/rss/articles/CBMirgFBVV95cUxOQl9JbXRkVVZqUHhHWnZQbkNPdm0xbDVocDhJZklvWlgtLTJJZ3RsZFotYUNBclUyalFWajNfWHpkYmh3MC1HWWZWQ0Q2Wlk4YjhobXY4YXMzWTRjejJNZUhsMGJaYk1DYXhqVFd1MjFTRE1uTHpfOFJ6QUxkd1IwUnROMlNKaXpOWnBmbmdwd0tjMml1djBLLXhFSnZyWkJmbTVSd2tqcnpaWjFOenfSAa4BQVVfeXFMTkJfSW10ZFVWalB4R1p2UG5DT3ZtMWw1aHA4SWZJb1pYLS0ySWd0bGRaLWFDQXJVMmpRVmozX1h6ZGJodzAtR1lmVkNENlpZOGI4aG12OGFzM1k0Y3oyTWVIbDBiWmJNQ2F4alRXdTIxU0RNbkx6XzhSekFMZHdSMFJ0TjJTSml6TlpwZm5ncHdLYzJpdXYwSy14RUp2clpCZm01UndranJ6WloxTnp3?oc=5",
+   "izvor": "ETF Trends",
+   "chas": "2026-11-04T14:15:43Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
    "bg": null
   },
   {
@@ -1584,7 +1640,7 @@
   {
    "zaglavie": "The Federal Reserve’s Independence Is Assured for Now",
    "vryzka": "https://news.google.com/rss/articles/CBMivAFBVV95cUxQNlpyWUJ6RXdiLWEwZWhQNmpZRGdTRHFpZ2lGbWJhV3pqcUR3RDh4NUFRRVU4M19ITmRDbUxCaXRZcVB4M3BJaHBGVXUyVEstblh6RGdHOHBoQnh1eWxkLTltdng1UUlvd2dwT1FfUHFuaFc5bU1hUmlaUi15U0lxaUtmSks1enRHRGR5MGZFV0VvZjlJa3c3X18yMThGRXRJVnZZUmpnWDhwVVRSekEyLWZxd1MxNzNqSkxFbQ?oc=5",
-   "izvor": "Bloomberg.com",
+   "izvor": "Bloomberg",
    "chas": "2026-11-04T13:30:09Z",
    "vazhnost": 1,
    "za": "лихви",
@@ -2557,68 +2613,16 @@
    "bg": null
   },
   {
-   "zaglavie": "BTC USD Bounces Back to $78,500 After a Democratic Sweep of Congress: Are Traders Really Punishing the Republicans?",
-   "vryzka": "https://99bitcoins.com/news/bitcoin-btc/btc-usd-midterms-blue-wave/?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-11-04T09:54:27Z",
-   "vazhnost": 1,
-   "za": "долар",
-   "emisiya": "Yahoo долар",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": "Биткойн и движението на долара"
-  },
-  {
-   "zaglavie": "Gold and silver prices jump as US midterm results weaken dollar and Treasury yields | Hindustan Times",
-   "vryzka": "https://news.google.com/rss/articles/CBMi6gFBVV95cUxNQ3liVTdZLUFlem5VVFIwbEZEYi1Na2FnVFhia0VWczQwcGROal9QWmRUNFVMY2E5bnhMZVR1NmE3ZG1ob21maHhDcm9IdTBvZUtkRW1ERVNiSFlwMjJkOFp3QUxudUxyQXNrRXpTS056TmVxdjhIcWM4OUU3cy14ZW5rRFhKNXdZSUU3cmk5NnZacExWdTA4RllCRUxhTGdYRThEd0N2R3F2aUNQSkxzZXVjYUt3MTV0aVpWT0RzVUZTMlZURklxdTJlTWJxaWxFVTZ5SDJpWHNCUWxQbDgtS25RZU5DYVJNRHfSAe8BQVVfeXFMTVQ0NnoxT3d3R3BhMVVpODhLOGdjSjFKMURPTzBHYzJ2MXNWVnFWX3J1SWN4STR6T0ZuOHg1RFZTbEw5ZkdpVzVqTDBDZThuYjRDT0NyR2VLNU5zeWk2S0JjaFZydDUwbjlVajJVYzZtUXBnU1UtSGZRXzRzU2dvWGdsaHYzRG12T1VVbUVTSjEzcGpCQ29YUDZPdW8wcnJScTdwamhYc1dXUUFFVENSWEVVVVN",
-   "izvor": "Hindustan Times",
-   "chas": "2026-11-04T09:54:07Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Златото и среброто поскъпват на фона на движението на долара"
-  },
-  {
-   "zaglavie": "Fed holds rates steady as it awaits 'accumulation of more information'",
-   "vryzka": "https://news.google.com/rss/articles/CBMirgFBVV95cUxNY2dGbEU4Q0hXOWFVVnJCbTkxZUJ6QTdseHpwWllUUWtUcWViQkR0TUdjSndmVk0wUnJaUHdmbkNpTXJITFJZOFhvUU5kUm9zYzhJYVR2NGxHdko4Y3IyOHZvUDNGMmlxcWZvWlc2dndzeDRTcDNZM1FfeFd3WDhIMC1HVFVWWUtKQXNVUnJobEpXM1dsN0VIcE9fekxLSWFvaHlQT3k5OWloLWxYd0E?oc=5",
-   "izvor": "Morganton News Herald",
-   "chas": "2026-11-04T09:52:51Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": "Фед запази лихвата"
-  },
-  {
-   "zaglavie": "Copper and conflict trigger profit surge for Buffett-backed Japanese commodity traders",
-   "vryzka": "https://www.ft.com/content/656f10c4-26ec-430e-adfa-dcadf0dd61ff?syn-25a6b1a6=1",
-   "izvor": "Financial Times",
-   "chas": "2026-11-04T09:42:01Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "FT пазари",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
    "zaglavie": "Federal Reserve issues FOMC statement",
    "vryzka": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm",
    "izvor": "Fed",
    "chas": "2026-10-28T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed всички",
+   "emisiya": "Fed политика",
    "chas_ot_iztochnika": true,
    "duma": "fomc",
-   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
+   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   },
   {
@@ -2635,6 +2639,6 @@
    "bg": "Реч на член на Фед (Bowman)"
   }
  ],
- "s_bg_red": 68,
+ "s_bg_red": 65,
  "mahnati_ezik": 1
 }
