@@ -1,44 +1,51 @@
 {
- "kogato": "2026-11-04T00:03:52Z",
- "sekundi": 1.09,
+ "kogato": "2026-11-04T00:14:57Z",
+ "sekundi": 10.07,
  "broi": 200,
- "novi_tozi_pyt": 3,
+ "novi_tozi_pyt": 0,
  "iztochnici_ok": [
-  "Fed политика",
-  "Fed речи",
   "Fed всички",
   "MarketWatch",
+  "Fed политика",
+  "Fed речи",
   "Investing",
   "Yahoo долар",
   "Yahoo злато",
   "CNBC",
   "FT пазари",
-  "Google Fed",
-  "Google злато",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google злато",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  },
+  {
+   "ime": "Google Fed",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.29с",
-  "новини · FT пазари · 25 бр. за 0.29с",
-  "новини · Fed всички · 7 бр. за 0.08с",
+  "новини · CNBC · 30 бр. за 0.24с",
+  "новини · FT пазари · 25 бр. за 0.32с",
+  "новини · Fed всички · 7 бр. за 0.05с",
   "новини · Fed политика · 15 бр. за 0.06с",
-  "новини · Fed речи · 15 бр. за 0.07с",
-  "новини · Google Fed · 40 бр. за 0.4с",
-  "новини · Google злато · 40 бр. за 0.47с",
-  "новини · Investing · 10 бр. за 0.12с",
-  "новини · MarketWatch · 10 бр. за 0.09с",
-  "новини · Mining.com · 36 бр. за 1.02с",
-  "новини · Yahoo долар · 16 бр. за 0.14с",
-  "новини · Yahoo злато · 18 бр. за 0.16с",
-  "новини · български ред: 56 от 200 · махнати по език: 2"
+  "новини · Fed речи · 15 бр. за 0.06с",
+  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Investing · 10 бр. за 0.11с",
+  "новини · MarketWatch · 10 бр. за 0.05с",
+  "новини · Mining.com · 36 бр. за 0.7с",
+  "новини · Yahoo долар · 16 бр. за 0.13с",
+  "новини · Yahoo злато · 18 бр. за 0.14с",
+  "новини · български ред: 56 от 200 · махнати по език: 0"
  ],
  "novini": [
   {
    "zaglavie": "First polls close in high-stakes vote for control of US Congress",
    "vryzka": "https://www.ft.com/content/77c2eaca-4fe1-4c69-b3bd-c517b045ff37?syn-25a6b1a6=1",
    "izvor": "Financial Times",
-   "chas": "2026-11-03T23:37:44Z",
+   "chas": "2026-11-04T00:04:02Z",
    "vazhnost": 1,
    "za": "общо",
    "emisiya": "FT пазари",
@@ -2615,10 +2622,10 @@
    "chas": "2026-10-28T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed политика",
+   "emisiya": "Fed всички",
    "chas_ot_iztochnika": true,
    "duma": "fomc",
-   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
+   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   },
   {
@@ -2636,5 +2643,5 @@
   }
  ],
  "s_bg_red": 56,
- "mahnati_ezik": 2
+ "mahnati_ezik": 0
 }
