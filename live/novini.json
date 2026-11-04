@@ -1,46 +1,65 @@
 {
- "kogato": "2026-11-04T02:04:53Z",
- "sekundi": 8.04,
+ "kogato": "2026-11-04T02:15:37Z",
+ "sekundi": 0.77,
  "broi": 200,
- "novi_tozi_pyt": 0,
+ "novi_tozi_pyt": 4,
  "iztochnici_ok": [
   "MarketWatch",
-  "Fed всички",
   "Fed речи",
-  "Investing",
   "Fed политика",
+  "Fed всички",
+  "Investing",
   "Yahoo злато",
   "Yahoo долар",
-  "CNBC",
   "FT пазари",
+  "CNBC",
+  "Google злато",
+  "Google Fed",
   "Mining.com"
  ],
- "iztochnici_padnali": [
-  {
-   "ime": "Google Fed",
-   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
-  },
-  {
-   "ime": "Google злато",
-   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
-  }
- ],
+ "iztochnici_padnali": [],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.29с",
-  "новини · FT пазари · 25 бр. за 0.4с",
+  "новини · CNBC · 30 бр. за 0.38с",
+  "новини · FT пазари · 25 бр. за 0.29с",
   "новини · Fed всички · 7 бр. за 0.09с",
-  "новини · Fed политика · 15 бр. за 0.17с",
-  "новини · Fed речи · 15 бр. за 0.1с",
-  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
-  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
-  "новини · Investing · 10 бр. за 0.12с",
-  "новини · MarketWatch · 10 бр. за 0.06с",
-  "новини · Mining.com · 36 бр. за 0.76с",
-  "новини · Yahoo долар · 15 бр. за 0.27с",
-  "новини · Yahoo злато · 18 бр. за 0.26с",
-  "новини · български ред: 53 от 200 · махнати по език: 0"
+  "новини · Fed политика · 15 бр. за 0.07с",
+  "новини · Fed речи · 15 бр. за 0.05с",
+  "новини · Google Fed · 40 бр. за 0.53с",
+  "новини · Google злато · 40 бр. за 0.52с",
+  "новини · Investing · 10 бр. за 0.11с",
+  "новини · MarketWatch · 10 бр. за 0.04с",
+  "новини · Mining.com · 36 бр. за 0.7с",
+  "новини · Yahoo долар · 15 бр. за 0.26с",
+  "новини · Yahoo злато · 18 бр. за 0.25с",
+  "новини · български ред: 56 от 200 · махнати по език: 0"
  ],
  "novini": [
+  {
+   "zaglavie": "Democrats score early victories in battle for Congress",
+   "vryzka": "https://www.ft.com/content/77c2eaca-4fe1-4c69-b3bd-c517b045ff37?syn-25a6b1a6=1",
+   "izvor": "Financial Times",
+   "chas": "2026-11-04T02:10:48Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "FT пазари",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "Central Bank Buying Offsets Weaker Retail Gold Demand in Q3",
+   "vryzka": "https://news.google.com/rss/articles/CBMimgFBVV95cUxPZ204U0xLaldUSzBNb3liTkZIU0xIZjlwclF4X1hQX2tUSndtb0Q1NXhCMEJqZmtsMnBneFFOUlFwNVZLY21ubVUxWm1FQmNkcnhDSXRsc0lJOGlKLURyNzkyR21TdTNtdXdMMXBMd3FKTlBZeEtTV0NpaGJRVG9Vdlk0SFdJSDJUSG1iMTRKVjJJdEpHUEU0TFZB?oc=5",
+   "izvor": "Crux Investor",
+   "chas": "2026-11-04T02:08:39Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": "Централни банки купуват злато"
+  },
   {
    "zaglavie": "Democrats clinch battleground Senate races in Georgia and North Carolina",
    "vryzka": "https://www.ft.com/content/77c2eaca-4fe1-4c69-b3bd-c517b045ff37?syn-25a6b1a6=1",
@@ -313,6 +332,19 @@
    "duma": "gold",
    "zashto": "Пряко за златото.",
    "bg": null
+  },
+  {
+   "zaglavie": "Fed Rate Decision Today: Here’s What Goldman Strategist Has To Say About Interest Rates",
+   "vryzka": "https://news.google.com/rss/articles/CBMi5AFBVV95cUxNSFZvYjdISWFiT0J3bFVXNWZLM1lCVHRxNWVNQVhxbWg2RmpyY0FNR2I1V2lvVW9GTE52dTNBLTFNVTFqQXpPTXpJelVBcEt5RTREQVMtRE1LN3N1SzdrQVd1SWx4VTIwVm5HdWFFbEZhbUo2SFJoUmJPcGl2Um1MdGZMYlVKYzVXMnlyVFlMdjFvTzU5eFAwZF9FU3lRSjcyR0FiV2NEdFgzMVpWdjViejQ5WEI0bVZ0SnU4U2JTQ3ZGZlhESnVaMVU3YkFCUnZEZmMzbnBqYjBsTWRDWkcyRE9zakg?oc=5",
+   "izvor": "Stocktwits",
+   "chas": "2026-11-03T23:06:20Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": "Решението на Фед за лихвата"
   },
   {
    "zaglavie": "Polls begin to close in US midterms that double as referendum on Trump’s presidency",
@@ -1057,12 +1089,12 @@
   },
   {
    "zaglavie": "Kinross Gold (TSX:K) Reported US$4,249 Realized Gold Prices In Q3 2026",
-   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/kinross-gold-tsx-k-reported-180808907.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
+   "vryzka": "https://news.google.com/rss/articles/CBMiggFBVV95cUxNUTE2NnJXVndmOFFRM0diY1JST2hXQ29ua0FtcXdKVHlpcnZSRnRPcjRnb3FtTVBWZUZKMzdFWHNQNEl4clFDeVhQTktnOUdYOUsxLTJQWnZFN0FhcHVGOExQaEo3M2tqallFTnAxdVU0WDE2V1FLUXE3RE82VklaSlNn?oc=5",
+   "izvor": "Yahoo Finance Singapore",
    "chas": "2026-11-03T18:08:08Z",
    "vazhnost": 2,
    "za": "злато",
-   "emisiya": "Yahoo злато",
+   "emisiya": "Google злато",
    "chas_ot_iztochnika": true,
    "duma": "gold",
    "zashto": "Пряко за златото.",
@@ -2031,6 +2063,19 @@
    "bg": null
   },
   {
+   "zaglavie": "Nick Timiraos: Sy Picon downplayed concerns over higher Fed rates in early 2000",
+   "vryzka": "https://news.google.com/rss/articles/CBMiggFBVV95cUxOX0d0NEJlT2NMd2wwUXR2alEzOHNFQTY5Rm5iNFd1Um5wVlpZbGRCWWstMVl4NlNJV3NTSkJ0STgxTm9QRjRha09oZnh3M0RuUFNENDBzS1VCSlVRU0RlMzdyQWw5cE5vOG9TVTUxS08xSXBPVktYeUV5YzJvMC1CbzZ3?oc=5",
+   "izvor": "Traders Union",
+   "chas": "2026-11-03T14:05:16Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": "За лихвата на Фед"
+  },
+  {
    "zaglavie": "The Fed paused. Stocks stalled. Underneath, everything moved.",
    "vryzka": "https://news.google.com/rss/articles/CBMipgFBVV95cUxOaW5MZXZ5WnNiLWl5VlA4bUdoVEFUdlhBYm1aTUJYZVVUT1NuV1BISkFmbmgxc0RicTd3bmo3X0dweDZvX0lOczY1bFpVNWZySTFRSmVxRXVBdGlENVFpblJtMkstYkh5ZE5CR1VKRVNQbHZvQnIwa3hkZW5RUEZCMGdkTm81d1hYbGRzZEdJajUzek9xd0hFUU9fRHZ4SzhVVUxGVUlB?oc=5",
    "izvor": "InvestmentNews",
@@ -2278,6 +2323,19 @@
    "bg": "За вдигане на лихвата от Фед"
   },
   {
+   "zaglavie": "Weaker dollar views stick running into US midterms, but strategists brace for resilience: Reuters poll",
+   "vryzka": "https://news.google.com/rss/articles/CBMiywFBVV95cUxNZG9vVV9keDZ5ZlJPNzRKVVpxZUVZNkxia3ZPcnFFU3pHYkF5SnR3MkJkQ0s5d0MwUkRJM1JGdk40VFYwbWxhQ29NWHZxbWluSUNiMWF4YTZZcWgtcVhsZFM3VjE1NXFBRXpsOFItUTkxeExjLVdRZnVPeFQ1eFBiYjZGV0pDcHhVeXNyUGQ0VVNkVEZjUUY2Z1dfeFpsNVloMTNabXVWaUlObkEzbk5MTmtPOF9USC1BUmJDLXYybFhhdXRQM2RvLUJfMA?oc=5",
+   "izvor": "WTVB",
+   "chas": "2026-11-03T13:13:25Z",
+   "vazhnost": 2,
+   "za": "долар",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "dollar",
+   "zashto": "Златото се мери в долари: по-силен долар обикновено значи по-евтино злато.",
+   "bg": null
+  },
+  {
    "zaglavie": "How Investors May Respond To Alphabet Stock Euro Bond Sale",
    "vryzka": "https://finance.yahoo.com/markets/stocks/articles/investors-may-respond-alphabet-stock-130935219.html?.tsrc=rss",
    "izvor": "Yahoo Finance",
@@ -2460,19 +2518,6 @@
    "bg": "Минна компания съобщава резултати от сондажи за злато"
   },
   {
-   "zaglavie": "Weaker dollar views stick running into US midterms, but strategists brace for resilience: Reuters poll",
-   "vryzka": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxNOGNEXzJXRzA3NUV2WE03WmJ1X0tyWHNnUnV6MnJlRkltM3JWcjFNMVRLdXpjalpOdTRnY3BraVFOMEZjeWNseWdWR3NXaHBDcEM5VllaRkpleTJYTXdWaVdwZVlleXdNX0dUVFNldnBYaU9zaVdxc3dIWm9SbHU0a2Y2bmlFVDJtbkdCRkdaOVV5Nmk1bmZMYW44cElpNE1oc2lzRWtQZU5lOGpWbjFQZzk3X2dGWFdEVUhST0hfY1F2M2ZLOEd3NA?oc=5",
-   "izvor": "WTAQ",
-   "chas": "2026-11-03T12:28:22Z",
-   "vazhnost": 2,
-   "za": "долар",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "dollar",
-   "zashto": "Златото се мери в долари: по-силен долар обикновено значи по-евтино злато.",
-   "bg": null
-  },
-  {
    "zaglavie": "11 bargain-priced stocks of companies that have huge growth potential over the next two years",
    "vryzka": "https://www.marketwatch.com/story/11-bargain-priced-stocks-of-companies-that-have-huge-growth-potential-over-the-next-two-years-d62618e6?mod=mw_rss_topstories",
    "izvor": "MarketWatch",
@@ -2564,68 +2609,16 @@
    "bg": null
   },
   {
-   "zaglavie": "My stepmother wants me to repay my late father’s $40,000 wedding gift. Should I oblige?",
-   "vryzka": "https://www.marketwatch.com/story/shes-a-type-a-personality-my-stepmother-wants-me-to-repay-my-late-fathers-40-000-wedding-gift-should-i-oblige-51fc64f7?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-11-03T12:15:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
-   "zaglavie": "Peter Schiff Warns Interest on National Debt Will Pass Social Security Next Year: ‘The Biggest Line in the Budget...’",
-   "vryzka": "https://news.google.com/rss/articles/CBMi_wFBVV95cUxNV0dXWVZYMXlvMkNSaU55aVBqSUlOd3RtZE80TlFGSVc3SGcxZkJpaGxBaUZrYVpxNVFmbWg0OFB0S2dQdm5pajZOUW5qcW9lM0pZZWZLcmMwbm1LUVBYenA1YlR3MVJiVGFOOVItN19TN25IY3FmS3lpYV9udUpuNUNNWDVJR2pIV2NZU05JVE1MQ1JVcWZTYjd3RjEtdlVESDNqRkpNa3pIZW1XZ2liM045SlNjM2lLRUpXdTRWWTNoMWhSTWpkMWtoVV92SnlNS0p3RTY4ZmEtbWQ5Y2tkbEFBOEV1S2ZBV1RuY3pwVVB2VHRiWkdaaVRQb0pOWmM?oc=5",
-   "izvor": "TradingView",
-   "chas": "2026-11-03T12:14:27Z",
-   "vazhnost": 1,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
-   "zaglavie": "The stock market loves gridlock. But midterm elections won’t resolve two big money fights.",
-   "vryzka": "https://www.marketwatch.com/story/the-stock-market-loves-gridlock-but-midterm-elections-wont-resolve-two-big-money-fights-97ed4f64?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-11-03T12:12:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
-   "zaglavie": "Gold Dives Below $4000 as Bearish Momentum Persists",
-   "vryzka": "https://www.investing.com/analysis/gold-dives-below-4000-as-bearish-momentum-persists-200690774",
-   "izvor": "Investing.com",
-   "chas": "2026-11-03T12:10:00Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Investing",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": null
-  },
-  {
    "zaglavie": "Federal Reserve issues FOMC statement",
    "vryzka": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm",
    "izvor": "Fed",
    "chas": "2026-10-28T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed всички",
+   "emisiya": "Fed политика",
    "chas_ot_iztochnika": true,
    "duma": "fomc",
-   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
+   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   },
   {
@@ -2642,6 +2635,6 @@
    "bg": "Реч на член на Фед (Bowman)"
   }
  ],
- "s_bg_red": 53,
+ "s_bg_red": 56,
  "mahnati_ezik": 0
 }
