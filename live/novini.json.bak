@@ -1,39 +1,69 @@
 {
- "kogato": "2026-11-04T04:02:17Z",
- "sekundi": 0.75,
+ "kogato": "2026-11-04T04:13:12Z",
+ "sekundi": 1.29,
  "broi": 200,
- "novi_tozi_pyt": 3,
+ "novi_tozi_pyt": 2,
  "iztochnici_ok": [
   "Fed речи",
   "Fed всички",
   "Fed политика",
   "Investing",
+  "Yahoo злато",
+  "Yahoo долар",
   "MarketWatch",
-  "Google Fed",
   "CNBC",
   "FT пазари",
   "Google злато",
-  "Yahoo долар",
-  "Yahoo злато",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google Fed",
+   "greshka": "празна емисия"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.39с",
-  "новини · FT пазари · 25 бр. за 0.41с",
-  "новини · Fed всички · 7 бр. за 0.1с",
-  "новини · Fed политика · 15 бр. за 0.1с",
-  "новини · Fed речи · 15 бр. за 0.09с",
-  "новини · Google Fed · 40 бр. за 0.26с",
-  "новини · Google злато · 40 бр. за 0.43с",
-  "новини · Investing · 10 бр. за 0.17с",
-  "новини · MarketWatch · 10 бр. за 0.25с",
-  "новини · Mining.com · 36 бр. за 0.69с",
-  "новини · Yahoo долар · 9 бр. за 0.46с",
-  "новини · Yahoo злато · 16 бр. за 0.47с",
+  "новини · CNBC · 30 бр. за 0.2с",
+  "новини · FT пазари · 25 бр. за 0.25с",
+  "новини · Fed всички · 7 бр. за 0.06с",
+  "новини · Fed политика · 15 бр. за 0.07с",
+  "новини · Fed речи · 15 бр. за 0.06с",
+  "новини · Google Fed · ПАДНА: празна емисия",
+  "новини · Google злато · 40 бр. за 0.52с",
+  "новини · Investing · 10 бр. за 0.08с",
+  "новини · MarketWatch · 10 бр. за 0.18с",
+  "новини · Mining.com · 36 бр. за 0.8с",
+  "новини · Yahoo долар · 9 бр. за 0.15с",
+  "новини · Yahoo злато · 16 бр. за 0.14с",
   "новини · български ред: 63 от 200 · махнати по език: 0"
  ],
  "novini": [
+  {
+   "zaglavie": "Democrat James Talarico wins Texas Senate seat as blue wave sweeps US",
+   "vryzka": "https://www.ft.com/content/77c2eaca-4fe1-4c69-b3bd-c517b045ff37?syn-25a6b1a6=1",
+   "izvor": "Financial Times",
+   "chas": "2026-11-04T04:10:33Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "FT пазари",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "Crisis widens at top platinum refiner as probe exposes metal test manipulation",
+   "vryzka": "https://www.ft.com/content/97ce0d59-0d82-4f22-8ac1-d1b299c5b9d7",
+   "izvor": "Financial Times",
+   "chas": "2026-11-04T04:00:07Z",
+   "vazhnost": 1,
+   "za": "злато",
+   "emisiya": "FT пазари",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
   {
    "zaglavie": "Democrats score early victories over Trump’s Republicans in battle for Congress",
    "vryzka": "https://www.ft.com/content/77c2eaca-4fe1-4c69-b3bd-c517b045ff37?syn-25a6b1a6=1",
@@ -124,6 +154,19 @@
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
    "bg": "Цената на златото днес"
+  },
+  {
+   "zaglavie": "Gold Steadies as Traders Track Iran Talk Prospects, US Midterms",
+   "vryzka": "https://news.google.com/rss/articles/CBMiswFBVV95cUxPWVB3Y2J3bG9Ed1BDRjVvY1dIZUFhd0JzRWJ6VTRtRWdLNm13R294UVNEejBhTVVuNkdvWXNQRzZzYTV5ZV9nRWwydHRjQ3BfaTJkMFFVSGNmcTNlQVlfNUtld2xjaDVHNHpKQkdXS19jQnZ0ZzNWTUxuejUzemVBOHNGOGktaExwaExwaXJ6bGd4eUZUWkw0a29OWkZMc1E1QVFVWFJVR1NaU1dLaC1NeUZsYw?oc=5",
+   "izvor": "Bloomberg.com",
+   "chas": "2026-11-04T02:43:00Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": "Златото е без голяма промяна"
   },
   {
    "zaglavie": "Stocks and dollar drop as Democrats enjoy big early wins",
@@ -223,7 +266,7 @@
    "chas": "2026-11-04T01:32:32Z",
    "vazhnost": 2,
    "za": "злато",
-   "emisiya": "Yahoo долар",
+   "emisiya": "Yahoo злато",
    "chas_ot_iztochnika": true,
    "duma": "gold",
    "zashto": "Пряко за златото.",
@@ -345,19 +388,6 @@
    "duma": null,
    "zashto": null,
    "bg": null
-  },
-  {
-   "zaglavie": "Gold Steadies as Traders Track Iran Talk Prospects, US Midterms",
-   "vryzka": "https://news.google.com/rss/articles/CBMiswFBVV95cUxPWVB3Y2J3bG9Ed1BDRjVvY1dIZUFhd0JzRWJ6VTRtRWdLNm13R294UVNEejBhTVVuNkdvWXNQRzZzYTV5ZV9nRWwydHRjQ3BfaTJkMFFVSGNmcTNlQVlfNUtld2xjaDVHNHpKQkdXS19jQnZ0ZzNWTUxuejUzemVBOHNGOGktaExwaExwaXJ6bGd4eUZUWkw0a29OWkZMc1E1QVFVWFJVR1NaU1dLaC1NeUZsYw?oc=5",
-   "izvor": "Bloomberg.com",
-   "chas": "2026-11-04T00:24:37Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Златото е без голяма промяна"
   },
   {
    "zaglavie": "Gold demand steady in Q3 supported by ETFs and central banks",
@@ -2580,32 +2610,6 @@
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null,
-   "bg": null
-  },
-  {
-   "zaglavie": "Stocks making the biggest moves premarket: Pfizer, Apple, Palantir, Zebra Technologies & more",
-   "vryzka": "https://www.cnbc.com/2026/11/03/stocks-making-the-biggest-moves-premarket-pfe-pltr-aapl-zbra.html",
-   "izvor": "CNBC",
-   "chas": "2026-11-03T12:47:45Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "CNBC",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
-   "zaglavie": "Kinross Gold's Q3 Earnings Beat Estimates on Higher Gold Prices",
-   "vryzka": "https://news.google.com/rss/articles/CBMipgFBVV95cUxPWm5ZNnZDaWlIaW5kUnNIU3l1eFlGV3drNzc0V2RLLUNTTnNkRnhPQVo2a29Ca3JBQXhfZW9KV1J1MTJTX3hKYmU5TWtuMk56d2FYcS1aUEdCcnRRbXJtM3dtVVM1R2pvem9HN2RoOVJFMXRteUtOZlF3QWoteGdFSkVHeVhCdVFNaG9xNExuZWN0ZzVqRFF0cU1Fci1TTlFDU1g5ajN3?oc=5",
-   "izvor": "Zacks Investment Research",
-   "chas": "2026-11-03T12:44:43Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
    "bg": null
   },
   {
