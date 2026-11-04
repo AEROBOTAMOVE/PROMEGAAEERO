@@ -1,46 +1,52 @@
 {
- "kogato": "2026-11-04T00:14:57Z",
- "sekundi": 10.07,
+ "kogato": "2026-11-04T00:25:37Z",
+ "sekundi": 0.85,
  "broi": 200,
- "novi_tozi_pyt": 0,
+ "novi_tozi_pyt": 2,
  "iztochnici_ok": [
+  "Fed политика",
   "Fed всички",
   "MarketWatch",
-  "Fed политика",
-  "Fed речи",
   "Investing",
-  "Yahoo долар",
+  "Fed речи",
   "Yahoo злато",
+  "Yahoo долар",
   "CNBC",
   "FT пазари",
+  "Google Fed",
+  "Google злато",
   "Mining.com"
  ],
- "iztochnici_padnali": [
-  {
-   "ime": "Google злато",
-   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
-  },
-  {
-   "ime": "Google Fed",
-   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
-  }
- ],
+ "iztochnici_padnali": [],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.24с",
-  "новини · FT пазари · 25 бр. за 0.32с",
-  "новини · Fed всички · 7 бр. за 0.05с",
-  "новини · Fed политика · 15 бр. за 0.06с",
-  "новини · Fed речи · 15 бр. за 0.06с",
-  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
-  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
-  "новини · Investing · 10 бр. за 0.11с",
-  "новини · MarketWatch · 10 бр. за 0.05с",
-  "новини · Mining.com · 36 бр. за 0.7с",
-  "новини · Yahoo долар · 16 бр. за 0.13с",
-  "новини · Yahoo злато · 18 бр. за 0.14с",
-  "новини · български ред: 56 от 200 · махнати по език: 0"
+  "новини · CNBC · 30 бр. за 0.25с",
+  "новини · FT пазари · 25 бр. за 0.37с",
+  "новини · Fed всички · 7 бр. за 0.1с",
+  "новини · Fed политика · 15 бр. за 0.09с",
+  "новини · Fed речи · 15 бр. за 0.18с",
+  "новини · Google Fed · 40 бр. за 0.34с",
+  "новини · Google злато · 40 бр. за 0.49с",
+  "новини · Investing · 10 бр. за 0.1с",
+  "новини · MarketWatch · 10 бр. за 0.1с",
+  "новини · Mining.com · 36 бр. за 0.77с",
+  "новини · Yahoo долар · 16 бр. за 0.24с",
+  "новини · Yahoo злато · 18 бр. за 0.21с",
+  "новини · български ред: 55 от 200 · махнати по език: 1"
  ],
  "novini": [
+  {
+   "zaglavie": "Here’s why AMD’s stock is rising — and sending a confident message about the AI trade",
+   "vryzka": "https://www.marketwatch.com/story/heres-why-amds-stock-is-rising-and-sending-a-confident-message-about-the-ai-trade-11cb4d8a?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-11-04T00:17:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
   {
    "zaglavie": "First polls close in high-stakes vote for control of US Congress",
    "vryzka": "https://www.ft.com/content/77c2eaca-4fe1-4c69-b3bd-c517b045ff37?syn-25a6b1a6=1",
@@ -52,6 +58,19 @@
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "Trump, Iran and the MOAB: Oil and Gold After the Midterms",
+   "vryzka": "https://news.google.com/rss/articles/CBMibkFVX3lxTE5ZbXN1c0VMMGwwYTYwWjZKM1NkWWJIdXBGRFNaR2VKNUo4cGl3RkpGbm13YkxSNlRuUW9rSjI2VHVZbS02S2EwQzJVZU04WkNMcUY3NG8yTFppUGwwRi00XzRfT19LVEp6MXNobFBR?oc=5",
+   "izvor": "CryptoTicker.io",
+   "chas": "2026-11-04T00:00:45Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
    "bg": null
   },
   {
@@ -2193,7 +2212,7 @@
    "chas": "2026-11-03T12:37:57Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Google злато",
+   "emisiya": "Google Fed",
    "chas_ot_iztochnika": true,
    "duma": "rates",
    "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
@@ -2590,42 +2609,16 @@
    "bg": "Новина от минния бранш (злато)"
   },
   {
-   "zaglavie": "Fury Intersects 3.88 g/t Gold over 17.8 Metres, including 18.78 g/t Au over 3.30 m, at Three Bluffs, Returning Wide Mineralized Intervals in All Five Holes",
-   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/fury-intersects-3-88-g-115900593.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-11-03T11:59:00Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Минна компания съобщава резултати от сондажи за злато"
-  },
-  {
-   "zaglavie": "Heliostar Metals Stock And The Road To 500,000 Ounces Of Gold",
-   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/heliostar-metals-stock-road-500-115702833.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-11-03T11:57:02Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": null
-  },
-  {
    "zaglavie": "Federal Reserve issues FOMC statement",
    "vryzka": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm",
    "izvor": "Fed",
    "chas": "2026-10-28T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed всички",
+   "emisiya": "Fed политика",
    "chas_ot_iztochnika": true,
    "duma": "fomc",
-   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
+   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   },
   {
@@ -2642,6 +2635,6 @@
    "bg": "Реч на член на Фед (Bowman)"
   }
  ],
- "s_bg_red": 56,
- "mahnati_ezik": 0
+ "s_bg_red": 55,
+ "mahnati_ezik": 1
 }
