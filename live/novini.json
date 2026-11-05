@@ -1,39 +1,85 @@
 {
- "kogato": "2026-11-05T01:03:51Z",
- "sekundi": 0.83,
+ "kogato": "2026-11-05T01:14:50Z",
+ "sekundi": 7.77,
  "broi": 200,
- "novi_tozi_pyt": 4,
+ "novi_tozi_pyt": 1,
  "iztochnici_ok": [
-  "MarketWatch",
-  "Fed политика",
   "Fed всички",
-  "Fed речи",
+  "Fed политика",
   "Investing",
+  "Fed речи",
+  "MarketWatch",
   "Yahoo долар",
   "Yahoo злато",
-  "CNBC",
-  "Google Fed",
   "FT пазари",
-  "Google злато",
+  "CNBC",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google злато",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  },
+  {
+   "ime": "Google Fed",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.26с",
-  "новини · FT пазари · 25 бр. за 0.36с",
-  "новини · Fed всички · 7 бр. за 0.15с",
-  "новини · Fed политика · 15 бр. за 0.1с",
-  "новини · Fed речи · 15 бр. за 0.16с",
-  "новини · Google Fed · 36 бр. за 0.3с",
-  "новини · Google злато · 40 бр. за 0.43с",
+  "новини · CNBC · 30 бр. за 0.48с",
+  "новини · FT пазари · 25 бр. за 0.41с",
+  "новини · Fed всички · 7 бр. за 0.11с",
+  "новини · Fed политика · 15 бр. за 0.11с",
+  "новини · Fed речи · 15 бр. за 0.18с",
+  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
   "новини · Investing · 10 бр. за 0.16с",
-  "новини · MarketWatch · 10 бр. за 0.05с",
-  "новини · Mining.com · 36 бр. за 0.77с",
-  "новини · Yahoo долар · 14 бр. за 0.25с",
-  "новини · Yahoo злато · 17 бр. за 0.27с",
-  "новини · български ред: 58 от 200 · махнати по език: 1"
+  "новини · MarketWatch · 10 бр. за 0.21с",
+  "новини · Mining.com · 36 бр. за 0.81с",
+  "новини · Yahoo долар · 14 бр. за 0.3с",
+  "новини · Yahoo злато · 17 бр. за 0.32с",
+  "новини · български ред: 57 от 200 · махнати по език: 0"
  ],
  "novini": [
+  {
+   "zaglavie": "Qualcomm’s stock falls as twin forces pressure sales",
+   "vryzka": "https://www.marketwatch.com/story/qualcomms-stock-falls-as-twin-forces-pressure-sales-fa161159?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-11-05T01:06:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "This year’s worst-performing S&P 500 stock is finally seeing some major relief",
+   "vryzka": "https://www.marketwatch.com/story/this-years-worst-performing-s-p-500-stock-is-finally-seeing-some-major-relief-fff3fa85?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-11-05T01:05:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "Figma’s stock dips as investors worry that AI momentum is coming at a high price",
+   "vryzka": "https://www.marketwatch.com/story/figmas-stock-falls-as-investors-worry-that-ai-momentum-is-coming-at-a-high-price-1aa2134d?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-11-05T01:03:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
   {
    "zaglavie": "McDonald’s tests new value menu as fast-food discount wars heat up",
    "vryzka": "https://www.marketwatch.com/story/mcdonalds-tests-new-value-menu-as-fast-food-discount-wars-heat-up-bfc57caf?mod=mw_rss_topstories",
@@ -282,19 +328,6 @@
    "bg": null
   },
   {
-   "zaglavie": "This year’s worst-performing S&P 500 stock is finally seeing some major relief",
-   "vryzka": "https://www.marketwatch.com/story/this-years-worst-performing-s-p-500-stock-is-finally-seeing-some-major-relief-fff3fa85?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-11-04T22:46:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
    "zaglavie": "Citi targets $5,000 gold as a Hormuz reopening could flip the Fed from hikes to cuts",
    "vryzka": "https://news.google.com/rss/articles/CBMivwFBVV95cUxNT1J3MU5yN3NTN3ZCWlRINXlpelVIOWVDZXoxLXl2SWM3Tksza3dkUHNEWXV6ZDhLc2dkTFAxcWM4ZmlaWERQMU14YTNJSkVYamYxd0RCeFcxcEJsWjNQbk1ZT25SNEhFT0NJTEZMdjM3V1B6NExzV2RiWWdUTVEzbzFFVlV4bzcxQkh1NTNjZ0JhQ1p4a0NsRjNjVTRhMW55TEpmUVNkLVFaN3ZiRzdyek1mOUpHRFp1RHdZTE5wZw?oc=5",
    "izvor": "investingLive",
@@ -445,19 +478,6 @@
    "vazhnost": 1,
    "za": "долар",
    "emisiya": "Yahoo долар",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
-   "zaglavie": "Qualcomm’s stock falls as twin forces pressure sales",
-   "vryzka": "https://www.marketwatch.com/story/qualcomms-stock-falls-as-twin-forces-pressure-sales-fa161159?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-11-04T22:03:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null,
@@ -2596,29 +2616,16 @@
    "bg": "Доларът поевтинява"
   },
   {
-   "zaglavie": "STLLR Gold Secures Mineral Recovery Permit for 225,000-Tonne Hollinger Tailings Sample, Advancing Potential Near-Term Gold Recovery Opportunity",
-   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/stllr-gold-secures-mineral-recovery-121500416.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-11-04T12:15:00Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Новина от минния бранш (злато)"
-  },
-  {
    "zaglavie": "Federal Reserve issues FOMC statement",
    "vryzka": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm",
    "izvor": "Fed",
    "chas": "2026-10-28T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed политика",
+   "emisiya": "Fed всички",
    "chas_ot_iztochnika": true,
    "duma": "fomc",
-   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
+   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   },
   {
@@ -2635,6 +2642,6 @@
    "bg": "Реч на член на Фед (Bowman)"
   }
  ],
- "s_bg_red": 58,
- "mahnati_ezik": 1
+ "s_bg_red": 57,
+ "mahnati_ezik": 0
 }
