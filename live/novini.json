@@ -1,14 +1,14 @@
 {
- "kogato": "2026-11-05T13:49:04Z",
- "sekundi": 0.83,
+ "kogato": "2026-11-05T13:59:20Z",
+ "sekundi": 0.98,
  "broi": 200,
- "novi_tozi_pyt": 3,
+ "novi_tozi_pyt": 5,
  "iztochnici_ok": [
-  "MarketWatch",
   "Fed всички",
+  "MarketWatch",
+  "Fed речи",
   "Fed политика",
   "Investing",
-  "Fed речи",
   "Yahoo долар",
   "Yahoo злато",
   "CNBC",
@@ -19,21 +19,86 @@
  ],
  "iztochnici_padnali": [],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.33с",
-  "новини · FT пазари · 25 бр. за 0.49с",
-  "новини · Fed всички · 7 бр. за 0.12с",
-  "новини · Fed политика · 15 бр. за 0.12с",
-  "новини · Fed речи · 15 бр. за 0.17с",
-  "новини · Google Fed · 33 бр. за 0.33с",
-  "новини · Google злато · 40 бр. за 0.52с",
+  "новини · CNBC · 30 бр. за 0.26с",
+  "новини · FT пазари · 25 бр. за 0.4с",
+  "новини · Fed всички · 7 бр. за 0.09с",
+  "новини · Fed политика · 15 бр. за 0.13с",
+  "новини · Fed речи · 15 бр. за 0.11с",
+  "новини · Google Fed · 35 бр. за 0.32с",
+  "новини · Google злато · 40 бр. за 0.49с",
   "новини · Investing · 10 бр. за 0.13с",
-  "новини · MarketWatch · 10 бр. за 0.08с",
-  "новини · Mining.com · 36 бр. за 0.75с",
-  "новини · Yahoo долар · 14 бр. за 0.18с",
-  "новини · Yahoo злато · 19 бр. за 0.21с",
-  "новини · български ред: 76 от 200 · махнати по език: 0"
+  "новини · MarketWatch · 10 бр. за 0.11с",
+  "новини · Mining.com · 36 бр. за 0.9с",
+  "новини · Yahoo долар · 14 бр. за 0.17с",
+  "новини · Yahoo злато · 19 бр. за 0.18с",
+  "новини · български ред: 77 от 200 · махнати по език: 0"
  ],
  "novini": [
+  {
+   "zaglavie": "European stocks approach all-time high on Democratic sweep",
+   "vryzka": "https://www.ft.com/content/1ca182d6-8d16-4ddb-98fb-cf933b4c3073?syn-25a6b1a6=1",
+   "izvor": "Financial Times",
+   "chas": "2026-11-05T13:58:58Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "FT пазари",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "Fed's Hammack favors gradual rate-hike path to lower inflation",
+   "vryzka": "https://news.google.com/rss/articles/CBMiswFBVV95cUxQT3RNUTZkYlRoUTdaSXlsWUVUVkNyekNHeG1md0dJTDc1eVNxNmstQk5WTGdIWUtGWE05eHpldzZoVnRJZ3VYcW9tZVRaMFcxM3pMaDFzOTllXzhmRG1xckR2ZWlYUl81SkVCX043ZXp6aWl6SzdxY0hDZEtsMFVjY2I5bl9ac0NnVjVLY2oybUp0blY4bzlha3BTaF95elhyY3c3dXcwVjF2b0FOQ3ZLSzZUOA?oc=5",
+   "izvor": "StreetInsider",
+   "chas": "2026-11-05T13:52:51Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": "Изказване на член на Фед (Hammack) за вдигане на лихвата и инфлацията"
+  },
+  {
+   "zaglavie": "Qualcomm’s stock falls as twin forces pressure sales",
+   "vryzka": "https://www.marketwatch.com/story/qualcomms-stock-falls-as-twin-forces-pressure-sales-fa161159?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-11-05T13:47:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "US Inflation Runs Hotter, So Why Did BoE Hike Rates and Not the Fed?",
+   "vryzka": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9EZ3pubnhPcHhFcDd2bHJSWklRRkxLV2ZITExtQzFzOGlfejZ0dVQ5Y3J4azdRa0JiZWpJUl9VaTNud2hfWk9RSDlaZFRibHBZNzhuQVlGT1hFdnphVVNOZXhhSTR5djhRUFRUYV9XWkU?oc=5",
+   "izvor": "BeInCrypto",
+   "chas": "2026-11-05T13:45:00Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "inflation",
+   "zashto": "Инфлацията е основната причина да се държи злато — то пази стойност, когато парите я губят.",
+   "bg": null
+  },
+  {
+   "zaglavie": "Gold (XAUUSD) Price Forecast: Gold Rally Targets 50-Day Moving Average",
+   "vryzka": "https://news.google.com/rss/articles/CBMiugFBVV95cUxPSnhQa0N3X3VZeENwS2p5X1FLRWd0d29wQWxyVV8zUlNGZTNRMUEzZ0RSa2dZUm5Pb3B3YkpMU19aU3Q0ZkVSMnZxV0hLaWpjdW5Xd3puY0dDTDNXS19pRlRUMGZFNmU2MWFqbnUzTXFCd3VzMG1SeDlwelB1TF9aUU1RWThMU05mUUVheGJxejJZMUQ4MXFqczdXcTM2U0FiYWVTeG9hYlhrc0RoWmJkSzIwZmpTcUtrYnc?oc=5",
+   "izvor": "FXEmpire",
+   "chas": "2026-11-05T13:43:19Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": "Анализ и прогноза за златото"
+  },
   {
    "zaglavie": "BofA’s Cabana: Too soon to declare end of Fed’s rate hikes in 2026",
    "vryzka": "https://news.google.com/rss/articles/CBMilgFBVV95cUxQSGFyR09idFV6U3U2VGNPaHl6bXFpNmZHb1JLU0tIc0JoaVJuUEVRZFlRbnZxaVFmcWJLV1huQUlNampzbDhBZVNWLXhucDBtYzVHZndwd1ZJQkVpLUpuY1hCbjRQU195VDhhSEtyQzl1cktBdnpKR3VmNmhQWEdZaXF6SzFyQlotRFExUkdnNURzTFNRbkE?oc=5",
@@ -46,6 +111,19 @@
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
    "bg": "За вдигане на лихвата от Фед"
+  },
+  {
+   "zaglavie": "Gold Price in Qatari Market Rises by 6.77 Percent This Week",
+   "vryzka": "https://news.google.com/rss/articles/CBMingFBVV95cUxPbWRKNERENGZMRzlqUWtkWTJsUFF3V1NxWmxaQWJBNVAwaDdiOVFNYm1PMnQ4M0xyeVlKLTdTSUNmN01UMWh0czZQTHdvWTQ4TUFCZURhMUVHMzhab1drdXNHcXhkX0dZYXFsVWQ2dWdQQnViSUszWFY1Q1ctNWlBUzlUNUVBdEl0UWNpLXEwLXE1SGxtMFNVa0RNc1FRUQ?oc=5",
+   "izvor": "Fana News -",
+   "chas": "2026-11-05T13:35:30Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": null
   },
   {
    "zaglavie": "BondBloxx Launches BBLX, a More Complete Core Bond ETF that Reflects Today’s Fixed Income Market",
@@ -332,19 +410,6 @@
    "duma": "rates",
    "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
    "bg": "Английската централна банка вдигна лихвата"
-  },
-  {
-   "zaglavie": "European stocks approach all-time high on Democratic sweep",
-   "vryzka": "https://www.ft.com/content/1ca182d6-8d16-4ddb-98fb-cf933b4c3073?syn-25a6b1a6=1",
-   "izvor": "Financial Times",
-   "chas": "2026-11-05T12:33:06Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "FT пазари",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
   },
   {
    "zaglavie": "Interest rates could go ‘significantly higher’ if oil prices keep climbing — even if the Iran war ends soon",
@@ -646,6 +711,19 @@
    "bg": null
   },
   {
+   "zaglavie": "MARKETS LIVE: US futures gain ahead of opening bell as momentum builds",
+   "vryzka": "https://www.proactiveinvestors.com/companies/news/1101271/markets-live-graphite-deal-helium-programme-and-pharma-agreement-feature-in-small-cap-roundup-1101271.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-05T12:00:00Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": null
+  },
+  {
    "zaglavie": "Opawica Initiates Tender Process for 10,000 Metre Drill Program at the Arrowhead -Copper -Gold -Zinc -Vms Project in the Abitibi Quebec",
    "vryzka": "https://finance.yahoo.com/markets/commodities/articles/opawica-initiates-tender-process-10-120000710.html?.tsrc=rss",
    "izvor": "Yahoo Finance",
@@ -685,21 +763,21 @@
    "bg": "Новина от минния бранш (злато)"
   },
   {
-   "zaglavie": "American Pacific Discovers New Gold Zone 800 Metres from Historical Mine Areas at Madison Copper-Gold Project, Montana",
-   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/american-pacific-discovers-gold-zone-120000467.html?.tsrc=rss",
+   "zaglavie": "First Majestic Announces Q3 2026 Financial Results and Quarterly Dividend Payment",
+   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/first-majestic-announces-q3-2026-120000051.html?.tsrc=rss",
    "izvor": "Yahoo Finance",
    "chas": "2026-11-05T12:00:00Z",
-   "vazhnost": 2,
+   "vazhnost": 1,
    "za": "злато",
    "emisiya": "Yahoo злато",
    "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Новина от минния бранш (злато)"
+   "duma": null,
+   "zashto": null,
+   "bg": null
   },
   {
-   "zaglavie": "First Majestic Announces Q3 2026 Financial Results and Quarterly Dividend Payment",
-   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/first-majestic-announces-q3-2026-120000051.html?.tsrc=rss",
+   "zaglavie": "Cartier Silver Intersects Highest Grade Interval to Date of 1,418.9 g/t AgEq (632 g/t Ag, 30.05% Pb and 15.45% Zn) over 0.77m in Drillhole DGL-06 on the Gonalbert Property, Department of Potosi, Southern Bolivia",
+   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/cartier-silver-intersects-highest-grade-120000459.html?.tsrc=rss",
    "izvor": "Yahoo Finance",
    "chas": "2026-11-05T12:00:00Z",
    "vazhnost": 1,
@@ -724,17 +802,17 @@
    "bg": null
   },
   {
-   "zaglavie": "Cartier Silver Intersects Highest Grade Interval to Date of 1,418.9 g/t AgEq (632 g/t Ag, 30.05% Pb and 15.45% Zn) over 0.77m in Drillhole DGL-06 on the Gonalbert Property, Department of Potosi, Southern Bolivia",
-   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/cartier-silver-intersects-highest-grade-120000459.html?.tsrc=rss",
+   "zaglavie": "American Pacific Discovers New Gold Zone 800 Metres from Historical Mine Areas at Madison Copper-Gold Project, Montana",
+   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/american-pacific-discovers-gold-zone-120000467.html?.tsrc=rss",
    "izvor": "Yahoo Finance",
    "chas": "2026-11-05T12:00:00Z",
-   "vazhnost": 1,
+   "vazhnost": 2,
    "za": "злато",
    "emisiya": "Yahoo злато",
    "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": "Новина от минния бранш (злато)"
   },
   {
    "zaglavie": "A strategist draws a 1980s parallel to argue bipartisanship could power a ‘bull stampede’",
@@ -2544,84 +2622,6 @@
    "bg": "Фондовият пазар и цената на петрола"
   },
   {
-   "zaglavie": "3 Australian Undervalued Stocks Trading At Least 44% Below Fair Value",
-   "vryzka": "https://finance.yahoo.com/markets/stocks/articles/3-australian-undervalued-stocks-trading-011454258.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-11-05T01:14:54Z",
-   "vazhnost": 1,
-   "za": "злато",
-   "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
-   "zaglavie": "Weaker Dollar Lifts Gold 2.4%, Supporting Unhedged Producer Recovery",
-   "vryzka": "https://news.google.com/rss/articles/CBMiowFBVV95cUxPQm5ZazdJYllQb0IyNGZiWElfd0M5OWFvRlNBLUNOWG9LaGMzeFRXeTNyZjJEQkVlblFjUFBPS1c5TW5zcV92T3BlTXVxa25XdTJWbll4Zm9WdS11Vl91UXVwMGVLb1djMUM1RlJ3QVl5Z1J1SWdQa0tIMFI2QzBkMnhvQ3d0bHEwUEdPeUduTnFWRmdVWGI2VWNwT3lvVlBNYzRB?oc=5",
-   "izvor": "Crux Investor",
-   "chas": "2026-11-05T01:12:43Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "dollar",
-   "zashto": "Златото се мери в долари: по-силен долар обикновено значи по-евтино злато.",
-   "bg": null
-  },
-  {
-   "zaglavie": "New Pacific Metals (TSX:NUAG) Secures Carangas Contracts, Is The Stock Too Pricey?",
-   "vryzka": "https://finance.yahoo.com/markets/stocks/articles/pacific-metals-tsx-nuag-secures-011043901.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-11-05T01:10:43Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": null
-  },
-  {
-   "zaglavie": "Gold Rate Today: Check 24K, 22K Gold Prices In Mumbai, Delhi, Chennai, Kolkata, Bengaluru On November 5",
-   "vryzka": "https://news.google.com/rss/articles/CBMi2AFBVV95cUxPenNpUjJGVzB1YVlvX1pKQ0pqSjBOa2xRaC0xTVFaajE2OUVUQXBWUXRhR1JVb3ZYSHJYMHRFWWY3T1VOTk1KUC1udHhseU5MSGZyUVhtUkVlb1RvOVoxdEp2YXhJcDhZQXZEMGtpNnE1cWFCSjloWEJhWkNIdVd4VlpGNHhHcThoWklMR2g5eDBUT0FpMzBkMzlDR2Vtai1CWlhFemtqWDFBZmtMNDdVVmNubDM5cWlLeGNkNThfX2hvQ0dXTTFzXzhZY2R2N19qZzRDcmdqSWrSAeABQVVfeXFMTmQ5anhTNnAyOWFRVUNmaDlZS3JSeHY1MFZDeWZUYW1YekZvRDNTWTFVVXdsVmRUb0JFcF9iakV3OWg4MlRtM0FRTEU0eGUwbUlDOURQd0ZOLVBoWFRPWHo1MTllTVBuSnh2eGJ3QkZHOXphU3lMYXJqMkEtNDI0QXpRdThDaVpWOXplNnFjQmFHVGRveHRNWG9qZlJSbTMwcm5Md2xtZDN5LTR1WWtsbDlta0tfQzFuNjdhdFU4R0p0Ri1zd2N",
-   "izvor": "NDTV Profit",
-   "chas": "2026-11-05T01:09:02Z",
-   "vazhnost": 3,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "rate",
-   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
-   "bg": "Цената на златото днес"
-  },
-  {
-   "zaglavie": "Qualcomm’s stock falls as twin forces pressure sales",
-   "vryzka": "https://www.marketwatch.com/story/qualcomms-stock-falls-as-twin-forces-pressure-sales-fa161159?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-11-05T01:06:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
-   "zaglavie": "This year’s worst-performing S&P 500 stock is finally seeing some major relief",
-   "vryzka": "https://www.marketwatch.com/story/this-years-worst-performing-s-p-500-stock-is-finally-seeing-some-major-relief-fff3fa85?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-11-05T01:05:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
    "zaglavie": "Federal Reserve issues FOMC statement",
    "vryzka": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm",
    "izvor": "Fed",
@@ -2635,6 +2635,6 @@
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   }
  ],
- "s_bg_red": 76,
+ "s_bg_red": 77,
  "mahnati_ezik": 0
 }
