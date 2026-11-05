@@ -1,39 +1,56 @@
 {
- "kogato": "2026-11-05T22:12:32Z",
- "sekundi": 0.85,
+ "kogato": "2026-11-05T22:23:28Z",
+ "sekundi": 12.24,
  "broi": 200,
- "novi_tozi_pyt": 5,
+ "novi_tozi_pyt": 1,
  "iztochnici_ok": [
-  "Google злато",
-  "Fed всички",
   "MarketWatch",
-  "Yahoo долар",
-  "Investing",
-  "Fed политика",
+  "Fed всички",
   "Fed речи",
+  "Fed политика",
+  "Investing",
+  "Yahoo долар",
   "Yahoo злато",
   "CNBC",
   "Google Fed",
-  "FT пазари",
-  "Mining.com"
+  "Google злато",
+  "FT пазари"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Mining.com",
+   "greshka": "TimeoutError: The read operation timed out"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.17с",
-  "новини · FT пазари · 25 бр. за 0.37с",
-  "новини · Fed всички · 6 бр. за 0.08с",
-  "новини · Fed политика · 15 бр. за 0.15с",
-  "новини · Fed речи · 15 бр. за 0.16с",
-  "новини · Google Fed · 40 бр. за 0.31с",
-  "новини · Google злато · 40 бр. за 0.04с",
-  "новини · Investing · 10 бр. за 0.14с",
-  "новини · MarketWatch · 10 бр. за 0.09с",
-  "новини · Mining.com · 36 бр. за 0.79с",
-  "новини · Yahoo долар · 15 бр. за 0.1с",
-  "новини · Yahoo злато · 18 бр. за 0.16с",
-  "новини · български ред: 76 от 200 · махнати по език: 0"
+  "новини · CNBC · 30 бр. за 0.34с",
+  "новини · FT пазари · 25 бр. за 0.64с",
+  "новини · Fed всички · 6 бр. за 0.09с",
+  "новини · Fed политика · 15 бр. за 0.09с",
+  "новини · Fed речи · 15 бр. за 0.09с",
+  "новини · Google Fed · 40 бр. за 0.38с",
+  "новини · Google злато · 40 бр. за 0.57с",
+  "новини · Investing · 10 бр. за 0.18с",
+  "новини · MarketWatch · 10 бр. за 0.03с",
+  "новини · Mining.com · ПАДНА: TimeoutError: The read operation timed out",
+  "новини · Yahoo долар · 15 бр. за 0.22с",
+  "новини · Yahoo злато · 18 бр. за 0.23с",
+  "новини · български ред: 75 от 200 · махнати по език: 0"
  ],
  "novini": [
+  {
+   "zaglavie": "Nasdaq drops into correction territory — here’s what typically happens next",
+   "vryzka": "https://www.cnbc.com/2026/11/05/nasdaq-drops-into-correction-territory-heres-what-typically-happens-next.html",
+   "izvor": "CNBC",
+   "chas": "2026-11-05T22:19:23Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "CNBC",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": "Американските акции падат"
+  },
   {
    "zaglavie": "Talisker Announces Filing of NI 43-101 Preliminary Economic Assessment for the Bralorne Gold Project",
    "vryzka": "https://finance.yahoo.com/markets/commodities/articles/talisker-announces-filing-ni-43-220600102.html?.tsrc=rss",
@@ -62,9 +79,9 @@
   },
   {
    "zaglavie": "The Fed Held Rates Near 4.00%, but Retirees May Earn Just $760 on $200,000",
-   "vryzka": "https://news.google.com/rss/articles/CBMifkFVX3lxTE0zNl9pVW5UWVVTT0F5OHZoRU5kUVd2bXBPTzVGQWRmSVVhZEJMTmdMYy1KNy1qWGVWQkNwMVNzYUlzeGRwX216TkdoN3FoM0tIQ3dxU3lnb2hZUXh2LUhVLXBhYnpmajNibWJPUFlmQm1TbWVFa0VWS1Z6Yl9rZw?oc=5",
-   "izvor": "WLUK",
-   "chas": "2026-11-05T22:03:14Z",
+   "vryzka": "https://news.google.com/rss/articles/CBMidkFVX3lxTE5QUnNxWGgtRW8weUk3RXlzVmRmOXJXLWJuZmRpYVdIdDV5VlN0TzZnc1NVNVBXR3QtSmtRYjZrME5ZTExaRVU5ak41a3pIbS05OEhyc3dlVkkyYVh1RC1JX2lTbmNSX3BlZzBWeEdwSVctU2tuYUE?oc=5",
+   "izvor": "WZTV",
+   "chas": "2026-11-05T22:03:12Z",
    "vazhnost": 3,
    "za": "лихви",
    "emisiya": "Google Fed",
@@ -85,6 +102,19 @@
    "duma": "gold",
    "zashto": "Пряко за златото.",
    "bg": "Златото поскъпва"
+  },
+  {
+   "zaglavie": "Baytex Announces Quarterly Dividend for January 2027",
+   "vryzka": "https://finance.yahoo.com/energy/articles/baytex-announces-quarterly-dividend-january-220100433.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-05T22:01:00Z",
+   "vazhnost": 1,
+   "za": "долар",
+   "emisiya": "Yahoo долар",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
   },
   {
    "zaglavie": "Precious Metal Selloff: Remember The All-Weather Portfolio (NYSEARCA:GLD)",
@@ -111,19 +141,6 @@
    "duma": null,
    "zashto": null,
    "bg": null
-  },
-  {
-   "zaglavie": "Nasdaq drops into correction territory — here’s what typically happens next",
-   "vryzka": "https://www.cnbc.com/2026/11/05/nasdaq-drops-into-correction-territory-heres-what-typically-happens-next.html",
-   "izvor": "CNBC",
-   "chas": "2026-11-05T21:57:33Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "CNBC",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": "Американските акции падат"
   },
   {
    "zaglavie": "Buy the dip or wait it out? Young investors react as retail stock selling hits one of its highest levels since COVID crash.",
@@ -1869,12 +1886,12 @@
   },
   {
    "zaglavie": "Gold prices today, Thursday, November 5, 2026: Did one of 2026's worst assets just get a boost?",
-   "vryzka": "https://news.google.com/rss/articles/CBMi-AFBVV95cUxOTGVHTnl0Y3ZuczE2NDMtZUVNNDVFMUZEWjlJYkp3Tk4yQzRLdlVYQmlTUGFqRVVuLTU3U01mXzlDNWV1VlhZQVN0bFNlcUw1SkpsTGVlVkJ1Mzk2ZkthOXZ1VkxpNHBWZ1RYYmliWmFvbnRPQzVPeFlDNmNXVF85TzdYaTJZY2F1Vy1idzlxakRWcmpqWWpKdmhaMjR1Qi12ZWJkUXhUVUtFUnY3NWMxelZJZDBxTS1ESWFzc3NyTTVmUlRZSEpWX2lldXcybkVXRGRncFVUUW51OC1PMEFHMF8waDhwNnNBa2UtYmU3RVJyREJBY1hfNQ?oc=5",
+   "vryzka": "https://finance.yahoo.com/personal-finance/investing/article/gold-prices-today-thursday-november-5-2026-did-one-of-2026s-worst-assets-just-get-a-boost-142402603.html?.tsrc=rss",
    "izvor": "Yahoo Finance",
    "chas": "2026-11-05T14:24:02Z",
    "vazhnost": 2,
    "za": "злато",
-   "emisiya": "Google злато",
+   "emisiya": "Yahoo долар",
    "chas_ot_iztochnika": true,
    "duma": "gold",
    "zashto": "Пряко за златото.",
@@ -2089,7 +2106,7 @@
    "bg": null
   },
   {
-   "zaglavie": "Trump’s Trouncing Gives Warsh Room for Maneuver on Rates",
+   "zaglavie": "Trump’s Trouncing Gives Warsh More Room for Maneuver on Rates",
    "vryzka": "https://news.google.com/rss/articles/CBMisgFBVV95cUxPRG92R3k3c1NabjdIMjFyNDZjbEpsSTNJaUhKa2J2VGZkcWFqUzB2VEVCbzEzQnJFbnRHTTJ6U2d2VUNVU2dCS2FHa09icDF1aGx5Rnl6MVdPbmJ2LVFnUXJVLW1pZV9GYVhKT1k4RlVNRGktdXR0dXVVUGZDN3ZjeHFjNGFKcXNzSVVRcnptRl9tcEh6Y0cxcEpfaVFkbVJYNDhUWFNOUjJaNFZvMmJIZEx3?oc=5",
    "izvor": "Bloomberg.com",
    "chas": "2026-11-05T13:52:32Z",
@@ -2102,7 +2119,7 @@
    "bg": null
   },
   {
-   "zaglavie": "Trump’s Trouncing Gives Warsh More Room for Maneuver on Rates",
+   "zaglavie": "Trump’s Trouncing Gives Warsh Room for Maneuver on Rates",
    "vryzka": "https://news.google.com/rss/articles/CBMisgFBVV95cUxPRG92R3k3c1NabjdIMjFyNDZjbEpsSTNJaUhKa2J2VGZkcWFqUzB2VEVCbzEzQnJFbnRHTTJ6U2d2VUNVU2dCS2FHa09icDF1aGx5Rnl6MVdPbmJ2LVFnUXJVLW1pZV9GYVhKT1k4RlVNRGktdXR0dXVVUGZDN3ZjeHFjNGFKcXNzSVVRcnptRl9tcEh6Y0cxcEpfaVFkbVJYNDhUWFNOUjJaNFZvMmJIZEx3?oc=5",
    "izvor": "Bloomberg.com",
    "chas": "2026-11-05T13:52:32Z",
@@ -2375,19 +2392,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Gold Price Forecast, Prediction: $4,000 Recovery Tests Safe-Haven Role",
-   "vryzka": "https://news.google.com/rss/articles/CBMixgFBVV95cUxOVnVJQzNxUXYzdUMzTHlBMV9ZNFdSYW9jbUpWU0FsczBVLXVpZXlrSXlSU0Y2RXNrWm14alI3M3hpSWtNSjRCMWFHeFIwZFllNzhfa0tEVGxlMldrMHY1RUp4ZDhhSDJZNWpzaUJ6bVQycWpXczdRcUlHQ3pKOUJ4QlBSZ3NZX2I2SzZXRkFqVFp6UUlQVXNGN2ZWdENMWm1tSEJ5RTQxVFNUVlRMc0JZNlRsRXBIS0VaZnNhSm8wcE50T0FkVkE?oc=5",
-   "izvor": "Exchange Rates UK",
-   "chas": "2026-11-05T13:00:00Z",
-   "vazhnost": 3,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "rates",
-   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
-   "bg": "Анализ и прогноза за златото"
-  },
-  {
    "zaglavie": "Fed Holds Rates Steady Amid Ongoing Rally in Manufacturing Technology Orders",
    "vryzka": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxQZHlVUmszSkVodlFVQ3lxZWkyalZwY2pnVS1ndjhRcEExTFJGMzA2b3NZTzRhWGJxTlNsUzdIZzhFZXNWNkV0ZWlUcEZWTTVvUjVOMld2TXlWUHYtdHpYR2ctSmIxaWViMHpzRDBEclpFcEhwNVYtMFViTDlFc1FKV1hWdDFaZ044TE9HSEVMSmhaX2Z1eUF6ZDB0Q0lONUFQaURWeERuR2xrYW9FSERRMWJsRWpMMlNpVEo4?oc=5",
    "izvor": "Quality Magazine",
@@ -2399,6 +2403,19 @@
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
    "bg": "Фед запази лихвата"
+  },
+  {
+   "zaglavie": "Gold Price Forecast, Prediction: $4,000 Recovery Tests Safe-Haven Role",
+   "vryzka": "https://news.google.com/rss/articles/CBMixgFBVV95cUxOVnVJQzNxUXYzdUMzTHlBMV9ZNFdSYW9jbUpWU0FsczBVLXVpZXlrSXlSU0Y2RXNrWm14alI3M3hpSWtNSjRCMWFHeFIwZFllNzhfa0tEVGxlMldrMHY1RUp4ZDhhSDJZNWpzaUJ6bVQycWpXczdRcUlHQ3pKOUJ4QlBSZ3NZX2I2SzZXRkFqVFp6UUlQVXNGN2ZWdENMWm1tSEJ5RTQxVFNUVlRMc0JZNlRsRXBIS0VaZnNhSm8wcE50T0FkVkE?oc=5",
+   "izvor": "Exchange Rates UK",
+   "chas": "2026-11-05T13:00:00Z",
+   "vazhnost": 3,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "rates",
+   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
+   "bg": "Анализ и прогноза за златото"
   },
   {
    "zaglavie": "Northern Discovery Metals Completes Acquisition of the Cibola Copper-Gold Project in British Columbia",
@@ -2609,19 +2626,6 @@
    "bg": "Новина от минния бранш (злато)"
   },
   {
-   "zaglavie": "Sitka Gold Drills 41.7 Metres of 2.20 g/t Gold from Surface, Including 1.2 Metres of 53.10 g/t Gold, Within 74.8 Metres of 1.31 g/t Gold, Confirming High-Grade Mineralization at the Contact Zone, RC Gold Project, Yukon",
-   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/sitka-gold-drills-41-7-123000922.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-11-05T12:30:00Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Минна компания съобщава резултати от сондажи за злато"
-  },
-  {
    "zaglavie": "Federal Reserve issues FOMC statement",
    "vryzka": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm",
    "izvor": "Fed",
@@ -2635,6 +2639,6 @@
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   }
  ],
- "s_bg_red": 76,
+ "s_bg_red": 75,
  "mahnati_ezik": 0
 }
