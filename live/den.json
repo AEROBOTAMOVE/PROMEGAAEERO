@@ -1,31 +1,31 @@
 {
- "den": "2026-11-05",
- "sazdadeno_utc": "2026-11-05T04:59:00Z",
- "v": "v19.47",
- "cena": 4139.55,
- "bazis": 9.95,
+ "den": "2026-11-06",
+ "sazdadeno_utc": "2026-11-06T05:00:00Z",
+ "v": "v19.48",
+ "cena": 4045.22,
+ "bazis": 7.61,
  "nosht": {
-  "ot": 4059.84,
-  "do": 4145.27,
-  "shirina": 85.43,
-  "atr": 85.05,
-  "dyal_atr": 1.004,
+  "ot": 4041.22,
+  "do": 4105.93,
+  "shirina": 64.71,
+  "atr": 81.76,
+  "dyal_atr": 0.791,
   "rezhim": "широка"
  },
  "vchera": {
-  "vryh": 4145.85,
-  "dyno": 4057.05,
-  "zatvaryane": 4143.66
+  "vryh": 4108.59,
+  "dyno": 4039.39,
+  "zatvaryane": 4044.19
  },
  "idei": [
   {
    "posoka": "long",
-   "nivo": 4059.84,
-   "stop": 4046.84,
+   "nivo": 4041.22,
+   "stop": 4028.22,
    "celi": [
-    4064.84,
-    4069.84,
-    4072.84
+    4046.22,
+    4051.22,
+    4054.22
    ],
    "izvor": "нощно дъно",
    "belezhka": "наблюдение, не вход: сигнал е само картата ВЛЕЗ · нивото е от живата цена на бота",
@@ -33,12 +33,12 @@
   },
   {
    "posoka": "short",
-   "nivo": 4145.27,
-   "stop": 4158.27,
+   "nivo": 4105.93,
+   "stop": 4118.93,
    "celi": [
-    4140.27,
-    4135.27,
-    4132.27
+    4100.93,
+    4095.93,
+    4092.93
    ],
    "izvor": "нощен връх",
    "belezhka": "наблюдение, не вход: сигнал е само картата ВЛЕЗ · нивото е от живата цена на бота",
@@ -47,8 +47,17 @@
  ],
  "sabitiya": [
   {
-   "ime": "Nonfarm Productivity",
-   "utc": "2026-11-05T13:30:00Z",
+   "ime": "FOMC Member Williams Speaks",
+   "utc": "2026-11-06T09:30:00Z",
+   "sila": "high",
+   "prozorec_min": [
+    20,
+    40
+   ]
+  },
+  {
+   "ime": "Nonfarm Payrolls",
+   "utc": "2026-11-06T13:30:00Z",
    "sila": "critical",
    "prozorec_min": [
     20,
@@ -56,8 +65,17 @@
    ]
   },
   {
-   "ime": "FOMC Member Barkin Speaks",
-   "utc": "2026-11-05T14:10:00Z",
+   "ime": "Michigan Consumer Sentiment",
+   "utc": "2026-11-06T15:00:00Z",
+   "sila": "high",
+   "prozorec_min": [
+    20,
+    40
+   ]
+  },
+  {
+   "ime": "FOMC Member Bowman Speaks",
+   "utc": "2026-11-06T17:15:00Z",
    "sila": "high",
    "prozorec_min": [
     20,
