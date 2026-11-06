@@ -1,39 +1,82 @@
 {
- "kogato": "2026-11-06T16:13:10Z",
- "sekundi": 0.97,
+ "kogato": "2026-11-06T16:23:24Z",
+ "sekundi": 0.83,
  "broi": 200,
- "novi_tozi_pyt": 2,
+ "novi_tozi_pyt": 5,
  "iztochnici_ok": [
-  "Fed всички",
-  "Fed политика",
   "Fed речи",
+  "Fed политика",
   "Investing",
+  "CNBC",
   "MarketWatch",
   "Yahoo злато",
-  "CNBC",
   "Yahoo долар",
+  "FT пазари",
   "Google Fed",
   "Google злато",
-  "Mining.com",
-  "FT пазари"
+  "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Fed всички",
+   "greshka": "HTTPError: HTTP Error 404: Not Found"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.18с",
-  "новини · FT пазари · 25 бр. за 0.91с",
-  "новини · Fed всички · 6 бр. за 0.05с",
-  "новини · Fed политика · 15 бр. за 0.06с",
-  "новини · Fed речи · 15 бр. за 0.07с",
+  "новини · CNBC · 30 бр. за 0.11с",
+  "новини · FT пазари · 25 бр. за 0.3с",
+  "новини · Fed всички · ПАДНА: HTTPError: HTTP Error 404: Not Found",
+  "новини · Fed политика · 15 бр. за 0.07с",
+  "новини · Fed речи · 15 бр. за 0.06с",
   "новини · Google Fed · 40 бр. за 0.37с",
-  "новини · Google злато · 40 бр. за 0.43с",
-  "новини · Investing · 10 бр. за 0.07с",
-  "новини · MarketWatch · 10 бр. за 0.09с",
-  "новини · Mining.com · 36 бр. за 0.78с",
-  "новини · Yahoo долар · 15 бр. за 0.2с",
-  "новини · Yahoo злато · 19 бр. за 0.17с",
-  "новини · български ред: 74 от 200 · махнати по език: 3"
+  "новини · Google злато · 40 бр. за 0.45с",
+  "новини · Investing · 10 бр. за 0.08с",
+  "новини · MarketWatch · 10 бр. за 0.16с",
+  "новини · Mining.com · 36 бр. за 0.77с",
+  "новини · Yahoo долар · 15 бр. за 0.23с",
+  "новини · Yahoo злато · 19 бр. за 0.19с",
+  "новини · български ред: 76 от 200 · махнати по език: 3"
  ],
  "novini": [
+  {
+   "zaglavie": "Cybertruck’s run comes to an end as Musk kills off pricey pet project",
+   "vryzka": "https://www.marketwatch.com/story/is-it-the-end-of-the-cybertruck-elon-musk-announces-factory-will-shift-production-3e33cafd?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-11-06T16:17:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "Fed seen sticking to December rate hike after jobs data",
+   "vryzka": "https://news.google.com/rss/articles/CBMimwFBVV95cUxQMF93ekZ4N2wtdW4zX1llS2FoZWpNVlhMLTRNOGVJTUktZmpLQUNBSzY2bW16Mm9mb3lrZERqNFZ6WkRmYkhBTG00Z2k2NFYyNTVLcmVBSkV5eVJRU1RwZFc5blM4MkRmcUxYU2hadXRWbVh0VXpjektqM1BGS3ZlZlNMeW43VWxmeE5TQm13d0E3bTVwUnp5dzFFNA?oc=5",
+   "izvor": "Reuters",
+   "chas": "2026-11-06T16:04:55Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": "Очаквания за по-висока лихва от Фед"
+  },
+  {
+   "zaglavie": "October Jobs Report Puts Another Fed Rate Hike in Focus",
+   "vryzka": "https://news.google.com/rss/articles/CBMivAFBVV95cUxPVUFMWU4zWDJCLTBESHNmNTc3WTVVbGJfU1BjQkFIdFc3ZGN3eVB1LW1TRVd0T0MyVll6LXVMbW9QWjhRR0J2N2plRHIya1R6WmJOaXdpSUJybDF1b05ldGtwZC1WbjVZSlNpR3ZXTXVTNUJUc2JaX2xOY3VfMW9UQlE0YXduRkJNOWgxMnFEZjNhOTc4WnpXZTRfTnNzRDBGNTRUaE1Qbi1mUkV5YTMtcGdQVGNUdFFsQ1Zkcw?oc=5",
+   "izvor": "Forbes",
+   "chas": "2026-11-06T15:56:57Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": "Данни за заетостта в САЩ"
+  },
   {
    "zaglavie": "Gold and Silver Rise for the Week as Tech, Crude and Copper Fall",
    "vryzka": "https://news.google.com/rss/articles/CBMikwFBVV95cUxPdnVNVnN2bjJPUXlteXJiYV9BRXA5Nk1oTlFxUDlCeTkzSEFzWXdCd2pmUlVzUzVrUHp0aW5xR2gzU05sTGstcTNhRl9iUEFGc0hZTjkxRF9oWlFKOU9CYmtSMG50Wmo3TmtLM1ROUnZyS191ajFYOTh5a1hoQnU5cmxWbWlGSXB3eDI5TXBnam5Ec2s?oc=5",
@@ -334,6 +377,19 @@
    "bg": null
   },
   {
+   "zaglavie": "US October Nonfarm Payrolls Surge by 165,000; Traders Bet on Fed Rate Hike in December",
+   "vryzka": "https://news.google.com/rss/articles/CBMidkFVX3lxTE9RMzBLWTdUbVBZa3k0b2NYSVV6cnZHYV9GOHlMQi1KNFdmbnViLUZjZnhpQ25LdlZKM2xjSWhPbW1BZ3FwZ29wdGFRUnZlaWlSSGdHSFVfZ0xXelBtY0FIbEE1T1VSZzA1UTJHcnNEYWhrUlpzVEE?oc=5",
+   "izvor": "BigGo Finance",
+   "chas": "2026-11-06T15:05:00Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "payrolls",
+   "zashto": "Заетостта в САЩ решава дали Fed ще пипне лихвата — оттам стига до златото.",
+   "bg": "Данни за работните места в САЩ (NFP)"
+  },
+  {
    "zaglavie": "October jobs report beats forecasts, lifting December Fed hike odds",
    "vryzka": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxPNEFTUzF2S2NOVnllN09GckVnVXlJT2JhMHd0YkZqRUxncEg3UmROcnYxb2hVNEJRVWtveTNwNmhYWGJJSFB0WkJBV2gxRWp5TWViSE5hVFJrR2ItMnhqV0JoZEsydlI5UFh6cHNKcGRZeV9XeGZiYUFQaHlGTWtzTGJVa25yS2NEMTl5Y08wcFp1bEt3cnZURktvajViWXpaNy1icXktMnFRbnk4T3RpNHY0Yy1mNXdL?oc=5",
    "izvor": "InvestmentNews",
@@ -540,6 +596,19 @@
    "duma": null,
    "zashto": null,
    "bg": null
+  },
+  {
+   "zaglavie": "What to Expect From the October Jobs Report",
+   "vryzka": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxQYXFwZzJLMGpqam1wd2RNSTZTNGVCWUtNZEotTFV6VnNqNEswY0VWdFlBdnc1OWZjcTZwNTFiTEVJaFIzS1hLUklJSGtqaFZnWXg0TnlMSEk1TEpkb2hpYlFILWdSaVdhb1RuaDNOVVgtZ3ViMTdEMm0tMHNLX0NvNWMxS1RWc1B2NU9v?oc=5",
+   "izvor": "Kiplinger",
+   "chas": "2026-11-06T14:28:33Z",
+   "vazhnost": 1,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": "Данни за заетостта"
   },
   {
    "zaglavie": "World embraces gold while US resists shift, advisor says",
@@ -842,8 +911,8 @@
   },
   {
    "zaglavie": "Blockbuster October jobs report keeps Fed rate hike in play for December",
-   "vryzka": "https://news.google.com/rss/articles/CBMivgFBVV95cUxQQmRfMVdUYVBQUW5kRHdyRlgxdkRRQ09nbjNOZWw5eHB5eElsQXhjZVRaeTE0SkhPMUM1X3dYekhsb0dURW5fbE5LNi0wODg3cEpJa3NUbU9XcE1DMlozbVJkVWlYajVqaEtmLUFpS0s0Ym40TUg0Q1pYYnd3SG5KMUJBbkhYZDNfekU2T1pQaHItdVN4LVJueFluXzZzMkhRZ3JzWW5Pb0tlYnFhZkxla1FuWGM5UHh2bXBOMUZ3?oc=5",
-   "izvor": "Yahoo! Finance Canada",
+   "vryzka": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxORW1NVUNPNUsyVWp0OHdncmZYSGpIOTBtbGk3MUFTallnZVJvR3lhT3RNemxzT3U3aXRfUDdCWHBMM1lOMzZKQ05sOUZkT3NvbHY3LTlVcW04OVRyT1NSWVlsOG42SVZMWTBWeFc3OXdHLXdRMkFreWZMbW1GZndud3hZX1Z1czBp?oc=5",
+   "izvor": "AOL.com",
    "chas": "2026-11-06T13:53:25Z",
    "vazhnost": 3,
    "za": "лихви",
@@ -852,19 +921,6 @@
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
    "bg": "Данни за заетостта в САЩ"
-  },
-  {
-   "zaglavie": "Traders raise bets of Fed rate hike after jobs report",
-   "vryzka": "https://news.google.com/rss/articles/CBMimwFBVV95cUxQMF93ekZ4N2wtdW4zX1llS2FoZWpNVlhMLTRNOGVJTUktZmpLQUNBSzY2bW16Mm9mb3lrZERqNFZ6WkRmYkhBTG00Z2k2NFYyNTVLcmVBSkV5eVJRU1RwZFc5blM4MkRmcUxYU2hadXRWbVh0VXpjektqM1BGS3ZlZlNMeW43VWxmeE5TQm13d0E3bTVwUnp5dzFFNA?oc=5",
-   "izvor": "Reuters",
-   "chas": "2026-11-06T13:51:45Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": "Очаквания за по-висока лихва от Фед"
   },
   {
    "zaglavie": "Strong October jobs report sends yields higher",
@@ -904,6 +960,19 @@
    "duma": null,
    "zashto": null,
    "bg": "Американските акции падат"
+  },
+  {
+   "zaglavie": "Traders raise bets of Fed rate hike after jobs report",
+   "vryzka": "https://news.google.com/rss/articles/CBMilwFBVV95cUxPZkJXSFFvWTE1ZHlObTRpejBSRHp6dkFwR0w0RC1MM1J0T2czdVVUTWJpNXVXWHFWYVNBVDdQd3ZlNW9IbTNqSkpadmN1Q2pkdmdqVUExTlI5RTlIYk9faUQ1NHJLUEdUMzVRb1JYRmRBQ1BnaHEtcXljOVBCREFwOE9ucWh2ZW94WUV3a19JcjY3aXpOWXd3?oc=5",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-06T13:44:02Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": "Очаквания за по-висока лихва от Фед"
   },
   {
    "zaglavie": "US job growth beats expectations in October; unemployment rate falls to 4.1%",
@@ -2557,84 +2626,19 @@
    "bg": "Петролът се връща нагоре"
   },
   {
-   "zaglavie": "Asian tech stocks sink",
-   "vryzka": "https://www.ft.com/content/b77ebe43-a017-4e63-af84-5bdec8f47648?syn-25a6b1a6=1",
-   "izvor": "Financial Times",
-   "chas": "2026-11-06T05:07:03Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "FT пазари",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
-   "zaglavie": "Gold price correction brings buyers back to jewellery stores, but demand shifts to lightweight pieces- Moneycontrol.com",
-   "vryzka": "https://news.google.com/rss/articles/CBMiugFBVV95cUxOV2FNNk5ySFo0dG1jYWd2LUJZaFRqcFNLQVpNaUhCOGpPV3lYSEVROGx3dTBGdnpTRkxnQ0kwTHlTN1lJVHNKRmVXSExPYzRQd3NoRVZ0Q2xEOG40Q0pNZTkxd1NmcTRIR2xRMXJXRmVBYlZpWUhvZ1VDVkhoQjlUNkkwNzN0ODJqa3lZZHpWYkx4WkpabGFIclJOVEROUkM5M0JxMHhEa2NCMHdLRHU2eFZ4VEh3SllyOWc?oc=5",
-   "izvor": "LinkedIn",
-   "chas": "2026-11-06T05:06:15Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": null
-  },
-  {
-   "zaglavie": "Gold Gets Cheaper By Over Rs 2,300 On Dhanteras; Prices Fall Below Rs 1,42,000. Should You Invest?",
-   "vryzka": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxNRmNlNldwRE5OeUFtU1NnWkU5TVRXclFWNFlsREVLN1lUbTFSQzNNQXVuU2xQX194b0lYeUxSV25kTlhXNVhrWmdYR2x6ZXdlMFdhNzhpQXF3ck5ZeXdjNUZwelFnTHJfOTloRF9FYjlFNldROFI1b21EcnlsUzFaOGk1QmoyUk5iNEc0TF9XTzFjb0JfcHp6cGUwbWNOaWV1R3ctT1VtSG9LOHlPZGh2MGl5aVZIQ2NFdmVxNkc5bmpZb1pyWEk5TWhDRDZ2bXpYNF9lenJn0gHeAUFVX3lxTFBIUHh0VmxZVDFnSjNEUy13ZGRBSzhqN0E3VUhmWHpaU1RxQWpwSmxxOW56ZmFxUTZabGEtdDZwUlFneWFMV1R1akFnMVA1eW04UnhrMk5jZUpsWE14MjNHek1jU3M0X2RtSVd6SVBxMkpqajY4S0dfZ0xPci1Gb2RCOTZtckxucl96MUduazF5NDNVTnpSUE1kZVlIb2xjdm5ZS19vZXE3VmxORGxja3pVV1NWWDd4aFJQZTM1dl9lNzlrNy1STkg",
-   "izvor": "NDTV Profit",
-   "chas": "2026-11-06T05:05:33Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": null
-  },
-  {
-   "zaglavie": "Gold drops 1% as strong U.S. payrolls boost dollar, yields",
-   "vryzka": "https://news.google.com/rss/articles/CBMirwFBVV95cUxORVdNVmUyT0ZSU0FWcFd6by11bjExUWl4SVp3M04ySXNJaElHLXEzbzBxbkY4cHlLbUxaNFFQenFaQWhDM1pkQm5iemlTejhkYWtRVEhmZm5SLWdlNHczMUs4TG1zbzJzUHhmRm9JNFBkd3J6UGpPTDg3UnlVRF9ldVZMT3hUeUI4eXA4OEs3ODRTUk41Qm1lSGRLU0dGWFhuaTBYX3B0Y3dteDJHNUFr0gG0AUFVX3lxTE5YYjlweVZndF95ZnBFbkw3b2pENzZjOVRPcVNyM1pleEt5czdSMXBRXzV3bXJZWmZEVkNqekltR0dvVEg2eXo3d2lOSjZFWU9mTzdCc3hiaHJvU0lyOUJiM2NRTVMtaTYxVGRPT0JCR01WVHZJeXRackVrTk9Ea0tPY25wTGVDc0duM3k4UHVGLU04ZW9qdXhRSy1lX3lxenpXcmk5NnZhbDRQVFAzV0pYVVlXaQ?oc=5",
-   "izvor": "CNBC",
-   "chas": "2026-11-06T05:03:22Z",
-   "vazhnost": 3,
-   "za": "злато",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "payrolls",
-   "zashto": "Заетостта в САЩ решава дали Fed ще пипне лихвата — оттам стига до златото.",
-   "bg": "Златото поевтинява на фона на данните за работните места в САЩ (NFP) и движението на долара"
-  },
-  {
-   "zaglavie": "Gold drops, on track for best week in over 2 months before U.S. payrolls",
-   "vryzka": "https://news.google.com/rss/articles/CBMirwFBVV95cUxORVdNVmUyT0ZSU0FWcFd6by11bjExUWl4SVp3M04ySXNJaElHLXEzbzBxbkY4cHlLbUxaNFFQenFaQWhDM1pkQm5iemlTejhkYWtRVEhmZm5SLWdlNHczMUs4TG1zbzJzUHhmRm9JNFBkd3J6UGpPTDg3UnlVRF9ldVZMT3hUeUI4eXA4OEs3ODRTUk41Qm1lSGRLU0dGWFhuaTBYX3B0Y3dteDJHNUFr0gG0AUFVX3lxTE5YYjlweVZndF95ZnBFbkw3b2pENzZjOVRPcVNyM1pleEt5czdSMXBRXzV3bXJZWmZEVkNqekltR0dvVEg2eXo3d2lOSjZFWU9mTzdCc3hiaHJvU0lyOUJiM2NRTVMtaTYxVGRPT0JCR01WVHZJeXRackVrTk9Ea0tPY25wTGVDc0duM3k4UHVGLU04ZW9qdXhRSy1lX3lxenpXcmk5NnZhbDRQVFAzV0pYVVlXaQ?oc=5",
-   "izvor": "CNBC",
-   "chas": "2026-11-06T05:03:22Z",
-   "vazhnost": 3,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "payrolls",
-   "zashto": "Заетостта в САЩ решава дали Fed ще пипне лихвата — оттам стига до златото.",
-   "bg": "Златото поевтинява преди данните за работните места в САЩ (NFP)"
-  },
-  {
    "zaglavie": "Federal Reserve issues FOMC statement",
    "vryzka": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm",
    "izvor": "Fed",
    "chas": "2026-10-28T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed всички",
+   "emisiya": "Fed политика",
    "chas_ot_iztochnika": true,
    "duma": "fomc",
-   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
+   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   }
  ],
- "s_bg_red": 74,
+ "s_bg_red": 76,
  "mahnati_ezik": 3
 }
