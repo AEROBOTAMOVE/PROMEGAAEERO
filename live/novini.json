@@ -1,39 +1,56 @@
 {
- "kogato": "2026-11-06T05:52:34Z",
- "sekundi": 0.75,
+ "kogato": "2026-11-06T06:03:22Z",
+ "sekundi": 0.92,
  "broi": 200,
- "novi_tozi_pyt": 1,
+ "novi_tozi_pyt": 2,
  "iztochnici_ok": [
-  "Fed всички",
-  "Fed речи",
-  "Fed политика",
-  "MarketWatch",
-  "Investing",
-  "CNBC",
   "Yahoo злато",
   "Yahoo долар",
+  "MarketWatch",
+  "Investing",
+  "Fed речи",
+  "Fed политика",
+  "CNBC",
   "FT пазари",
   "Google Fed",
   "Google злато",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Fed всички",
+   "greshka": "HTTPError: HTTP Error 404: Not Found"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.09с",
-  "новини · FT пазари · 25 бр. за 0.28с",
-  "новини · Fed всички · 6 бр. за 0.07с",
-  "новини · Fed политика · 15 бр. за 0.07с",
-  "новини · Fed речи · 15 бр. за 0.07с",
-  "новини · Google Fed · 40 бр. за 0.37с",
-  "новини · Google злато · 40 бр. за 0.42с",
-  "новини · Investing · 10 бр. за 0.09с",
-  "новини · MarketWatch · 10 бр. за 0.08с",
-  "новини · Mining.com · 36 бр. за 0.68с",
-  "новини · Yahoo долар · 16 бр. за 0.16с",
-  "новини · Yahoo злато · 17 бр. за 0.15с",
-  "новини · български ред: 74 от 200 · махнати по език: 2"
+  "новини · CNBC · 30 бр. за 0.26с",
+  "новини · FT пазари · 25 бр. за 0.31с",
+  "новини · Fed всички · ПАДНА: HTTPError: HTTP Error 404: Not Found",
+  "новини · Fed политика · 15 бр. за 0.15с",
+  "новини · Fed речи · 15 бр. за 0.14с",
+  "новини · Google Fed · 40 бр. за 0.33с",
+  "новини · Google злато · 40 бр. за 0.41с",
+  "новини · Investing · 10 бр. за 0.11с",
+  "новини · MarketWatch · 10 бр. за 0.09с",
+  "новини · Mining.com · 36 бр. за 0.86с",
+  "новини · Yahoo долар · 16 бр. за 0.1с",
+  "новини · Yahoo злато · 17 бр. за 0.09с",
+  "новини · български ред: 75 от 200 · махнати по език: 1"
  ],
  "novini": [
+  {
+   "zaglavie": "Ark Invest wants to bring some ‘disruptive innovation’ to interval funds",
+   "vryzka": "https://www.ft.com/content/dce2b9da-a4c6-4016-af78-7c41ac41a6b0",
+   "izvor": "Financial Times",
+   "chas": "2026-11-06T06:00:04Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "FT пазари",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
   {
    "zaglavie": "India Gold price today: Gold falls, according to FXStreet data",
    "vryzka": "https://news.google.com/rss/articles/CBMixAFBVV95cUxNZGs5eDJTX3NNQTE0WFZBRHc1QnlMQlBJVGZWV20yZmkyaFZwM3A0dGw5aXJlWmFORXMzeUJweWI5ZjJYUUZHOWVMbk1pM0JXSE1qSTF4VEFSNndkaWRxSGthR0d1YWQ4WXdBU0JiVkVlR2pLYkh2cnN4MHc2enVFYzJWUzZYRFpsNGZtNk5CcjNpRzFDaXF4Zm1tdHhaVlZiMFJIMkIyQkxOa3dGQzNWWU9QYnVycUMzeEdqWDFpMFQ1Tjh3?oc=5",
@@ -74,6 +91,19 @@
    "bg": null
   },
   {
+   "zaglavie": "Gold price drops by Tk2,739 per bhori",
+   "vryzka": "https://news.google.com/rss/articles/CBMijAFBVV95cUxPUjZBZzlmWHUycnI3aFhibHpaYmtVMHROS3pVSTRzS0QzSUFRVDJ5UHpjYmFKRVNlZFRPREs3NkR1TzUyX285c1BuWUZaU0I0dHI0SERDVDJreGZmTHE2bTBVaVZ5WjNnR3kzQ2RVajlUNEFFbWk2RnFyUHJTNDRqUUJqN05vMVczbllaNdIBkgFBVV95cUxOT3ExVW1HZXlzcTZKSFZoVlpmV0dUVTZIU0FUV2Nmdm5vWk5kMzl0RmxSMEQ1ME5Zb3Npd29wLVFQdUQ5Q0F0Y2xFUk9ZbGZiNHBlelk2Z0xYbHlBZW1CSTRrbGsxSmhJbnp4OFQ3VmI1OXhnc0dob2RmMWN6MU1ndUpzR0JfSVpGelY1aUVUYXVqQQ?oc=5",
+   "izvor": "Dhaka Tribune",
+   "chas": "2026-11-06T05:18:35Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": "Златото поевтинява"
+  },
+  {
    "zaglavie": "First Majestic Silver Corp (AG) (Q3 2026) Earnings Call Highlights: Record Revenue, Robust ...",
    "vryzka": "https://finance.yahoo.com/markets/commodities/articles/first-majestic-silver-corp-ag-051815505.html?.tsrc=rss",
    "izvor": "Yahoo Finance",
@@ -84,6 +114,19 @@
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "Mortgage Rate History: 1970s To 2026",
+   "vryzka": "https://news.google.com/rss/articles/CBMibkFVX3lxTE1XMWNxSHJrSVpZUFdhcm1SN0FKbkpaYTR3V195dS1rTWhQY0dCWEhDT1ZlYkNlMi13aG5BdXpEN200UmhsRDZ2WDg1dEZyLTE3YjZuYi1HeWxSV0lvUkswbEM1bXRhN3dCeTBvU1Vn?oc=5",
+   "izvor": "Bankrate",
+   "chas": "2026-11-06T05:14:01Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "rate",
+   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
    "bg": null
   },
   {
@@ -422,19 +465,6 @@
    "chas_ot_iztochnika": true,
    "duma": "gold",
    "zashto": "Пряко за златото.",
-   "bg": null
-  },
-  {
-   "zaglavie": "Mortgage Rate History: 1970s To 2026",
-   "vryzka": "https://news.google.com/rss/articles/CBMibkFVX3lxTE1XMWNxSHJrSVpZUFdhcm1SN0FKbkpaYTR3V195dS1rTWhQY0dCWEhDT1ZlYkNlMi13aG5BdXpEN200UmhsRDZ2WDg1dEZyLTE3YjZuYi1HeWxSV0lvUkswbEM1bXRhN3dCeTBvU1Vn?oc=5",
-   "izvor": "Bankrate",
-   "chas": "2026-11-06T02:02:58Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "rate",
-   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
    "bg": null
   },
   {
@@ -2596,45 +2626,19 @@
    "bg": null
   },
   {
-   "zaglavie": "B2Gold cuts cost forecast as Goose faces crunch",
-   "vryzka": "https://www.mining.com/b2gold-cuts-cost-forecast-as-goose-faces-crunch/",
-   "izvor": "Mining.com",
-   "chas": "2026-11-05T15:00:04Z",
-   "vazhnost": 1,
-   "za": "лихви",
-   "emisiya": "Mining.com",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
-   "zaglavie": "The wealthiest 10% of Americans are pulling ahead of everyone else. This is what’s making them richer.",
-   "vryzka": "https://www.marketwatch.com/story/the-wealthiest-10-of-americans-are-pulling-ahead-of-everyone-else-this-is-whats-making-them-richer-bd83c2f6?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-11-05T15:00:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
    "zaglavie": "Federal Reserve issues FOMC statement",
    "vryzka": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm",
    "izvor": "Fed",
    "chas": "2026-10-28T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed всички",
+   "emisiya": "Fed политика",
    "chas_ot_iztochnika": true,
    "duma": "fomc",
-   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
+   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   }
  ],
- "s_bg_red": 74,
- "mahnati_ezik": 2
+ "s_bg_red": 75,
+ "mahnati_ezik": 1
 }
