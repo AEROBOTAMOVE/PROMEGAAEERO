@@ -1,17 +1,17 @@
 {
- "kogato": "2026-11-06T15:40:47Z",
- "sekundi": 0.93,
+ "kogato": "2026-11-06T15:51:36Z",
+ "sekundi": 1.06,
  "broi": 200,
- "novi_tozi_pyt": 3,
+ "novi_tozi_pyt": 2,
  "iztochnici_ok": [
-  "Fed политика",
-  "Fed речи",
   "Fed всички",
-  "MarketWatch",
-  "Investing",
+  "Fed политика",
   "Yahoo злато",
   "Yahoo долар",
+  "Investing",
+  "Fed речи",
   "CNBC",
+  "MarketWatch",
   "FT пазари",
   "Google Fed",
   "Google злато",
@@ -19,21 +19,47 @@
  ],
  "iztochnici_padnali": [],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.17с",
-  "новини · FT пазари · 25 бр. за 0.42с",
-  "новини · Fed всички · 6 бр. за 0.09с",
+  "новини · CNBC · 30 бр. за 0.25с",
+  "новини · FT пазари · 25 бр. за 0.33с",
+  "новини · Fed всички · 6 бр. за 0.07с",
   "новини · Fed политика · 15 бр. за 0.08с",
-  "новини · Fed речи · 15 бр. за 0.08с",
-  "новини · Google Fed · 40 бр. за 0.38с",
-  "новини · Google злато · 40 бр. за 0.53с",
-  "новини · Investing · 10 бр. за 0.12с",
-  "новини · MarketWatch · 10 бр. за 0.11с",
-  "новини · Mining.com · 36 бр. за 0.86с",
-  "новини · Yahoo долар · 15 бр. за 0.15с",
-  "новини · Yahoo злато · 19 бр. за 0.15с",
-  "новини · български ред: 75 от 200 · махнати по език: 3"
+  "новини · Fed речи · 15 бр. за 0.16с",
+  "новини · Google Fed · 40 бр. за 0.31с",
+  "новини · Google злато · 40 бр. за 0.41с",
+  "новини · Investing · 10 бр. за 0.11с",
+  "новини · MarketWatch · 10 бр. за 0.32с",
+  "новини · Mining.com · 36 бр. за 1.0с",
+  "новини · Yahoo долар · 15 бр. за 0.12с",
+  "новини · Yahoo злато · 19 бр. за 0.1с",
+  "новини · български ред: 74 от 200 · махнати по език: 3"
  ],
  "novini": [
+  {
+   "zaglavie": "Nvidia, AMD and other chip stocks rebound. Is the ‘violent’ AI selloff over?",
+   "vryzka": "https://www.marketwatch.com/story/nvidia-amd-and-other-chip-stocks-rebound-is-the-violent-ai-selloff-over-8f7df533?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-11-06T15:48:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "US stocks rebound after tech rout",
+   "vryzka": "https://www.ft.com/content/642b32dc-e3a1-4df8-ae91-5c84bdeb89e0?syn-25a6b1a6=1",
+   "izvor": "Financial Times",
+   "chas": "2026-11-06T15:45:52Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "FT пазари",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": "Американските акции се връщат нагоре"
+  },
   {
    "zaglavie": "Gold Faces Risk to $4,000 Support After Strong US Payrolls Report",
    "vryzka": "https://news.google.com/rss/articles/CBMitAFBVV95cUxOLTJnVExtUVZYaXVoSWhEYWo0SjFOSXIxQWM1cjBJLXZLbEVlZERoaVNiRXcxNUNWVkFFSFdid1g0Wk9rOWpzelJTbHpEUlJQNkYxcmdnanF3NjF5Z00tTnVuMndHekliaWdDNzctR21QbmNtMGVVT1RjTzAyS0dyLW41cEpCWUpqU2ZMNnBYUVp0NW9jdGFZZUhRa0dzMEltbFB5RlZ1OG9mOFgycWQ3eURldjk?oc=5",
@@ -217,19 +243,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Moderna raises its revenue outlook — but all eyes are on what happens next with its cancer vaccine",
-   "vryzka": "https://www.marketwatch.com/story/modernas-stock-jumps-after-biotech-raises-sales-outlook-65363127?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-11-06T15:09:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
    "zaglavie": "Oil, Uranium, or Renewables? 3 Energy Plays for a Changing Market",
    "vryzka": "https://www.investing.com/analysis/oil-uranium-or-renewables-3-energy-plays-for-a-changing-market-200691013",
    "izvor": "Investing.com",
@@ -237,6 +250,19 @@
    "vazhnost": 1,
    "za": "общо",
    "emisiya": "Investing",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "Moderna raises its revenue outlook — but all eyes are on what happens next with its cancer vaccine",
+   "vryzka": "https://www.marketwatch.com/story/modernas-stock-jumps-after-biotech-raises-sales-outlook-65363127?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-11-06T15:09:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "MarketWatch",
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null,
@@ -1452,19 +1478,6 @@
    "bg": "Британската лира поевтинява на фона на движението на долара, преди данните за работните места в САЩ (NFP)"
   },
   {
-   "zaglavie": "US stocks rebound after tech rout",
-   "vryzka": "https://www.ft.com/content/642b32dc-e3a1-4df8-ae91-5c84bdeb89e0?syn-25a6b1a6=1",
-   "izvor": "Financial Times",
-   "chas": "2026-11-06T11:10:33Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "FT пазари",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": "Американските акции се връщат нагоре"
-  },
-  {
    "zaglavie": "US stocks stabilise after tech rout",
    "vryzka": "https://www.ft.com/content/642b32dc-e3a1-4df8-ae91-5c84bdeb89e0?syn-25a6b1a6=1",
    "izvor": "Financial Times",
@@ -2505,6 +2518,19 @@
    "bg": null
   },
   {
+   "zaglavie": "Gold drops 1% as strong U.S. payrolls boost dollar, yields",
+   "vryzka": "https://news.google.com/rss/articles/CBMirwFBVV95cUxORVdNVmUyT0ZSU0FWcFd6by11bjExUWl4SVp3M04ySXNJaElHLXEzbzBxbkY4cHlLbUxaNFFQenFaQWhDM1pkQm5iemlTejhkYWtRVEhmZm5SLWdlNHczMUs4TG1zbzJzUHhmRm9JNFBkd3J6UGpPTDg3UnlVRF9ldVZMT3hUeUI4eXA4OEs3ODRTUk41Qm1lSGRLU0dGWFhuaTBYX3B0Y3dteDJHNUFr0gG0AUFVX3lxTE5YYjlweVZndF95ZnBFbkw3b2pENzZjOVRPcVNyM1pleEt5czdSMXBRXzV3bXJZWmZEVkNqekltR0dvVEg2eXo3d2lOSjZFWU9mTzdCc3hiaHJvU0lyOUJiM2NRTVMtaTYxVGRPT0JCR01WVHZJeXRackVrTk9Ea0tPY25wTGVDc0duM3k4UHVGLU04ZW9qdXhRSy1lX3lxenpXcmk5NnZhbDRQVFAzV0pYVVlXaQ?oc=5",
+   "izvor": "CNBC",
+   "chas": "2026-11-06T05:03:22Z",
+   "vazhnost": 3,
+   "za": "злато",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "payrolls",
+   "zashto": "Заетостта в САЩ решава дали Fed ще пипне лихвата — оттам стига до златото.",
+   "bg": "Златото поевтинява на фона на данните за работните места в САЩ (NFP) и движението на долара"
+  },
+  {
    "zaglavie": "Gold drops, on track for best week in over 2 months before U.S. payrolls",
    "vryzka": "https://news.google.com/rss/articles/CBMirwFBVV95cUxORVdNVmUyT0ZSU0FWcFd6by11bjExUWl4SVp3M04ySXNJaElHLXEzbzBxbkY4cHlLbUxaNFFQenFaQWhDM1pkQm5iemlTejhkYWtRVEhmZm5SLWdlNHczMUs4TG1zbzJzUHhmRm9JNFBkd3J6UGpPTDg3UnlVRF9ldVZMT3hUeUI4eXA4OEs3ODRTUk41Qm1lSGRLU0dGWFhuaTBYX3B0Y3dteDJHNUFr0gG0AUFVX3lxTE5YYjlweVZndF95ZnBFbkw3b2pENzZjOVRPcVNyM1pleEt5czdSMXBRXzV3bXJZWmZEVkNqekltR0dvVEg2eXo3d2lOSjZFWU9mTzdCc3hiaHJvU0lyOUJiM2NRTVMtaTYxVGRPT0JCR01WVHZJeXRackVrTk9Ea0tPY25wTGVDc0duM3k4UHVGLU04ZW9qdXhRSy1lX3lxenpXcmk5NnZhbDRQVFAzV0pYVVlXaQ?oc=5",
    "izvor": "CNBC",
@@ -2596,45 +2622,19 @@
    "bg": "Анализ и прогноза за среброто"
   },
   {
-   "zaglavie": "Dollar rebounds as tech rout and strong U.S. jobs data lift safe-haven demand anew",
-   "vryzka": "https://finance.yahoo.com/markets/currencies/articles/asian-fx-mixed-yen-gains-043840964.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-11-06T04:38:40Z",
-   "vazhnost": 2,
-   "za": "долар",
-   "emisiya": "Yahoo долар",
-   "chas_ot_iztochnika": true,
-   "duma": "dollar",
-   "zashto": "Златото се мери в долари: по-силен долар обикновено значи по-евтино злато.",
-   "bg": "Доларът се връща нагоре на фона на данните за заетостта в САЩ"
-  },
-  {
-   "zaglavie": "Dollar rebounds as global tech sell-off sparks haven bid",
-   "vryzka": "https://finance.yahoo.com/markets/currencies/articles/asian-fx-mixed-yen-gains-043840964.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-11-06T04:38:40Z",
-   "vazhnost": 2,
-   "za": "долар",
-   "emisiya": "Yahoo долар",
-   "chas_ot_iztochnika": true,
-   "duma": "dollar",
-   "zashto": "Златото се мери в долари: по-силен долар обикновено значи по-евтино злато.",
-   "bg": "Доларът се връща нагоре"
-  },
-  {
    "zaglavie": "Federal Reserve issues FOMC statement",
    "vryzka": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm",
    "izvor": "Fed",
    "chas": "2026-10-28T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed политика",
+   "emisiya": "Fed всички",
    "chas_ot_iztochnika": true,
    "duma": "fomc",
-   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
+   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   }
  ],
- "s_bg_red": 75,
+ "s_bg_red": 74,
  "mahnati_ezik": 3
 }
