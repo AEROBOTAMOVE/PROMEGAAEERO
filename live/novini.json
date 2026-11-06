@@ -1,44 +1,41 @@
 {
- "kogato": "2026-11-06T09:37:22Z",
- "sekundi": 9.32,
+ "kogato": "2026-11-06T09:48:17Z",
+ "sekundi": 12.25,
  "broi": 200,
- "novi_tozi_pyt": 0,
+ "novi_tozi_pyt": 2,
  "iztochnici_ok": [
-  "Fed всички",
-  "Fed политика",
-  "Fed речи",
   "MarketWatch",
+  "Fed речи",
+  "Fed политика",
+  "Fed всички",
   "Investing",
+  "CNBC",
   "Yahoo долар",
   "Yahoo злато",
-  "CNBC",
   "FT пазари",
-  "Mining.com"
+  "Google Fed",
+  "Google злато"
  ],
  "iztochnici_padnali": [
   {
-   "ime": "Google Fed",
-   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
-  },
-  {
-   "ime": "Google злато",
-   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+   "ime": "Mining.com",
+   "greshka": "TimeoutError: The read operation timed out"
   }
  ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.28с",
-  "новини · FT пазари · 25 бр. за 0.29с",
-  "новини · Fed всички · 6 бр. за 0.05с",
-  "новини · Fed политика · 15 бр. за 0.05с",
-  "новини · Fed речи · 15 бр. за 0.05с",
-  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
-  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
-  "новини · Investing · 10 бр. за 0.11с",
-  "новини · MarketWatch · 10 бр. за 0.05с",
-  "новини · Mining.com · 36 бр. за 0.91с",
-  "новини · Yahoo долар · 14 бр. за 0.23с",
-  "новини · Yahoo злато · 16 бр. за 0.27с",
-  "новини · български ред: 65 от 200 · махнати по език: 0"
+  "новини · CNBC · 30 бр. за 0.2с",
+  "новини · FT пазари · 25 бр. за 0.37с",
+  "новини · Fed всички · 6 бр. за 0.1с",
+  "новини · Fed политика · 15 бр. за 0.1с",
+  "новини · Fed речи · 15 бр. за 0.1с",
+  "новини · Google Fed · 40 бр. за 0.38с",
+  "новини · Google злато · 40 бр. за 0.48с",
+  "новини · Investing · 10 бр. за 0.13с",
+  "новини · MarketWatch · 10 бр. за 0.04с",
+  "новини · Mining.com · ПАДНА: TimeoutError: The read operation timed out",
+  "новини · Yahoo долар · 14 бр. за 0.22с",
+  "новини · Yahoo злато · 16 бр. за 0.23с",
+  "новини · български ред: 64 от 200 · махнати по език: 2"
  ],
  "novini": [
   {
@@ -71,7 +68,7 @@
    "zaglavie": "Tech Stocks, Fed Rates & Global Events Shape Financial Markets",
    "vryzka": "https://news.google.com/rss/articles/CBMidEFVX3lxTFB0cWVWbUxEX2VSWlJxb1drcXJnVURhTGsyZlBCYjBWS2JVSXNBcHh3LWowMDZnMzMzdXVLT1VKQm5jbkh4MVQwdnhtX2dReldkVnh3YWFtRFJmMU5iUkFZNDZGNDB5OGxTOFBtekdnYXpGNmRE?oc=5",
    "izvor": "Global Banking & Finance Review",
-   "chas": "2026-11-06T08:44:25Z",
+   "chas": "2026-11-06T08:52:33Z",
    "vazhnost": 3,
    "za": "лихви",
    "emisiya": "Google Fed",
@@ -79,6 +76,19 @@
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
    "bg": "За лихвата на Фед"
+  },
+  {
+   "zaglavie": "France Is Sinking Deeper Into an Economic and Budgetary Crisis",
+   "vryzka": "https://news.google.com/rss/articles/CBMigAFBVV95cUxPS25ub0tGV0NlTk5IS3ZDNFlKc3pTZUExVFl4S0wweXBwR3dyeWJjaDZJcnM1Z2hGUWtUaGNyYUdtc19pTzdab2ZJakZoZ2RPWG9GcDdJbkJPeFJqZkxiY1BUVWJaaHAwMjVvM19QUy1UU2tVaUlCQ1h6Qm9sbS11cA?oc=5",
+   "izvor": "GoldBroker",
+   "chas": "2026-11-06T08:35:04Z",
+   "vazhnost": 1,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
   },
   {
    "zaglavie": "Gold May Hit Rs 1.68 Lakh Amid Global Uncertainty: Report",
@@ -92,6 +102,19 @@
    "duma": "gold",
    "zashto": "Пряко за златото.",
    "bg": null
+  },
+  {
+   "zaglavie": "Gold price today on Dhanteras: Prices fall sharply; check 24K, 22K city-wise rates in Delhi, Mumbai, Pune",
+   "vryzka": "https://news.google.com/rss/articles/CBMizwJBVV95cUxOaEtfYVM1RFpDSlB4SV83b3VfR0szdVplTjdFMGRjX2Y5N2h5UzVlYzFRdkhzZlBVeWpmbm5jM1VwS3NQWmJwa2hob05RMkRJZnVGektRRFA1RlNyT0llZTVxRXU5WjVyWXhSd0lqNXpCQlhJQUd0WnJ1bmdDTGNUT1pydm5CaEd1NGdtS2ZqQ1VTd1NUSmxuZ0lHeURqeWw5YVJfNk0yek9KNW81UG02VVhpMHl3emJ3NHJNaGk4TmYyYXg2WHR0ZmlUN3l1UFUxVXVaQjBqQ1h4aDRadDhzNEV2V25kdWxWbi1qbXJtZUd6WjB2Uml5YXlQOFpCTHZfNkZ1ZzNYdkc4b1oyMVpkZjBrbDN6SmZpbjFTSEVGM1BhVFQxOTlqUUU2SThnNXBKOUNoazh4RkpnellMZ0ROQkMyT1ptTV84cG1KZ3FoVdIB1AJBVV95cUxPMlNvbi1pb0ZyOE96Q2hnSkhNd0xOOU54dkFpZmJwSTRmMG9VejVGaWs3OXY3b1AzYU5RMEprVVd3ME9JV0Y3TnNLNV9zb21",
+   "izvor": "The Times of India",
+   "chas": "2026-11-06T08:22:00Z",
+   "vazhnost": 3,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "rates",
+   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
+   "bg": "Цената на златото днес"
   },
   {
    "zaglavie": "Goldman lowers year-end gold price forecast on hawkish Fed shift",
@@ -913,19 +936,6 @@
    "bg": "За вдигане на лихвата от Фед"
   },
   {
-   "zaglavie": "Gold Price Today | Price of Gold Per Ounce | 24 Hour Spot Chart",
-   "vryzka": "https://news.google.com/rss/articles/CBMiSEFVX3lxTFBnU2dTNUduLWh4WmxVQy1ndS1jN01abVlCeTNTMnFMbFdmS1d6TnFCekxTZVlXNGtKdnNRN3plT00yZm5LQmh6Rg?oc=5",
-   "izvor": "Kitco",
-   "chas": "2026-11-06T03:00:52Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Цената на златото днес"
-  },
-  {
    "zaglavie": "‘My life could be cut short’: I’m 55, married and have a brain tumor. Should I splash out on a $210,000 Porsche?",
    "vryzka": "https://www.marketwatch.com/story/my-life-could-be-cut-short-im-55-married-with-4-3-million-and-have-a-brain-tumor-should-i-buy-a-210-000-custom-porsche-ed825ada?mod=mw_rss_topstories",
    "izvor": "MarketWatch",
@@ -963,6 +973,19 @@
    "duma": "gold",
    "zashto": "Пряко за златото.",
    "bg": null
+  },
+  {
+   "zaglavie": "Gold Price Today | Price of Gold Per Ounce | 24 Hour Spot Chart",
+   "vryzka": "https://news.google.com/rss/articles/CBMiSEFVX3lxTFBnU2dTNUduLWh4WmxVQy1ndS1jN01abVlCeTNTMnFMbFdmS1d6TnFCekxTZVlXNGtKdnNRN3plT00yZm5LQmh6Rg?oc=5",
+   "izvor": "Kitco",
+   "chas": "2026-11-06T02:08:25Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": "Цената на златото днес"
   },
   {
    "zaglavie": "Dhanteras 2026: A 12% demand surge awaits Indian gold market even as prices hit two-week high",
@@ -2603,45 +2626,19 @@
    "bg": null
   },
   {
-   "zaglavie": "Gold Price Today: Gold Rises 4.61% on November 05, 2026",
-   "vryzka": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxPbnYyMk56NFhidkJDUnlCVWdxbmpaNFVrNldURnpyX1kzM1pUUWM5blZxV19RUkZVcWxRZ2Y4Tl9KdW9KRml1S2lMOEJMTDBwU3NlaTJYbl8zMC1OdEktaEx0Z1NsWmFoRjlseHhXbUx4WnFDUHRrR0FLMVFoN1F5dVFrZ0hON3Z6N0tPVl9WVEhjQjl4WmNva1JvQmNwR2J6ak1yS3Y5SGhWMlk?oc=5",
-   "izvor": "USA Today",
-   "chas": "2026-11-05T16:20:08Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Цената на златото днес"
-  },
-  {
-   "zaglavie": "Gold Faces New Risks as Trump Weighs Iran Strikes and Executive Action",
-   "vryzka": "https://www.investing.com/analysis/gold-faces-new-risks-as-trump-weighs-iran-strikes-and-executive-action-200690945",
-   "izvor": "Investing.com",
-   "chas": "2026-11-05T16:19:00Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Investing",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Златото и напрежението в Близкия изток"
-  },
-  {
    "zaglavie": "Federal Reserve issues FOMC statement",
    "vryzka": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm",
    "izvor": "Fed",
    "chas": "2026-10-28T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed всички",
+   "emisiya": "Fed политика",
    "chas_ot_iztochnika": true,
    "duma": "fomc",
-   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
+   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   }
  ],
- "s_bg_red": 65,
- "mahnati_ezik": 0
+ "s_bg_red": 64,
+ "mahnati_ezik": 2
 }
