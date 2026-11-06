@@ -1,37 +1,41 @@
 {
- "kogato": "2026-11-06T20:18:52Z",
- "sekundi": 0.84,
+ "kogato": "2026-11-06T20:29:36Z",
+ "sekundi": 1.26,
  "broi": 200,
- "novi_tozi_pyt": 3,
+ "novi_tozi_pyt": 0,
  "iztochnici_ok": [
-  "Fed политика",
-  "Fed всички",
-  "Fed речи",
-  "Investing",
   "MarketWatch",
+  "Fed речи",
+  "Fed всички",
+  "Investing",
+  "Fed политика",
   "CNBC",
-  "Yahoo долар",
   "Yahoo злато",
+  "Yahoo долар",
   "FT пазари",
   "Google Fed",
-  "Google злато",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google злато",
+   "greshka": "празна емисия"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.14с",
-  "новини · FT пазари · 25 бр. за 0.34с",
-  "новини · Fed всички · 6 бр. за 0.09с",
-  "новини · Fed политика · 15 бр. за 0.07с",
-  "новини · Fed речи · 15 бр. за 0.09с",
+  "новини · CNBC · 30 бр. за 0.12с",
+  "новини · FT пазари · 25 бр. за 0.3с",
+  "новини · Fed всички · 6 бр. за 0.08с",
+  "новини · Fed политика · 15 бр. за 0.1с",
+  "новини · Fed речи · 15 бр. за 0.07с",
   "новини · Google Fed · 40 бр. за 0.42с",
-  "новини · Google злато · 40 бр. за 0.49с",
-  "новини · Investing · 10 бр. за 0.09с",
-  "новини · MarketWatch · 10 бр. за 0.13с",
-  "новини · Mining.com · 36 бр. за 0.77с",
-  "новини · Yahoo долар · 16 бр. за 0.17с",
-  "новини · Yahoo злато · 18 бр. за 0.2с",
-  "новини · български ред: 85 от 200 · махнати по език: 2"
+  "новини · Google злато · ПАДНА: празна емисия",
+  "новини · Investing · 10 бр. за 0.08с",
+  "новини · MarketWatch · 10 бр. за 0.06с",
+  "новини · Mining.com · 36 бр. за 0.78с",
+  "новини · Yahoo долар · 16 бр. за 0.18с",
+  "новини · Yahoo злато · 18 бр. за 0.18с",
+  "новини · български ред: 85 от 200 · махнати по език: 1"
  ],
  "novini": [
   {
@@ -373,19 +377,6 @@
    "bg": "Изказване на член на Фед (Daly) за вдигане на лихвата и инфлацията"
   },
   {
-   "zaglavie": "4 Stocks I'm Not Selling Even If the Fed Keeps Raising Rates",
-   "vryzka": "https://news.google.com/rss/articles/CBMidkFVX3lxTFBtWDBObk5jUFViLXVnMlFTRUlHYlFuUXhock5VOW1sbGE0SlBJQ2JoWmxGbGFZblIteEhISW9sQXZvT05JVFZNbGt5RFExbFVLcmV6ZU5Ba1NkT0owYU9DR1JUMWVZRmlGU0lwOGlxVDkzaFNiWkE?oc=5",
-   "izvor": "AOL.com",
-   "chas": "2026-11-06T18:37:00Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": "За лихвата на Фед"
-  },
-  {
    "zaglavie": "Daly says Fed rate hike likely, despite 'painful' tech-stock dive",
    "vryzka": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxOYm1MU1hqV0tGaTZraWhpaVdqOGZCdzZjLUt3ZVZFU3BCaGFwdE9ham9MYktoSlF1SWF0eXRRR0V1QVhPUUZlRjdqZHdwMVlRS3pNaGUtWktTUmJhSUR3bW56MzdObWlZd0E0XzZSaUNnelUxR2FReTNkNTkwSVNEX3l6cmVveVRlNm1LWGNJdGs2WUt5c1BtS3o5TU9XbzRVNC1tT0ZydXREcmM?oc=5",
    "izvor": "Reuters",
@@ -423,6 +414,19 @@
    "duma": null,
    "zashto": null,
    "bg": null
+  },
+  {
+   "zaglavie": "4 Stocks I'm Not Selling Even If the Fed Keeps Raising Rates",
+   "vryzka": "https://news.google.com/rss/articles/CBMimAFBVV95cUxPem9kTmFxSDlQNVJaTVRVTzEwaVFyb0NOR1B0dDJrOERjeHdjZFdSSnE0NVBPMEZHeFhOaHFQTTctTVk4c2pVZENjc3MxNWZCUjBZRGgyTmUxd2V6MU9TS3JTTXc4cVJ0MVJwSDZCVG5wVVpqbWZCMTZreTRqdFgzaUlzOTgxYnRJYS1JV0hsNFRGNERwbS14RA?oc=5",
+   "izvor": "The Motley Fool",
+   "chas": "2026-11-06T18:17:00Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": "За лихвата на Фед"
   },
   {
    "zaglavie": "‘It feels like he’s quietly building a separate life’: My husband inherited $500,000, but he refuses to spend it on our home",
@@ -2628,13 +2632,13 @@
    "chas": "2026-10-28T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed политика",
+   "emisiya": "Fed всички",
    "chas_ot_iztochnika": true,
    "duma": "fomc",
-   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
+   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   }
  ],
  "s_bg_red": 85,
- "mahnati_ezik": 2
+ "mahnati_ezik": 1
 }
