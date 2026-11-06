@@ -1,43 +1,65 @@
 {
- "kogato": "2026-11-06T17:38:07Z",
- "sekundi": 0.79,
+ "kogato": "2026-11-06T17:48:58Z",
+ "sekundi": 0.93,
  "broi": 200,
- "novi_tozi_pyt": 1,
+ "novi_tozi_pyt": 3,
  "iztochnici_ok": [
-  "Fed политика",
-  "Fed речи",
-  "MarketWatch",
+  "Fed всички",
   "Investing",
-  "Yahoo злато",
+  "MarketWatch",
+  "Fed речи",
+  "Fed политика",
   "Yahoo долар",
+  "Yahoo злато",
   "FT пазари",
-  "CNBC",
   "Google Fed",
   "Google злато",
+  "CNBC",
   "Mining.com"
  ],
- "iztochnici_padnali": [
-  {
-   "ime": "Fed всички",
-   "greshka": "HTTPError: HTTP Error 404: Not Found"
-  }
- ],
+ "iztochnici_padnali": [],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.36с",
-  "новини · FT пазари · 25 бр. за 0.31с",
-  "новини · Fed всички · ПАДНА: HTTPError: HTTP Error 404: Not Found",
-  "новини · Fed политика · 15 бр. за 0.07с",
-  "новини · Fed речи · 15 бр. за 0.07с",
-  "новини · Google Fed · 40 бр. за 0.38с",
-  "новини · Google злато · 40 бр. за 0.48с",
+  "новини · CNBC · 30 бр. за 0.72с",
+  "новини · FT пазари · 25 бр. за 0.4с",
+  "новини · Fed всички · 6 бр. за 0.1с",
+  "новини · Fed политика · 15 бр. за 0.15с",
+  "новини · Fed речи · 15 бр. за 0.14с",
+  "новини · Google Fed · 40 бр. за 0.4с",
+  "новини · Google злато · 40 бр. за 0.54с",
   "новини · Investing · 10 бр. за 0.11с",
-  "новини · MarketWatch · 10 бр. за 0.07с",
-  "новини · Mining.com · 36 бр. за 0.74с",
-  "новини · Yahoo долар · 15 бр. за 0.21с",
-  "новини · Yahoo злато · 18 бр. за 0.17с",
-  "новини · български ред: 79 от 200 · махнати по език: 2"
+  "новини · MarketWatch · 10 бр. за 0.11с",
+  "новини · Mining.com · 36 бр. за 0.88с",
+  "новини · Yahoo долар · 15 бр. за 0.29с",
+  "новини · Yahoo злато · 18 бр. за 0.3с",
+  "новини · български ред: 80 от 200 · махнати по език: 2"
  ],
  "novini": [
+  {
+   "zaglavie": "Gold price cut by Tk 2,740 a bhari",
+   "vryzka": "https://news.google.com/rss/articles/CBMilAFBVV95cUxQWDBTNTBuWTJ5OFAyQ0Y1MlhOSTdsVkhaaVp6WF9ZV25adU1zQndpRGpNdUpWSE8xcXU5WXc2X01ydldYaEdGVXJFNnhWVmFYbmk3NU04UGhnZ3VEUUlSNkJOSklURlN2SXV1VEpuZmhhTzQ3NnREMmFHanJRNVdLUGxweGNKSzBhUWZLVm9XMkpRRTZh?oc=5",
+   "izvor": "New Age BD",
+   "chas": "2026-11-06T17:46:06Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": null
+  },
+  {
+   "zaglavie": "Two months after my father’s funeral, my stepmother asked me to repay his $40,000 wedding gift. Should I do what she says?",
+   "vryzka": "https://www.marketwatch.com/story/shes-a-type-a-personality-my-stepmother-wants-me-to-repay-my-late-fathers-40-000-wedding-gift-should-i-oblige-51fc64f7?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-11-06T17:45:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
   {
    "zaglavie": "Conflicting numbers complicate Fed's monetary policy decisions",
    "vryzka": "https://news.google.com/rss/articles/CBMidEFVX3lxTE1PY0dMbS11QXpwYTlhSXhzdFFtMXdXcnJUTm0yWFBXcDFNZzh4ZmxyeER1MXAxTHVzWW1FVS1vYzFuV1lYZmdrSnlwY2U5QlRRekl1dlFZTHZSeDN6MFNyQVFLRk1ZUHZ1eHZSbHlxV3dMa3gx?oc=5",
@@ -167,6 +189,19 @@
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
    "bg": "Очаквания за по-висока лихва от Фед"
+  },
+  {
+   "zaglavie": "Canadian Dollar stares at 114.7K lost jobs and a Fed rate hike",
+   "vryzka": "https://news.google.com/rss/articles/CBMirAFBVV95cUxPUzJEQ3kwRWh2WXF2bGE4NUNQejVOcmRJT1Jtb21RdC1zeElrYzJSYkVlUkFDT2ZNdE8xUi0xcEVlQWMwRWtTZWhGS0RxY211N3VMTm1kQVdfT3BFUWRuZG1aS0RxSlFqS0h5ZWRhTG9jdmJWY2RiNnV4dUE4ZEtkNEo5LUxwVkN5TUpuZmxPQXNlcV9Xd01fMjVoYUtoVlYyR1BJS1JzdGZ4THly?oc=5",
+   "izvor": "FXStreet",
+   "chas": "2026-11-06T16:52:40Z",
+   "vazhnost": 3,
+   "za": "долар",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": "Канадският долар и решенията на Фед за лихвата"
   },
   {
    "zaglavie": "December rate hikes could mark turning point for markets",
@@ -312,19 +347,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Cybertruck’s run comes to an end as Musk kills off pricey pet project",
-   "vryzka": "https://www.marketwatch.com/story/is-it-the-end-of-the-cybertruck-elon-musk-announces-factory-will-shift-production-3e33cafd?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-11-06T16:17:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
    "zaglavie": "The Energy Report: When Democrats Sweep, Does the Economy Sleep?",
    "vryzka": "https://www.investing.com/analysis/the-energy-report-when-democrats-sweep-does-the-economy-sleep-200691017",
    "izvor": "Investing.com",
@@ -332,6 +354,19 @@
    "vazhnost": 1,
    "za": "общо",
    "emisiya": "Investing",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "Cybertruck’s run comes to an end as Musk kills off pricey pet project",
+   "vryzka": "https://www.marketwatch.com/story/is-it-the-end-of-the-cybertruck-elon-musk-announces-factory-will-shift-production-3e33cafd?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-11-06T16:17:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "MarketWatch",
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null,
@@ -689,19 +724,6 @@
    "bg": "Решението на Фед за лихвата"
   },
   {
-   "zaglavie": "Moderna raises its revenue outlook — but all eyes are on what happens next with its cancer vaccine",
-   "vryzka": "https://www.marketwatch.com/story/modernas-stock-jumps-after-biotech-raises-sales-outlook-65363127?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-11-06T15:09:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
    "zaglavie": "Oil, Uranium, or Renewables? 3 Energy Plays for a Changing Market",
    "vryzka": "https://www.investing.com/analysis/oil-uranium-or-renewables-3-energy-plays-for-a-changing-market-200691013",
    "izvor": "Investing.com",
@@ -709,6 +731,19 @@
    "vazhnost": 1,
    "za": "общо",
    "emisiya": "Investing",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "Moderna raises its revenue outlook — but all eyes are on what happens next with its cancer vaccine",
+   "vryzka": "https://www.marketwatch.com/story/modernas-stock-jumps-after-biotech-raises-sales-outlook-65363127?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-11-06T15:09:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "MarketWatch",
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null,
@@ -1937,19 +1972,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Alaska Energy Metals Achieves High Extraction Rates of Metals from Hydromet Testing, Nikolai Nickel Project, Alaska",
-   "vryzka": "https://finance.yahoo.com/energy/articles/alaska-energy-metals-achieves-high-120000500.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-11-06T12:00:00Z",
-   "vazhnost": 3,
-   "za": "злато",
-   "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": "rates",
-   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
-   "bg": null
-  },
-  {
    "zaglavie": "Guide to Gold ETF Investing",
    "vryzka": "https://finance.yahoo.com/markets/commodities/articles/guide-gold-etf-investing-120000135.html?.tsrc=rss",
    "izvor": "Yahoo Finance",
@@ -1957,6 +1979,19 @@
    "vazhnost": 3,
    "za": "злато",
    "emisiya": "Yahoo долар",
+   "chas_ot_iztochnika": true,
+   "duma": "rates",
+   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
+   "bg": null
+  },
+  {
+   "zaglavie": "Alaska Energy Metals Achieves High Extraction Rates of Metals from Hydromet Testing, Nikolai Nickel Project, Alaska",
+   "vryzka": "https://finance.yahoo.com/energy/articles/alaska-energy-metals-achieves-high-120000500.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-06T12:00:00Z",
+   "vazhnost": 3,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
    "chas_ot_iztochnika": true,
    "duma": "rates",
    "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
@@ -2587,58 +2622,19 @@
    "bg": null
   },
   {
-   "zaglavie": "Monzo explores fundraising at £7.5bn valuation as private equity talks stall",
-   "vryzka": "https://www.ft.com/content/6553ec40-00a8-4832-8ca5-c528b9da224a?syn-25a6b1a6=1",
-   "izvor": "Financial Times",
-   "chas": "2026-11-06T07:44:30Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "FT пазари",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
-   "zaglavie": "Wall Street AI sell-off spreads to Asia and Europe",
-   "vryzka": "https://www.ft.com/content/642b32dc-e3a1-4df8-ae91-5c84bdeb89e0",
-   "izvor": "Financial Times",
-   "chas": "2026-11-06T07:39:22Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "FT пазари",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
-   "zaglavie": "Asian markets battered after Wall Street AI rout",
-   "vryzka": "https://www.ft.com/content/642b32dc-e3a1-4df8-ae91-5c84bdeb89e0",
-   "izvor": "Financial Times",
-   "chas": "2026-11-06T07:39:22Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "FT пазари",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
    "zaglavie": "Federal Reserve issues FOMC statement",
    "vryzka": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm",
    "izvor": "Fed",
    "chas": "2026-10-28T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed политика",
+   "emisiya": "Fed всички",
    "chas_ot_iztochnika": true,
    "duma": "fomc",
-   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
+   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   }
  ],
- "s_bg_red": 79,
+ "s_bg_red": 80,
  "mahnati_ezik": 2
 }
