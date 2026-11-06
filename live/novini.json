@@ -1,37 +1,41 @@
 {
- "kogato": "2026-11-06T04:05:47Z",
- "sekundi": 0.9,
+ "kogato": "2026-11-06T04:16:53Z",
+ "sekundi": 12.19,
  "broi": 200,
- "novi_tozi_pyt": 0,
+ "novi_tozi_pyt": 1,
  "iztochnici_ok": [
   "MarketWatch",
   "Fed всички",
   "Fed политика",
   "Fed речи",
   "Investing",
-  "Yahoo долар",
   "Yahoo злато",
+  "Yahoo долар",
   "CNBC",
-  "FT пазари",
   "Google Fed",
   "Google злато",
-  "Mining.com"
+  "FT пазари"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Mining.com",
+   "greshka": "TimeoutError: The read operation timed out"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.29с",
-  "новини · FT пазари · 25 бр. за 0.38с",
-  "новини · Fed всички · 6 бр. за 0.08с",
-  "новини · Fed политика · 15 бр. за 0.16с",
-  "новини · Fed речи · 15 бр. за 0.16с",
-  "новини · Google Fed · 40 бр. за 0.37с",
-  "новини · Google злато · 40 бр. за 0.45с",
-  "новини · Investing · 10 бр. за 0.16с",
-  "новини · MarketWatch · 10 бр. за 0.07с",
-  "новини · Mining.com · 36 бр. за 0.83с",
-  "новини · Yahoo долар · 17 бр. за 0.19с",
-  "новини · Yahoo злато · 17 бр. за 0.2с",
-  "новини · български ред: 77 от 200 · махнати по език: 0"
+  "новини · CNBC · 30 бр. за 0.33с",
+  "новини · FT пазари · 25 бр. за 0.46с",
+  "новини · Fed всички · 6 бр. за 0.09с",
+  "новини · Fed политика · 15 бр. за 0.11с",
+  "новини · Fed речи · 15 бр. за 0.13с",
+  "новини · Google Fed · 40 бр. за 0.33с",
+  "новини · Google злато · 40 бр. за 0.44с",
+  "новини · Investing · 10 бр. за 0.2с",
+  "новини · MarketWatch · 10 бр. за 0.05с",
+  "новини · Mining.com · ПАДНА: TimeoutError: The read operation timed out",
+  "новини · Yahoo долар · 17 бр. за 0.24с",
+  "новини · Yahoo злато · 17 бр. за 0.24с",
+  "новини · български ред: 76 от 200 · махнати по език: 0"
  ],
  "novini": [
   {
@@ -46,6 +50,19 @@
    "duma": "gold",
    "zashto": "Пряко за златото.",
    "bg": "Златото поскъпва"
+  },
+  {
+   "zaglavie": "Gold, silver prices today, 6 November: Check retail rates of 24K, 22K gold, 999 silver in Delhi, Mumbai and Kolkata",
+   "vryzka": "https://news.google.com/rss/articles/CBMiiAJBVV95cUxNMjR5aENNWGVNLWZzY3IxWWY2Wm5EOUR2WUw4bV9pTU8tWHg2bDFhcDE0ckloemExTldJNlR3dmV2QXVXREVkdmlWRmJEbWc0eEdtOFRlb2xZaFlOV2RXZElRUG56a3AteUc1aXB6WXVFZk9VSWVBdl91MzRfbGVka2xDVDlEZVBlY3pOQm9mZXRfMFBIdXJrVkdMLVJiS1dsTU41dy1sQmJnS0RRNXlMRnNLRTJOT3ptSGt1Wko3N0drREVaYjBxZTZfRVVLOFdxV1hCMGswWWxMQTlTcDV6QmF5VUtPZmJUTTF3RVN5bDNqc19EMVlIQTZpcEtnNkpZUEc5UFk4dWLSAY4CQVVfeXFMTUxwanVpS2Q1RUhIN01FZjZRWW9MLURVZ2R0OGIxajhGdGdJWlNrWkRYN1hxMmR3ZUlTT0xHSjk4R3N0WWZrRE94N2QzUTdlcDFXS0U4RUdkUWNNUmVzZ3VWZThCbmxWUlZ6QndOMm9kWnhoTGlkT1U1Szd3Y0wwa3UwNHpSQ2JnaFhRMGFlbWV4WkZueXR",
+   "izvor": "Livemint",
+   "chas": "2026-11-06T04:03:59Z",
+   "vazhnost": 3,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "rates",
+   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
+   "bg": null
   },
   {
    "zaglavie": "Gold Price Forecast: Gold Falls Below $4,100, Can October Nonfarm Payrolls Fuel Another Rally?",
@@ -197,7 +214,7 @@
    "chas": "2026-11-06T02:03:22Z",
    "vazhnost": 2,
    "za": "злато",
-   "emisiya": "Yahoo долар",
+   "emisiya": "Yahoo злато",
    "chas_ot_iztochnika": true,
    "duma": "gold",
    "zashto": "Пряко за златото.",
@@ -659,6 +676,19 @@
    "bg": null
   },
   {
+   "zaglavie": "Gold Price Today | Price of Gold Per Ounce | 24 Hour Spot Chart",
+   "vryzka": "https://news.google.com/rss/articles/CBMiSEFVX3lxTFBnU2dTNUduLWh4WmxVQy1ndS1jN01abVlCeTNTMnFMbFdmS1d6TnFCekxTZVlXNGtKdnNRN3plT00yZm5LQmh6Rg?oc=5",
+   "izvor": "Kitco",
+   "chas": "2026-11-05T22:14:23Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": "Цената на златото днес"
+  },
+  {
    "zaglavie": "Goldman Sachs lowers gold price forecasts on hawkish Fed outlook",
    "vryzka": "https://news.google.com/rss/articles/CBMizwFBVV95cUxOVnJRdHpSOG9OUTk4dnJhM1NWT0JJLTZsUTRmREZaanNPVUxEdHVBVUtjT2NmelJiNzRnT3ZjN0xDYWNFNVgxa05kNkllbWdWbkFLeEg1QVA0dmtGbWVFcUFFTG1Hal9rWG10R1owU0c3c1RVMWFrZWozWng3ZVAxY1lqaXd5Z2ZrOGhOOU11V2p5Tm9iQmxoWm5GM3hzT1ctanBVZ3Rla0ttOHVLdE5XRi1Tb1NHZWFta0VnTUdObnpDRDE3Rm9GYk50SFIybU0?oc=5",
    "izvor": "TradingView",
@@ -1034,19 +1064,6 @@
    "duma": "inflation",
    "zashto": "Инфлацията е основната причина да се държи злато — то пази стойност, когато парите я губят.",
    "bg": null
-  },
-  {
-   "zaglavie": "Gold Price Today | Price of Gold Per Ounce | 24 Hour Spot Chart",
-   "vryzka": "https://news.google.com/rss/articles/CBMiSEFVX3lxTFBnU2dTNUduLWh4WmxVQy1ndS1jN01abVlCeTNTMnFMbFdmS1d6TnFCekxTZVlXNGtKdnNRN3plT00yZm5LQmh6Rg?oc=5",
-   "izvor": "Kitco",
-   "chas": "2026-11-05T20:36:34Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Цената на златото днес"
   },
   {
    "zaglavie": "Gold Faces a Payrolls Test With Fed Hike Odds Still Near 80%",
@@ -2609,19 +2626,6 @@
    "bg": "Изказване на член на Фед (Barkin) за инфлацията"
   },
   {
-   "zaglavie": "Gold prices today, Thursday, November 5, 2026: Did one of 2026's worst assets just get a boost?",
-   "vryzka": "https://finance.yahoo.com/personal-finance/investing/article/gold-prices-today-thursday-november-5-2026-did-one-of-2026s-worst-assets-just-get-a-boost-142402603.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-11-05T14:24:02Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Yahoo долар",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Цената на златото днес"
-  },
-  {
    "zaglavie": "Federal Reserve issues FOMC statement",
    "vryzka": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm",
    "izvor": "Fed",
@@ -2635,6 +2639,6 @@
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   }
  ],
- "s_bg_red": 77,
+ "s_bg_red": 76,
  "mahnati_ezik": 0
 }
