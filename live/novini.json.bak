@@ -1,46 +1,52 @@
 {
- "kogato": "2026-11-06T02:29:37Z",
- "sekundi": 12.21,
+ "kogato": "2026-11-06T02:40:11Z",
+ "sekundi": 1.86,
  "broi": 200,
- "novi_tozi_pyt": 0,
+ "novi_tozi_pyt": 1,
  "iztochnici_ok": [
-  "MarketWatch",
-  "Fed политика",
   "Investing",
   "Fed речи",
+  "Fed всички",
+  "Fed политика",
   "Yahoo долар",
-  "CNBC",
   "Yahoo злато",
+  "MarketWatch",
+  "CNBC",
   "FT пазари",
   "Google Fed",
-  "Google злато"
+  "Google злато",
+  "Mining.com"
  ],
- "iztochnici_padnali": [
-  {
-   "ime": "Fed всички",
-   "greshka": "HTTPError: HTTP Error 404: Not Found"
-  },
-  {
-   "ime": "Mining.com",
-   "greshka": "TimeoutError: The read operation timed out"
-  }
- ],
+ "iztochnici_padnali": [],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.23с",
-  "новини · FT пазари · 25 бр. за 0.32с",
-  "новини · Fed всички · ПАДНА: HTTPError: HTTP Error 404: Not Found",
-  "новини · Fed политика · 15 бр. за 0.08с",
-  "новини · Fed речи · 15 бр. за 0.14с",
-  "новини · Google Fed · 40 бр. за 0.31с",
-  "новини · Google злато · 40 бр. за 0.5с",
+  "новини · CNBC · 30 бр. за 0.4с",
+  "новини · FT пазари · 25 бр. за 0.44с",
+  "новини · Fed всички · 6 бр. за 0.14с",
+  "новини · Fed политика · 15 бр. за 0.15с",
+  "новини · Fed речи · 15 бр. за 0.13с",
+  "новини · Google Fed · 40 бр. за 0.37с",
+  "новини · Google злато · 40 бр. за 0.46с",
   "новини · Investing · 10 бр. за 0.1с",
-  "новини · MarketWatch · 10 бр. за 0.06с",
-  "новини · Mining.com · ПАДНА: TimeoutError: The read operation timed out",
-  "новини · Yahoo долар · 17 бр. за 0.24с",
-  "новини · Yahoo злато · 17 бр. за 0.26с",
-  "новини · български ред: 78 от 200 · махнати по език: 0"
+  "новини · MarketWatch · 10 бр. за 0.24с",
+  "новини · Mining.com · 36 бр. за 1.82с",
+  "новини · Yahoo долар · 17 бр. за 0.22с",
+  "новини · Yahoo злато · 17 бр. за 0.24с",
+  "новини · български ред: 79 от 200 · махнати по език: 0"
  ],
  "novini": [
+  {
+   "zaglavie": "Gold price prediction: Will gold continue its surge on Dhanteras? Check outlook for November 6",
+   "vryzka": "https://news.google.com/rss/articles/CBMigAJBVV95cUxQblluY1RyeTBnQUpCeUlZVWtZdTl4R28yMHNXTUtLOXZwOG9lM044NE8xWnh5LUhiQXNPeUpBRGNTSVJRbVVqOXhfMXpQOTRtdjEzZ0phSUlqTW5VakxGZUlnZUdzejRXTEFtYUVReDMtcWhDOEJQWmdWdVZFMFpuY1hDem5SR2FGaUNuRUg0d25ZRk1tSWRzT0VxTkRGSHlGaVhzT3I0NEpmOVUyLVRpM0YtWmhIbk9yOEVfWWpDbG5CUmZHV3ZiMGJqR3JveUZWakdyQXdtVjNUVzh5aFZVNFhJelJ6bzlWTDUwazBiS1RoZjhPdmFnU0pGck5QMERn0gGGAkFVX3lxTFBTSGU4T0pRQjFGZEFRbjkzX3daVEh5dVVYSFd2R3VJOFR5bjNfQnBlNXFBZXBNYlRRVDc4RzYyQ0lLQXFiekhkTXhqMDljVDZZWW9mdjBKUVptXzRxdHhrc0VuaW9JY0RSNGhMc0cyN0w2eGJOcmJidkNWeEVWalRzM2kzUDZOSnhXZUJsR3E4WnJSeEFqMEo0Z0dtcEp",
+   "izvor": "The Economic Times",
+   "chas": "2026-11-06T02:34:54Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": "Анализ и прогноза за златото"
+  },
   {
    "zaglavie": "Gold Defends Its Breakout. Palladium Reclaims $1,000. What’s Next?",
    "vryzka": "https://news.google.com/rss/articles/CBMisAFBVV95cUxNbE45ZkZuR2xfZkl2Q0xiSThVUWJLbnFiTlpIc191N2NkcjhyOF90Tk5JbXZtbGsyX3BoWXpfNnVNT0tCRkhVOWE4bGFMQlpmcU1iTlVnNkhyVnhHNVFURjNCQXpZdk5LOUJ6bXdnWXJVeDdrN3pfRkJlSHBUSGxnMThTRDJkOEVnaDhSb3BGcmZGZHR4YTJQMS1oc21heDljbkdLbHhpajgyLVJhR0FRcA?oc=5",
@@ -796,19 +802,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Gold Price Today | Price of Gold Per Ounce | 24 Hour Spot Chart",
-   "vryzka": "https://news.google.com/rss/articles/CBMiSEFVX3lxTFBnU2dTNUduLWh4WmxVQy1ndS1jN01abVlCeTNTMnFMbFdmS1d6TnFCekxTZVlXNGtKdnNRN3plT00yZm5LQmh6Rg?oc=5",
-   "izvor": "Kitco",
-   "chas": "2026-11-05T21:22:23Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Цената на златото днес"
-  },
-  {
    "zaglavie": "Traders flock to Treasury market for safety as tech-led stock selloff deepens",
    "vryzka": "https://www.marketwatch.com/story/traders-flock-to-treasury-market-for-safety-as-tech-led-stock-selloff-deepens-cf548c8b?mod=mw_rss_topstories",
    "izvor": "MarketWatch",
@@ -898,6 +891,19 @@
    "duma": "inflation",
    "zashto": "Инфлацията е основната причина да се държи злато — то пази стойност, когато парите я губят.",
    "bg": null
+  },
+  {
+   "zaglavie": "Gold Price Today | Price of Gold Per Ounce | 24 Hour Spot Chart",
+   "vryzka": "https://news.google.com/rss/articles/CBMiSEFVX3lxTFBnU2dTNUduLWh4WmxVQy1ndS1jN01abVlCeTNTMnFMbFdmS1d6TnFCekxTZVlXNGtKdnNRN3plT00yZm5LQmh6Rg?oc=5",
+   "izvor": "Kitco",
+   "chas": "2026-11-05T20:36:34Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": "Цената на златото днес"
   },
   {
    "zaglavie": "Gold Faces a Payrolls Test With Fed Hike Odds Still Near 80%",
@@ -2369,6 +2375,19 @@
    "bg": null
   },
   {
+   "zaglavie": "BoE joins the rate hike club, Australia may be done already",
+   "vryzka": "https://news.google.com/rss/articles/CBMikAFBVV95cUxPWWx2bHBvT1JMZ3h4Um1pZndFeUl5MDNCanozc1JsTk5hWjFQUFlwa0Vrak1yaEVtRVNlWVB4SmIyS1R6WV9aVWJsMm9kUzdPNzlNRzZaS2ZYU3NfbkpvV3V4Y3lXMUJMTmFWbmpHT19Ta3NHVDZHNjUtMkQ4SmEwRnhOcnk5RXJRY1VZdHVBRU0?oc=5",
+   "izvor": "The Mighty 790 KFGO",
+   "chas": "2026-11-05T14:46:03Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "rate",
+   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
+   "bg": null
+  },
+  {
    "zaglavie": "Gold prices decline ahead of wedding season; buyers may find opportunity",
    "vryzka": "https://news.google.com/rss/articles/CBMitgFBVV95cUxOWkl2TTFMU3NUT0FRNHVNNEo4QnZwbmwwTDBhMWdEYUV3R01zSWt4UmhzVnB2RjNobHpnSlNrc1JwWDRubDJNeGw2YmtER25VVzZvWk4wVEJ6LVk4b2Z0Y2d2amFiQm1ueXFHUVc4S1FJemJmQXdOMnN6TTRac2ZfbFpFb3VqNVJWWllGNkVPQVJ5bjdscjl1OXRlVnBRNUtvSmFCcHptdE1lWjNlc3VoU1p6dFhqUdIBugFBVV95cUxQVUMzMmU0SW53NG5BaXRTa2lZNThwMGxnaDVkcEFPQWMxUGYyTHFMbUNVaWR1b2ctS3M1X2syT0kyRk56b2pvbG1zZWtEeElCSlRFZGl2V0V2TVZLQ0xNWDc5Rms2RWF4Tjl6UXVUT2lJUWNXOFduTjBEVktwdW5wTHVPYjFONDVRT3hsX2hSTXVWWk5tRHlYSHRMaUNGN3ZLTWxRU2c1NW01bG5CU2Z5NjJoNXR4X1VmV3c?oc=5",
    "izvor": "The Tribune",
@@ -2419,19 +2438,6 @@
    "duma": null,
    "zashto": null,
    "bg": "Цената на среброто днес"
-  },
-  {
-   "zaglavie": "BoE joins the rate hike club, Australia may be done already",
-   "vryzka": "https://news.google.com/rss/articles/CBMikwFBVV95cUxQbWFXYWx2NGQyYlduOVRib19FdDRodndHd2steko3MVRST1pIRl93MkVKNDQ2MHVaY1FZQ2RUN3NYZDVhTjNhMGRDR3RNZkVsYmZrclVrY0tpbFpEWTlZamNJV1BnYVVFNGlJVDItQzg2M1plNkdUQjRuM0dBQjJya1R3NWlFVEl5YjdFWFdYRG42a1E?oc=5",
-   "izvor": "WTVB",
-   "chas": "2026-11-05T14:31:05Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "rate",
-   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
-   "bg": null
   },
   {
    "zaglavie": "Fed's Hammack favors gradual rate-hike path to lower inflation",
@@ -2616,32 +2622,19 @@
    "bg": null
   },
   {
-   "zaglavie": "My wife cried when I found out she had only $80,000 in her 401(k). I have $2.2 million. Am I wrong to be shocked?",
-   "vryzka": "https://www.marketwatch.com/story/my-wife-has-only-80-000-saved-for-retirement-i-have-2-2-million-am-i-wrong-to-be-shocked-3e27b490?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-11-05T14:00:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
    "zaglavie": "Federal Reserve issues FOMC statement",
    "vryzka": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm",
    "izvor": "Fed",
    "chas": "2026-10-28T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed политика",
+   "emisiya": "Fed всички",
    "chas_ot_iztochnika": true,
    "duma": "fomc",
-   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
+   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   }
  ],
- "s_bg_red": 78,
+ "s_bg_red": 79,
  "mahnati_ezik": 0
 }
