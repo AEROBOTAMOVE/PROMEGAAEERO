@@ -1,43 +1,52 @@
 {
- "kogato": "2026-11-06T03:01:50Z",
- "sekundi": 12.21,
+ "kogato": "2026-11-06T03:12:26Z",
+ "sekundi": 0.91,
  "broi": 200,
- "novi_tozi_pyt": 2,
+ "novi_tozi_pyt": 1,
  "iztochnici_ok": [
-  "MarketWatch",
-  "Fed всички",
   "Fed политика",
   "Fed речи",
+  "Fed всички",
+  "MarketWatch",
   "Investing",
+  "CNBC",
   "Yahoo злато",
   "Yahoo долар",
   "FT пазари",
-  "Google Fed",
   "Google злато",
-  "CNBC"
+  "Google Fed",
+  "Mining.com"
  ],
- "iztochnici_padnali": [
-  {
-   "ime": "Mining.com",
-   "greshka": "TimeoutError: The read operation timed out"
-  }
- ],
+ "iztochnici_padnali": [],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.41с",
-  "новини · FT пазари · 25 бр. за 0.33с",
-  "новини · Fed всички · 6 бр. за 0.11с",
+  "новини · CNBC · 30 бр. за 0.21с",
+  "новини · FT пазари · 25 бр. за 0.44с",
+  "новини · Fed всички · 6 бр. за 0.15с",
   "новини · Fed политика · 15 бр. за 0.11с",
-  "новини · Fed речи · 15 бр. за 0.12с",
-  "новини · Google Fed · 40 бр. за 0.3с",
-  "новини · Google злато · 40 бр. за 0.38с",
-  "новини · Investing · 10 бр. за 0.17с",
-  "новини · MarketWatch · 10 бр. за 0.04с",
-  "новини · Mining.com · ПАДНА: TimeoutError: The read operation timed out",
-  "новини · Yahoo долар · 17 бр. за 0.26с",
-  "новини · Yahoo злато · 17 бр. за 0.25с",
-  "новини · български ред: 79 от 200 · махнати по език: 0"
+  "новини · Fed речи · 15 бр. за 0.11с",
+  "новини · Google Fed · 40 бр. за 0.36с",
+  "новини · Google злато · 40 бр. за 0.45с",
+  "новини · Investing · 10 бр. за 0.19с",
+  "новини · MarketWatch · 10 бр. за 0.16с",
+  "новини · Mining.com · 36 бр. за 0.86с",
+  "новини · Yahoo долар · 17 бр. за 0.3с",
+  "новини · Yahoo злато · 17 бр. за 0.29с",
+  "новини · български ред: 78 от 200 · махнати по език: 0"
  ],
  "novini": [
+  {
+   "zaglavie": "‘My life could be cut short’: I’m 55, married and have a brain tumor. Should I splash out on a $210,000 Porsche?",
+   "vryzka": "https://www.marketwatch.com/story/my-life-could-be-cut-short-im-55-married-with-4-3-million-and-have-a-brain-tumor-should-i-buy-a-210-000-custom-porsche-ed825ada?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-11-06T03:00:00Z",
+   "vazhnost": 1,
+   "za": "лихви",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
   {
    "zaglavie": "Gold Price Surges Back Above $4,000 – Is This the Start of a Much Bigger Rally?",
    "vryzka": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxOTnI0QklSODR0U05pcVVsYV9FLUV5ejR3NFAwNmYtSHBhZG1uNVBOS2NMSG5Qc3k0ODFSTVByUFBhYUNLMmYwSDVweEdlbzZYZTg5bldGS2pCR3RCWEhsR3RrUmNtRU5rRnF5bVhQTS1pc2dGZE5FRkR4UTVfVFY0R091dllNU25xZzdEVW5TZnJPV09TOVJQbGNKSEkybUEwcnZiVERVZDZmR1Q2S3RDcHppTV8xeWQxR3FpMGxsWTJwMlk?oc=5",
@@ -894,6 +903,19 @@
    "chas_ot_iztochnika": true,
    "duma": "gold",
    "zashto": "Пряко за златото.",
+   "bg": null
+  },
+  {
+   "zaglavie": "Don’t Make Any Sudden Moves After the Midterm Elections (and 3 Charts I’m Watching Here)",
+   "vryzka": "https://www.barchart.com/story/news/8682860/dont-make-any-sudden-moves-after-the-midterm-elections-and-3-charts-im-watching-here?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-05T20:53:08Z",
+   "vazhnost": 1,
+   "za": "долар",
+   "emisiya": "Yahoo долар",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
    "bg": null
   },
   {
@@ -2093,19 +2115,6 @@
    "bg": "Новина от минния бранш (злато)"
   },
   {
-   "zaglavie": "‘My life could be cut short’: I’m 55, married and have a brain tumor. Should I splash out on a $210,000 Porsche?",
-   "vryzka": "https://www.marketwatch.com/story/my-life-could-be-cut-short-im-55-married-with-4-3-million-and-have-a-brain-tumor-should-i-buy-a-210-000-custom-porsche-ed825ada?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-11-05T15:30:00Z",
-   "vazhnost": 1,
-   "za": "лихви",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
    "zaglavie": "Nasdaq tumbles 5% as chip rout intensifies after midterms",
    "vryzka": "https://www.ft.com/content/7c6ceb4f-d7b1-49ec-9047-0e2e4cd2615c?syn-25a6b1a6=1",
    "izvor": "Financial Times",
@@ -2613,32 +2622,19 @@
    "bg": null
   },
   {
-   "zaglavie": "Fed’s Hammack supports gradual rate hikes to manage inflation",
-   "vryzka": "https://news.google.com/rss/articles/CBMikgFBVV95cUxPSjVBWE1HWnltSkRhemJjNU1mSlJWWGpHVUgtMkJsc044Nmd4b3BRbEZDb1hYTmZpZVQwUXJwbzhJYXgzRHAxNmw5cFRqckhUb2hMc3ltYVdHU0tQdW1zczNlMlJ5NHNEMVVfN0xHSmhuWVFrQ0VKd1U2SWRZTFNLVnJ4QnhHN0pySTRobzd0NktPQQ?oc=5",
-   "izvor": "Crypto Briefing",
-   "chas": "2026-11-05T14:04:04Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": "Изказване на член на Фед (Hammack) за вдигане на лихвата и инфлацията"
-  },
-  {
    "zaglavie": "Federal Reserve issues FOMC statement",
    "vryzka": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm",
    "izvor": "Fed",
    "chas": "2026-10-28T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed всички",
+   "emisiya": "Fed политика",
    "chas_ot_iztochnika": true,
    "duma": "fomc",
-   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
+   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   }
  ],
- "s_bg_red": 79,
+ "s_bg_red": 78,
  "mahnati_ezik": 0
 }

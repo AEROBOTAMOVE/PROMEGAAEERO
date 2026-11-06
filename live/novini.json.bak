@@ -1,39 +1,56 @@
 {
- "kogato": "2026-11-06T02:50:56Z",
- "sekundi": 0.82,
+ "kogato": "2026-11-06T03:01:50Z",
+ "sekundi": 12.21,
  "broi": 200,
- "novi_tozi_pyt": 1,
+ "novi_tozi_pyt": 2,
  "iztochnici_ok": [
-  "Fed всички",
-  "Investing",
   "MarketWatch",
+  "Fed всички",
   "Fed политика",
   "Fed речи",
+  "Investing",
   "Yahoo злато",
   "Yahoo долар",
-  "CNBC",
   "FT пазари",
   "Google Fed",
   "Google злато",
-  "Mining.com"
+  "CNBC"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Mining.com",
+   "greshka": "TimeoutError: The read operation timed out"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.26с",
-  "новини · FT пазари · 25 бр. за 0.27с",
-  "новини · Fed всички · 6 бр. за 0.07с",
-  "новини · Fed политика · 15 бр. за 0.08с",
-  "новини · Fed речи · 15 бр. за 0.09с",
-  "новини · Google Fed · 40 бр. за 0.34с",
-  "новини · Google злато · 40 бр. за 0.45с",
-  "новини · Investing · 10 бр. за 0.07с",
-  "новини · MarketWatch · 10 бр. за 0.08с",
-  "новини · Mining.com · 36 бр. за 0.75с",
-  "новини · Yahoo долар · 17 бр. за 0.14с",
-  "новини · Yahoo злато · 17 бр. за 0.13с",
+  "новини · CNBC · 30 бр. за 0.41с",
+  "новини · FT пазари · 25 бр. за 0.33с",
+  "новини · Fed всички · 6 бр. за 0.11с",
+  "новини · Fed политика · 15 бр. за 0.11с",
+  "новини · Fed речи · 15 бр. за 0.12с",
+  "новини · Google Fed · 40 бр. за 0.3с",
+  "новини · Google злато · 40 бр. за 0.38с",
+  "новини · Investing · 10 бр. за 0.17с",
+  "новини · MarketWatch · 10 бр. за 0.04с",
+  "новини · Mining.com · ПАДНА: TimeoutError: The read operation timed out",
+  "новини · Yahoo долар · 17 бр. за 0.26с",
+  "новини · Yahoo злато · 17 бр. за 0.25с",
   "новини · български ред: 79 от 200 · махнати по език: 0"
  ],
  "novini": [
+  {
+   "zaglavie": "Gold Price Surges Back Above $4,000 – Is This the Start of a Much Bigger Rally?",
+   "vryzka": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxOTnI0QklSODR0U05pcVVsYV9FLUV5ejR3NFAwNmYtSHBhZG1uNVBOS2NMSG5Qc3k0ODFSTVByUFBhYUNLMmYwSDVweEdlbzZYZTg5bldGS2pCR3RCWEhsR3RrUmNtRU5rRnF5bVhQTS1pc2dGZE5FRkR4UTVfVFY0R091dllNU25xZzdEVW5TZnJPV09TOVJQbGNKSEkybUEwcnZiVERVZDZmR1Q2S3RDcHppTV8xeWQxR3FpMGxsWTJwMlk?oc=5",
+   "izvor": "FXEmpire",
+   "chas": "2026-11-06T02:54:23Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": "Златото поскъпва"
+  },
   {
    "zaglavie": "Gold price prediction: Will gold continue its surge on Dhanteras? Check outlook for November 6",
    "vryzka": "https://news.google.com/rss/articles/CBMigAJBVV95cUxQblluY1RyeTBnQUpCeUlZVWtZdTl4R28yMHNXTUtLOXZwOG9lM044NE8xWnh5LUhiQXNPeUpBRGNTSVJRbVVqOXhfMXpQOTRtdjEzZ0phSUlqTW5VakxGZUlnZUdzejRXTEFtYUVReDMtcWhDOEJQWmdWdVZFMFpuY1hDem5SR2FGaUNuRUg0d25ZRk1tSWRzT0VxTkRGSHlGaVhzT3I0NEpmOVUyLVRpM0YtWmhIbk9yOEVfWWpDbG5CUmZHV3ZiMGJqR3JveUZWakdyQXdtVjNUVzh5aFZVNFhJelJ6bzlWTDUwazBiS1RoZjhPdmFnU0pGck5QMERn0gGGAkFVX3lxTFBTSGU4T0pRQjFGZEFRbjkzX3daVEh5dVVYSFd2R3VJOFR5bjNfQnBlNXFBZXBNYlRRVDc4RzYyQ0lLQXFiekhkTXhqMDljVDZZWW9mdjBKUVptXzRxdHhrc0VuaW9JY0RSNGhMc0cyN0w2eGJOcmJidkNWeEVWalRzM2kzUDZOSnhXZUJsR3E4WnJSeEFqMEo0Z0dtcEp",
@@ -46,6 +63,19 @@
    "duma": "gold",
    "zashto": "Пряко за златото.",
    "bg": "Анализ и прогноза за златото"
+  },
+  {
+   "zaglavie": "Asian tech stocks sink",
+   "vryzka": "https://www.ft.com/content/b77ebe43-a017-4e63-af84-5bdec8f47648?syn-25a6b1a6=1",
+   "izvor": "Financial Times",
+   "chas": "2026-11-06T02:30:40Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "FT пазари",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
   },
   {
    "zaglavie": "Gold Defends Its Breakout. Palladium Reclaims $1,000. What’s Next?",
@@ -150,19 +180,6 @@
    "duma": null,
    "zashto": null,
    "bg": null
-  },
-  {
-   "zaglavie": "Gold Price Surges Back Above $4,000 – Is This the Start of a Much Bigger Rally?",
-   "vryzka": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxOTnI0QklSODR0U05pcVVsYV9FLUV5ejR3NFAwNmYtSHBhZG1uNVBOS2NMSG5Qc3k0ODFSTVByUFBhYUNLMmYwSDVweEdlbzZYZTg5bldGS2pCR3RCWEhsR3RrUmNtRU5rRnF5bVhQTS1pc2dGZE5FRkR4UTVfVFY0R091dllNU25xZzdEVW5TZnJPV09TOVJQbGNKSEkybUEwcnZiVERVZDZmR1Q2S3RDcHppTV8xeWQxR3FpMGxsWTJwMlk?oc=5",
-   "izvor": "FXEmpire",
-   "chas": "2026-11-06T01:03:45Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Златото поскъпва"
   },
   {
    "zaglavie": "Gold Rebounds Above $4,100 as Dollar Weakens and Treasury Yields Fall",
@@ -891,6 +908,19 @@
    "duma": null,
    "zashto": null,
    "bg": null
+  },
+  {
+   "zaglavie": "Dollar Finishes Little Changed on Weak Stocks and Lower Bond Yields",
+   "vryzka": "https://www.barchart.com/story/news/8682598/dollar-finishes-little-changed-on-weak-stocks-and-lower-bond-yields?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-05T20:38:30Z",
+   "vazhnost": 2,
+   "za": "долар",
+   "emisiya": "Yahoo долар",
+   "chas_ot_iztochnika": true,
+   "duma": "dollar",
+   "zashto": "Златото се мери в долари: по-силен долар обикновено значи по-евтино злато.",
+   "bg": "Доларът и доходността на облигациите"
   },
   {
    "zaglavie": "Inflation Matters, It Turns Out",
@@ -2594,32 +2624,6 @@
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
    "bg": "Изказване на член на Фед (Hammack) за вдигане на лихвата и инфлацията"
-  },
-  {
-   "zaglavie": "Three things that explain what’s changing with Obamacare in 2027",
-   "vryzka": "https://www.marketwatch.com/story/three-things-that-explain-whats-changing-with-obamacare-in-2027-7c94585b?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-11-05T14:04:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
-   "zaglavie": "Gold (XAUUSD) Price Forecast: Gold Rally Targets 50-Day Moving Average",
-   "vryzka": "https://news.google.com/rss/articles/CBMiugFBVV95cUxPSnhQa0N3X3VZeENwS2p5X1FLRWd0d29wQWxyVV8zUlNGZTNRMUEzZ0RSa2dZUm5Pb3B3YkpMU19aU3Q0ZkVSMnZxV0hLaWpjdW5Xd3puY0dDTDNXS19pRlRUMGZFNmU2MWFqbnUzTXFCd3VzMG1SeDlwelB1TF9aUU1RWThMU05mUUVheGJxejJZMUQ4MXFqczdXcTM2U0FiYWVTeG9hYlhrc0RoWmJkSzIwZmpTcUtrYnc?oc=5",
-   "izvor": "FXEmpire",
-   "chas": "2026-11-05T14:02:31Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Анализ и прогноза за златото"
   },
   {
    "zaglavie": "Federal Reserve issues FOMC statement",
