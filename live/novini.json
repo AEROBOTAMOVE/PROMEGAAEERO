@@ -1,43 +1,52 @@
 {
- "kogato": "2026-11-06T10:20:05Z",
- "sekundi": 12.27,
+ "kogato": "2026-11-06T10:30:39Z",
+ "sekundi": 0.83,
  "broi": 200,
  "novi_tozi_pyt": 3,
  "iztochnici_ok": [
   "Fed политика",
-  "Fed речи",
-  "Fed всички",
   "MarketWatch",
-  "CNBC",
   "Investing",
-  "Yahoo долар",
+  "Fed всички",
+  "Fed речи",
   "Yahoo злато",
-  "FT пазари",
+  "CNBC",
+  "Yahoo долар",
   "Google Fed",
-  "Google злато"
+  "Google злато",
+  "FT пазари",
+  "Mining.com"
  ],
- "iztochnici_padnali": [
-  {
-   "ime": "Mining.com",
-   "greshka": "TimeoutError: The read operation timed out"
-  }
- ],
+ "iztochnici_padnali": [],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.07с",
-  "новини · FT пазари · 25 бр. за 0.25с",
-  "новини · Fed всички · 6 бр. за 0.05с",
-  "новини · Fed политика · 15 бр. за 0.05с",
-  "новини · Fed речи · 15 бр. за 0.05с",
-  "новини · Google Fed · 40 бр. за 0.31с",
-  "новини · Google злато · 40 бр. за 0.37с",
-  "новини · Investing · 10 бр. за 0.08с",
-  "новини · MarketWatch · 10 бр. за 0.06с",
-  "новини · Mining.com · ПАДНА: TimeoutError: The read operation timed out",
-  "новини · Yahoo долар · 14 бр. за 0.15с",
-  "новини · Yahoo злато · 16 бр. за 0.17с",
-  "новини · български ред: 63 от 200 · махнати по език: 2"
+  "новини · CNBC · 30 бр. за 0.21с",
+  "новини · FT пазари · 25 бр. за 0.67с",
+  "новини · Fed всички · 6 бр. за 0.11с",
+  "новини · Fed политика · 15 бр. за 0.07с",
+  "новини · Fed речи · 15 бр. за 0.12с",
+  "новини · Google Fed · 40 бр. за 0.39с",
+  "новини · Google злато · 40 бр. за 0.49с",
+  "новини · Investing · 10 бр. за 0.09с",
+  "новини · MarketWatch · 10 бр. за 0.08с",
+  "новини · Mining.com · 36 бр. за 0.79с",
+  "новини · Yahoo долар · 14 бр. за 0.24с",
+  "новини · Yahoo злато · 17 бр. за 0.18с",
+  "новини · български ред: 64 от 200 · махнати по език: 3"
  ],
  "novini": [
+  {
+   "zaglavie": "What the governor-elect of Texas, at the epicenter of the AI trade blowup, is now saying about data centers",
+   "vryzka": "https://www.marketwatch.com/story/what-the-governor-elect-of-texas-at-the-epicenter-of-the-ai-trade-blowup-is-now-saying-about-data-centers-55876582?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-11-06T10:20:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
   {
    "zaglavie": "‘It feels like he’s quietly building a separate life’: My husband inherited $500,000, but he refuses to spend it on our home",
    "vryzka": "https://www.marketwatch.com/story/it-feels-like-hes-quietly-building-a-separate-life-my-husband-inherited-500-000-but-he-refuses-to-spend-it-on-our-home-06535cff?mod=mw_rss_topstories",
@@ -63,6 +72,19 @@
    "duma": null,
    "zashto": null,
    "bg": null
+  },
+  {
+   "zaglavie": "Why is gold edging lower as recovering bond yields and Fed hike bets bolster USD ahead of US NFP?",
+   "vryzka": "https://news.google.com/rss/articles/CBMi7wFBVV95cUxNOUhZX28zVEljUFR5X0V0TDlxQmZVNDdDVG9rU0F2NW50aUpDNFNBcUF4RTRTTzBKZTQ4VmdIRXE0ZVFidXFaX3NaOGFBdGotb3A5MWNPUGhLbmdfUVFFbkFZcTRWamJmZEIydUdYS1BzMHAxbXpfZUppSGlPb2VIUWxRREtFQXlpRDZneW4zc3VPWExxZk4wcG5ycWtzM0o5S3NwOGpWM09uUzhVcHoyeXhPRTVvRm1Ua3phYUdOTWpMLTZCSjlkWDN3WjNmWkxucG5rNzlyUXVUMk9aTVZRclJkazhFRzQ2dXF6WUFpYw?oc=5",
+   "izvor": "www.tmgm.com",
+   "chas": "2026-11-06T09:35:40Z",
+   "vazhnost": 3,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": "Златото преди данните за работните места в САЩ (NFP), на фона на очакванията за по-висока лихва от Фед"
   },
   {
    "zaglavie": "South Korean Banks Expand Gold Investment Products, From Trusts for Gold Jewelry to Interest-Paying Gold Bars",
@@ -154,6 +176,19 @@
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
    "bg": "Златото и очакванията за по-висока лихва от Фед"
+  },
+  {
+   "zaglavie": "Gold Dec 26 (GC=F) Stock Price, News, Quote & History",
+   "vryzka": "https://news.google.com/rss/articles/CBMiVEFVX3lxTFBCLWFGVVBHUGF5Q2c0b1o5UTFKT0M1RWtfQS14aDl1SDdPR2t6eHFLQnkzbWU3MFhGTHQ1Mk1tWmpjVk9zYWpvMGRKVUhmeFk0NFhoUg?oc=5",
+   "izvor": "Yahoo! Finance Canada",
+   "chas": "2026-11-06T08:01:18Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": null
   },
   {
    "zaglavie": "Japanese stocks post biggest one-day fall since ‘liberation day’ chaos",
@@ -845,6 +880,19 @@
    "bg": null
   },
   {
+   "zaglavie": "Gold drops, on track for best week in over 2 months before US payrolls",
+   "vryzka": "https://news.google.com/rss/articles/CBMirwFBVV95cUxQQVNBUlY0RkQ3Vm5qcDFmbS12Nlo0Wjd4RWNEWkROOFRSX0hha1VobWJkTW82YTM1QzNMUXlzX1V5bktiSHJDYklFR2ZDUnN4aEhGM3U0UmlRT3pDcjVFRkR5ak9IZ1NVbG4wempaX1Y0R2JXb0U2THRLcE80d0l1NFppQ3l5b2M4c3RQZU1sS1RNRHdiYmFsYmw0czRoUnVJRVJLNTl0VmVNODg3NWVR?oc=5",
+   "izvor": "Reuters",
+   "chas": "2026-11-06T03:46:00Z",
+   "vazhnost": 3,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "payrolls",
+   "zashto": "Заетостта в САЩ решава дали Fed ще пипне лихвата — оттам стига до златото.",
+   "bg": "Златото поевтинява преди данните за работните места в САЩ (NFP)"
+  },
+  {
    "zaglavie": "Gold drops 1% on higher oil prices; US payrolls data in focus",
    "vryzka": "https://news.google.com/rss/articles/CBMirwFBVV95cUxQQVNBUlY0RkQ3Vm5qcDFmbS12Nlo0Wjd4RWNEWkROOFRSX0hha1VobWJkTW82YTM1QzNMUXlzX1V5bktiSHJDYklFR2ZDUnN4aEhGM3U0UmlRT3pDcjVFRkR5ak9IZ1NVbG4wempaX1Y0R2JXb0U2THRLcE80d0l1NFppQ3l5b2M4c3RQZU1sS1RNRHdiYmFsYmw0czRoUnVJRVJLNTl0VmVNODg3NWVR?oc=5",
    "izvor": "Reuters",
@@ -1059,7 +1107,7 @@
    "chas": "2026-11-06T02:03:22Z",
    "vazhnost": 2,
    "za": "злато",
-   "emisiya": "Yahoo долар",
+   "emisiya": "Yahoo злато",
    "chas_ot_iztochnika": true,
    "duma": "gold",
    "zashto": "Пряко за златото.",
@@ -1833,19 +1881,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Gold Dec 26 (GC=F) Stock Price, News, Quote & History",
-   "vryzka": "https://news.google.com/rss/articles/CBMiVEFVX3lxTFBCLWFGVVBHUGF5Q2c0b1o5UTFKT0M1RWtfQS14aDl1SDdPR2t6eHFLQnkzbWU3MFhGTHQ1Mk1tWmpjVk9zYWpvMGRKVUhmeFk0NFhoUg?oc=5",
-   "izvor": "Yahoo! Finance Canada",
-   "chas": "2026-11-05T21:05:33Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": null
-  },
-  {
    "zaglavie": "Video - CEO Clips: Dakota Gold: Advancing the Next Gold Mine in South Dakota's Historic Homestake District",
    "vryzka": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxNN2c2SU1PZTk4TGozdHhkMk0xRS1JSDk5ZVJ4OHJ6REg1MUNZaDBscGUwMHJiY2pTZWFwVjZ3czdrdWc0R3VyN3Zfb2JzMUxLNUdXeEk3b2Npb2VmQ3I4M09VYktTazFfWU1RT1dQNUxTZktVaTl5cFZBTmxkZ2tUaEh6NjRGQ0d2aGZ2N1E0NXBqd3ZCTmZkR1JfV0tqaE9XSGxBWVFfR29Ldi01OTRNY0pVN1l4bHY1QVRGQVZJeXRabkloYmRpbw?oc=5",
    "izvor": "Investing News Network",
@@ -2587,45 +2622,6 @@
    "bg": "Американските акции падат"
   },
   {
-   "zaglavie": "Nasdaq tumbles in chaotic trading as Democratic ‘blue wave’ sparks AI fears",
-   "vryzka": "https://www.ft.com/content/7c6ceb4f-d7b1-49ec-9047-0e2e4cd2615c?syn-25a6b1a6=1",
-   "izvor": "Financial Times",
-   "chas": "2026-11-05T16:59:34Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "FT пазари",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": "Американските акции падат"
-  },
-  {
-   "zaglavie": "AngloGold plans $900 million mine expansion amid stronger profit",
-   "vryzka": "https://www.mining.com/anglogold-plans-900-million-mine-expansion-amid-stronger-profit/",
-   "izvor": "Mining.com",
-   "chas": "2026-11-05T16:55:19Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Mining.com",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": null
-  },
-  {
-   "zaglavie": "Gold Fields reaffirms FY 2026 production guidance after Q3 update",
-   "vryzka": "https://news.google.com/rss/articles/CBMixwFBVV95cUxQVWx6c0I3bUNPa3g4VURIWm1tTTRaRGRFOE52M3BKOWRQRlhFOW9Va3RXc0lmbDVIMlZpOVY1V0lFT015eVRlbzNGZ1NGT0ZhbmdUeGlCaDEzemRMVUZKeGJDOWl5a1h4ZmthVm9yREpSMmdoazhUZHB3bkx6MXI4SXNyS3FzUi1lZk9CYlhxZ19mQmtJdk9ET1dudHItSXhCRHNVRG1XRTBPTktXRnBuMXlJN1JnUEs5YTJHM05jTTZDbEtXbURR?oc=5",
-   "izvor": "TradingView",
-   "chas": "2026-11-05T16:53:12Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": null
-  },
-  {
    "zaglavie": "Federal Reserve issues FOMC statement",
    "vryzka": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm",
    "izvor": "Fed",
@@ -2639,6 +2635,6 @@
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   }
  ],
- "s_bg_red": 63,
- "mahnati_ezik": 2
+ "s_bg_red": 64,
+ "mahnati_ezik": 3
 }
