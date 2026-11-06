@@ -1,44 +1,64 @@
 {
- "kogato": "2026-11-06T02:19:10Z",
- "sekundi": 0.81,
+ "kogato": "2026-11-06T02:29:37Z",
+ "sekundi": 12.21,
  "broi": 200,
- "novi_tozi_pyt": 1,
+ "novi_tozi_pyt": 0,
  "iztochnici_ok": [
   "MarketWatch",
-  "Fed всички",
   "Fed политика",
   "Investing",
   "Fed речи",
-  "CNBC",
   "Yahoo долар",
+  "CNBC",
   "Yahoo злато",
   "FT пазари",
   "Google Fed",
-  "Google злато",
-  "Mining.com"
+  "Google злато"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Fed всички",
+   "greshka": "HTTPError: HTTP Error 404: Not Found"
+  },
+  {
+   "ime": "Mining.com",
+   "greshka": "TimeoutError: The read operation timed out"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.16с",
-  "новини · FT пазари · 25 бр. за 0.29с",
-  "новини · Fed всички · 6 бр. за 0.08с",
-  "новини · Fed политика · 15 бр. за 0.13с",
-  "новини · Fed речи · 15 бр. за 0.16с",
+  "новини · CNBC · 30 бр. за 0.23с",
+  "новини · FT пазари · 25 бр. за 0.32с",
+  "новини · Fed всички · ПАДНА: HTTPError: HTTP Error 404: Not Found",
+  "новини · Fed политика · 15 бр. за 0.08с",
+  "новини · Fed речи · 15 бр. за 0.14с",
   "новини · Google Fed · 40 бр. за 0.31с",
-  "новини · Google злато · 40 бр. за 0.44с",
-  "новини · Investing · 10 бр. за 0.12с",
-  "новини · MarketWatch · 10 бр. за 0.05с",
-  "новини · Mining.com · 36 бр. за 0.74с",
-  "новини · Yahoo долар · 17 бр. за 0.18с",
-  "новини · Yahoo злато · 17 бр. за 0.2с",
+  "новини · Google злато · 40 бр. за 0.5с",
+  "новини · Investing · 10 бр. за 0.1с",
+  "новини · MarketWatch · 10 бр. за 0.06с",
+  "новини · Mining.com · ПАДНА: TimeoutError: The read operation timed out",
+  "новини · Yahoo долар · 17 бр. за 0.24с",
+  "новини · Yahoo злато · 17 бр. за 0.26с",
   "новини · български ред: 78 от 200 · махнати по език: 0"
  ],
  "novini": [
   {
+   "zaglavie": "Gold Defends Its Breakout. Palladium Reclaims $1,000. What’s Next?",
+   "vryzka": "https://news.google.com/rss/articles/CBMisAFBVV95cUxNbE45ZkZuR2xfZkl2Q0xiSThVUWJLbnFiTlpIc191N2NkcjhyOF90Tk5JbXZtbGsyX3BoWXpfNnVNT0tCRkhVOWE4bGFMQlpmcU1iTlVnNkhyVnhHNVFURjNCQXpZdk5LOUJ6bXdnWXJVeDdrN3pfRkJlSHBUSGxnMThTRDJkOEVnaDhSb3BGcmZGZHR4YTJQMS1oc21heDljbkdLbHhpajgyLVJhR0FRcA?oc=5",
+   "izvor": "FXEmpire",
+   "chas": "2026-11-06T02:26:06Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": null
+  },
+  {
    "zaglavie": "Gold (XAU/USD) Price Forecast: Bullish Reversal Challenges Downtrend",
    "vryzka": "https://news.google.com/rss/articles/CBMitwFBVV95cUxQQ3EzVUFZcVNhZGdkVGp4TldzS3BoTjdqME9XdXQ1T0xOVzJyZF9EbUxmeVY2SG50Mzk3Y0I0dUhQTzlRbm5PbFhLWDEtMmlUcXFZSS01c195amFSNUtialRDTUo0eHo3VDN2NEJ3b2Q3UU85R0ZkX3NMMjMtMC1QMF9PazliZS15M1d3YjJmRlg1SzJ2dGhvWk44bXZSdU1UM1RxdkQ4a2RBLTFYLUZRY3RfVk4xdTQ?oc=5",
    "izvor": "FXEmpire",
-   "chas": "2026-11-06T02:05:43Z",
+   "chas": "2026-11-06T02:23:39Z",
    "vazhnost": 2,
    "za": "злато",
    "emisiya": "Google злато",
@@ -903,19 +923,6 @@
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null,
-   "bg": null
-  },
-  {
-   "zaglavie": "Gold Defends Its Breakout. Palladium Reclaims $1,000. What’s Next?",
-   "vryzka": "https://news.google.com/rss/articles/CBMisAFBVV95cUxNbE45ZkZuR2xfZkl2Q0xiSThVUWJLbnFiTlpIc191N2NkcjhyOF90Tk5JbXZtbGsyX3BoWXpfNnVNT0tCRkhVOWE4bGFMQlpmcU1iTlVnNkhyVnhHNVFURjNCQXpZdk5LOUJ6bXdnWXJVeDdrN3pfRkJlSHBUSGxnMThTRDJkOEVnaDhSb3BGcmZGZHR4YTJQMS1oc21heDljbkdLbHhpajgyLVJhR0FRcA?oc=5",
-   "izvor": "FXEmpire",
-   "chas": "2026-11-05T20:27:56Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
    "bg": null
   },
   {
@@ -2628,10 +2635,10 @@
    "chas": "2026-10-28T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed всички",
+   "emisiya": "Fed политика",
    "chas_ot_iztochnika": true,
    "duma": "fomc",
-   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
+   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   }
  ],
