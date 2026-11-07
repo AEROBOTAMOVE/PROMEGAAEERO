@@ -1,39 +1,69 @@
 {
- "kogato": "2026-11-07T14:09:00Z",
- "sekundi": 0.81,
+ "kogato": "2026-11-07T14:24:28Z",
+ "sekundi": 0.74,
  "broi": 200,
- "novi_tozi_pyt": 4,
+ "novi_tozi_pyt": 2,
  "iztochnici_ok": [
-  "Fed всички",
-  "Fed речи",
-  "Fed политика",
-  "Investing",
   "MarketWatch",
+  "Investing",
+  "Fed речи",
   "Yahoo долар",
   "Yahoo злато",
+  "Fed политика",
   "CNBC",
   "FT пазари",
-  "Google злато",
   "Google Fed",
+  "Google злато",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Fed всички",
+   "greshka": "HTTPError: HTTP Error 404: Not Found"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.18с",
-  "новини · FT пазари · 25 бр. за 0.29с",
-  "новини · Fed всички · 6 бр. за 0.09с",
-  "новини · Fed политика · 15 бр. за 0.1с",
-  "новини · Fed речи · 15 бр. за 0.09с",
-  "новини · Google Fed · 40 бр. за 0.42с",
-  "новини · Google злато · 40 бр. за 0.46с",
-  "новини · Investing · 10 бр. за 0.09с",
-  "новини · MarketWatch · 10 бр. за 0.15с",
-  "новини · Mining.com · 36 бр. за 0.73с",
-  "новини · Yahoo долар · 15 бр. за 0.16с",
-  "новини · Yahoo злато · 20 бр. за 0.18с",
-  "новини · български ред: 74 от 200 · махнати по език: 2"
+  "новини · CNBC · 30 бр. за 0.22с",
+  "новини · FT пазари · 25 бр. за 0.26с",
+  "новини · Fed всички · ПАДНА: HTTPError: HTTP Error 404: Not Found",
+  "новини · Fed политика · 15 бр. за 0.21с",
+  "новини · Fed речи · 15 бр. за 0.1с",
+  "новини · Google Fed · 40 бр. за 0.34с",
+  "новини · Google злато · 40 бр. за 0.39с",
+  "новини · Investing · 10 бр. за 0.07с",
+  "новини · MarketWatch · 10 бр. за 0.05с",
+  "новини · Mining.com · 36 бр. за 0.69с",
+  "новини · Yahoo долар · 15 бр. за 0.12с",
+  "новини · Yahoo злато · 20 бр. за 0.13с",
+  "новини · български ред: 72 от 200 · махнати по език: 2"
  ],
  "novini": [
+  {
+   "zaglavie": "Gold Price in Pakistan Today: Rs 428,700/Tola (24K) | Live Sarafa Rate",
+   "vryzka": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9qWXhNaXQ0a3lMVGlSbVVONXEyQzNlZktMQmlzRXN4cXNXTUhoUlpkYW5yQWFzeTdPREhEWVFMVFpRTkxlc1NBTXJuRHFRWnFxM2RwdTJnY2NZZw?oc=5",
+   "izvor": "Investify",
+   "chas": "2026-11-07T14:13:54Z",
+   "vazhnost": 3,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "rate",
+   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
+   "bg": null
+  },
+  {
+   "zaglavie": "Berkshire Hathaway more than doubles buybacks in third quarter as earnings decline",
+   "vryzka": "https://www.cnbc.com/2026/11/07/berkshire-hathaway-q3-2026-earnings-buybacks.html",
+   "izvor": "CNBC",
+   "chas": "2026-11-07T14:02:49Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "CNBC",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
   {
    "zaglavie": "This retired professor has reinvented himself — as a Taylor Swift scholar",
    "vryzka": "https://www.marketwatch.com/story/this-retired-professor-has-reinvented-himself-as-a-taylor-swift-scholar-88456c8d?mod=mw_rss_topstories",
@@ -2596,45 +2626,19 @@
    "bg": "Очаквания за по-висока лихва от Фед"
   },
   {
-   "zaglavie": "Gold and Silver Rise for the Week as Tech, Crude and Copper Fall",
-   "vryzka": "https://news.google.com/rss/articles/CBMikwFBVV95cUxPdnVNVnN2bjJPUXlteXJiYV9BRXA5Nk1oTlFxUDlCeTkzSEFzWXdCd2pmUlVzUzVrUHp0aW5xR2gzU05sTGstcTNhRl9iUEFGc0hZTjkxRF9oWlFKOU9CYmtSMG50Wmo3TmtLM1ROUnZyS191ajFYOTh5a1hoQnU5cmxWbWlGSXB3eDI5TXBnam5Ec2s?oc=5",
-   "izvor": "BullionVault",
-   "chas": "2026-11-06T15:52:27Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Златото и среброто поскъпват на фона на цената на петрола"
-  },
-  {
-   "zaglavie": "October jobs report strengthens case for December rate hike",
-   "vryzka": "https://news.google.com/rss/articles/CBMid0FVX3lxTFBtalNJeF9GMTd6bl9OMlZSeHczQVdZTS1MNGhoN0xhMWVQVW1xdzdocUNIeGtzeXcyeXc1cEZGanE0enZ5ZkM1YURKQzZSRWp3VVE4aTRkLVNDeUwxcjQyc3V3aWZYaUlsT1poaUplT3V3VmZPOTFj?oc=5",
-   "izvor": "HousingWire",
-   "chas": "2026-11-06T15:48:31Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "rate",
-   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
-   "bg": "Данни за заетостта"
-  },
-  {
    "zaglavie": "Federal Reserve issues FOMC statement",
    "vryzka": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm",
    "izvor": "Fed",
    "chas": "2026-10-28T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed всички",
+   "emisiya": "Fed политика",
    "chas_ot_iztochnika": true,
    "duma": "fomc",
-   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
+   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   }
  ],
- "s_bg_red": 74,
+ "s_bg_red": 72,
  "mahnati_ezik": 2
 }
