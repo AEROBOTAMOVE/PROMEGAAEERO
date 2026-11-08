@@ -1,36 +1,43 @@
 {
- "kogato": "2026-11-08T08:48:02Z",
- "sekundi": 0.93,
+ "kogato": "2026-11-08T09:03:35Z",
+ "sekundi": 8.28,
  "broi": 200,
- "novi_tozi_pyt": 2,
+ "novi_tozi_pyt": 0,
  "iztochnici_ok": [
-  "Fed всички",
-  "Investing",
-  "MarketWatch",
   "Fed политика",
+  "Fed всички",
+  "MarketWatch",
   "Fed речи",
+  "Investing",
   "Yahoo злато",
-  "CNBC",
   "Yahoo долар",
   "FT пазари",
-  "Google Fed",
-  "Google злато",
+  "CNBC",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google злато",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  },
+  {
+   "ime": "Google Fed",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.22с",
-  "новини · FT пазари · 25 бр. за 0.33с",
-  "новини · Fed всички · 6 бр. за 0.08с",
-  "новини · Fed политика · 15 бр. за 0.12с",
-  "новини · Fed речи · 15 бр. за 0.12с",
-  "новини · Google Fed · 40 бр. за 0.32с",
-  "новини · Google злато · 40 бр. за 0.42с",
-  "новини · Investing · 10 бр. за 0.08с",
+  "новини · CNBC · 30 бр. за 0.31с",
+  "новини · FT пазари · 25 бр. за 0.26с",
+  "новини · Fed всички · 6 бр. за 0.06с",
+  "новини · Fed политика · 15 бр. за 0.06с",
+  "новини · Fed речи · 15 бр. за 0.09с",
+  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Investing · 10 бр. за 0.09с",
   "новини · MarketWatch · 10 бр. за 0.09с",
-  "новини · Mining.com · 36 бр. за 0.86с",
-  "новини · Yahoo долар · 15 бр. за 0.24с",
-  "новини · Yahoo злато · 20 бр. за 0.21с",
+  "новини · Mining.com · 36 бр. за 0.65с",
+  "новини · Yahoo долар · 15 бр. за 0.14с",
+  "новини · Yahoo злато · 20 бр. за 0.14с",
   "новини · български ред: 64 от 200 · махнати по език: 0"
  ],
  "novini": [
@@ -2628,10 +2635,10 @@
    "chas": "2026-10-28T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed всички",
+   "emisiya": "Fed политика",
    "chas_ot_iztochnika": true,
    "duma": "fomc",
-   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
+   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   }
  ],
