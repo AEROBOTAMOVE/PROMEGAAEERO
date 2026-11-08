@@ -1,36 +1,40 @@
 {
- "kogato": "2026-11-08T00:23:17Z",
- "sekundi": 0.92,
+ "kogato": "2026-11-08T00:40:07Z",
+ "sekundi": 0.94,
  "broi": 200,
- "novi_tozi_pyt": 3,
+ "novi_tozi_pyt": 1,
  "iztochnici_ok": [
-  "Fed речи",
-  "Fed всички",
-  "Fed политика",
   "MarketWatch",
+  "Fed политика",
+  "Fed речи",
   "Investing",
   "Yahoo долар",
   "Yahoo злато",
   "CNBC",
+  "FT пазари",
   "Google Fed",
   "Google злато",
-  "FT пазари",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Fed всички",
+   "greshka": "HTTPError: HTTP Error 404: Not Found"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.27с",
-  "новини · FT пазари · 25 бр. за 0.6с",
-  "новини · Fed всички · 6 бр. за 0.07с",
-  "новини · Fed политика · 15 бр. за 0.07с",
+  "новини · CNBC · 30 бр. за 0.17с",
+  "новини · FT пазари · 25 бр. за 0.28с",
+  "новини · Fed всички · ПАДНА: HTTPError: HTTP Error 404: Not Found",
+  "новини · Fed политика · 15 бр. за 0.06с",
   "новини · Fed речи · 15 бр. за 0.06с",
-  "новини · Google Fed · 39 бр. за 0.27с",
-  "новини · Google злато · 40 бр. за 0.47с",
+  "новини · Google Fed · 39 бр. за 0.35с",
+  "новини · Google злато · 40 бр. за 0.43с",
   "новини · Investing · 10 бр. за 0.11с",
-  "новини · MarketWatch · 10 бр. за 0.09с",
-  "новини · Mining.com · 36 бр. за 0.84с",
+  "новини · MarketWatch · 10 бр. за 0.04с",
+  "новини · Mining.com · 36 бр. за 0.86с",
   "новини · Yahoo долар · 15 бр. за 0.14с",
-  "новини · Yahoo злато · 20 бр. за 0.15с",
+  "новини · Yahoo злато · 20 бр. за 0.14с",
   "новини · български ред: 63 от 200 · махнати по език: 2"
  ],
  "novini": [
@@ -71,6 +75,19 @@
    "chas_ot_iztochnika": true,
    "duma": "rates",
    "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
+   "bg": null
+  },
+  {
+   "zaglavie": "What Suzano (SUZ) Said on Its Q3 Earnings Call",
+   "vryzka": "https://www.marketbeat.com/instant-alerts/transcript-what-suzano-suz-said-on-its-q3-earnings-call-2026-11-07/?utm_source=yahoofinance&utm_medium=yahoofinance&.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-08T00:14:10Z",
+   "vazhnost": 1,
+   "za": "долар",
+   "emisiya": "Yahoo долар",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
    "bg": null
   },
   {
@@ -2609,29 +2626,16 @@
    "bg": null
   },
   {
-   "zaglavie": "US stocks stage tepid recovery after $3.2tn rout fuelled by AI fears",
-   "vryzka": "https://www.ft.com/content/088ed252-ea9c-4b61-b2d1-37295fd0f7c2?syn-25a6b1a6=1",
-   "izvor": "Financial Times",
-   "chas": "2026-11-06T22:00:56Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "FT пазари",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
    "zaglavie": "Federal Reserve issues FOMC statement",
    "vryzka": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm",
    "izvor": "Fed",
    "chas": "2026-10-28T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed всички",
+   "emisiya": "Fed политика",
    "chas_ot_iztochnika": true,
    "duma": "fomc",
-   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
+   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   }
  ],
