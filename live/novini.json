@@ -1,39 +1,56 @@
 {
- "kogato": "2026-11-09T22:54:20Z",
- "sekundi": 0.8,
+ "kogato": "2026-11-09T23:04:33Z",
+ "sekundi": 0.79,
  "broi": 200,
- "novi_tozi_pyt": 4,
+ "novi_tozi_pyt": 1,
  "iztochnici_ok": [
   "MarketWatch",
-  "Fed всички",
   "Fed политика",
   "Fed речи",
   "Investing",
-  "Yahoo злато",
   "Yahoo долар",
+  "Yahoo злато",
   "CNBC",
-  "FT пазари",
   "Google Fed",
   "Google злато",
+  "FT пазари",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Fed всички",
+   "greshka": "HTTPError: HTTP Error 404: Not Found"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.3с",
-  "новини · FT пазари · 25 бр. за 0.36с",
-  "новини · Fed всички · 6 бр. за 0.1с",
-  "новини · Fed политика · 15 бр. за 0.11с",
-  "новини · Fed речи · 15 бр. за 0.16с",
-  "новини · Google Fed · 40 бр. за 0.33с",
-  "новини · Google злато · 40 бр. за 0.47с",
-  "новини · Investing · 10 бр. за 0.17с",
-  "новини · MarketWatch · 10 бр. за 0.04с",
+  "новини · CNBC · 30 бр. за 0.28с",
+  "новини · FT пазари · 25 бр. за 0.39с",
+  "новини · Fed всички · ПАДНА: HTTPError: HTTP Error 404: Not Found",
+  "новини · Fed политика · 15 бр. за 0.09с",
+  "новини · Fed речи · 15 бр. за 0.12с",
+  "новини · Google Fed · 40 бр. за 0.3с",
+  "новини · Google злато · 40 бр. за 0.37с",
+  "новини · Investing · 10 бр. за 0.16с",
+  "новини · MarketWatch · 10 бр. за 0.06с",
   "новини · Mining.com · 36 бр. за 0.74с",
-  "новини · Yahoo долар · 16 бр. за 0.26с",
-  "новини · Yahoo злато · 17 бр. за 0.24с",
+  "новини · Yahoo долар · 16 бр. за 0.24с",
+  "новини · Yahoo злато · 17 бр. за 0.25с",
   "новини · български ред: 74 от 200 · махнати по език: 1"
  ],
  "novini": [
+  {
+   "zaglavie": "Why Gold Miners Rose on Gold’s Down Day",
+   "vryzka": "https://news.google.com/rss/articles/CBMikwFBVV95cUxQUFBxa0JaQkRlV0RfaUFTU0tGVXU4V3JyTjVER2h6XzZFbkFWT2xCTkpINXZ1SW1KaEtJdWhZQXB0ZlZtbXpnTjEzWGpGQVRNX1JDUGtkZTg3eEgxX09CQ3lSODNCMVRFWjgzZXBHYjUwZmVMZkFRVDhUQUJ1aldlVnlodnhqOXZJUlNyZ2ZoSWdMOW8?oc=5",
+   "izvor": "FXEmpire",
+   "chas": "2026-11-09T22:57:32Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": "Новина от минния бранш (злато)"
+  },
   {
    "zaglavie": "Rocket Lab shares dip after the company’s ‘defining’ quarter misses the mark",
    "vryzka": "https://www.marketwatch.com/story/rocket-lab-shares-dip-after-the-companys-defining-quarter-misses-the-mark-9f74c3b5?mod=mw_rss_topstories",
@@ -1075,6 +1092,19 @@
    "bg": null
   },
   {
+   "zaglavie": "Barkin Says Appropriate Direction of Monetary Policy Relatively Straightforward",
+   "vryzka": "https://news.google.com/rss/articles/CBMizAFBVV95cUxOMFNTVlVFX2VicmdHVjZRLTRvZHgtQXotblhUV2xRMmNfWjVudTdFUGRZM2pzQkVzTlFoS00zZlBiaU1adENXX3BqN3dhN2xud3Qzdl9SUWRfeVRqOGlkQ2JBSmtkamxfSEhxM1NFOG1pN1piWEpuMFNEYnNHQVBTOEM2REtucnN4T3BQNUVZSExkQVRGaFdUQ3I1WjRzMjZQRF9ORk9vaFAxMHdZNGhwNjQwcVBzblFIelZWd0ZDQzhaNG1Idi0zcmFSWXI?oc=5",
+   "izvor": "WSJ",
+   "chas": "2026-11-09T17:40:00Z",
+   "vazhnost": 1,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
    "zaglavie": "With Gold Higher on Monday, Miners Say They Remain on Track for Annual Guidance",
    "vryzka": "https://news.google.com/rss/articles/CBMilgFBVV95cUxQZHR5VE9uWTJ4bFd4bkJQd3BXd2tUVWY5cnpRSjZpNnJNdmtPZ2ROS2JIMDM5YVNIaGFON2Yxejg2TG5jTGp0OGFSZWpQVUltODl2MXhKcEF2RmthNUtGYjhtTGZoUVB1emNtcDlhbE9yLXp6c1l6bW56TkxDcVZ4UU9yNWFja2VSNU55X3NJMnlZMGFWWUE?oc=5",
    "izvor": "Quantisnow",
@@ -1294,19 +1324,6 @@
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
    "bg": "Биткойн е под натиск на фона на очакванията за по-висока лихва от Фед"
-  },
-  {
-   "zaglavie": "Why Gold miners rose on Gold's down day",
-   "vryzka": "https://news.google.com/rss/articles/CBMijgFBVV95cUxNRzVnbDdCdGs5VTRKNG9Ta1diVzMxR1ZjZDlEdlF1dUJzNno4TlFVNHM2UkJxRXhIeUFVWnI0a1V6STRvdF9KaEl1MHNWcm4walI3RmhyU25oenNZNlNfVFVGNm41Y2l0S0oyV0xxSG5Udzd6ajZjaGNPTWcyUG44MjV6TDVVNDVqNEhrNEZB?oc=5",
-   "izvor": "FXStreet",
-   "chas": "2026-11-09T16:21:55Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Новина от минния бранш (злато)"
   },
   {
    "zaglavie": "Fund manager Nick Train has best month since 2000 on back of AI sell-off",
@@ -1634,19 +1651,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Equity volatility is maybe a bit sort-of back",
-   "vryzka": "https://www.ft.com/content/5c5926e2-bd32-47d8-954c-a0f02ca7b113",
-   "izvor": "Financial Times",
-   "chas": "2026-11-09T15:07:46Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "FT пазари",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
    "zaglavie": "Harmony Gold Mining (HMY): Q1 gold output down 12% on ore gap, copper growth from CSA",
    "vryzka": "https://news.google.com/rss/articles/CBMiogFBVV95cUxQVkxYcEVPOXZoQjl2bElndnVjN3AzMXVTNUtSLVQtM2JYdjN4LVlMSjc1b1lPOEJPX1hDVlRjMHhPWFg3c3RXTjR2M1Nxam5nU0hJNXptTlBNanM1OG8wZ21Lc0tZeXFfV1JaM0JFUWp5NHFpU2dsME1PNWk4ZVR2LXNQVzBvSndOWUx0aVEwTXVUNU1RUDNCeUlkbVZsdEZRZFE?oc=5",
    "izvor": "Quantisnow",
@@ -1658,6 +1662,19 @@
    "duma": "gold",
    "zashto": "Пряко за златото.",
    "bg": "Новина от минния бранш (злато)"
+  },
+  {
+   "zaglavie": "Equity volatility is maybe a bit sort-of back",
+   "vryzka": "https://www.ft.com/content/5c5926e2-bd32-47d8-954c-a0f02ca7b113",
+   "izvor": "Financial Times",
+   "chas": "2026-11-09T15:07:46Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "FT пазари",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
   },
   {
    "zaglavie": "Gold and silver prices extend post-election rebound, central banks on pace to beat 2025 purchases – Heraeus",
@@ -2609,29 +2626,16 @@
    "bg": null
   },
   {
-   "zaglavie": "Can the AI trade catch a break? Nvidia, Anthropic and CoreWeave may have a say.",
-   "vryzka": "https://www.marketwatch.com/story/can-the-ai-trade-catch-a-break-nvidia-anthropic-and-coreweave-may-have-a-say-d00c9ab3?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-11-09T12:08:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
    "zaglavie": "Federal Reserve issues FOMC statement",
    "vryzka": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm",
    "izvor": "Fed",
    "chas": "2026-10-28T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed всички",
+   "emisiya": "Fed политика",
    "chas_ot_iztochnika": true,
    "duma": "fomc",
-   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
+   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   }
  ],
