@@ -1,36 +1,40 @@
 {
- "kogato": "2026-11-10T23:40:21Z",
- "sekundi": 0.79,
+ "kogato": "2026-11-10T23:51:10Z",
+ "sekundi": 0.96,
  "broi": 200,
- "novi_tozi_pyt": 2,
+ "novi_tozi_pyt": 1,
  "iztochnici_ok": [
+  "Google злато",
+  "Fed речи",
   "MarketWatch",
   "Fed политика",
-  "Fed речи",
-  "Fed всички",
   "Investing",
   "Yahoo злато",
   "Yahoo долар",
   "CNBC",
-  "Google злато",
   "FT пазари",
   "Google Fed",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Fed всички",
+   "greshka": "HTTPError: HTTP Error 404: Not Found"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.23с",
-  "новини · FT пазари · 25 бр. за 0.58с",
-  "новини · Fed всички · 6 бр. за 0.13с",
-  "новини · Fed политика · 15 бр. за 0.11с",
-  "новини · Fed речи · 15 бр. за 0.11с",
-  "новини · Google Fed · 40 бр. за 0.49с",
-  "новини · Google злато · 40 бр. за 0.47с",
-  "новини · Investing · 10 бр. за 0.13с",
+  "новини · CNBC · 30 бр. за 0.28с",
+  "новини · FT пазари · 25 бр. за 0.38с",
+  "новини · Fed всички · ПАДНА: HTTPError: HTTP Error 404: Not Found",
+  "новини · Fed политика · 15 бр. за 0.15с",
+  "новини · Fed речи · 15 бр. за 0.08с",
+  "новини · Google Fed · 40 бр. за 0.39с",
+  "новини · Google злато · 40 бр. за 0.06с",
+  "новини · Investing · 10 бр. за 0.16с",
   "новини · MarketWatch · 10 бр. за 0.1с",
-  "новини · Mining.com · 36 бр. за 0.74с",
+  "новини · Mining.com · 36 бр. за 0.91с",
   "новини · Yahoo долар · 14 бр. за 0.2с",
-  "новини · Yahoo злато · 17 бр. за 0.18с",
+  "новини · Yahoo злато · 17 бр. за 0.2с",
   "новини · български ред: 110 от 200 · махнати по език: 0"
  ],
  "novini": [
@@ -59,6 +63,19 @@
    "duma": null,
    "zashto": null,
    "bg": null
+  },
+  {
+   "zaglavie": "Fed’s Paulson Says Gradual Tightening Seems Appropriate for Now",
+   "vryzka": "https://news.google.com/rss/articles/CBMitAFBVV95cUxPMjBxR0x4NjlidlNkNFJpTFdvcF9Xa0lIQ0Itcklrd1lJeDd0bjA0NE5pTzg2X21VcGxJZ21FVFJkb01zYmI1QVN5d3dIakVjQWh3c2lGQ0JiVXh3ek1jV2N5a21ETWVqMWNKSnlTTm5tNmh5YWJFZEg1Q2NKQVFLZ2dGVm5TaEliQUg4UXJNWHNKV3dXQ2h5ZUc4X3o5M3dDdlVWd09nWk1BcmJNWHlRV2psZ0Y?oc=5",
+   "izvor": "Bloomberg.com",
+   "chas": "2026-11-10T23:30:00Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": "Изказване на член на Фед (Paulson) за вдигане на лихвата"
   },
   {
    "zaglavie": "‘I’m sick of flying’: I paid for priority boarding, but the overhead bins were full. Was I duped?",
@@ -345,19 +362,6 @@
    "duma": null,
    "zashto": null,
    "bg": null
-  },
-  {
-   "zaglavie": "Trump-appointed Fed member signals big interest rate hike as inflation runs hot",
-   "vryzka": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxNX2ZKUlBkR0xZX0VQNjlOMXFjNkFCc1lEbUlTNVIzZHVteDU2R29hTTUzcWV6RzdmRjdYRWxhcXFhc0drZk1OMWFseld5dXRXNENrYVFWa0lCVEE3U3UyeUppRzVxQllYT21aY0pjZlVnVThaNzVGa0o2T2lZeDcweTUtZVNOa1lGN09uUnNyS0RMc3ZIWkN4eTVLV3Z4UkRkUjhBV2hyTllzdkNQM0g1RE1WR1Z2UDdZVFMw?oc=5",
-   "izvor": "The Washington Post",
-   "chas": "2026-11-10T22:02:34Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": "За вдигане на лихвата от Фед"
   },
   {
    "zaglavie": "Barrick files to take American Barrick Gold public with its Nevada Gold Mines and Pueblo Viejo stakes",
@@ -672,13 +676,26 @@
    "bg": "Очаквания за по-висока лихва от Фед"
   },
   {
+   "zaglavie": "Trump-appointed Fed member signals big interest rate hike as inflation runs hot",
+   "vryzka": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxNX2ZKUlBkR0xZX0VQNjlOMXFjNkFCc1lEbUlTNVIzZHVteDU2R29hTTUzcWV6RzdmRjdYRWxhcXFhc0drZk1OMWFseld5dXRXNENrYVFWa0lCVEE3U3UyeUppRzVxQllYT21aY0pjZlVnVThaNzVGa0o2T2lZeDcweTUtZVNOa1lGN09uUnNyS0RMc3ZIWkN4eTVLV3Z4UkRkUjhBV2hyTllzdkNQM0g1RE1WR1Z2UDdZVFMw?oc=5",
+   "izvor": "The Washington Post",
+   "chas": "2026-11-10T21:00:49Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": "За вдигане на лихвата от Фед"
+  },
+  {
    "zaglavie": "AMAPÁ MINERALS REPORTS THIRD QUARTER 2026 FINANCIAL RESULTS AS RAMP-UP ADVANCES",
-   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/amap-minerals-reports-third-quarter-210000155.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
+   "vryzka": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxNWVZ1NV9hWW8yOWlELThPWm1pWHU4cG1yNnR0bHpQWVRfMFA0cDJLejhrRTdENlQ4REgxVkxPZjVTTHJ4NkhaVkdxV2NGTUZNU1lxcU4ybTNCc0NPOEJja05XSHppeTRkb3ByY1g3SExRcjFkbWc3NDg2VVRSeDBlVEhnN0dicDhvdnFiNXNxWXp0SkhpbjJYLTBsRjRFd2V2VDh4VW82Z0ZQNko5TkQ5X3ZNMXF4cW9PLTMxN1NRUXFKajNZMlFxOGF2UGQxOWdldGZVU3RB?oc=5",
+   "izvor": "TradingView",
    "chas": "2026-11-10T21:00:00Z",
    "vazhnost": 1,
    "za": "злато",
-   "emisiya": "Yahoo злато",
+   "emisiya": "Google злато",
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null,
@@ -2594,19 +2611,6 @@
    "duma": "inflation",
    "zashto": "Инфлацията е основната причина да се държи злато — то пази стойност, когато парите я губят.",
    "bg": "Очаквания за по-висока лихва от Фед"
-  },
-  {
-   "zaglavie": "October CPI comes in hot, raising odds of a bigger-than-expected rate hike",
-   "vryzka": "https://news.google.com/rss/articles/CBMivAFBVV95cUxPSUI2S2VXcEZkanU5cU5RYzJMRkp2T2pzRjVBYlpfZjVSMzYteGxTdjRHQndlYUU5ZXdiN2FmQUxrY1dxRXplWWlZX0ctSngyNjZZWjI2UzJjYU5SRWlnZGZkRnR5bXBYT0RFWjhzWDVHYUZNYjdFNEsyNVRDZnd3VGFCNkNRLVZUV25odFE0Y2hWenplZlFtWlllQW5sckN2c2t0MFlIR1hWT0tLYlJ3WUZTMThLZ1ZTMVVRXw?oc=5",
-   "izvor": "InvestmentNews",
-   "chas": "2026-11-10T14:34:08Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "cpi",
-   "zashto": "ЦПИ е измерването на инфлацията. Изненада в него мести златото в същия ден.",
-   "bg": "Данни за инфлацията (CPI)"
   },
   {
    "zaglavie": "Waller, The Economic Outlook and Some Thoughts on Labor Market Dynamism",
