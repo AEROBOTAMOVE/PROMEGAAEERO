@@ -1,39 +1,65 @@
 {
- "kogato": "2026-11-11T14:48:37Z",
- "sekundi": 0.8,
+ "kogato": "2026-11-11T14:59:28Z",
+ "sekundi": 0.75,
  "broi": 200,
- "novi_tozi_pyt": 1,
+ "novi_tozi_pyt": 5,
  "iztochnici_ok": [
-  "Fed политика",
-  "Fed речи",
-  "Fed всички",
   "MarketWatch",
+  "Fed политика",
+  "Fed всички",
+  "Fed речи",
   "Investing",
-  "Yahoo злато",
-  "Yahoo долар",
   "CNBC",
-  "FT пазари",
+  "Yahoo долар",
+  "Yahoo злато",
   "Google злато",
   "Google Fed",
+  "FT пазари",
   "Mining.com"
  ],
  "iztochnici_padnali": [],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.27с",
-  "новини · FT пазари · 25 бр. за 0.37с",
-  "новини · Fed всички · 6 бр. за 0.06с",
-  "новини · Fed политика · 15 бр. за 0.05с",
-  "новини · Fed речи · 15 бр. за 0.05с",
-  "новини · Google Fed · 40 бр. за 0.56с",
-  "новини · Google злато · 40 бр. за 0.58с",
+  "новини · CNBC · 30 бр. за 0.1с",
+  "новини · FT пазари · 25 бр. за 0.55с",
+  "новини · Fed всички · 6 бр. за 0.08с",
+  "новини · Fed политика · 15 бр. за 0.08с",
+  "новини · Fed речи · 15 бр. за 0.08с",
+  "новини · Google Fed · 40 бр. за 0.49с",
+  "новини · Google злато · 40 бр. за 0.46с",
   "новини · Investing · 10 бр. за 0.09с",
-  "новини · MarketWatch · 10 бр. за 0.07с",
-  "новини · Mining.com · 36 бр. за 0.72с",
-  "новини · Yahoo долар · 14 бр. за 0.14с",
-  "новини · Yahoo злато · 19 бр. за 0.13с",
+  "новини · MarketWatch · 10 бр. за 0.05с",
+  "новини · Mining.com · 36 бр. за 0.67с",
+  "новини · Yahoo долар · 14 бр. за 0.16с",
+  "новини · Yahoo злато · 19 бр. за 0.17с",
   "новини · български ред: 101 от 200 · махнати по език: 0"
  ],
  "novini": [
+  {
+   "zaglavie": "Gold Faces Fresh Headwinds as Real Yields Climb After US CPI",
+   "vryzka": "https://news.google.com/rss/articles/CBMisAFBVV95cUxOX25TeVBKZnBaWFY3SzJ1SEpBbFdwMmlhWUhzWTFHOUFoTjV1ME8xTUcwUVc1V2Jac211aTYzVVpIbVpvU3hVRlY3Z2g5cnZ5X1dJNTg1QXhyc3hLTHdqUUZGeDVDRVZyYWRrV0NtblpuUUpRc0RIejBIbWVqd2RsYl9YTmdocGM4c1E0eHA2bWNOWmhUZFFCRzV5ejMtOFV3LTRBM3N1dUxmdG5scldCSw?oc=5",
+   "izvor": "FXEmpire",
+   "chas": "2026-11-11T14:46:57Z",
+   "vazhnost": 3,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "cpi",
+   "zashto": "ЦПИ е измерването на инфлацията. Изненада в него мести златото в същия ден.",
+   "bg": "Златото, данните за инфлацията в САЩ (CPI) и доходността на облигациите"
+  },
+  {
+   "zaglavie": "Inflation remained elevated in October, CPI report shows, upping odds of Fed interest rate hike",
+   "vryzka": "https://news.google.com/rss/articles/CBMidkFVX3lxTE5yY1puMmJtSGJhQldvMzg0d2RXa09JdzFnaUZLWkVmdzB3SVV3c2Y1dG1vRk53UlJEQUROUjR3UGFqLVNhOFRHRy1TRVJWWEdGTlNjVHlVR2gyZ0RhMWUzczV6c3R2MkFoYnF2QmZ5b3RBWkRFbUE?oc=5",
+   "izvor": "CBS News",
+   "chas": "2026-11-11T14:33:44Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "inflation",
+   "zashto": "Инфлацията е основната причина да се държи злато — то пази стойност, когато парите я губят.",
+   "bg": "Данни за инфлацията в САЩ (CPI)"
+  },
   {
    "zaglavie": "US tech stocks gain as AI trade revives",
    "vryzka": "https://www.ft.com/content/639de881-6017-454f-abfa-cfb191d1e7cd?syn-25a6b1a6=1",
@@ -111,6 +137,19 @@
    "duma": null,
    "zashto": null,
    "bg": null
+  },
+  {
+   "zaglavie": "Goldman adds March hike to Fed outlook as January remains in play (TLT:NASDAQ)",
+   "vryzka": "https://news.google.com/rss/articles/CBMipgFBVV95cUxNSEhUSWdQNkRGdkRSVjMxNVJFNG1ic1M5eEVUZF84T2dSUXJhM0JhYjZYdVNXWTd3NHdrMkw2SmgteTQ0Q2JxZnlkcGJFR09EbklmY0FhQWhvTWZNdkJVNS0zLThoM0FDNGppMFhxV181WHFHekMwQU1NODVJcnlNNVpxRWE3T3B3aTJ4ZGRCZzdNd3MtOEhFNXR4aXZpeERWN2Z1eVpB?oc=5",
+   "izvor": "Seeking Alpha",
+   "chas": "2026-11-11T14:12:35Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": "За лихвата на Фед"
   },
   {
    "zaglavie": "Forget happy hour. ‘Money parties’ are having a moment.",
@@ -197,7 +236,7 @@
    "chas": "2026-11-11T13:56:35Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Yahoo злато",
+   "emisiya": "Yahoo долар",
    "chas_ot_iztochnika": true,
    "duma": "inflation",
    "zashto": "Инфлацията е основната причина да се държи злато — то пази стойност, когато парите я губят.",
@@ -490,6 +529,19 @@
    "bg": null
   },
   {
+   "zaglavie": "Goldman now sees Fed interest rate hike at December, March meetings",
+   "vryzka": "https://news.google.com/rss/articles/CBMirgFBVV95cUxPZFIzUlJQMWd1NnFDdGRWYUVWNnIxSHhTX0NFUWwtbC1zMkIwOE80R3VSVVRRNnVkSTVxSmdwZGQtTlpuOTBMQ2VkaURQdlU2U25aTG90cTM0ZUtMY0U1OG1XVlNBY0MtdHFSaFhUbE44U0FULTljWmJkZlp3enBLckdzWTlnaWJ0Y0lfVDdrWERwN2tHY0NibzZ0MmVEakxnc2x4LW1WaDI3TlBfQUE?oc=5",
+   "izvor": "CNBC",
+   "chas": "2026-11-11T12:51:22Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": "Очаквания за по-висока лихва от Фед"
+  },
+  {
    "zaglavie": "Ariana Resources MD on VFEX listing and Dendere-backed funding push for Dokwe",
    "vryzka": "https://finance.yahoo.com/video/ariana-resources-md-vfex-listing-124831507.html?.tsrc=rss",
    "izvor": "Yahoo Finance",
@@ -566,19 +618,6 @@
    "duma": "gold",
    "zashto": "Пряко за златото.",
    "bg": "Новина от минния бранш (злато)"
-  },
-  {
-   "zaglavie": "Goldman now sees Fed interest rate hike at December, March meetings",
-   "vryzka": "https://news.google.com/rss/articles/CBMirgFBVV95cUxPZFIzUlJQMWd1NnFDdGRWYUVWNnIxSHhTX0NFUWwtbC1zMkIwOE80R3VSVVRRNnVkSTVxSmdwZGQtTlpuOTBMQ2VkaURQdlU2U25aTG90cTM0ZUtMY0U1OG1XVlNBY0MtdHFSaFhUbE44U0FULTljWmJkZlp3enBLckdzWTlnaWJ0Y0lfVDdrWERwN2tHY0NibzZ0MmVEakxnc2x4LW1WaDI3TlBfQUE?oc=5",
-   "izvor": "CNBC",
-   "chas": "2026-11-11T12:40:21Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": "Очаквания за по-висока лихва от Фед"
   },
   {
    "zaglavie": "Dollar firms as hot inflation, hawkish Fed talk lift rate-hike bets",
@@ -828,6 +867,19 @@
    "bg": null
   },
   {
+   "zaglavie": "Argentina could claim Chile’s South American lithium crown by 2035",
+   "vryzka": "https://www.mining.com/argentina-could-claim-chiles-south-american-lithium-crown-by-2035/",
+   "izvor": "Mining.com",
+   "chas": "2026-11-11T11:59:00Z",
+   "vazhnost": 1,
+   "za": "злато",
+   "emisiya": "Mining.com",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
    "zaglavie": "Gold steadies after selloff as central-bank demand offsets Fed rate hike concerns",
    "vryzka": "https://news.google.com/rss/articles/CBMiygFBVV95cUxOM091dTN5M0hSdmJKUDdFZmtGODd3SDRzenVTMXg1Q0JDZXhDdlF3WUJZSk52dlZVNlJxSFY3X3VteDd6aFIzcUduM29PZHA1WGlncWZxeVBTT0lBcXBKcWxSaVZYZXp4NnZHbFBzZEdLX0xkUHp3TkxIeUJPUHIxaWNHUTdqM1FiTWQ5Nm5BZEtsalA5TUdsc0FGWndWalFraVAyazJrWEc0Y1oyWURQYjJURTJrR2k4czBqdmRGaHYwdlY5ZnZIZEJn?oc=5",
    "izvor": "Investing.com",
@@ -891,6 +943,19 @@
    "duma": "gold",
    "zashto": "Пряко за златото.",
    "bg": "Минна компания съобщава резултати от сондажи за злато"
+  },
+  {
+   "zaglavie": "Gold Price Today | Price of Gold Per Ounce | 24 Hour Spot Chart",
+   "vryzka": "https://news.google.com/rss/articles/CBMiSEFVX3lxTFBnU2dTNUduLWh4WmxVQy1ndS1jN01abVlCeTNTMnFMbFdmS1d6TnFCekxTZVlXNGtKdnNRN3plT00yZm5LQmh6Rg?oc=5",
+   "izvor": "Kitco",
+   "chas": "2026-11-11T11:29:36Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": "Цената на златото днес"
   },
   {
    "zaglavie": "CoreWeave’s stock pops as new financing playbook eases debt concerns",
@@ -1179,6 +1244,19 @@
    "bg": null
   },
   {
+   "zaglavie": "Gold Price Forecast: XAU/USD Holds $4,030 After Hot CPI Puts a 50bp Fed Hike on the Table",
+   "vryzka": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxOaEw5THVDb1luNnRpeWZ4TkxfYnVYOE9WSEY5S3dMbTAwNnE3RU9QSXVCOEs4UFJyR0J2TkVBTG5sV2VnZ3YxTm8xOHFudHNOcjJZeWNNcmtieEZFdWV0eDhLOUlucjlkRS1iZUEtQVBRRXM0a052Q0FEYUZBUDNSdm1Gcjc4NjJhUEgxMmcyb19VTXJ2aFVFNWdheDVHeHVYVHhnZ1RGYTZPN2VQNTN2aU1UVkxRZV85Mk8tbHI5WExkMXh2V1hBSQ?oc=5",
+   "izvor": "FXLeaders",
+   "chas": "2026-11-11T09:24:17Z",
+   "vazhnost": 3,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "cpi",
+   "zashto": "ЦПИ е измерването на инфлацията. Изненада в него мести златото в същия ден.",
+   "bg": "Анализ и прогноза за златото"
+  },
+  {
    "zaglavie": "Goldman adds March rate hike to Fed forecast after another hot inflation read",
    "vryzka": "https://news.google.com/rss/articles/CBMigwFBVV95cUxOaEFuYkh0Z1dCVFlfbXpzblNnUFBSczNUTURCVDBEWlM2MXJvY0hpaEhZWEJ5b3IyeThZbmVVc1pIY0ZjRGF5LXhoNWZCSUQyU09RekZFMl91UkM3WFRPYVhHQjhRSVNwelNHY0J0RXZRRTN3TUNITklMdjduUjFmSnE1cw?oc=5",
    "izvor": "Yahoo Finance Singapore",
@@ -1255,19 +1333,6 @@
    "duma": "gold",
    "zashto": "Пряко за златото.",
    "bg": "Минна компания съобщава резултати от сондажи за злато"
-  },
-  {
-   "zaglavie": "Gold Price Forecast: XAU/USD Holds $4,030 After Hot CPI Puts a 50bp Fed Hike on the Table",
-   "vryzka": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxOaEw5THVDb1luNnRpeWZ4TkxfYnVYOE9WSEY5S3dMbTAwNnE3RU9QSXVCOEs4UFJyR0J2TkVBTG5sV2VnZ3YxTm8xOHFudHNOcjJZeWNNcmtieEZFdWV0eDhLOUlucjlkRS1iZUEtQVBRRXM0a052Q0FEYUZBUDNSdm1Gcjc4NjJhUEgxMmcyb19VTXJ2aFVFNWdheDVHeHVYVHhnZ1RGYTZPN2VQNTN2aU1UVkxRZV85Mk8tbHI5WExkMXh2V1hBSQ?oc=5",
-   "izvor": "FXLeaders",
-   "chas": "2026-11-11T08:54:45Z",
-   "vazhnost": 3,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "cpi",
-   "zashto": "ЦПИ е измерването на инфлацията. Изненада в него мести златото в същия ден.",
-   "bg": "Анализ и прогноза за златото"
   },
   {
    "zaglavie": "Why is the glittering gold losing its sparkle?",
@@ -1556,19 +1621,6 @@
    "bg": "Златото поевтинява"
   },
   {
-   "zaglavie": "Asian Bond Yields Rise on Growing Expectations for Fed Rate Hike",
-   "vryzka": "https://news.google.com/rss/articles/CBMiowFBVV95cUxOY0lWUTNMTnpyanJUcWctaTM1TjBEajVySEdCRG9FTVVtNmFJYkdULXo1cll5Yi1UbVZRVmg2UmZBZkJESG1pelM1NHluMG1OVVI5Z3hkamRIU0xFVVZvd1Q5Ymdma3J6MFRoVWNMUS1HZlhXaThDWG16aGh3Zllfd0dkUlJrTnE4bVhYY2QyNW9Ha3VvV3Flb2RoYVFwazZBUWM0?oc=5",
-   "izvor": "WSJ",
-   "chas": "2026-11-11T06:50:29Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": "Очаквания за по-висока лихва от Фед"
-  },
-  {
    "zaglavie": "He Sold 4.08 Million Yuan of Gold at 840. The Next Day It Rebounded.",
    "vryzka": "https://news.google.com/rss/articles/CBMilwFBVV95cUxQbWdCM3FVRkkySE9URTVYb0x0ZU9aUzdMSi10VFM4amE2aXpOX1V3azJJN3Q0YTB2RU1EQmlRTlliajkwNE0yTkEwR192NW5mOUx2Z1F5eTNjMnRGUC1EWjZLQzJqblFtbkhtVXhJZzUxeWE3MlMzUG5RU25EOVZLb3VoRGdyX0p6cGZKNGpndTZKN1RVb1RV?oc=5",
    "izvor": "Vocal",
@@ -1606,6 +1658,19 @@
    "duma": "gold",
    "zashto": "Пряко за златото.",
    "bg": null
+  },
+  {
+   "zaglavie": "Asian Bond Yields Rise on Growing Expectations for Fed Rate Hike",
+   "vryzka": "https://news.google.com/rss/articles/CBMiowFBVV95cUxOY0lWUTNMTnpyanJUcWctaTM1TjBEajVySEdCRG9FTVVtNmFJYkdULXo1cll5Yi1UbVZRVmg2UmZBZkJESG1pelM1NHluMG1OVVI5Z3hkamRIU0xFVVZvd1Q5Ymdma3J6MFRoVWNMUS1HZlhXaThDWG16aGh3Zllfd0dkUlJrTnE4bVhYY2QyNW9Ha3VvV3Flb2RoYVFwazZBUWM0?oc=5",
+   "izvor": "WSJ",
+   "chas": "2026-11-11T06:37:00Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": "Очаквания за по-висока лихва от Фед"
   },
   {
    "zaglavie": "Goldman expects additional Fed rate hike in March",
@@ -2529,71 +2594,6 @@
    "duma": "inflation",
    "zashto": "Инфлацията е основната причина да се държи злато — то пази стойност, когато парите я губят.",
    "bg": "Златото и очакванията за по-висока лихва от Фед"
-  },
-  {
-   "zaglavie": "100% chance of a Fed rate hike in December? Multiple officials deliver hawkish signals; Deutsche Bank forecasts \"three consecutive hikes\"",
-   "vryzka": "https://news.google.com/rss/articles/CBMimgFBVV95cUxOVWdaLWV0Y044SDF5dlpscUNJX013NkdqcDAxdkV2SFpPamhNMFlCLU5oeDJteDV2ZWdIbVFkeWdYZWVmM01MV3NMSlByZ1VSNE9rbkNrcGZwaTlQVHljQzE3TmZwWktCVksyNHQwamJsWkd0MjZtZmNKSExjS3M0djlLaU9sXzdkcHVEaHMwLXR6NlpyMXVZajF3?oc=5",
-   "izvor": "Moomoo",
-   "chas": "2026-11-10T23:59:00Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": "За вдигане на лихвата от Фед"
-  },
-  {
-   "zaglavie": "Fed’s Paulson Urges Gradual Approach to Rate Hikes",
-   "vryzka": "https://news.google.com/rss/articles/CBMipAFBVV95cUxQRHhlMkc2YmRSN3F5b3Ftd3RNQ2N0cV9HUV9ZVV9ORGtvUjdhWWVqdlExbVM0SEZSWi05cmdrb3psM2xXQlNTeThfUk9hdlI2SnU3dW04SGk3TkkyeHFoUVFUUUc1VGpubDJNMFdOdjVRRXZSTEg4ay1naXI0eGsyYkFQcE4wUUxQYl9qUWRuMGpvNXZJbTRzdV9SNGpBTHVqRS1sSw?oc=5",
-   "izvor": "WSJ",
-   "chas": "2026-11-10T23:58:00Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": "Изказване на член на Фед (Paulson) за вдигане на лихвата"
-  },
-  {
-   "zaglavie": "Fed's Paulson calls for gradual rate hikes amid ongoing high inflation",
-   "vryzka": "https://news.google.com/rss/articles/CBMirwFBVV95cUxOc1l4X293em5tbkV6SmFadllsbWlmU25jQmxZeWtMRHFDREhLcE5wVXZiM29uVnZ6eGRPUnAtWmVMcndFTmZkUVhERG1yQVpKQTFlNzlWNy1TalhycGcyb01xOFFzWnZwLWhYRWZ4UkZ0LU5hV3V0Z0UzbFV5RE5DOFdYVEdHN0liaktqTlNfdWxuekZ4Rk1tOGFIMUp1OVZlbGpIa3Mzamc2Y1NxRWZZ?oc=5",
-   "izvor": "Reuters",
-   "chas": "2026-11-10T23:34:02Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": "Изказване на член на Фед (Paulson) за вдигане на лихвата и инфлацията"
-  },
-  {
-   "zaglavie": "Fed’s Paulson Says Gradual Tightening Seems Appropriate for Now",
-   "vryzka": "https://news.google.com/rss/articles/CBMitAFBVV95cUxPMjBxR0x4NjlidlNkNFJpTFdvcF9Xa0lIQ0Itcklrd1lJeDd0bjA0NE5pTzg2X21VcGxJZ21FVFJkb01zYmI1QVN5d3dIakVjQWh3c2lGQ0JiVXh3ek1jV2N5a21ETWVqMWNKSnlTTm5tNmh5YWJFZEg1Q2NKQVFLZ2dGVm5TaEliQUg4UXJNWHNKV3dXQ2h5ZUc4X3o5M3dDdlVWd09nWk1BcmJNWHlRV2psZ0Y?oc=5",
-   "izvor": "Bloomberg.com",
-   "chas": "2026-11-10T23:30:00Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": "Изказване на член на Фед (Paulson) за вдигане на лихвата"
-  },
-  {
-   "zaglavie": "‘I’m sick of flying’: I paid for priority boarding, but the overhead bins were full. Was I duped?",
-   "vryzka": "https://www.marketwatch.com/story/im-sick-of-flying-i-paid-for-priority-boarding-but-the-overhead-bins-were-full-was-i-duped-0badcc80?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-11-10T23:25:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
   },
   {
    "zaglavie": "Bowman, The U.S. Economy and Considerations for Monetary Policy",
