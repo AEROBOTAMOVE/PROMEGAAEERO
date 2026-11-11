@@ -1,46 +1,65 @@
 {
- "kogato": "2026-11-11T22:24:45Z",
- "sekundi": 1.31,
+ "kogato": "2026-11-11T22:35:28Z",
+ "sekundi": 0.77,
  "broi": 200,
- "novi_tozi_pyt": 3,
+ "novi_tozi_pyt": 2,
  "iztochnici_ok": [
-  "MarketWatch",
-  "Google злато",
-  "Fed всички",
-  "Fed речи",
-  "Fed политика",
   "Investing",
-  "FT пазари",
+  "Fed всички",
+  "Fed политика",
+  "Fed речи",
+  "MarketWatch",
+  "Yahoo злато",
+  "Yahoo долар",
   "CNBC",
+  "FT пазари",
+  "Google злато",
   "Google Fed",
   "Mining.com"
  ],
- "iztochnici_padnali": [
-  {
-   "ime": "Yahoo злато",
-   "greshka": "HTTPError: HTTP Error 500: Internal Server Error"
-  },
-  {
-   "ime": "Yahoo долар",
-   "greshka": "HTTPError: HTTP Error 500: Internal Server Error"
-  }
- ],
+ "iztochnici_padnali": [],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.42с",
-  "новини · FT пазари · 25 бр. за 0.34с",
+  "новини · CNBC · 30 бр. за 0.24с",
+  "новини · FT пазари · 25 бр. за 0.37с",
   "новини · Fed всички · 6 бр. за 0.11с",
-  "новини · Fed политика · 15 бр. за 0.12с",
-  "новини · Fed речи · 15 бр. за 0.11с",
-  "новини · Google Fed · 40 бр. за 0.42с",
-  "новини · Google злато · 40 бр. за 0.09с",
-  "новини · Investing · 10 бр. за 0.14с",
-  "новини · MarketWatch · 10 бр. за 0.07с",
-  "новини · Mining.com · 36 бр. за 0.67с",
-  "новини · Yahoo долар · ПАДНА: HTTPError: HTTP Error 500: Internal Server Error",
-  "новини · Yahoo злато · ПАДНА: HTTPError: HTTP Error 500: Internal Server Error",
-  "новини · български ред: 86 от 200 · махнати по език: 1"
+  "новини · Fed политика · 15 бр. за 0.13с",
+  "новини · Fed речи · 15 бр. за 0.13с",
+  "новини · Google Fed · 40 бр. за 0.43с",
+  "новини · Google злато · 40 бр. за 0.44с",
+  "новини · Investing · 10 бр. за 0.1с",
+  "новини · MarketWatch · 10 бр. за 0.14с",
+  "новини · Mining.com · 36 бр. за 0.71с",
+  "новини · Yahoo долар · 11 бр. за 0.24с",
+  "новини · Yahoo злато · 17 бр. за 0.21с",
+  "новини · български ред: 85 от 200 · махнати по език: 1"
  ],
  "novini": [
+  {
+   "zaglavie": "I’m 63 and spending $95,000 on a roof deck for my $500,000 home. Am I being extravagant?",
+   "vryzka": "https://www.marketwatch.com/story/im-63-and-want-to-spend-95-000-on-a-roof-deck-for-my-500-000-home-is-that-a-good-investment-f1a59c27?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-11-11T22:30:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "Montage Gold reports on its Q3-2026 activities",
+   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/montage-gold-reports-q3-2026-221500082.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-11T22:15:00Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": null
+  },
   {
    "zaglavie": "Gold (XAU/USD) Price Forecast: Bullish Reversal Faces Critical Support Test",
    "vryzka": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxQNXEwT1JWbHRBcGJoeHFoUGdldG8yNFFzOWRwMTFJdHp2YndEbmpfNUhFa1Rrci1lVElKSS0zdE1hMi1BZE1qMjU4Y2c2QnFfUm5YbjkzalVpeG5BNmJoX0lPRjJEanBFT0dKYlhGZXpfWmptRWNGQXBNVVctZXd0ZWJTWHctc3lWb0RMQWlxekVrc216U1dneTdrMThZRjcwc2xBWFdHUWY4TG1OMGpKX1FMNU1yMDhTVy1SNFo4QnY?oc=5",
@@ -143,6 +162,19 @@
    "chas_ot_iztochnika": true,
    "duma": "gold",
    "zashto": "Пряко за златото.",
+   "bg": null
+  },
+  {
+   "zaglavie": "CD Interest Rates Forecast: Will CD Rates Go Up In 2026?",
+   "vryzka": "https://news.google.com/rss/articles/CBMibEFVX3lxTE14RUJjNzNLLThVbXpHemxkWWYwaWVWUG1Tamw3OXphWWU0LTBYRVN1MUdjT2lOTkwzeWpULTQyYUxYUTVwak1WQ1BycmhvU1R4SEpQZHRpaHVhLWNWM25IV1BvNDBYc2ZWTE5GVQ?oc=5",
+   "izvor": "Forbes",
+   "chas": "2026-11-11T21:47:27Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "rates",
+   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
    "bg": null
   },
   {
@@ -523,19 +555,6 @@
    "bg": null
   },
   {
-   "zaglavie": "I’m 63 and spending $95,000 on a roof deck for my $500,000 home. Am I being extravagant?",
-   "vryzka": "https://www.marketwatch.com/story/im-63-and-want-to-spend-95-000-on-a-roof-deck-for-my-500-000-home-is-that-a-good-investment-f1a59c27?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-11-11T19:41:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
    "zaglavie": "Higher Rates and Industry Tailwinds: 3 Major Regional Banks to Watch",
    "vryzka": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxOazRmQjdTSmVTdGh5dzVpOEVhVU9fWGdLN21pTjJhLWd6SFhndG5WaFFXWmtrS0o1ektfM0dWZE02dlRMQVZ1U3VlY2ZNNFNQM0RXYndqZ2x3MnZueGJZWElBam1EaXViZDZsc29nRHF3T1JnWWZ3WnVNQjFCZmJGWUVQdWJ3RmFlXzEtOXdQTHlMZzBScUR3ODF2RmlWd3ZkaU9tRTFRTXFibnJUWHB5ZC1HVFV0cW5GZGMxYlYwR3o?oc=5",
    "izvor": "TradingView",
@@ -770,6 +789,19 @@
    "bg": null
   },
   {
+   "zaglavie": "These 5 Gold Mining Stocks Give You a Different Way to Own Gold",
+   "vryzka": "https://www.fool.com/investing/2026/11/11/these-5-gold-mining-stocks-give-you-different-way/?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-11T17:35:00Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": "Новина от минния бранш (злато)"
+  },
+  {
    "zaglavie": "Wall Street thinks the Fed made a 'mistake' — and now more hikes are coming",
    "vryzka": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxNdGY2RnBVRFBmcnVBQWw3TG1jSV94WHcyTTFtV3ZPZE1PYU13QlhhbFlDZHpweDhKTGc5TzcyVDZJcEJYbmNFMGdLYjdVQlhxRUxiQTUwX3p2RVZXMUs0ZjkwQU8yQVdsQ2ZuNEtOWHpfSWdFREVNRXFZeEE0bTJtZUQ5SVJUX1k5ZDA0TUFqSzJVRks3N3AwbTVMVHNoUThKUk91MjRFZHFqUDNnb1pseHB3SUxuc1FzMFpLZjNfMElrc2xtWTBXUw?oc=5",
    "izvor": "Yahoo Finance",
@@ -794,19 +826,6 @@
    "duma": "inflation",
    "zashto": "Инфлацията е основната причина да се държи злато — то пази стойност, когато парите я губят.",
    "bg": null
-  },
-  {
-   "zaglavie": "These 5 Gold Mining Stocks Give You a Different Way to Own Gold",
-   "vryzka": "https://news.google.com/rss/articles/CBMilwFBVV95cUxPSHBodnJoNWEtSE1STTRGQTBJVVByMHhxakJDcjZMZFk0ZDVVYXAzSG9nRVpqVzJsa29yai1LZ3VHRHdOaUEzbWhSdHVtQ2Q2ZWMtdllPV2lVVUJqR0htNktvLVhvZHRuVG1wZXB1dm1ZSlVLMG4wb19jc0E3aXFRd1BnNEV0TjZYbXh0REVkV1Y5MVdVWHhv?oc=5",
-   "izvor": "The Motley Fool",
-   "chas": "2026-11-11T17:15:00Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Новина от минния бранш (злато)"
   },
   {
    "zaglavie": "Troilus hits gold in Quebec ground marked as waste",
@@ -2577,32 +2596,6 @@
    "bg": "Златото е без голяма промяна на фона на данните за инфлацията в САЩ"
   },
   {
-   "zaglavie": "Falco’s Horne 5: A C$3.35bn gold project trading at a fraction of its underlying value",
-   "vryzka": "https://news.google.com/rss/articles/CBMidEFVX3lxTE9LR2dqTWg0SmswSzhWc21ZVVVucDcyU252VXJNdUVNNDJuS2hRemgzTnFzaDhXWjZjZlZmb2t1VTRmdGxTUS11SUdhVDVER051OXJFZ0hzZ3VxaXdwMXFxY29hQkZJeXdiOHVwVlpOUDFfMTlO?oc=5",
-   "izvor": "Yahoo Finance Singapore",
-   "chas": "2026-11-11T09:05:53Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": null
-  },
-  {
-   "zaglavie": "Dollar gains as hot inflation, hawkish Fed talk lift rate-hike bets",
-   "vryzka": "https://news.google.com/rss/articles/CBMi-AFBVV95cUxNUVpTRjk5MFpMall6cjR1LV9WN3hiWFdFRUtOMldkdEFiMnRCZ0xnQngtMVlnQmFaSUJabXg4bUwxcWhQNTYzLWQxZ0I3N3hQTUlDOTRxeVFfQmFOekFrT0RnVUtRMnNMYTVOS2RIbUQtd2Exc2lKNGhoY3Y5WWdXdTFjTjN4UXphNVVETU1MVE5lM1Jha0htcFZKRG9QQ09kMUt5eUxUenhQQUhXdGZoY2pNQUFqQnkzVUxsVGpNc21aNDdVVFhyUVNqRlEtTms3QjNkVURxVHFaWGZxd1B2c0xkYmw4MlJyeDZzcHlHeG9oMEIycjY2Qg?oc=5",
-   "izvor": "Central Oregon Daily",
-   "chas": "2026-11-11T09:00:07Z",
-   "vazhnost": 3,
-   "za": "долар",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "inflation",
-   "zashto": "Инфлацията е основната причина да се държи злато — то пази стойност, когато парите я губят.",
-   "bg": "Доларът поскъпва на фона на очакванията за по-висока лихва от Фед"
-  },
-  {
    "zaglavie": "Bowman, The U.S. Economy and Considerations for Monetary Policy",
    "vryzka": "https://www.federalreserve.gov/newsevents/speech/bowman20261110a.htm",
    "izvor": "Fed",
@@ -2642,6 +2635,6 @@
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   }
  ],
- "s_bg_red": 86,
+ "s_bg_red": 85,
  "mahnati_ezik": 1
 }
