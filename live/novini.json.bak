@@ -1,43 +1,65 @@
 {
- "kogato": "2026-11-10T23:51:10Z",
- "sekundi": 0.96,
+ "kogato": "2026-11-11T00:01:24Z",
+ "sekundi": 0.91,
  "broi": 200,
  "novi_tozi_pyt": 1,
  "iztochnici_ok": [
-  "Google злато",
-  "Fed речи",
-  "MarketWatch",
   "Fed политика",
-  "Investing",
-  "Yahoo злато",
+  "Fed всички",
   "Yahoo долар",
+  "Yahoo злато",
+  "MarketWatch",
+  "Investing",
+  "Fed речи",
   "CNBC",
   "FT пазари",
+  "Google злато",
   "Google Fed",
   "Mining.com"
  ],
- "iztochnici_padnali": [
-  {
-   "ime": "Fed всички",
-   "greshka": "HTTPError: HTTP Error 404: Not Found"
-  }
- ],
+ "iztochnici_padnali": [],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.28с",
-  "новини · FT пазари · 25 бр. за 0.38с",
-  "новини · Fed всички · ПАДНА: HTTPError: HTTP Error 404: Not Found",
-  "новини · Fed политика · 15 бр. за 0.15с",
-  "новини · Fed речи · 15 бр. за 0.08с",
-  "новини · Google Fed · 40 бр. за 0.39с",
-  "новини · Google злато · 40 бр. за 0.06с",
-  "новини · Investing · 10 бр. за 0.16с",
-  "новини · MarketWatch · 10 бр. за 0.1с",
-  "новини · Mining.com · 36 бр. за 0.91с",
-  "новини · Yahoo долар · 14 бр. за 0.2с",
-  "новини · Yahoo злато · 17 бр. за 0.2с",
+  "новини · CNBC · 30 бр. за 0.31с",
+  "новини · FT пазари · 25 бр. за 0.36с",
+  "новини · Fed всички · 6 бр. за 0.08с",
+  "новини · Fed политика · 15 бр. за 0.06с",
+  "новини · Fed речи · 15 бр. за 0.15с",
+  "новини · Google Fed · 40 бр. за 0.44с",
+  "новини · Google злато · 40 бр. за 0.41с",
+  "новини · Investing · 10 бр. за 0.11с",
+  "новини · MarketWatch · 10 бр. за 0.11с",
+  "новини · Mining.com · 36 бр. за 0.85с",
+  "новини · Yahoo долар · 14 бр. за 0.09с",
+  "новини · Yahoo злато · 16 бр. за 0.1с",
   "новини · български ред: 110 от 200 · махнати по език: 0"
  ],
  "novini": [
+  {
+   "zaglavie": "Should a widow leave her late partner’s home to her stepkids — or cut off contact with them?",
+   "vryzka": "https://www.marketwatch.com/story/she-can-always-change-her-mind-should-a-widow-leave-the-family-home-to-her-stepchildren-649b06af?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-11-11T00:00:00Z",
+   "vazhnost": 1,
+   "za": "лихви",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "Gold, silver plunge as hotter U.S. inflation raises prospect of larger Fed rate hike - Kitco PM Report",
+   "vryzka": "https://news.google.com/rss/articles/CBMivgFBVV95cUxOWjFnYTZXd19NRGpCTENYaVNGRFJjYkkyOWM3ZVZycC1NeV9MTVBvVDBsVE10UGhvZFlzRWg1UkJXTDduSVZ2S25QOXBtTGdyZzB3d1VQc3lUc000d2hQUnU2SFBVbG1vU0pTeW5oTlFEdVJRODBKanAwbWpOeC0xOS1UTEhYUzh3WVRYajY4aU1OTlNmSFpkM3VyZEMxcnBqQXVyU2VNMFdOR3R6RXNITEdPbkJpcWZkNy1Bcjln?oc=5",
+   "izvor": "Kitco",
+   "chas": "2026-11-10T23:40:51Z",
+   "vazhnost": 3,
+   "za": "злато",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "inflation",
+   "zashto": "Инфлацията е основната причина да се държи злато — то пази стойност, когато парите я губят.",
+   "bg": "Златото и среброто поевтиняват на фона на очакванията за по-висока лихва от Фед"
+  },
   {
    "zaglavie": "Fed's Paulson calls for gradual rate hikes amid ongoing high inflation",
    "vryzka": "https://news.google.com/rss/articles/CBMirwFBVV95cUxOc1l4X293em5tbkV6SmFadllsbWlmU25jQmxZeWtMRHFDREhLcE5wVXZiM29uVnZ6eGRPUnAtWmVMcndFTmZkUVhERG1yQVpKQTFlNzlWNy1TalhycGcyb01xOFFzWnZwLWhYRWZ4UkZ0LU5hV3V0Z0UzbFV5RE5DOFdYVEdHN0liaktqTlNfdWxuekZ4Rk1tOGFIMUp1OVZlbGpIa3Mzamc2Y1NxRWZZ?oc=5",
@@ -118,9 +140,9 @@
   },
   {
    "zaglavie": "Fed officials open door to a quicker round of rate hikes as inflation worsens",
-   "vryzka": "https://news.google.com/rss/articles/CBMiiAJBVV95cUxQeUR2SUw1LXVsRl9fcC1MM1dEd3llX1YwZ0pGR2lCS0JKdVVSa0VMc1I4NHpYVExpTV9MUlVJSjRDTWZHaUdJRlE5WXBUR0tNUHY4Y1oxamJiMHBzdmJ1SEhxYmVHNkFha2FqeFBxVmJvSElpVV94Q2FoeGVlY0lCMUJZcnNFRUtMMWw4R25FQWd2cXFrUm54V3AzYWhCbHczZmxrM3FtQnJXZ1hmRGk5MFBzV2twS0V2ZUs0SFRWTFp3Ml9Fa1dHc2xBb0NOQmxfYmFzOFhaRmpnSE05ZWdDWngwdmlsSXZiVkNmYnFnTk92YXlYNmVQMTVONVU3dG8wT2cyR0xzWUc?oc=5",
-   "izvor": "The Lufkin Daily News",
-   "chas": "2026-11-10T23:06:31Z",
+   "vryzka": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxOTXo5UzFWVEh5WllQOHNxS1Q2cERxOEM0X1QyN1dPX0R4XzdfT1BpajYxdi0xOEltNWh6cE15Z2ZvZ2dXV0Vwb3NkbWZ1VGQ2M2tvVVVSaWd6clhPcS1XUEU2QXE3c0tlLUhPX0c2emRnWVpwOGtoajlnSS1VRXRNZXFaNEpyVlVwcFVIOUdkT18yQ2t6a1psZGVlOFpiZl90QnVhcmxqQzNxNnlNSEdXcWpjcUdzYUNJSi1hcnl6ZEpUSUU?oc=5",
+   "izvor": "Reuters",
+   "chas": "2026-11-10T23:07:22Z",
    "vazhnost": 3,
    "za": "лихви",
    "emisiya": "Google Fed",
@@ -234,19 +256,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Looking to buy the dip in chip stocks? Here’s how to avoid buying too soon.",
-   "vryzka": "https://www.marketwatch.com/story/ignore-the-wild-swings-in-chip-stocks-until-they-reach-these-lines-in-the-sand-feb6e00f?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-11-10T22:30:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
    "zaglavie": "MSA Drilling Confirms Linked High-grade Polymetallic Breccias - Porphyry Cu-Mo-Au-Ag Centre: Drills 186 m of 0.48% Copper, 0.18 g/t Gold and 10.1 g/t Silver to End of Hole",
    "vryzka": "https://finance.yahoo.com/news/msa-drilling-confirms-linked-high-223000267.html?.tsrc=rss",
    "izvor": "Yahoo Finance",
@@ -258,6 +267,19 @@
    "duma": "gold",
    "zashto": "Пряко за златото.",
    "bg": "Минна компания съобщава резултати от сондажи за злато"
+  },
+  {
+   "zaglavie": "Looking to buy the dip in chip stocks? Here’s how to avoid buying too soon.",
+   "vryzka": "https://www.marketwatch.com/story/ignore-the-wild-swings-in-chip-stocks-until-they-reach-these-lines-in-the-sand-feb6e00f?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-11-10T22:30:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
   },
   {
    "zaglavie": "Top 3 Gold Stocks To Watch In November 2026",
@@ -362,6 +384,19 @@
    "duma": null,
    "zashto": null,
    "bg": null
+  },
+  {
+   "zaglavie": "Trump-appointed Fed member signals big interest rate hike as inflation runs hot",
+   "vryzka": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxNX2ZKUlBkR0xZX0VQNjlOMXFjNkFCc1lEbUlTNVIzZHVteDU2R29hTTUzcWV6RzdmRjdYRWxhcXFhc0drZk1OMWFseld5dXRXNENrYVFWa0lCVEE3U3UyeUppRzVxQllYT21aY0pjZlVnVThaNzVGa0o2T2lZeDcweTUtZVNOa1lGN09uUnNyS0RMc3ZIWkN4eTVLV3Z4UkRkUjhBV2hyTllzdkNQM0g1RE1WR1Z2UDdZVFMw?oc=5",
+   "izvor": "The Washington Post",
+   "chas": "2026-11-10T22:02:34Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": "За вдигане на лихвата от Фед"
   },
   {
    "zaglavie": "Barrick files to take American Barrick Gold public with its Nevada Gold Mines and Pueblo Viejo stakes",
@@ -676,26 +711,13 @@
    "bg": "Очаквания за по-висока лихва от Фед"
   },
   {
-   "zaglavie": "Trump-appointed Fed member signals big interest rate hike as inflation runs hot",
-   "vryzka": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxNX2ZKUlBkR0xZX0VQNjlOMXFjNkFCc1lEbUlTNVIzZHVteDU2R29hTTUzcWV6RzdmRjdYRWxhcXFhc0drZk1OMWFseld5dXRXNENrYVFWa0lCVEE3U3UyeUppRzVxQllYT21aY0pjZlVnVThaNzVGa0o2T2lZeDcweTUtZVNOa1lGN09uUnNyS0RMc3ZIWkN4eTVLV3Z4UkRkUjhBV2hyTllzdkNQM0g1RE1WR1Z2UDdZVFMw?oc=5",
-   "izvor": "The Washington Post",
-   "chas": "2026-11-10T21:00:49Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": "За вдигане на лихвата от Фед"
-  },
-  {
    "zaglavie": "AMAPÁ MINERALS REPORTS THIRD QUARTER 2026 FINANCIAL RESULTS AS RAMP-UP ADVANCES",
-   "vryzka": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxNWVZ1NV9hWW8yOWlELThPWm1pWHU4cG1yNnR0bHpQWVRfMFA0cDJLejhrRTdENlQ4REgxVkxPZjVTTHJ4NkhaVkdxV2NGTUZNU1lxcU4ybTNCc0NPOEJja05XSHppeTRkb3ByY1g3SExRcjFkbWc3NDg2VVRSeDBlVEhnN0dicDhvdnFiNXNxWXp0SkhpbjJYLTBsRjRFd2V2VDh4VW82Z0ZQNko5TkQ5X3ZNMXF4cW9PLTMxN1NRUXFKajNZMlFxOGF2UGQxOWdldGZVU3RB?oc=5",
-   "izvor": "TradingView",
+   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/amap-minerals-reports-third-quarter-210000155.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
    "chas": "2026-11-10T21:00:00Z",
    "vazhnost": 1,
    "za": "злато",
-   "emisiya": "Google злато",
+   "emisiya": "Yahoo злато",
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null,
@@ -1115,19 +1137,6 @@
    "chas_ot_iztochnika": true,
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": null
-  },
-  {
-   "zaglavie": "Should a widow leave her late partner’s home to her stepkids — or cut off contact with them?",
-   "vryzka": "https://www.marketwatch.com/story/she-can-always-change-her-mind-should-a-widow-leave-the-family-home-to-her-stepchildren-649b06af?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-11-10T19:30:00Z",
-   "vazhnost": 1,
-   "za": "лихви",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
    "bg": null
   },
   {
@@ -2598,19 +2607,6 @@
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
    "bg": "Изказване на член на Фед (Waller) за вдигане на лихвата"
-  },
-  {
-   "zaglavie": "Inflation ran hotter than expected last month boosting chance of Fed rate hike",
-   "vryzka": "https://news.google.com/rss/articles/CBMigAFBVV95cUxPTHo4OGlTYVJYczVnOXUzbzdvc1JTQjE0bmVsTVlmTnF0cTFWY1NkckFVS2Y1Y0taaVl6bjJnZng3SnI2LTR4UVNPVVdBcVlSX2M4WklVX3E3UjZOT2o5NkNKeTR5RTNTMVNRSGtYUFZHQ0VYeFNOOVBPNVljTEVWVA?oc=5",
-   "izvor": "Yahoo News New Zealand",
-   "chas": "2026-11-10T14:35:08Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "inflation",
-   "zashto": "Инфлацията е основната причина да се държи злато — то пази стойност, когато парите я губят.",
-   "bg": "Очаквания за по-висока лихва от Фед"
   },
   {
    "zaglavie": "Waller, The Economic Outlook and Some Thoughts on Labor Market Dynamism",
