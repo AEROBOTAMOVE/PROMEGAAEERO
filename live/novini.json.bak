@@ -1,39 +1,56 @@
 {
- "kogato": "2026-11-12T23:36:05Z",
- "sekundi": 0.73,
+ "kogato": "2026-11-12T23:46:21Z",
+ "sekundi": 1.2,
  "broi": 200,
  "novi_tozi_pyt": 3,
  "iztochnici_ok": [
   "MarketWatch",
-  "Fed политика",
+  "Google злато",
   "Fed всички",
-  "Fed речи",
-  "Investing",
+  "Fed политика",
   "Yahoo злато",
   "Yahoo долар",
-  "Google злато",
-  "Google Fed",
+  "Investing",
+  "Fed речи",
   "CNBC",
   "FT пазари",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google Fed",
+   "greshka": "празна емисия"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.49с",
-  "новини · FT пазари · 25 бр. за 0.62с",
-  "новини · Fed всички · 8 бр. за 0.08с",
+  "новини · CNBC · 30 бр. за 0.21с",
+  "новини · FT пазари · 25 бр. за 0.63с",
+  "новини · Fed всички · 8 бр. за 0.06с",
   "новини · Fed политика · 15 бр. за 0.07с",
-  "новини · Fed речи · 15 бр. за 0.07с",
-  "новини · Google Fed · 40 бр. за 0.4с",
-  "новини · Google злато · 40 бр. за 0.42с",
+  "новини · Fed речи · 15 бр. за 0.15с",
+  "новини · Google Fed · ПАДНА: празна емисия",
+  "новини · Google злато · 40 бр. за 0.04с",
   "новини · Investing · 10 бр. за 0.11с",
-  "новини · MarketWatch · 10 бр. за 0.02с",
-  "новини · Mining.com · 36 бр. за 0.68с",
-  "новини · Yahoo долар · 15 бр. за 0.16с",
-  "новини · Yahoo злато · 14 бр. за 0.13с",
+  "новини · MarketWatch · 10 бр. за 0.04с",
+  "новини · Mining.com · 36 бр. за 0.75с",
+  "новини · Yahoo долар · 15 бр. за 0.09с",
+  "новини · Yahoo злато · 15 бр. за 0.09с",
   "новини · български ред: 94 от 200 · махнати по език: 0"
  ],
  "novini": [
+  {
+   "zaglavie": "What If You Had Invested $10,000 in Bitcoin 5 Years Ago?",
+   "vryzka": "https://247wallst.com/investing/cryptocurrency/2026/11/12/what-if-you-had-invested-10000-in-bitcoin-5-years-ago/?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-12T23:29:56Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": null
+  },
   {
    "zaglavie": "Oil prices rise after Trump says no Iran deal needed: 'We've got their Strait'",
    "vryzka": "https://www.cnbc.com/2026/11/12/oil-prices-jump-after-trump-says-no-iran-deal-needed-weve-got-their-strait.html",
@@ -695,6 +712,19 @@
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "Gold Dec 26 (GC=F) Stock Price, News, Quote & History",
+   "vryzka": "https://news.google.com/rss/articles/CBMiVEFVX3lxTFBCLWFGVVBHUGF5Q2c0b1o5UTFKT0M1RWtfQS14aDl1SDdPR2t6eHFLQnkzbWU3MFhGTHQ1Mk1tWmpjVk9zYWpvMGRKVUhmeFk0NFhoUg?oc=5",
+   "izvor": "Yahoo! Finance Canada",
+   "chas": "2026-11-12T20:33:32Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
    "bg": null
   },
   {
@@ -1419,10 +1449,10 @@
    "chas": "2026-11-12T17:45:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed политика",
+   "emisiya": "Fed всички",
    "chas_ot_iztochnika": true,
    "duma": "fed",
-   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
+   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
    "bg": "Съобщение на Фед — централната банка на САЩ"
   },
   {
@@ -1476,6 +1506,19 @@
    "duma": "gold",
    "zashto": "Пряко за златото.",
    "bg": null
+  },
+  {
+   "zaglavie": "Crude Oil Prices Gain as US-Iran Peace Optimism Wanes",
+   "vryzka": "https://www.barchart.com/story/news/8806358/crude-oil-prices-gain-as-us-iran-peace-optimism-wanes?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-12T17:33:47Z",
+   "vazhnost": 1,
+   "za": "долар",
+   "emisiya": "Yahoo долар",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": "Петролът и надеждите за мир в Близкия изток"
   },
   {
    "zaglavie": "Should a widow leave her late partner’s home to her stepkids — or cut off contact with them?",
@@ -2557,45 +2600,6 @@
    "bg": null
   },
   {
-   "zaglavie": "New Found Gold Reports Q3 2026 Operational And Financial Results",
-   "vryzka": "https://news.google.com/rss/articles/CBMioAFBVV95cUxQSDdmclVOc2hvaVNaMjBwZmNPMEVVZVNSYkx2X2FEZExjZ1BITVdXNGlBSG5vbVA5bXBZbFRIY3dmQTJWc0s4ci1GWEg0R2xoaW56V2lOUDR2NFFLS1h0cm9DRjI1SWE2aC1IYkZYZW1LbjJiTkVIbGtIcXI4M3Fuc09LQW90UWhkZmx3c3REcTB1WWdTM1YycmlhNFdYdTVh?oc=5",
-   "izvor": "Crux Investor",
-   "chas": "2026-11-12T13:02:07Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": null
-  },
-  {
-   "zaglavie": "CPI Pushes Rate Hike Odds To ~100%, But Hikes Aren't The Main Concern (NYSEARCA:SPY)",
-   "vryzka": "https://news.google.com/rss/articles/CBMitAFBVV95cUxQLTJLVm0wa0hQNTljOXpfeWUxZlpIRnN3MUFLS1htVkFIU3FwNWtCX0liY2duT1JPSDltckZDQ1o2R05Sc3F4bGRma3NVTW4ybGdJQWJINFBvajdURm5WRm9jSWlwb2dvcE10OUdtY0o5TllGTWx1UU5TQW93QTNOd0dNcEt3Qk5BRDhjWEpRUmo3SjJLR21PeWx1NHVaT2dNVWFmQll5VUV2SUtxekVib3BERjU?oc=5",
-   "izvor": "Seeking Alpha",
-   "chas": "2026-11-12T13:00:00Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "cpi",
-   "zashto": "ЦПИ е измерването на инфлацията. Изненада в него мести златото в същия ден.",
-   "bg": "Данни за инфлацията (CPI)"
-  },
-  {
-   "zaglavie": "Omineca Enters into a Joint Venture Agreement to Develop and Operate the Wingdam Placer Gold Project",
-   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/omineca-enters-joint-venture-agreement-130000888.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-11-12T13:00:00Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": null
-  },
-  {
    "zaglavie": "Bowman, The U.S. Economy and Considerations for Monetary Policy",
    "vryzka": "https://www.federalreserve.gov/newsevents/speech/bowman20261110a.htm",
    "izvor": "Fed",
@@ -2628,10 +2632,10 @@
    "chas": "2026-10-28T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed политика",
+   "emisiya": "Fed всички",
    "chas_ot_iztochnika": true,
    "duma": "fomc",
-   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
+   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   }
  ],
