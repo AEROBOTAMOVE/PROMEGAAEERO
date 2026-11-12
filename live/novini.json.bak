@@ -1,39 +1,56 @@
 {
- "kogato": "2026-11-12T01:41:08Z",
- "sekundi": 0.74,
+ "kogato": "2026-11-12T01:51:55Z",
+ "sekundi": 0.8,
  "broi": 200,
- "novi_tozi_pyt": 2,
+ "novi_tozi_pyt": 1,
  "iztochnici_ok": [
-  "Fed всички",
-  "Fed политика",
-  "Fed речи",
-  "Investing",
   "MarketWatch",
+  "Fed речи",
+  "Fed политика",
+  "Investing",
   "Yahoo долар",
   "Yahoo злато",
   "CNBC",
-  "FT пазари",
   "Google злато",
   "Google Fed",
+  "FT пазари",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Fed всички",
+   "greshka": "HTTPError: HTTP Error 404: Not Found"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.3с",
-  "новини · FT пазари · 25 бр. за 0.37с",
-  "новини · Fed всички · 6 бр. за 0.1с",
-  "новини · Fed политика · 15 бр. за 0.1с",
-  "новини · Fed речи · 15 бр. за 0.12с",
-  "новини · Google Fed · 40 бр. за 0.41с",
-  "новини · Google злато · 40 бр. за 0.4с",
+  "новини · CNBC · 30 бр. за 0.27с",
+  "новини · FT пазари · 25 бр. за 0.6с",
+  "новини · Fed всички · ПАДНА: HTTPError: HTTP Error 404: Not Found",
+  "новини · Fed политика · 15 бр. за 0.12с",
+  "новини · Fed речи · 15 бр. за 0.1с",
+  "новини · Google Fed · 40 бр. за 0.45с",
+  "новини · Google злато · 40 бр. за 0.41с",
   "новини · Investing · 10 бр. за 0.13с",
-  "новини · MarketWatch · 10 бр. за 0.21с",
-  "новини · Mining.com · 36 бр. за 0.67с",
-  "новини · Yahoo долар · 11 бр. за 0.26с",
-  "новини · Yahoo злато · 16 бр. за 0.28с",
+  "новини · MarketWatch · 10 бр. за 0.06с",
+  "новини · Mining.com · 36 бр. за 0.76с",
+  "новини · Yahoo долар · 11 бр. за 0.25с",
+  "новини · Yahoo злато · 17 бр. за 0.25с",
   "новини · български ред: 79 от 200 · махнати по език: 0"
  ],
  "novini": [
+  {
+   "zaglavie": "Gold clings below $4,000 as inflation fears fuel bets on bigger Fed hikes",
+   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/gold-clings-below-4-000-014114232.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-12T01:41:14Z",
+   "vazhnost": 3,
+   "za": "злато",
+   "emisiya": "Yahoo долар",
+   "chas_ot_iztochnika": true,
+   "duma": "inflation",
+   "zashto": "Инфлацията е основната причина да се държи злато — то пази стойност, когато парите я губят.",
+   "bg": "Златото и очакванията за по-висока лихва от Фед"
+  },
   {
    "zaglavie": "Nvidia’s stock drops as the board reportedly prepares to remove CEO Jensen Huang",
    "vryzka": "https://www.marketwatch.com/story/nvidias-stock-drops-as-the-board-reportedly-prepares-to-remove-ceo-jensen-huang-9edee58d?mod=mw_rss_topstories",
@@ -46,6 +63,19 @@
    "duma": null,
    "zashto": null,
    "bg": null
+  },
+  {
+   "zaglavie": "Gold Holds Below $4,000 as Market Looks Ahead to Fed Rate Hike",
+   "vryzka": "https://news.google.com/rss/articles/CBMisgFBVV95cUxNMTJybnByRUZtMk5uajdEUVROVDJnSmZlQVRsazNHSmZaY0FKMVM0d0tvVnhDdlozdUhuMkx4ZkJZV0IyUDRCMmxtSzF0U3RmWWkxckVJVVVUV1pZczI2dmZfN29TYmN0YkVWMml2X2NJY1liZk1WeWFVdXNHbFpqdHBVWmhMTE4zTHozN2l5ZGFOWVBxWVBzTVB6V3dLeTR5UmlYYTVtN0xJQW5MMTVRdUJn?oc=5",
+   "izvor": "Bloomberg",
+   "chas": "2026-11-12T01:24:00Z",
+   "vazhnost": 3,
+   "za": "злато",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": "Златото преди решенията на Фед за лихвата"
   },
   {
    "zaglavie": "Did Higher Metal Prices Just Shift Nexa Resources (NEXA) Investment Narrative?",
@@ -178,19 +208,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Gold Holds Below $4,000 as Market Looks Ahead to Fed Rate Hike",
-   "vryzka": "https://news.google.com/rss/articles/CBMisgFBVV95cUxNMTJybnByRUZtMk5uajdEUVROVDJnSmZlQVRsazNHSmZaY0FKMVM0d0tvVnhDdlozdUhuMkx4ZkJZV0IyUDRCMmxtSzF0U3RmWWkxckVJVVVUV1pZczI2dmZfN29TYmN0YkVWMml2X2NJY1liZk1WeWFVdXNHbFpqdHBVWmhMTE4zTHozN2l5ZGFOWVBxWVBzTVB6V3dLeTR5UmlYYTVtN0xJQW5MMTVRdUJn?oc=5",
-   "izvor": "Bloomberg",
-   "chas": "2026-11-12T00:12:00Z",
-   "vazhnost": 3,
-   "za": "злато",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": "Златото преди решенията на Фед за лихвата"
-  },
-  {
    "zaglavie": "COMMENTARY: A 50 bps rate hike? Warsh's Fed has a comms problem",
    "vryzka": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxOVmdEZENBbDFmNjBmQ1lkUUdxbTUwZlZCZDF0MUo5cXZCTzMxNmdORWpkWl9WX1RucHdsR0VuSWhLOXhSYjZTYUstRFl6WWJ6V3JYallmel9vc0xhS2VGa0EwVGRkdE95MEVlU3RLb3owb0cweERFQUxXaFRqNXJiYURqN2F0WEVWSVY1SzkxbzVqN2V1NlMyMUxXTG1SQ0VEZUZZQm43SUxlbWpRSG15TVhRdUJDdXF5Q1laUmV1MGg?oc=5",
    "izvor": "Reuters",
@@ -257,7 +274,7 @@
   },
   {
    "zaglavie": "Integra Reports Third Quarter 2026 Results from Florida Canyon: Increase in Quarterly Gold Production and Strengthened Financial Position; Provides Operational Update",
-   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/integra-reports-third-quarter-2026-225400906.html?.tsrc=rss",
+   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/integra-reports-third-quarter-2026-225400185.html?.tsrc=rss",
    "izvor": "Yahoo Finance",
    "chas": "2026-11-11T22:54:00Z",
    "vazhnost": 2,
@@ -2583,19 +2600,6 @@
    "bg": "Очаквания за по-висока лихва от Фед"
   },
   {
-   "zaglavie": "61.9 Metres of 0.37% Copper and 0.58 g/t Gold (1.01% CuEq) at Kwanika in North Pit Extension Zone From 39 Metres",
-   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/61-9-metres-0-37-113000317.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-11-11T11:30:00Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Минна компания съобщава резултати от сондажи за злато"
-  },
-  {
    "zaglavie": "Bowman, The U.S. Economy and Considerations for Monetary Policy",
    "vryzka": "https://www.federalreserve.gov/newsevents/speech/bowman20261110a.htm",
    "izvor": "Fed",
@@ -2628,10 +2632,10 @@
    "chas": "2026-10-28T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed всички",
+   "emisiya": "Fed политика",
    "chas_ot_iztochnika": true,
    "duma": "fomc",
-   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
+   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   }
  ],
