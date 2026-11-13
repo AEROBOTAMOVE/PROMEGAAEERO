@@ -1,39 +1,52 @@
 {
- "kogato": "2026-11-13T10:40:41Z",
- "sekundi": 0.93,
+ "kogato": "2026-11-13T10:51:36Z",
+ "sekundi": 0.84,
  "broi": 200,
- "novi_tozi_pyt": 3,
+ "novi_tozi_pyt": 1,
  "iztochnici_ok": [
-  "Fed всички",
-  "MarketWatch",
   "Fed речи",
-  "Yahoo долар",
-  "Yahoo злато",
-  "Investing",
+  "Fed всички",
   "Fed политика",
+  "Investing",
+  "MarketWatch",
+  "Yahoo злато",
   "CNBC",
+  "Yahoo долар",
+  "FT пазари",
   "Google злато",
   "Google Fed",
-  "FT пазари",
   "Mining.com"
  ],
  "iztochnici_padnali": [],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.23с",
-  "новини · FT пазари · 25 бр. за 0.65с",
+  "новини · CNBC · 30 бр. за 0.12с",
+  "новини · FT пазари · 25 бр. за 0.3с",
   "новини · Fed всички · 8 бр. за 0.06с",
-  "новини · Fed политика · 15 бр. за 0.14с",
-  "новини · Fed речи · 15 бр. за 0.06с",
-  "новини · Google Fed · 40 бр. за 0.42с",
-  "новини · Google злато · 40 бр. за 0.46с",
-  "новини · Investing · 10 бр. за 0.1с",
-  "новини · MarketWatch · 10 бр. за 0.06с",
-  "новини · Mining.com · 36 бр. за 0.87с",
-  "новини · Yahoo долар · 13 бр. за 0.1с",
-  "новини · Yahoo злато · 20 бр. за 0.1с",
-  "новини · български ред: 96 от 200 · махнати по език: 0"
+  "новини · Fed политика · 15 бр. за 0.06с",
+  "новини · Fed речи · 15 бр. за 0.05с",
+  "новини · Google Fed · 40 бр. за 0.35с",
+  "новини · Google злато · 40 бр. за 0.36с",
+  "новини · Investing · 10 бр. за 0.08с",
+  "новини · MarketWatch · 10 бр. за 0.1с",
+  "новини · Mining.com · 36 бр. за 0.77с",
+  "новини · Yahoo долар · 13 бр. за 0.16с",
+  "новини · Yahoo злато · 20 бр. за 0.13с",
+  "новини · български ред: 95 от 200 · махнати по език: 1"
  ],
  "novini": [
+  {
+   "zaglavie": "Heliostar Presents Q3 2026 Financial and Operating Results with Record Mine Operating Earnings and Cash Balance",
+   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/heliostar-presents-q3-2026-financial-103000159.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-13T10:30:00Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": null
+  },
   {
    "zaglavie": "Trump wants Tim Cook to replace Jensen Huang at Nvidia as $550B vanishes in a week. Don’t bet your savings on 1 legend",
    "vryzka": "https://finance.yahoo.com/markets/stocks/articles/trump-wants-tim-cook-replace-103000073.html?.tsrc=rss",
@@ -215,19 +228,6 @@
    "duma": "inflation",
    "zashto": "Инфлацията е основната причина да се държи злато — то пази стойност, когато парите я губят.",
    "bg": null
-  },
-  {
-   "zaglavie": "Federal Reserve to Forgo Rate Decision at October 2027 Meeting",
-   "vryzka": "https://news.google.com/rss/articles/CBMitgFBVV95cUxPWkZiVk1uU2k5a1RQRGUxdFBJMEcxSVhtWEJfR0s3Q3E3T185OXRrZHRZMDVsQlhTdVpIbVlfQnNPem4zbGlTMDR6elFDRlM3RzhETUhCVzlTTDJvWmtfQzctcUFhRXZsVmxpVjBQUXpXTkRUTThQNVJwQV9YX19qaTZGVGswRGF1N2d0dktsZW5DVHlFWVNENmtQaERZYm5ZTmREdm8tMzVjX3ZCQUdqbTFCbWktdw?oc=5",
-   "izvor": "WSJ",
-   "chas": "2026-11-13T09:27:25Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "rate",
-   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
-   "bg": "За лихвата на Фед"
   },
   {
    "zaglavie": "Gold prices rebound from 13-month low as major investors return",
@@ -652,7 +652,7 @@
    "chas": "2026-11-13T06:07:00Z",
    "vazhnost": 2,
    "za": "злато",
-   "emisiya": "Yahoo долар",
+   "emisiya": "Yahoo злато",
    "chas_ot_iztochnika": true,
    "duma": "gold",
    "zashto": "Пряко за златото.",
@@ -1198,7 +1198,7 @@
    "chas": "2026-11-13T01:33:44Z",
    "vazhnost": 2,
    "za": "злато",
-   "emisiya": "Yahoo долар",
+   "emisiya": "Yahoo злато",
    "chas_ot_iztochnika": true,
    "duma": "gold",
    "zashto": "Пряко за златото.",
@@ -2635,6 +2635,6 @@
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   }
  ],
- "s_bg_red": 96,
- "mahnati_ezik": 0
+ "s_bg_red": 95,
+ "mahnati_ezik": 1
 }
