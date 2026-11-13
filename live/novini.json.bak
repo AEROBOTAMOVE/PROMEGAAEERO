@@ -1,41 +1,37 @@
 {
- "kogato": "2026-11-13T10:18:56Z",
- "sekundi": 0.93,
+ "kogato": "2026-11-13T10:29:51Z",
+ "sekundi": 0.84,
  "broi": 200,
- "novi_tozi_pyt": 4,
+ "novi_tozi_pyt": 1,
  "iztochnici_ok": [
-  "Fed политика",
-  "Fed речи",
+  "Google злато",
   "MarketWatch",
   "Investing",
+  "Fed политика",
+  "Fed речи",
+  "Fed всички",
   "Yahoo долар",
   "Yahoo злато",
   "CNBC",
   "FT пазари",
-  "Google злато",
   "Google Fed",
   "Mining.com"
  ],
- "iztochnici_padnali": [
-  {
-   "ime": "Fed всички",
-   "greshka": "HTTPError: HTTP Error 404: Not Found"
-  }
- ],
+ "iztochnici_padnali": [],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.36с",
-  "новини · FT пазари · 25 бр. за 0.42с",
-  "новини · Fed всички · ПАДНА: HTTPError: HTTP Error 404: Not Found",
-  "новини · Fed политика · 15 бр. за 0.07с",
-  "новини · Fed речи · 15 бр. за 0.08с",
-  "новини · Google Fed · 40 бр. за 0.39с",
-  "новини · Google злато · 40 бр. за 0.42с",
-  "новини · Investing · 10 бр. за 0.17с",
+  "новини · CNBC · 30 бр. за 0.21с",
+  "новини · FT пазари · 25 бр. за 0.32с",
+  "новини · Fed всички · 8 бр. за 0.15с",
+  "новини · Fed политика · 15 бр. за 0.14с",
+  "новини · Fed речи · 15 бр. за 0.15с",
+  "новини · Google Fed · 40 бр. за 0.33с",
+  "новини · Google злато · 40 бр. за 0.04с",
+  "новини · Investing · 10 бр. за 0.12с",
   "новини · MarketWatch · 10 бр. за 0.09с",
-  "новини · Mining.com · 36 бр. за 0.87с",
-  "новини · Yahoo долар · 13 бр. за 0.2с",
-  "новини · Yahoo злато · 20 бр. за 0.2с",
-  "новини · български ред: 98 от 200 · махнати по език: 0"
+  "новини · Mining.com · 36 бр. за 0.78с",
+  "новини · Yahoo долар · 13 бр. за 0.19с",
+  "новини · Yahoo злато · 20 бр. за 0.19с",
+  "новини · български ред: 97 от 200 · махнати по език: 0"
  ],
  "novini": [
   {
@@ -75,6 +71,19 @@
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "Most top Fed officials blame AI for fueling inflation. Not Trump’s Fed chief.",
+   "vryzka": "https://news.google.com/rss/articles/CBMixwFBVV95cUxOYWx2S1gybU5lYjJCbEl5OXkyekl3YXdnd2RuWnJPQU9VODlSSnpLM1ZDeGVfT19LdEF4OThPMGZQM1NDNXloMzFGcjdmZDE4ZU90dDBuX2xsX2lUZTJjLU5HNEZCNnJJRFJQT0tmR2FwZVBXT1Q3cURtZHFTYTJtUDVOVHZESnNfWlBkZXdoT1pQXzNkYldpWklrdEZiRWxiVjJRaHNxOXpMVXhPOFR1ZERmc09uWXJEcWR1dUdKblUzQjdkTkM0?oc=5",
+   "izvor": "The Washington Post",
+   "chas": "2026-11-13T10:08:54Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
    "bg": null
   },
   {
@@ -651,12 +660,12 @@
   },
   {
    "zaglavie": "AU Jumps 16.5% in One Week With Gold and Production Risks in Focus",
-   "vryzka": "https://finance.yahoo.com/markets/stocks/articles/au-jumps-16-5-one-054200798.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
+   "vryzka": "https://news.google.com/rss/articles/CBMivgFBVV95cUxQY1Q4Q0VGMW4waV9tTTE4S181djVwVWRNNXlkM3JmMzJHQ3k5Y1RZUkhWZHFYbkw1YmdTdE5wQzNpbUhqbGFuVGwyTzlSNGNKR2M4RTJqd1RmRHZBWjA1S0RxVVFjOFFqeXhoZ0N0enRFZlIydlVuMHZaZW9iRUZOTG9wTkpQam9Rd3EwQzRfdlRzWE16TVVubkJDRDY5dDI5Vy1BMk1Ia29zR3preVpFUTBxdEVuZnRXLVh4UnB3?oc=5",
+   "izvor": "TradingView",
    "chas": "2026-11-13T05:42:00Z",
    "vazhnost": 2,
    "za": "злато",
-   "emisiya": "Yahoo злато",
+   "emisiya": "Google злато",
    "chas_ot_iztochnika": true,
    "duma": "gold",
    "zashto": "Пряко за златото.",
@@ -2548,19 +2557,6 @@
    "bg": "Изказване на член на Фед (Daly) за вдигане на лихвата и инфлацията"
   },
   {
-   "zaglavie": "Fed’s Daly warns AI is fueling inflation, sees more rate hikes ahead",
-   "vryzka": "https://news.google.com/rss/articles/CBMirgFBVV95cUxQQ29Kd0JmYmpmdVd1X0VoSWxZQ1NaNlVrMHRnM0thak4wMlJLdExNVDc2TzZkT2lvMm1EMjI4Z2pZbUFkZEtNSHFrUEF2M1g3R2gxVkp1dklBd0Q0TktlaGtCZ2FLV0xidFFBbGNLbUthTldpR2tKSUFtRUhUSWl6UkF1UnZMclJrVlpHMnhBRFRURi1VdTVMVEh4OE1IelR4NnZ3MTVRSC15QUExSnc?oc=5",
-   "izvor": "FXStreet",
-   "chas": "2026-11-12T18:54:15Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": "Изказване на член на Фед (Daly) за вдигане на лихвата и инфлацията"
-  },
-  {
    "zaglavie": "Federal Reserve Board announces pricing, effective January 1, 2027, for payment services the Federal Reserve Banks provide to banks and credit unions, and changes to streamline and adjust their check services",
    "vryzka": "https://www.federalreserve.gov/newsevents/pressreleases/other20261112a.htm",
    "izvor": "Fed",
@@ -2639,6 +2635,6 @@
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   }
  ],
- "s_bg_red": 98,
+ "s_bg_red": 97,
  "mahnati_ezik": 0
 }
