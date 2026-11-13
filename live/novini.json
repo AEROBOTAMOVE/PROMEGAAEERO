@@ -1,13 +1,14 @@
 {
- "kogato": "2026-11-13T04:37:38Z",
- "sekundi": 0.75,
+ "kogato": "2026-11-13T04:47:51Z",
+ "sekundi": 0.7,
  "broi": 200,
- "novi_tozi_pyt": 1,
+ "novi_tozi_pyt": 2,
  "iztochnici_ok": [
-  "Fed речи",
   "Fed политика",
-  "Investing",
+  "Fed всички",
+  "Fed речи",
   "MarketWatch",
+  "Investing",
   "Yahoo долар",
   "Yahoo злато",
   "CNBC",
@@ -16,28 +17,62 @@
   "Google Fed",
   "Mining.com"
  ],
- "iztochnici_padnali": [
-  {
-   "ime": "Fed всички",
-   "greshka": "HTTPError: HTTP Error 404: Not Found"
-  }
- ],
+ "iztochnici_padnali": [],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.26с",
-  "новини · FT пазари · 25 бр. за 0.33с",
-  "новини · Fed всички · ПАДНА: HTTPError: HTTP Error 404: Not Found",
-  "новини · Fed политика · 15 бр. за 0.08с",
+  "новини · CNBC · 30 бр. за 0.21с",
+  "новини · FT пазари · 25 бр. за 0.23с",
+  "новини · Fed всички · 8 бр. за 0.07с",
+  "новини · Fed политика · 15 бр. за 0.06с",
   "новини · Fed речи · 15 бр. за 0.07с",
-  "новини · Google Fed · 40 бр. за 0.4с",
-  "новини · Google злато · 40 бр. за 0.41с",
-  "новини · Investing · 10 бр. за 0.08с",
-  "новини · MarketWatch · 10 бр. за 0.12с",
-  "новини · Mining.com · 36 бр. за 0.69с",
-  "новини · Yahoo долар · 13 бр. за 0.16с",
-  "новини · Yahoo злато · 18 бр. за 0.17с",
-  "новини · български ред: 99 от 200 · махнати по език: 1"
+  "новини · Google Fed · 40 бр. за 0.37с",
+  "новини · Google злато · 40 бр. за 0.39с",
+  "новини · Investing · 10 бр. за 0.09с",
+  "новини · MarketWatch · 10 бр. за 0.09с",
+  "новини · Mining.com · 36 бр. за 0.65с",
+  "новини · Yahoo долар · 13 бр. за 0.13с",
+  "новини · Yahoo злато · 18 бр. за 0.16с",
+  "новини · български ред: 98 от 200 · махнати по език: 1"
  ],
  "novini": [
+  {
+   "zaglavie": "‘The thought of living to 100 terrifies me’: Is Social Security a giant Ponzi scheme?",
+   "vryzka": "https://www.marketwatch.com/story/the-thought-of-living-to-100-terrifies-me-is-social-security-a-giant-ponzi-scheme-84a64e7e?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-11-13T04:46:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "Gold price in India: Rates on November 13",
+   "vryzka": "https://news.google.com/rss/articles/CBMipgFBVV95cUxOOVU1QTRSaGxpaHk5RE1UbU9MZHNuTjc4Sm90dVY1dTNxVC1WNWZQczNrUnJScGJHNXlsWWJCeHN2SjZ5dGM2VzVPejFqUjhPUkF4Z3V3SEozSmFiaFkwaWItdTV5WGNrVkpIcFNxZHRqenhfa2xFU2lTeEx6RmNxd3ZVX3Bjd3RJZDJWSERvRjRvQm5xN2lKRUVnenVlUWpySkxTV1ZB?oc=5",
+   "izvor": "FXStreet",
+   "chas": "2026-11-13T04:35:43Z",
+   "vazhnost": 3,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "rates",
+   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
+   "bg": null
+  },
+  {
+   "zaglavie": "Federal Reserve to Forgo Rate Decision at October 2027 Meeting",
+   "vryzka": "https://news.google.com/rss/articles/CBMitgFBVV95cUxPWkZiVk1uU2k5a1RQRGUxdFBJMEcxSVhtWEJfR0s3Q3E3T185OXRrZHRZMDVsQlhTdVpIbVlfQnNPem4zbGlTMDR6elFDRlM3RzhETUhCVzlTTDJvWmtfQzctcUFhRXZsVmxpVjBQUXpXTkRUTThQNVJwQV9YX19qaTZGVGswRGF1N2d0dktsZW5DVHlFWVNENmtQaERZYm5ZTmREdm8tMzVjX3ZCQUdqbTFCbWktdw?oc=5",
+   "izvor": "WSJ",
+   "chas": "2026-11-13T04:32:36Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "rate",
+   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
+   "bg": "За лихвата на Фед"
+  },
   {
    "zaglavie": "Gold and Silver Price Forecast: Gold Hits 13-Month Low Before US PPI",
    "vryzka": "https://news.google.com/rss/articles/CBMiugFBVV95cUxPbHlpSEo5LTR4RDVIZUhNcS0tZ0pOSGJFMFAwcXNrcW9JLTNZdS04X2JIQ004a2Z5S0txbWplMUFYelNtZk5CX1VaUzFDZG1PakJuVngwTEV2TVktVjY5aDNYcnhTZW5YVDhoOHg3ZXNUa1ZMdHE1WlRMNHEyVmR4a3VmR1N6S2tkMjNBR1ItaUNobGpObVFvZngwVjVwb29wS3F0LUNITkh3Y2JRUlkzZ1ZDMGZESXBUaFE?oc=5",
@@ -76,6 +111,19 @@
    "duma": "rates",
    "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
    "bg": null
+  },
+  {
+   "zaglavie": "Gold recovers from YTD low, retakes $3,900; Fed hike bets and bullish USD to cap gains",
+   "vryzka": "https://news.google.com/rss/articles/CBMixAFBVV95cUxQRGE3UHNvcXhqdy0zNXRVVFlVVVNja2JBZkFVaVd1YXZ4eXh1Mks3dHROM2RDWkxkY0c4NHMtTEktcnp0RWEwNnd6WXo5M2ZrcXRFLWNRRjZaQkhaUWlLdzRXQkgydEVOa2U1eWpSVWo4UUxLd3FUM090TDFQeENsR0VuSnNfbndTRnlBdWVpSXdtMTFMR3RERGU3MG16cU50MG9BUHFnUjhJNkZqbllPd2pmM1RBVjJ6c0xtaW9VUUxaQzBj?oc=5",
+   "izvor": "FXStreet",
+   "chas": "2026-11-13T04:03:44Z",
+   "vazhnost": 3,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": "Златото се връща нагоре на фона на очакванията за по-висока лихва от Фед и движението на долара"
   },
   {
    "zaglavie": "Gold recovers from YTD low, retakes $3,900 as USD rally pauses",
@@ -310,19 +358,6 @@
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
    "bg": "Изказване на член на Фед (Williams) за инфлацията"
-  },
-  {
-   "zaglavie": "Federal Reserve to Forgo Rate Decision at October 2027 Meeting",
-   "vryzka": "https://news.google.com/rss/articles/CBMitgFBVV95cUxPWkZiVk1uU2k5a1RQRGUxdFBJMEcxSVhtWEJfR0s3Q3E3T185OXRrZHRZMDVsQlhTdVpIbVlfQnNPem4zbGlTMDR6elFDRlM3RzhETUhCVzlTTDJvWmtfQzctcUFhRXZsVmxpVjBQUXpXTkRUTThQNVJwQV9YX19qaTZGVGswRGF1N2d0dktsZW5DVHlFWVNENmtQaERZYm5ZTmREdm8tMzVjX3ZCQUdqbTFCbWktdw?oc=5",
-   "izvor": "WSJ",
-   "chas": "2026-11-13T01:34:25Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "rate",
-   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
-   "bg": "За лихвата на Фед"
   },
   {
    "zaglavie": "Gold languishes near 13-month low as $96 oil fuels bets on bigger Fed hikes",
@@ -2522,19 +2557,6 @@
    "bg": null
   },
   {
-   "zaglavie": "‘The thought of living to 100 terrifies me’: Is Social Security a giant Ponzi scheme?",
-   "vryzka": "https://www.marketwatch.com/story/the-thought-of-living-to-100-terrifies-me-is-social-security-a-giant-ponzi-scheme-84a64e7e?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-11-12T15:30:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
    "zaglavie": "S&P/TSX Composite Index Falls Mid-Morning Thursday As Base Metal Shares Tumble",
    "vryzka": "https://finance.yahoo.com/markets/world-indices/articles/p-tsx-composite-index-falls-152946777.html?.tsrc=rss",
    "izvor": "Yahoo Finance",
@@ -2559,32 +2581,6 @@
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
    "bg": "Изказване на член на Фед (Hammack) за вдигане на лихвата"
-  },
-  {
-   "zaglavie": "Gold slips to fresh yearly low as Fed hike bets build and US stocks slide",
-   "vryzka": "https://news.google.com/rss/articles/CBMirgFBVV95cUxQMk5yWGFheUh4WUxxYmFaUFUyd29YSnB5SnJvQUd1dnNiNXdyMmRxa3pEOFFydkxlT0RQMUdRUjRacF9hd2lCZzhiYzdwQWNiZ3dMUVJIWUx5Y1JnTThIQjgwLS1JbS03ZE5MODVaSnVyOWY0dnJiSEpSb2h5OVBnOURLWHJSVW5TcWYyRDBTWVJNUnQtZTh4SDByNVY5Mnd2b1VObWVwa2dxN3U4LWc?oc=5",
-   "izvor": "FXStreet",
-   "chas": "2026-11-12T15:25:00Z",
-   "vazhnost": 3,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": "Златото поевтинява на фона на очакванията за по-висока лихва от Фед"
-  },
-  {
-   "zaglavie": "Gold Faces Pressure as Real Yields Climb After October CPI Report",
-   "vryzka": "https://news.google.com/rss/articles/CBMitwFBVV95cUxNYmtQb1hKVlpJeEV2ZHB1Z0x2V08yaTNmM25PWlNiOEhJOTdkbVB1Sk9FVTlEeGF0MkltZ05uVWk5SDZEXzJOVEJwR0xnNjF6aTBrUHd6ckdmU29tQVBSdUxpWkVhRTdlTERVR1ZZZXh0WGJEZ0xndmdlblduNHRwVE1Nc3dVYnU1T1lmWTh4bTB3LUtXWG93cDdaM0RGc0JVSkZGbDBsaGRuVmJpQkVsX2R4T0VsVlE?oc=5",
-   "izvor": "FXEmpire",
-   "chas": "2026-11-12T15:23:52Z",
-   "vazhnost": 3,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "cpi",
-   "zashto": "ЦПИ е измерването на инфлацията. Изненада в него мести златото в същия ден.",
-   "bg": "Златото е под натиск на фона на данните за инфлацията (CPI) и доходността на облигациите"
   },
   {
    "zaglavie": "Barr, American Inequality and the Future of AI",
@@ -2639,6 +2635,6 @@
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   }
  ],
- "s_bg_red": 99,
+ "s_bg_red": 98,
  "mahnati_ezik": 1
 }
