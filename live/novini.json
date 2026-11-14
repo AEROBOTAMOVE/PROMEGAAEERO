@@ -1,43 +1,52 @@
 {
- "kogato": "2026-11-14T16:45:28Z",
- "sekundi": 0.76,
+ "kogato": "2026-11-14T17:01:03Z",
+ "sekundi": 0.84,
  "broi": 200,
- "novi_tozi_pyt": 1,
+ "novi_tozi_pyt": 2,
  "iztochnici_ok": [
+  "Fed всички",
   "MarketWatch",
-  "Google злато",
-  "Fed политика",
-  "Fed речи",
   "Investing",
+  "Fed речи",
+  "Fed политика",
+  "CNBC",
   "Yahoo долар",
   "Yahoo злато",
-  "CNBC",
   "FT пазари",
   "Google Fed",
+  "Google злато",
   "Mining.com"
  ],
- "iztochnici_padnali": [
-  {
-   "ime": "Fed всички",
-   "greshka": "HTTPError: HTTP Error 404: Not Found"
-  }
- ],
+ "iztochnici_padnali": [],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.34с",
-  "новини · FT пазари · 25 бр. за 0.38с",
-  "новини · Fed всички · ПАДНА: HTTPError: HTTP Error 404: Not Found",
-  "новини · Fed политика · 15 бр. за 0.1с",
+  "новини · CNBC · 30 бр. за 0.22с",
+  "новини · FT пазари · 25 бр. за 0.32с",
+  "новини · Fed всички · 8 бр. за 0.09с",
+  "новини · Fed политика · 15 бр. за 0.13с",
   "новини · Fed речи · 15 бр. за 0.12с",
-  "новини · Google Fed · 40 бр. за 0.42с",
-  "новини · Google злато · 40 бр. за 0.08с",
-  "новини · Investing · 10 бр. за 0.17с",
-  "новини · MarketWatch · 10 бр. за 0.06с",
-  "новини · Mining.com · 36 бр. за 0.7с",
-  "новини · Yahoo долар · 17 бр. за 0.31с",
-  "новини · Yahoo злато · 18 бр. за 0.32с",
-  "новини · български ред: 68 от 200 · махнати по език: 1"
+  "новини · Google Fed · 40 бр. за 0.41с",
+  "новини · Google злато · 40 бр. за 0.61с",
+  "новини · Investing · 10 бр. за 0.12с",
+  "новини · MarketWatch · 10 бр. за 0.1с",
+  "новини · Mining.com · 36 бр. за 0.78с",
+  "новини · Yahoo долар · 17 бр. за 0.29с",
+  "новини · Yahoo злато · 18 бр. за 0.33с",
+  "новини · български ред: 70 от 200 · махнати по език: 1"
  ],
  "novini": [
+  {
+   "zaglavie": "Gold price drops again by Tk 2,217",
+   "vryzka": "https://news.google.com/rss/articles/CBMilAFBVV95cUxQVGZOQ1VCUEkxMmNmTnhOdHR4YzQ0NmtPUXpEMGM2ZFNlUjFwUUtfX2JLUWhyejVCY2c1c2RqU3hwbUVHT3BzSHVfNzZWLWdyajRidzZPSFZmdVM5UmE4NklQNWxEaEhXZVlYeHZoLVBHRG1VY1JNYndPNDdkektIaEMwczNHQ0ZaaHFKTkIycXppam42?oc=5",
+   "izvor": "New Age BD",
+   "chas": "2026-11-14T16:54:41Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": "Златото поевтинява"
+  },
   {
    "zaglavie": "Fed’s Collins backs gradual rate hikes, sees inflation and jobs risks as two-sided",
    "vryzka": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxPQ0dkcjRBbkRlQnNVVzhGN0NGV0xyaEFSc21NZDdnMXEzempWLVJpS1BZR2lrbTk1dlBROGJLS01OYmVyNDU5NVU2YzBHdy1CSjYzcVdMbWxXSGV4LXpMY050ZG13emp4ZlFPV1kydm02bWkyY0lhLUFNLWI0azhNV3cyMnFwWFpFSklPcVRsVUxERURZY1hvRlBiU09XOVp3UlRaV1o0aXlpdzc5Zkk3bWJ2U25OWG9vQ0hvdnpBZmpYOW5FZDhkNA?oc=5",
@@ -136,7 +145,7 @@
    "chas": "2026-11-14T15:30:05Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Google злато",
+   "emisiya": "Google Fed",
    "chas_ot_iztochnika": true,
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
@@ -988,6 +997,19 @@
    "bg": "Златото и движението на долара"
   },
   {
+   "zaglavie": "Federal Reserve: Case strengthens for higher US Dollar rates – RBC Economics",
+   "vryzka": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxPY0RmVDhkZjl5c2p5R2QxTTFnUnpwQUwtcHpfY0tQN2N5eEtIOUlDeFFTTEk4eE9RYVcxNUhDdFNobENEdEd0bV82Y1d6LUxaZldDUVpKRnM0Q3dhRzJuUnp5OTNiQ0lJRFZINmVJcDJZZGlMZUhKdXg1M2t0c19PYU9rOGVJbmFsLTNKQnRuOEdNdEFyNEctQy1qTXhnWEpVa0FwQ0JxZmhNRnc3NnpoQXlYZF9IcTQ5c0REMEo4RWhKMG9tcFZJeEVVSzFacjlhRFpF?oc=5",
+   "izvor": "www.tmgm.com",
+   "chas": "2026-11-14T02:04:27Z",
+   "vazhnost": 3,
+   "za": "долар",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "rates",
+   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
+   "bg": "За лихвата на Фед"
+  },
+  {
    "zaglavie": "FAA lifts rare nationwide ground stop; flights may take days to recover",
    "vryzka": "https://www.marketwatch.com/story/faa-declares-rare-widespread-ground-outage-bdc46393?mod=mw_rss_topstories",
    "izvor": "MarketWatch",
@@ -1224,7 +1246,7 @@
   {
    "zaglavie": "Fed’s Jefferson Says Inflation Will Determine Rate Decisions",
    "vryzka": "https://news.google.com/rss/articles/CBMisAFBVV95cUxPZzBwMC1SRHV2ZUJHLTJ2STdWWFlSSXhKN1lkajNFZ0VTNUZNTnRGeW1uMXJRWXhyR05ic2JDMU9xcGxTV0JKZFM3WVByb0gwbEhrQW1WaTViQm12d1FZT1FnU29xX0tZSjJXOXhaWkI5bnk0aENFVTNOTUNYV09RQmJid1E4bFZxeUliR01kTkVCcXFMRDVnTWFUbTFrbk1HM1Q4MDBHbkVVSm9LUHNxMA?oc=5",
-   "izvor": "Bloomberg",
+   "izvor": "Bloomberg.com",
    "chas": "2026-11-14T00:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
@@ -1535,7 +1557,7 @@
   },
   {
    "zaglavie": "Perpetua Resources Announces Third Quarter 2026 Financial Results and Provides Project Update",
-   "vryzka": "https://finance.yahoo.com/news/perpetua-resources-announces-third-quarter-220500106.html?.tsrc=rss",
+   "vryzka": "https://finance.yahoo.com/markets/stocks/articles/perpetua-resources-announces-third-quarter-220500369.html?.tsrc=rss",
    "izvor": "Yahoo Finance",
    "chas": "2026-11-13T22:05:00Z",
    "vazhnost": 1,
@@ -2535,32 +2557,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Richemont Looks to the Future After Posting Double-Digit Growth in First-Half Sales, Profits",
-   "vryzka": "https://wwd.com/business-news/business-features/richemont-looks-future-double-digit-rises-first-half-sales-1239415568/?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-11-13T18:30:26Z",
-   "vazhnost": 1,
-   "za": "злато",
-   "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
-   "zaglavie": "The epic $29 trillion battle for Social Security has begun",
-   "vryzka": "https://www.marketwatch.com/story/the-epic-29-trillion-battle-for-social-security-has-begun-a5e57f5a?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-11-13T18:25:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
    "zaglavie": "Federal Reserve Board announces pricing, effective January 1, 2027, for payment services the Federal Reserve Banks provide to banks and credit unions, and changes to streamline and adjust their check services",
    "vryzka": "https://www.federalreserve.gov/newsevents/pressreleases/other20261112a.htm",
    "izvor": "Fed",
@@ -2580,10 +2576,10 @@
    "chas": "2026-11-12T17:45:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed политика",
+   "emisiya": "Fed всички",
    "chas_ot_iztochnika": true,
    "duma": "fed",
-   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
+   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
    "bg": "Съобщение на Фед — централната банка на САЩ"
   },
   {
@@ -2632,13 +2628,13 @@
    "chas": "2026-10-28T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed политика",
+   "emisiya": "Fed всички",
    "chas_ot_iztochnika": true,
    "duma": "fomc",
-   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
+   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   }
  ],
- "s_bg_red": 68,
+ "s_bg_red": 70,
  "mahnati_ezik": 1
 }
