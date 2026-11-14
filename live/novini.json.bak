@@ -1,37 +1,44 @@
 {
- "kogato": "2026-11-14T22:04:15Z",
- "sekundi": 0.83,
+ "kogato": "2026-11-14T22:19:56Z",
+ "sekundi": 9.0,
  "broi": 200,
- "novi_tozi_pyt": 2,
+ "novi_tozi_pyt": 0,
  "iztochnici_ok": [
+  "MarketWatch",
   "Fed политика",
-  "Investing",
   "Fed всички",
   "Fed речи",
-  "MarketWatch",
-  "Yahoo злато",
   "Yahoo долар",
-  "FT пазари",
-  "Google злато",
-  "Google Fed",
+  "Yahoo злато",
   "CNBC",
+  "FT пазари",
+  "Investing",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google злато",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  },
+  {
+   "ime": "Google Fed",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.47с",
-  "новини · FT пазари · 25 бр. за 0.35с",
-  "новини · Fed всички · 8 бр. за 0.13с",
-  "новини · Fed политика · 15 бр. за 0.1с",
-  "новини · Fed речи · 15 бр. за 0.13с",
-  "новини · Google Fed · 40 бр. за 0.36с",
-  "новини · Google злато · 40 бр. за 0.45с",
-  "новини · Investing · 10 бр. за 0.11с",
-  "новини · MarketWatch · 10 бр. за 0.15с",
-  "новини · Mining.com · 36 бр. за 0.76с",
-  "новини · Yahoo долар · 17 бр. за 0.25с",
-  "новини · Yahoo злато · 19 бр. за 0.22с",
-  "новини · български ред: 81 от 200 · махнати по език: 1"
+  "новини · CNBC · 30 бр. за 0.12с",
+  "новини · FT пазари · 25 бр. за 0.19с",
+  "новини · Fed всички · 8 бр. за 0.05с",
+  "новини · Fed политика · 15 бр. за 0.04с",
+  "новини · Fed речи · 15 бр. за 0.05с",
+  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Investing · 10 бр. за 0.2с",
+  "новини · MarketWatch · 10 бр. за 0.02с",
+  "новини · Mining.com · 36 бр. за 0.81с",
+  "новини · Yahoo долар · 17 бр. за 0.11с",
+  "новини · Yahoo злато · 19 бр. за 0.11с",
+  "новини · български ред: 81 от 200 · махнати по език: 0"
  ],
  "novini": [
   {
@@ -185,19 +192,6 @@
    "vazhnost": 2,
    "za": "злато",
    "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": null
-  },
-  {
-   "zaglavie": "Goldman Sachs just slashed its 2027 gold forecast. Here are the new numbers",
-   "vryzka": "https://news.google.com/rss/articles/CBMiygFBVV95cUxQRzYyRU50SDUzOW15clJVVGhYWFZ5WDdSRWpMSnJBTUMzZDZ5VU16QUM3V3RSVE05Mjg2aFg2eFRQTkVkcWo3US0wU3hGWFFzWUVfYjdTLXNZNG5FelVydFhKVmx0SDR3S1l4VVVicmU5WlBLeUhxM051VXQwLVhjQk5ITjBBOGN1OUVjS1lUb2t5VGh6QmtSVmhyRVNYUG5hODJhNlFmcjB2NXFuMF9BTVBsclRJaTFEbmJjaURTWDRLZ2xNZnNwMy1B?oc=5",
-   "izvor": "Investing.com",
-   "chas": "2026-11-14T18:32:48Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
    "chas_ot_iztochnika": true,
    "duma": "gold",
    "zashto": "Пряко за златото.",
@@ -880,6 +874,19 @@
    "bg": null
   },
   {
+   "zaglavie": "Goldman Sachs just slashed its 2027 gold forecast. Here are the new numbers",
+   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/goldman-sachs-just-slashed-2027-123840250.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-14T12:38:40Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": null
+  },
+  {
    "zaglavie": "Jim Cramer says Jensen Huang betrayed shareholders as Nvidia sinks up to 13%. Is your 401(k) too tied to one stock?",
    "vryzka": "https://finance.yahoo.com/markets/stocks/articles/jim-cramer-says-jensen-huang-123000332.html?.tsrc=rss",
    "izvor": "Yahoo Finance",
@@ -1374,19 +1381,6 @@
    "bg": null
   },
   {
-   "zaglavie": "What Gold Royalty Holders Got Wrong Before The Slide",
-   "vryzka": "https://news.google.com/rss/articles/CBMimwFBVV95cUxPRWhYeW9HWl96bk5McWsxWm9aV2lWUnFIemh3clF4WFIyWXZvbDdCamdBLWcxcVpVZVgxbjNjWVEyeEgxVWxSMEhTd05QcUdSWFVINTJIQko3NWpYdDB6NW1PSWt1MUc1VmNuaFE0cEtuanp1UWZLdnFFV1pzN0JEaVAxenVIaG1kQUEycGY5Nm41eUhjaU1pZ0xKQQ?oc=5",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-11-14T04:03:30Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Новина от минния бранш (злато)"
-  },
-  {
    "zaglavie": "Experts predict unexpected gold prices next week",
    "vryzka": "https://news.google.com/rss/articles/CBMimAFBVV95cUxNTHVVd1VfQ0N0eElfakpBYUREVUZmY3lVajR0dDhsU19tVTRRNGZtZXpYZmg1V1d2UHNNM3NBbS1IcGlYVGpZQ1M3LTF1eThrd3ZFcTlXZU5ZVGVpM0J0d25kT2JHbVNXUmFQWk5nUjBjeldzZFhIU19pVGoyVmFYX1phY2Z3R3p5c2dDZDNWR2FyTUNRdFZCYg?oc=5",
    "izvor": "Laodong.vn",
@@ -1437,6 +1431,19 @@
    "duma": "gold",
    "zashto": "Пряко за златото.",
    "bg": null
+  },
+  {
+   "zaglavie": "What Gold Royalty Holders Got Wrong Before The Slide",
+   "vryzka": "https://finance.yahoo.com/markets/stocks/articles/gold-royalty-holders-got-wrong-031413900.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-14T03:14:13Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": "Новина от минния бранш (злато)"
   },
   {
    "zaglavie": "Vietnam's SJC gold bars fall to 137.5 million dong, lowest in more than a year",
@@ -2636,5 +2643,5 @@
   }
  ],
  "s_bg_red": 81,
- "mahnati_ezik": 1
+ "mahnati_ezik": 0
 }
