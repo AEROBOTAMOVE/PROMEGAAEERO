@@ -1,39 +1,56 @@
 {
- "kogato": "2026-11-14T22:57:18Z",
- "sekundi": 1.02,
+ "kogato": "2026-11-14T23:12:46Z",
+ "sekundi": 0.78,
  "broi": 200,
  "novi_tozi_pyt": 1,
  "iztochnici_ok": [
-  "Fed всички",
   "Fed речи",
-  "Investing",
-  "MarketWatch",
   "Fed политика",
-  "CNBC",
-  "Yahoo долар",
+  "MarketWatch",
+  "Investing",
   "Yahoo злато",
+  "Yahoo долар",
+  "CNBC",
   "Google Fed",
   "FT пазари",
   "Google злато",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Fed всички",
+   "greshka": "HTTPError: HTTP Error 404: Not Found"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.23с",
-  "новини · FT пазари · 25 бр. за 0.39с",
-  "новини · Fed всички · 8 бр. за 0.08с",
-  "новини · Fed политика · 15 бр. за 0.16с",
-  "новини · Fed речи · 15 бр. за 0.09с",
-  "новини · Google Fed · 40 бр. за 0.3с",
-  "новини · Google злато · 40 бр. за 0.39с",
+  "новини · CNBC · 30 бр. за 0.27с",
+  "новини · FT пазари · 25 бр. за 0.4с",
+  "новини · Fed всички · ПАДНА: HTTPError: HTTP Error 404: Not Found",
+  "новини · Fed политика · 15 бр. за 0.06с",
+  "новини · Fed речи · 15 бр. за 0.05с",
+  "новини · Google Fed · 40 бр. за 0.29с",
+  "новини · Google злато · 40 бр. за 0.42с",
   "новини · Investing · 10 бр. за 0.11с",
-  "новини · MarketWatch · 10 бр. за 0.13с",
-  "новини · Mining.com · 36 бр. за 0.98с",
-  "новини · Yahoo долар · 17 бр. за 0.27с",
-  "новини · Yahoo злато · 19 бр. за 0.28с",
-  "новини · български ред: 81 от 200 · махнати по език: 1"
+  "новини · MarketWatch · 10 бр. за 0.07с",
+  "новини · Mining.com · 36 бр. за 0.72с",
+  "новини · Yahoo долар · 17 бр. за 0.13с",
+  "новини · Yahoo злато · 19 бр. за 0.13с",
+  "новини · български ред: 82 от 200 · махнати по език: 1"
  ],
  "novini": [
+  {
+   "zaglavie": "Fed's Collins says 'gradual path' of rate hikes is best for the economy",
+   "vryzka": "https://news.google.com/rss/articles/CBMilwFBVV95cUxPZUw1RUQtb0RrNGNHcDFNa0dTWGRsTEpLdDlBWnZra2NEWjE4OTNvRU5HZTVma29kTUpoOTJmdXFJcDdzUHR1N0FVOXZ2Wk91c2hPUTZhVEQ1NjR4b3ZnZmpjRmJJaGI4TDRSd2ZCS0RubHAtaXM3S1dhT3ptVVZrUjNqSlBwQnJxUVBjRkJrUFpIdWZkRGdn?oc=5",
+   "izvor": "Seeking Alpha",
+   "chas": "2026-11-14T22:59:18Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": "Изказване на член на Фед (Collins) за вдигане на лихвата и икономиката"
+  },
   {
    "zaglavie": "I’m 63 and spending $95,000 on a roof deck for my $500,000 home. Is that a good investment?",
    "vryzka": "https://www.marketwatch.com/story/im-63-and-want-to-spend-95-000-on-a-roof-deck-for-my-500-000-home-is-that-a-good-investment-f1a59c27?mod=mw_rss_topstories",
@@ -2544,19 +2561,6 @@
    "bg": "Златото и Фед"
   },
   {
-   "zaglavie": "Komatsu to acquire Roadtec and Carlson construction equipment brands",
-   "vryzka": "https://www.mining.com/komatsu-to-acquire-roadtec-and-carlson-construction-equipment-brands/",
-   "izvor": "Mining.com",
-   "chas": "2026-11-13T20:22:00Z",
-   "vazhnost": 1,
-   "za": "злато",
-   "emisiya": "Mining.com",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
    "zaglavie": "Federal Reserve Board announces pricing, effective January 1, 2027, for payment services the Federal Reserve Banks provide to banks and credit unions, and changes to streamline and adjust their check services",
    "vryzka": "https://www.federalreserve.gov/newsevents/pressreleases/other20261112a.htm",
    "izvor": "Fed",
@@ -2576,10 +2580,10 @@
    "chas": "2026-11-12T17:45:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed всички",
+   "emisiya": "Fed политика",
    "chas_ot_iztochnika": true,
    "duma": "fed",
-   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
+   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
    "bg": "Съобщение на Фед — централната банка на САЩ"
   },
   {
@@ -2628,13 +2632,13 @@
    "chas": "2026-10-28T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed всички",
+   "emisiya": "Fed политика",
    "chas_ot_iztochnika": true,
    "duma": "fomc",
-   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
+   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   }
  ],
- "s_bg_red": 81,
+ "s_bg_red": 82,
  "mahnati_ezik": 1
 }
