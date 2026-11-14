@@ -1,44 +1,37 @@
 {
- "kogato": "2026-11-14T22:30:56Z",
- "sekundi": 9.0,
+ "kogato": "2026-11-14T22:46:18Z",
+ "sekundi": 0.89,
  "broi": 200,
  "novi_tozi_pyt": 0,
  "iztochnici_ok": [
-  "MarketWatch",
-  "Fed политика",
-  "Fed речи",
   "Fed всички",
+  "Fed речи",
+  "MarketWatch",
   "Investing",
+  "Fed политика",
   "Yahoo долар",
   "Yahoo злато",
+  "Google злато",
   "FT пазари",
+  "Google Fed",
   "CNBC",
   "Mining.com"
  ],
- "iztochnici_padnali": [
-  {
-   "ime": "Google злато",
-   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
-  },
-  {
-   "ime": "Google Fed",
-   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
-  }
- ],
+ "iztochnici_padnali": [],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.28с",
-  "новини · FT пазари · 25 бр. за 0.2с",
-  "новини · Fed всички · 8 бр. за 0.04с",
-  "новини · Fed политика · 15 бр. за 0.03с",
-  "новини · Fed речи · 15 бр. за 0.03с",
-  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
-  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
-  "новини · Investing · 10 бр. за 0.06с",
-  "новини · MarketWatch · 10 бр. за 0.01с",
-  "новини · Mining.com · 36 бр. за 0.6с",
-  "новини · Yahoo долар · 17 бр. за 0.1с",
-  "новини · Yahoo злато · 19 бр. за 0.16с",
-  "новини · български ред: 81 от 200 · махнати по език: 0"
+  "новини · CNBC · 30 бр. за 0.43с",
+  "новини · FT пазари · 25 бр. за 0.34с",
+  "новини · Fed всички · 8 бр. за 0.09с",
+  "новини · Fed политика · 15 бр. за 0.16с",
+  "новини · Fed речи · 15 бр. за 0.09с",
+  "новини · Google Fed · 40 бр. за 0.27с",
+  "новини · Google злато · 40 бр. за 0.33с",
+  "новини · Investing · 10 бр. за 0.11с",
+  "новини · MarketWatch · 10 бр. за 0.1с",
+  "новини · Mining.com · 36 бр. за 0.85с",
+  "новини · Yahoo долар · 17 бр. за 0.19с",
+  "новини · Yahoo злато · 19 бр. за 0.19с",
+  "новини · български ред: 81 от 200 · махнати по език: 1"
  ],
  "novini": [
   {
@@ -192,6 +185,19 @@
    "vazhnost": 2,
    "za": "злато",
    "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": null
+  },
+  {
+   "zaglavie": "Goldman Sachs just slashed its 2027 gold forecast. Here are the new numbers",
+   "vryzka": "https://news.google.com/rss/articles/CBMiygFBVV95cUxQRzYyRU50SDUzOW15clJVVGhYWFZ5WDdSRWpMSnJBTUMzZDZ5VU16QUM3V3RSVE05Mjg2aFg2eFRQTkVkcWo3US0wU3hGWFFzWUVfYjdTLXNZNG5FelVydFhKVmx0SDR3S1l4VVVicmU5WlBLeUhxM051VXQwLVhjQk5ITjBBOGN1OUVjS1lUb2t5VGh6QmtSVmhyRVNYUG5hODJhNlFmcjB2NXFuMF9BTVBsclRJaTFEbmJjaURTWDRLZ2xNZnNwMy1B?oc=5",
+   "izvor": "Investing.com",
+   "chas": "2026-11-14T18:32:48Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
    "chas_ot_iztochnika": true,
    "duma": "gold",
    "zashto": "Пряко за златото.",
@@ -874,19 +880,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Goldman Sachs just slashed its 2027 gold forecast. Here are the new numbers",
-   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/goldman-sachs-just-slashed-2027-123840250.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-11-14T12:38:40Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": null
-  },
-  {
    "zaglavie": "Jim Cramer says Jensen Huang betrayed shareholders as Nvidia sinks up to 13%. Is your 401(k) too tied to one stock?",
    "vryzka": "https://finance.yahoo.com/markets/stocks/articles/jim-cramer-says-jensen-huang-123000332.html?.tsrc=rss",
    "izvor": "Yahoo Finance",
@@ -1381,6 +1374,19 @@
    "bg": null
   },
   {
+   "zaglavie": "What Gold Royalty Holders Got Wrong Before The Slide",
+   "vryzka": "https://news.google.com/rss/articles/CBMimwFBVV95cUxPRWhYeW9HWl96bk5McWsxWm9aV2lWUnFIemh3clF4WFIyWXZvbDdCamdBLWcxcVpVZVgxbjNjWVEyeEgxVWxSMEhTd05QcUdSWFVINTJIQko3NWpYdDB6NW1PSWt1MUc1VmNuaFE0cEtuanp1UWZLdnFFV1pzN0JEaVAxenVIaG1kQUEycGY5Nm41eUhjaU1pZ0xKQQ?oc=5",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-14T04:03:30Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": "Новина от минния бранш (злато)"
+  },
+  {
    "zaglavie": "Experts predict unexpected gold prices next week",
    "vryzka": "https://news.google.com/rss/articles/CBMimAFBVV95cUxNTHVVd1VfQ0N0eElfakpBYUREVUZmY3lVajR0dDhsU19tVTRRNGZtZXpYZmg1V1d2UHNNM3NBbS1IcGlYVGpZQ1M3LTF1eThrd3ZFcTlXZU5ZVGVpM0J0d25kT2JHbVNXUmFQWk5nUjBjeldzZFhIU19pVGoyVmFYX1phY2Z3R3p5c2dDZDNWR2FyTUNRdFZCYg?oc=5",
    "izvor": "Laodong.vn",
@@ -1431,19 +1437,6 @@
    "duma": "gold",
    "zashto": "Пряко за златото.",
    "bg": null
-  },
-  {
-   "zaglavie": "What Gold Royalty Holders Got Wrong Before The Slide",
-   "vryzka": "https://finance.yahoo.com/markets/stocks/articles/gold-royalty-holders-got-wrong-031413900.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-11-14T03:14:13Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Новина от минния бранш (злато)"
   },
   {
    "zaglavie": "Vietnam's SJC gold bars fall to 137.5 million dong, lowest in more than a year",
@@ -1810,6 +1803,19 @@
    "bg": null
   },
   {
+   "zaglavie": "Fed unveils 2027 calendar, confirming October meeting will not include rates vote",
+   "vryzka": "https://news.google.com/rss/articles/CBMihwFBVV95cUxNdzZWZkwwbDl3eko1Y2pocDFmMHItbk9ENXZudFR0QWt6MmczWXA1cTgyWGVGYnZQOEt1OW1VUm5EMXBYVDFfYnV1clNIVVo0Y0UwVkhVdHAzb2dLRUVJUWJuX3VRNHM3RlJUZzl3YjQ5R2hVZzlWTDRJMzRVNG9qZTFGdWU0UlE?oc=5",
+   "izvor": "AOL.com",
+   "chas": "2026-11-13T23:24:22Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": "За лихвата на Фед"
+  },
+  {
    "zaglavie": "Asante Reports Q3 2026 Operating & Financial Results and Issues Clarification Regarding November 12, 2026 Press Release",
    "vryzka": "https://finance.yahoo.com/markets/commodities/articles/asante-reports-q3-2026-operating-231800978.html?.tsrc=rss",
    "izvor": "Yahoo Finance",
@@ -1925,19 +1931,6 @@
    "duma": "gold",
    "zashto": "Пряко за златото.",
    "bg": null
-  },
-  {
-   "zaglavie": "Fed unveils 2027 calendar, confirming October meeting will not include rates vote",
-   "vryzka": "https://news.google.com/rss/articles/CBMifkFVX3lxTE9LOFV2S1F2VFVFWG51dVRzbUg1VUJuLTdzenJxVjZZNnItQ2RYTjlQYTJ0SkJTQ0Q0OENocEhjR3JLMEN6YklVd2g0bmw2U01YSkowUkwwa3NUaE12a3NSOHR0WHRYUHZVbXRzYXZtS3dDdVhISDNXSTdLWDFEZ9IBgwFBVV95cUxPRTQ2aVhyLXhSZ0l0dzMzMGlJQ0RkdnpCZW80M1ZhQXpQTmdqemtJd0Q1SnI0ZF8wbm1RdktrQ3FjV2tSTnRNNjVKXzV4TEZyc0hvcklzRVpHeHQ0QXZ5dUx4cmRjVHplZi1EOUtucHZMdzNZZEVfNWc5b0JQNHRSSUFaSQ?oc=5",
-   "izvor": "The Hill",
-   "chas": "2026-11-13T22:44:00Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": "За лихвата на Фед"
   },
   {
    "zaglavie": "FAA declares rare nationwide ground stop on flights, with nearly 10,000 canceled so far",
@@ -2583,10 +2576,10 @@
    "chas": "2026-11-12T17:45:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed политика",
+   "emisiya": "Fed всички",
    "chas_ot_iztochnika": true,
    "duma": "fed",
-   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
+   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
    "bg": "Съобщение на Фед — централната банка на САЩ"
   },
   {
@@ -2635,13 +2628,13 @@
    "chas": "2026-10-28T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed политика",
+   "emisiya": "Fed всички",
    "chas_ot_iztochnika": true,
    "duma": "fomc",
-   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
+   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   }
  ],
  "s_bg_red": 81,
- "mahnati_ezik": 0
+ "mahnati_ezik": 1
 }
