@@ -1,36 +1,43 @@
 {
- "kogato": "2026-11-15T05:40:46Z",
- "sekundi": 0.84,
+ "kogato": "2026-11-15T05:56:27Z",
+ "sekundi": 9.94,
  "broi": 200,
  "novi_tozi_pyt": 0,
  "iztochnici_ok": [
+  "MarketWatch",
   "Fed всички",
   "Fed речи",
-  "MarketWatch",
-  "Investing",
   "Fed политика",
-  "Yahoo долар",
-  "CNBC",
+  "Investing",
   "Yahoo злато",
+  "CNBC",
+  "Yahoo долар",
   "FT пазари",
-  "Google злато",
-  "Google Fed",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google Fed",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  },
+  {
+   "ime": "Google злато",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.25с",
-  "новини · FT пазари · 25 бр. за 0.33с",
-  "новини · Fed всички · 8 бр. за 0.11с",
-  "новини · Fed политика · 15 бр. за 0.12с",
-  "новини · Fed речи · 15 бр. за 0.11с",
-  "новини · Google Fed · 40 бр. за 0.36с",
-  "новини · Google злато · 40 бр. за 0.43с",
-  "новини · Investing · 10 бр. за 0.11с",
-  "новини · MarketWatch · 10 бр. за 0.11с",
-  "новини · Mining.com · 36 бр. за 0.78с",
-  "новини · Yahoo долар · 17 бр. за 0.2с",
-  "новини · Yahoo злато · 20 бр. за 0.26с",
+  "новини · CNBC · 30 бр. за 0.17с",
+  "новини · FT пазари · 25 бр. за 0.18с",
+  "новини · Fed всички · 8 бр. за 0.04с",
+  "новини · Fed политика · 15 бр. за 0.05с",
+  "новини · Fed речи · 15 бр. за 0.03с",
+  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Investing · 10 бр. за 0.06с",
+  "новини · MarketWatch · 10 бр. за 0.02с",
+  "новини · Mining.com · 36 бр. за 0.57с",
+  "новини · Yahoo долар · 17 бр. за 0.19с",
+  "новини · Yahoo злато · 20 бр. за 0.11с",
   "новини · български ред: 80 от 200 · махнати по език: 0"
  ],
  "novini": [
@@ -750,19 +757,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Goldman Sachs just slashed its 2027 gold forecast. Here are the new numbers",
-   "vryzka": "https://news.google.com/rss/articles/CBMiygFBVV95cUxQRzYyRU50SDUzOW15clJVVGhYWFZ5WDdSRWpMSnJBTUMzZDZ5VU16QUM3V3RSVE05Mjg2aFg2eFRQTkVkcWo3US0wU3hGWFFzWUVfYjdTLXNZNG5FelVydFhKVmx0SDR3S1l4VVVicmU5WlBLeUhxM051VXQwLVhjQk5ITjBBOGN1OUVjS1lUb2t5VGh6QmtSVmhyRVNYUG5hODJhNlFmcjB2NXFuMF9BTVBsclRJaTFEbmJjaURTWDRLZ2xNZnNwMy1B?oc=5",
-   "izvor": "Investing.com",
-   "chas": "2026-11-14T18:32:48Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": null
-  },
-  {
    "zaglavie": "Should a widow leave her late partner’s home to her stepkids — or cut off contact with them?",
    "vryzka": "https://www.marketwatch.com/story/she-can-always-change-her-mind-should-a-widow-leave-the-family-home-to-her-stepchildren-649b06af?mod=mw_rss_topstories",
    "izvor": "MarketWatch",
@@ -1449,6 +1443,19 @@
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "Goldman Sachs just slashed its 2027 gold forecast. Here are the new numbers",
+   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/goldman-sachs-just-slashed-2027-123840250.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-14T12:38:40Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
    "bg": null
   },
   {
