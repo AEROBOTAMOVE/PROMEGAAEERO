@@ -1,39 +1,59 @@
 {
- "kogato": "2026-11-15T22:55:53Z",
- "sekundi": 0.82,
+ "kogato": "2026-11-15T23:06:41Z",
+ "sekundi": 6.6,
  "broi": 200,
- "novi_tozi_pyt": 1,
+ "novi_tozi_pyt": 0,
  "iztochnici_ok": [
-  "Fed всички",
   "MarketWatch",
-  "Fed речи",
   "Fed политика",
+  "Fed всички",
   "Investing",
   "Yahoo долар",
+  "Fed речи",
   "Yahoo злато",
-  "Google злато",
   "CNBC",
-  "Google Fed",
   "FT пазари",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google Fed",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  },
+  {
+   "ime": "Google злато",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.4с",
-  "новини · FT пазари · 25 бр. за 0.59с",
-  "новини · Fed всички · 8 бр. за 0.08с",
-  "новини · Fed политика · 15 бр. за 0.13с",
-  "новини · Fed речи · 15 бр. за 0.12с",
-  "новини · Google Fed · 40 бр. за 0.38с",
-  "новини · Google злато · 40 бр. за 0.38с",
-  "новини · Investing · 10 бр. за 0.18с",
-  "новини · MarketWatch · 10 бр. за 0.11с",
+  "новини · CNBC · 30 бр. за 0.28с",
+  "новини · FT пазари · 25 бр. за 0.33с",
+  "новини · Fed всички · 8 бр. за 0.05с",
+  "новини · Fed политика · 15 бр. за 0.05с",
+  "новини · Fed речи · 15 бр. за 0.15с",
+  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Investing · 10 бр. за 0.11с",
+  "новини · MarketWatch · 10 бр. за 0.04с",
   "новини · Mining.com · 36 бр. за 0.78с",
-  "новини · Yahoo долар · 16 бр. за 0.28с",
-  "новини · Yahoo злато · 20 бр. за 0.29с",
-  "новини · български ред: 89 от 200 · махнати по език: 1"
+  "новини · Yahoo долар · 16 бр. за 0.15с",
+  "новини · Yahoo злато · 20 бр. за 0.17с",
+  "новини · български ред: 89 от 200 · махнати по език: 0"
  ],
  "novini": [
+  {
+   "zaglavie": "Should a widow leave her late partner’s home to her stepkids — or cut off contact with them?",
+   "vryzka": "https://www.marketwatch.com/story/she-can-always-change-her-mind-should-a-widow-leave-the-family-home-to-her-stepchildren-649b06af?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-11-15T23:00:00Z",
+   "vazhnost": 1,
+   "za": "лихви",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
   {
    "zaglavie": "Gold prices today, November 16, 2026: SJC gold bars, BTMC 9999 plain rings, and world gold prices.",
    "vryzka": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxQVGxhN2kyZExYa3c0UVFPYnhfSzE4UUhGeXdENUh4WFZWOENoaTRTb3o2TmZ0VlAwZHpra3NsLXRmMUkwTVd3b1Z5a2FiY3ZiRmJfYkJxTm4xZHhjekowSlhTeDJaTFNoTFl2QjE4WnVMSXNGLVUxX0piRlRKckl2clpEQWRLdEhOako5XzRWUE56Z0FPZFlLY28waG5iNXVHMVhLUDVTaDM?oc=5",
@@ -796,19 +816,6 @@
    "vazhnost": 1,
    "za": "злато",
    "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
-   "zaglavie": "Should a widow leave her late partner’s home to her stepkids — or cut off contact with them?",
-   "vryzka": "https://www.marketwatch.com/story/she-can-always-change-her-mind-should-a-widow-leave-the-family-home-to-her-stepchildren-649b06af?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-11-15T13:30:00Z",
-   "vazhnost": 1,
-   "za": "лихви",
-   "emisiya": "MarketWatch",
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null,
@@ -2576,10 +2583,10 @@
    "chas": "2026-11-12T17:45:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed всички",
+   "emisiya": "Fed политика",
    "chas_ot_iztochnika": true,
    "duma": "fed",
-   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
+   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
    "bg": "Съобщение на Фед — централната банка на САЩ"
   },
   {
@@ -2628,13 +2635,13 @@
    "chas": "2026-10-28T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed всички",
+   "emisiya": "Fed политика",
    "chas_ot_iztochnika": true,
    "duma": "fomc",
-   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
+   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   }
  ],
  "s_bg_red": 89,
- "mahnati_ezik": 1
+ "mahnati_ezik": 0
 }
