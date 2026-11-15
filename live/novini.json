@@ -1,37 +1,41 @@
 {
- "kogato": "2026-11-15T17:26:13Z",
- "sekundi": 0.61,
+ "kogato": "2026-11-15T17:37:13Z",
+ "sekundi": 0.68,
  "broi": 200,
  "novi_tozi_pyt": 1,
  "iztochnici_ok": [
   "MarketWatch",
   "Fed речи",
   "Fed политика",
-  "Fed всички",
-  "Yahoo злато",
-  "Yahoo долар",
   "Investing",
+  "Yahoo долар",
+  "Yahoo злато",
   "FT пазари",
   "CNBC",
-  "Google злато",
   "Google Fed",
+  "Google злато",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Fed всички",
+   "greshka": "HTTPError: HTTP Error 404: Not Found"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.3с",
-  "новини · FT пазари · 25 бр. за 0.23с",
-  "новини · Fed всички · 8 бр. за 0.05с",
+  "новини · CNBC · 30 бр. за 0.31с",
+  "новини · FT пазари · 25 бр. за 0.21с",
+  "новини · Fed всички · ПАДНА: HTTPError: HTTP Error 404: Not Found",
   "новини · Fed политика · 15 бр. за 0.04с",
-  "новини · Fed речи · 15 бр. за 0.04с",
-  "новини · Google Fed · 40 бр. за 0.38с",
-  "новини · Google злато · 40 бр. за 0.36с",
-  "новини · Investing · 10 бр. за 0.1с",
+  "новини · Fed речи · 15 бр. за 0.03с",
+  "новини · Google Fed · 40 бр. за 0.33с",
+  "новини · Google злато · 40 бр. за 0.37с",
+  "новини · Investing · 10 бр. за 0.06с",
   "новини · MarketWatch · 10 бр. за 0.02с",
-  "новини · Mining.com · 36 бр. за 0.56с",
+  "новини · Mining.com · 36 бр. за 0.63с",
   "новини · Yahoo долар · 16 бр. за 0.11с",
   "новини · Yahoo злато · 20 бр. за 0.11с",
-  "новини · български ред: 85 от 200 · махнати по език: 2"
+  "новини · български ред: 84 от 200 · махнати по език: 3"
  ],
  "novini": [
   {
@@ -67,7 +71,7 @@
    "chas": "2026-11-15T16:35:55Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Google злато",
+   "emisiya": "Google Fed",
    "chas_ot_iztochnika": true,
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
@@ -566,6 +570,19 @@
    "duma": "gold",
    "zashto": "Пряко за златото.",
    "bg": "Анализ и прогноза за златото"
+  },
+  {
+   "zaglavie": "Fed’s biggest AI challenge collides with fallout from Nvidia backlash",
+   "vryzka": "https://news.google.com/rss/articles/CBMieEFVX3lxTFBoMWxQYm5NOF9OeW03OHBXVWVDdFFVQUluOXFneXBGTHlrVThqSlhzRGpzOF9EVXNMVDlLRDZEUXFTQzhvRVF5Uzl2NXR1Zmg3b2pNeVZwUmJ4aHJGN2NEQmlDdWRYQ1Y3Yk9Ib0FkZmpNVHczdDJFQQ?oc=5",
+   "izvor": "TheStreet",
+   "chas": "2026-11-15T11:03:00Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": null
   },
   {
    "zaglavie": "Gold price at the close of the session on November 15: Trading floor red, gold price under great pressure",
@@ -2531,19 +2548,6 @@
    "bg": "Златото поевтинява"
   },
   {
-   "zaglavie": "Gold prices fall for fourth straight day",
-   "vryzka": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPazhWbDJBMDcyUXhlcDRaejdsNUJiVWNpQkdtYlpHdFVabzlkT3Y0anpWVGFNTGw1bzc4OGRJNEpWRjN0Rnc5WlBpbFIya3RvZ1lpRkx6Q3AzdFBwdjE1ODB3TmJ5VmN5ZmNXcUYxTDdwcFcwblVMNmh4eFFfZ2xXR2piaHJYZzZZ?oc=5",
-   "izvor": "The Financial Express",
-   "chas": "2026-11-14T10:35:41Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Златото поевтинява"
-  },
-  {
    "zaglavie": "Jefferson, New Technology, Old Questions: Productivity Puzzles and the Macroeconomy",
    "vryzka": "https://www.federalreserve.gov/newsevents/speech/jefferson20261113a.htm",
    "izvor": "Fed",
@@ -2635,6 +2639,6 @@
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   }
  ],
- "s_bg_red": 85,
- "mahnati_ezik": 2
+ "s_bg_red": 84,
+ "mahnati_ezik": 3
 }
