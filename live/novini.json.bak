@@ -1,46 +1,56 @@
 {
- "kogato": "2026-11-16T21:35:51Z",
- "sekundi": 1.32,
+ "kogato": "2026-11-16T21:46:37Z",
+ "sekundi": 0.79,
  "broi": 200,
- "novi_tozi_pyt": 1,
+ "novi_tozi_pyt": 3,
  "iztochnici_ok": [
-  "MarketWatch",
-  "Fed всички",
-  "Yahoo долар",
-  "Yahoo злато",
-  "Investing",
-  "Fed речи",
   "Fed политика",
-  "CNBC",
+  "Fed всички",
+  "Fed речи",
+  "Investing",
+  "MarketWatch",
+  "Yahoo злато",
+  "Yahoo долар",
   "FT пазари",
+  "CNBC",
+  "Google Fed",
   "Mining.com"
  ],
  "iztochnici_padnali": [
-  {
-   "ime": "Google Fed",
-   "greshka": "HTTPError: HTTP Error 429: Too Many Requests"
-  },
   {
    "ime": "Google злато",
    "greshka": "HTTPError: HTTP Error 429: Too Many Requests"
   }
  ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.21с",
-  "новини · FT пазари · 25 бр. за 0.52с",
-  "новини · Fed всички · 8 бр. за 0.05с",
-  "новини · Fed политика · 15 бр. за 0.14с",
-  "новини · Fed речи · 15 бр. за 0.13с",
-  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 429: Too Many Requests",
+  "новини · CNBC · 30 бр. за 0.45с",
+  "новини · FT пазари · 25 бр. за 0.3с",
+  "новини · Fed всички · 8 бр. за 0.07с",
+  "новини · Fed политика · 15 бр. за 0.07с",
+  "новини · Fed речи · 15 бр. за 0.08с",
+  "новини · Google Fed · 40 бр. за 0.39с",
   "новини · Google злато · ПАДНА: HTTPError: HTTP Error 429: Too Many Requests",
-  "новини · Investing · 10 бр. за 0.1с",
-  "новини · MarketWatch · 10 бр. за 0.04с",
-  "новини · Mining.com · 36 бр. за 1.27с",
-  "новини · Yahoo долар · 12 бр. за 0.08с",
-  "новини · Yahoo злато · 17 бр. за 0.09с",
-  "новини · български ред: 68 от 200 · махнати по език: 0"
+  "новини · Investing · 10 бр. за 0.11с",
+  "новини · MarketWatch · 10 бр. за 0.13с",
+  "новини · Mining.com · 36 бр. за 0.73с",
+  "новини · Yahoo долар · 12 бр. за 0.17с",
+  "новини · Yahoo злато · 16 бр. за 0.16с",
+  "новини · български ред: 69 от 200 · махнати по език: 1"
  ],
  "novini": [
+  {
+   "zaglavie": "Now’s the perfect time for networking. Here’s how to send a cringe-free email.",
+   "vryzka": "https://www.marketwatch.com/story/nows-the-perfect-time-for-networking-heres-how-to-send-a-cringe-free-email-73ad34ea?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-11-16T21:40:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
   {
    "zaglavie": "Chevron nears $5bn deal for Blackstone-backed oil group in US Gulf",
    "vryzka": "https://www.ft.com/content/92e1c14a-f836-40b0-8d9e-0ed1c1d2fea9?syn-25a6b1a6=1",
@@ -250,6 +260,19 @@
    "bg": null
   },
   {
+   "zaglavie": "Fed’s Hammack Reiterates Preference for Small, Incremental Hikes",
+   "vryzka": "https://news.google.com/rss/articles/CBMitAFBVV95cUxOa3MwUUp3QjVuS0NGTWhLN0hYZldpQkJHUUZKRDZSRlhvdXJ1d2VXTVk1UkVzZ2swX1N1OWdQM1g1cC10cnMwaTRCRzEtVWNfWHBLdjdYY19wUEpZZERkQl9zVzNsbjVuZ25zQUFsaXFBMnBVX1I1X1pPU01SdEpPZzA1clBJZkx5TjYwV29QUmxHRmxfYW8wdWFLazlLbXVBRk9nUm01aVppdHRtS2RjRHlJeW0?oc=5",
+   "izvor": "Bloomberg.com",
+   "chas": "2026-11-16T20:39:15Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": "Изказване на член на Фед (Hammack) за вдигане на лихвата"
+  },
+  {
    "zaglavie": "Fed’s Hammack Prefers Small Hikes, Sees Risk of Bigger Moves",
    "vryzka": "https://news.google.com/rss/articles/CBMitAFBVV95cUxOa3MwUUp3QjVuS0NGTWhLN0hYZldpQkJHUUZKRDZSRlhvdXJ1d2VXTVk1UkVzZ2swX1N1OWdQM1g1cC10cnMwaTRCRzEtVWNfWHBLdjdYY19wUEpZZERkQl9zVzNsbjVuZ25zQUFsaXFBMnBVX1I1X1pPU01SdEpPZzA1clBJZkx5TjYwV29QUmxHRmxfYW8wdWFLazlLbXVBRk9nUm01aVppdHRtS2RjRHlJeW0?oc=5",
    "izvor": "Bloomberg.com",
@@ -261,6 +284,19 @@
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
    "bg": "За лихвата на Фед"
+  },
+  {
+   "zaglavie": "US Inflation Pressures Intensify, but Cleveland Fed President Says She Prefers \"Small Rate Hikes\"",
+   "vryzka": "https://news.google.com/rss/articles/CBMidkFVX3lxTE50UFBPdGMwLXpGQkNieTNCVF9OQTYxTUxoakx3Zl9lek1nSDQ1bUdaXy1HUW1zUzQ2d3QxTHRqRjlhbUJITVBuRXEzQ2NicHBMQ3FCMEZKN25jemdoWHNiaWJjekRkajg5X1NuY2V6UlJrRFlaVkE?oc=5",
+   "izvor": "BigGo Finance",
+   "chas": "2026-11-16T20:35:00Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "inflation",
+   "zashto": "Инфлацията е основната причина да се държи злато — то пази стойност, когато парите я губят.",
+   "bg": "За вдигане на лихвата от Фед"
   },
   {
    "zaglavie": "SpaceX is about to attempt the ‘holy grail’ of rocketry",
@@ -430,19 +466,6 @@
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
    "bg": "Изказване на член на Фед (Hammack) за вдигане на лихвата и инфлацията"
-  },
-  {
-   "zaglavie": "Fed’s Hammack Reiterates Preference for Small, Incremental Hikes",
-   "vryzka": "https://news.google.com/rss/articles/CBMitAFBVV95cUxOa3MwUUp3QjVuS0NGTWhLN0hYZldpQkJHUUZKRDZSRlhvdXJ1d2VXTVk1UkVzZ2swX1N1OWdQM1g1cC10cnMwaTRCRzEtVWNfWHBLdjdYY19wUEpZZERkQl9zVzNsbjVuZ25zQUFsaXFBMnBVX1I1X1pPU01SdEpPZzA1clBJZkx5TjYwV29QUmxHRmxfYW8wdWFLazlLbXVBRk9nUm01aVppdHRtS2RjRHlJeW0?oc=5",
-   "izvor": "Bloomberg.com",
-   "chas": "2026-11-16T19:37:29Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": "Изказване на член на Фед (Hammack) за вдигане на лихвата"
   },
   {
    "zaglavie": "Bond-market volatility is exploding higher. It could be the new normal for investors.",
@@ -1431,6 +1454,19 @@
    "duma": null,
    "zashto": null,
    "bg": null
+  },
+  {
+   "zaglavie": "Dollar Climbs on Stock Weakness and Fed Tightening Prospects",
+   "vryzka": "https://www.barchart.com/story/news/8856822/dollar-climbs-on-stock-weakness-and-fed-tightening-prospects?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-16T15:30:32Z",
+   "vazhnost": 3,
+   "za": "долар",
+   "emisiya": "Yahoo долар",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": "Доларът поскъпва на фона на очакванията за по-висока лихва от Фед"
   },
   {
    "zaglavie": "Amaroq could become a self-funding multi-commodity miner, Citi says",
@@ -2499,45 +2535,6 @@
    "bg": "Новина от минния бранш (злато)"
   },
   {
-   "zaglavie": "Yukon Metals Intersects 33.40 g/t Gold Over 1.0 Metre and 30.8 Metres of 0.17% Copper and 0.14 g/t Gold Mineralization at Birch Project, Yukon",
-   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/yukon-metals-intersects-33-40-120000465.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-11-16T12:00:00Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Минна компания съобщава резултати от сондажи за злато"
-  },
-  {
-   "zaglavie": "Selkirk Copper Completes Phase 2 Drill Program Comprising 54,579 Metres in 223 Drill Holes and Reports Additional High-Grade Results from Four Mineralized Zones",
-   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/selkirk-copper-completes-phase-2-120000888.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-11-16T12:00:00Z",
-   "vazhnost": 1,
-   "za": "злато",
-   "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
-   "zaglavie": "EUR/USD Weekly Forecast: Dollar Strength Pushes Euro to a One-Year Low as 1.0952 Comes Into Focus",
-   "vryzka": "https://finance.yahoo.com/markets/currencies/articles/eur-usd-weekly-forecast-dollar-115705918.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-11-16T11:57:05Z",
-   "vazhnost": 3,
-   "za": "долар",
-   "emisiya": "Yahoo долар",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": null
-  },
-  {
    "zaglavie": "Barr, Some Potential Financial Stability Implications of Artificial Intelligence",
    "vryzka": "https://www.federalreserve.gov/newsevents/speech/barr20261116a.htm",
    "izvor": "Fed",
@@ -2583,10 +2580,10 @@
    "chas": "2026-11-12T17:45:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed всички",
+   "emisiya": "Fed политика",
    "chas_ot_iztochnika": true,
    "duma": "fed",
-   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
+   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
    "bg": "Съобщение на Фед — централната банка на САЩ"
   },
   {
@@ -2635,13 +2632,13 @@
    "chas": "2026-10-28T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed всички",
+   "emisiya": "Fed политика",
    "chas_ot_iztochnika": true,
    "duma": "fomc",
-   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
+   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   }
  ],
- "s_bg_red": 68,
- "mahnati_ezik": 0
+ "s_bg_red": 69,
+ "mahnati_ezik": 1
 }
