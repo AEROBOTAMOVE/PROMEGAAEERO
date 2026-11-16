@@ -1,39 +1,59 @@
 {
- "kogato": "2026-11-16T07:07:21Z",
- "sekundi": 0.73,
+ "kogato": "2026-11-16T07:18:25Z",
+ "sekundi": 9.63,
  "broi": 200,
- "novi_tozi_pyt": 13,
+ "novi_tozi_pyt": 1,
  "iztochnici_ok": [
-  "Fed политика",
   "MarketWatch",
-  "Fed речи",
-  "Fed всички",
-  "Investing",
   "Yahoo злато",
   "Yahoo долар",
+  "Investing",
+  "Fed речи",
+  "Fed политика",
+  "Fed всички",
   "CNBC",
   "FT пазари",
-  "Google Fed",
-  "Google злато",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google Fed",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  },
+  {
+   "ime": "Google злато",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.19с",
-  "новини · FT пазари · 25 бр. за 0.26с",
-  "новини · Fed всички · 8 бр. за 0.07с",
-  "новини · Fed политика · 15 бр. за 0.06с",
-  "новини · Fed речи · 15 бр. за 0.07с",
-  "новини · Google Fed · 40 бр. за 0.33с",
-  "новини · Google злато · 40 бр. за 0.39с",
+  "новини · CNBC · 30 бр. за 0.27с",
+  "новини · FT пазари · 25 бр. за 0.29с",
+  "новини · Fed всички · 8 бр. за 0.21с",
+  "новини · Fed политика · 15 бр. за 0.15с",
+  "новини · Fed речи · 15 бр. за 0.12с",
+  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
   "новини · Investing · 10 бр. за 0.1с",
-  "новини · MarketWatch · 10 бр. за 0.06с",
-  "новини · Mining.com · 36 бр. за 0.69с",
-  "новини · Yahoo долар · 12 бр. за 0.17с",
-  "новини · Yahoo злато · 18 бр. за 0.17с",
-  "новини · български ред: 113 от 200 · махнати по език: 1"
+  "новини · MarketWatch · 10 бр. за 0.04с",
+  "новини · Mining.com · 36 бр. за 0.68с",
+  "новини · Yahoo долар · 12 бр. за 0.08с",
+  "новини · Yahoo злато · 18 бр. за 0.08с",
+  "новини · български ред: 112 от 200 · махнати по език: 0"
  ],
  "novini": [
+  {
+   "zaglavie": "Silver’s Correction: Is $48 the Launchpad for the Next Bullish Move?",
+   "vryzka": "https://www.investing.com/analysis/silvers-correction-is-48-the-launchpad-for-the-next-bullish-move-200691608",
+   "izvor": "Investing.com",
+   "chas": "2026-11-16T07:03:00Z",
+   "vazhnost": 1,
+   "za": "злато",
+   "emisiya": "Investing",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
   {
    "zaglavie": "Fed’s Schmid: Central bank still has work to do as inflation runs too high",
    "vryzka": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxQeUVpYVc2SF9FZ1ZkMy1VV1Y0WXNLNkkyMW94dlhWZDZmV2lLOV9tZGJsMVl0Ylhyb25pT1NVam1PcTlPaERTSDhPSUJGbWh5S0pXT2Z2M0tFSC1DZFRTdGpNd3ktNUV0UTlxQkQyNTg5VDFvNnd5enpjdDYzakprNDU0cHhqMDdjREIwMUxvRmhfYUUya1NfZEp2T21BWHlsZmJpbWFFajREWDFTcW1TVEwyR0M2d3BhS0V2d3RYb19nQjhxcDZCOFNvcWhrMFlURmxn?oc=5",
@@ -293,6 +313,19 @@
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
    "bg": "Какво значи вдигане на лихвата от Фед"
+  },
+  {
+   "zaglavie": "Gold Outlook: Asia Buys the Dip, US Hammers the Rip",
+   "vryzka": "https://www.investing.com/analysis/gold-outlook-asia-buys-the-dip-us-hammers-the-rip-200691610",
+   "izvor": "Investing.com",
+   "chas": "2026-11-16T05:32:00Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Investing",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": "Анализ и прогноза за златото"
   },
   {
    "zaglavie": "Gold holds steady as investors await Warsh remarks for rate signals",
@@ -1307,19 +1340,6 @@
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
    "bg": "Еврото и очакванията за по-висока лихва от Фед"
-  },
-  {
-   "zaglavie": "Gold Outlook: Asia Buys the Dip, US Hammers the Rip",
-   "vryzka": "https://news.google.com/rss/articles/CBMirAFBVV95cUxOSklUb1liYkM4aldGZkF2ZDlSUVE5WmlBRmlLMHVpNUFNeGp4VXlIM3FFOTV0Vm9EcUYxcWJIMEE1RDk5N2thdllVNTc3X2ZncFpWbnROOFo0Nldod2tIWVJKRjdsMXpqLVQzZlZjQTZKc0VHMHNJU1hfRU5Vb3F5LUIwbEFYdUItMlZEeXRCZnpoMk16WS1zTllOLTYxVGQ1akFyVjJTVTZYbnQ5?oc=5",
-   "izvor": "StoneX",
-   "chas": "2026-11-16T00:31:24Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Анализ и прогноза за златото"
   },
   {
    "zaglavie": "Greatland Resources And 2 Australian Undervalued Stocks To Watch",
@@ -2531,19 +2551,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Fed's Goolsbee Warns Stubborn Inflation Could Force More Aggressive Rate Hikes — 'We're Not On Path Back To 2%'",
-   "vryzka": "https://news.google.com/rss/articles/CBMi-wFBVV95cUxQdWZ0Mk00RENZRTl3c2dPLXN1akc1Rk85ZWRZSjA1NDEyZ1RJZmtaTWFOUTFUdVVwSVYxN2hUbWt5ZS01alp5REY2MGhZVjRrbzkyU0liTl81VmtBbUYySS1wSnNFdWRqTlY0Vk5VeVZTOGVSOVNqekJjY1RzZDJxNGZ4Vi1hNUdBWDdXMGFkaV9EcnJvQkhPbGJtaS1TMGtHX2hKendXOW8xV3g2T3ZGYkMtRVpKbmJCd0U1M0NqM1RIOEZGVGRVN2U2NjQ0Z3RzbFYzaDRuc3lUQWpObVJnUWpTNmRGRl9xVnZHY2N0WEtJZmpYUlM0U3FIOA?oc=5",
-   "izvor": "TradingView",
-   "chas": "2026-11-15T11:37:33Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": "Изказване на член на Фед (Goolsbee) за вдигане на лихвата и инфлацията"
-  },
-  {
    "zaglavie": "Jefferson, New Technology, Old Questions: Productivity Puzzles and the Macroeconomy",
    "vryzka": "https://www.federalreserve.gov/newsevents/speech/jefferson20261113a.htm",
    "izvor": "Fed",
@@ -2635,6 +2642,6 @@
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   }
  ],
- "s_bg_red": 113,
- "mahnati_ezik": 1
+ "s_bg_red": 112,
+ "mahnati_ezik": 0
 }
