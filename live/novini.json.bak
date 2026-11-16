@@ -1,39 +1,56 @@
 {
- "kogato": "2026-11-16T05:52:22Z",
- "sekundi": 0.78,
+ "kogato": "2026-11-16T06:03:10Z",
+ "sekundi": 0.72,
  "broi": 200,
- "novi_tozi_pyt": 5,
+ "novi_tozi_pyt": 1,
  "iztochnici_ok": [
   "Fed политика",
   "Fed речи",
-  "Fed всички",
-  "Investing",
-  "CNBC",
-  "Yahoo долар",
-  "Yahoo злато",
   "MarketWatch",
+  "Investing",
+  "Yahoo злато",
+  "Yahoo долар",
+  "CNBC",
   "FT пазари",
   "Google Fed",
   "Google злато",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Fed всички",
+   "greshka": "HTTPError: HTTP Error 404: Not Found"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.11с",
-  "новини · FT пазари · 25 бр. за 0.21с",
-  "новини · Fed всички · 8 бр. за 0.06с",
+  "новини · CNBC · 30 бр. за 0.22с",
+  "новини · FT пазари · 25 бр. за 0.26с",
+  "новини · Fed всички · ПАДНА: HTTPError: HTTP Error 404: Not Found",
   "новини · Fed политика · 15 бр. за 0.05с",
-  "новини · Fed речи · 15 бр. за 0.06с",
-  "новини · Google Fed · 40 бр. за 0.34с",
-  "новини · Google злато · 40 бр. за 0.4с",
-  "новини · Investing · 10 бр. за 0.09с",
-  "новини · MarketWatch · 10 бр. за 0.19с",
-  "новини · Mining.com · 36 бр. за 0.72с",
-  "новини · Yahoo долар · 11 бр. за 0.16с",
-  "новини · Yahoo злато · 19 бр. за 0.17с",
-  "новини · български ред: 102 от 200 · махнати по език: 2"
+  "новини · Fed речи · 15 бр. за 0.05с",
+  "новини · Google Fed · 40 бр. за 0.31с",
+  "новини · Google злато · 40 бр. за 0.35с",
+  "новини · Investing · 10 бр. за 0.06с",
+  "новини · MarketWatch · 10 бр. за 0.06с",
+  "новини · Mining.com · 36 бр. за 0.64с",
+  "новини · Yahoo долар · 11 бр. за 0.17с",
+  "новини · Yahoo злато · 19 бр. за 0.13с",
+  "новини · български ред: 103 от 200 · махнати по език: 2"
  ],
  "novini": [
+  {
+   "zaglavie": "Aurania Intersects 10.10 g/t Gold over 4.15 Metres in Initial Drill Results from the Thormodsdalur Gold Project in Iceland",
+   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/aurania-intersects-10-10-g-060000428.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-16T06:00:00Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": "Минна компания съобщава резултати от сондажи за злато"
+  },
   {
    "zaglavie": "Global gold prices recovered ahead of the Fed Chairman's speech.",
    "vryzka": "https://news.google.com/rss/articles/CBMimgFBVV95cUxOeFQwaGZvZnZtOE91dnhVUVFTd213R1pObHNOZkhvbzJQbGZETFlfV0hyc1lSQ21XSDlnSmJsQ3E5cUZxSGFmNGlGOU10LUxoX0FOQVhESEJLNEdMNkNRbGNNd2dYQVd4Q0NyODloSTFRbGd2MHlWNmJBdjZod3BHc1A2THZZWl91UjBpeGdQWmhiSWktZlJmUkFn?oc=5",
@@ -59,19 +76,6 @@
    "duma": "gold",
    "zashto": "Пряко за златото.",
    "bg": "Златото поевтинява"
-  },
-  {
-   "zaglavie": "Gold dips on firmer dollar ahead of Warsh comments",
-   "vryzka": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE1rdDhUYk1jRFJfYTlITGVDelQ0OWh1RXlsOEVpZ1ROM0Y0MjlrckZKQkJFZjdrUm9JMmI3eXJZajlRc3BablJMWGY3ZENfdw?oc=5",
-   "izvor": "Ammon News",
-   "chas": "2026-11-16T05:32:53Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Златото поевтинява на фона на движението на долара"
   },
   {
    "zaglavie": "Gold holds near $3,870 ahead of Fed Chair remarks",
@@ -743,7 +747,7 @@
    "chas": "2026-11-16T02:13:43Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Yahoo долар",
+   "emisiya": "Yahoo злато",
    "chas_ot_iztochnika": true,
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
@@ -930,6 +934,19 @@
    "duma": "rate",
    "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
    "bg": "Златото е без голяма промяна"
+  },
+  {
+   "zaglavie": "Gold dips on firmer dollar ahead of Warsh comments",
+   "vryzka": "https://news.google.com/rss/articles/CBMirAFBVV95cUxOR0w3QnNOYVBGYjdBMGJDeml5RExhSzMzaGVTUEQ2eEdLNHhHQzRoV2thNUo4TkVGYmNfc3NsSGpVVVF2OWxCZ21CNzBMSGs0S3NuZ2Rla1d4WTR0RGJwcllfYnZ6dlR5ZGZXa3dMakUxZmNDWFExYk9HNTkyLTN6aWF0MlRRbzN4aUJUVnVCMk1fdlpVN1B0bE1QM3dkaENDNEwzaHRORFFjVDYw?oc=5",
+   "izvor": "Reuters",
+   "chas": "2026-11-16T01:25:00Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": "Златото поевтинява на фона на движението на долара"
   },
   {
    "zaglavie": "Gold edges higher as investors await Warsh remarks for rate signals",
@@ -1275,8 +1292,8 @@
    "izvor": "Yahoo Finance",
    "chas": "2026-11-15T22:36:00Z",
    "vazhnost": 1,
-   "za": "долар",
-   "emisiya": "Yahoo долар",
+   "za": "злато",
+   "emisiya": "Yahoo злато",
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null,
@@ -1662,7 +1679,7 @@
   {
    "zaglavie": "Schmid Says Fed Has More Work To Do to Bring Down Inflation",
    "vryzka": "https://news.google.com/rss/articles/CBMirwFBVV95cUxQYlRIUFR3TDJ6U21FdjlsZlNxZHBNQXJUaUpRZjNjNld2bUZianpsUEExS0NVQWVmN0RwVGY0VndQQk5oVGhHZ3pzcV9IMmJrS05tVzBrMWZ6WTV3X0JGWFR3NXJvLUMtTzZVNlRieXBENWhTX3k0S0JpeWRicVFaSmpiVjBBdWwwNkxrRV9ZLXFZNnNlS1A5LTA3VzYwWHRCRV9XSkdZYXAzWE9vYVM0?oc=5",
-   "izvor": "Bloomberg",
+   "izvor": "Bloomberg.com",
    "chas": "2026-11-15T18:40:00Z",
    "vazhnost": 3,
    "za": "лихви",
@@ -2531,19 +2548,6 @@
    "bg": "Цената на златото днес"
   },
   {
-   "zaglavie": "The Midas touch-and-go - Nov 2026 | Investor",
-   "vryzka": "https://news.google.com/rss/articles/CBMipgFBVV95cUxQQW9mdmlIZHNDSkk4dC1LXy1rMlI4M3FrMzB5SHV0YU96XzVyUng2SnR3dzV3MC0yOGJKUklGZUUzYUE3TElyMzlWbXRrOV9wOHNFeW5rYzAySjZlZUhlaGlzbkdhdkV3cHZXdThzdUN1aUZTa0pHYWRWWWFYV3FtbU9WcUdfYzQ5WVQ3QWtGcjlBUXdpNmc4UVhBUGthVlJQa01XSkNn?oc=5",
-   "izvor": "trustintelligence.co.uk",
-   "chas": "2026-11-15T08:00:11Z",
-   "vazhnost": 1,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
    "zaglavie": "Jefferson, New Technology, Old Questions: Productivity Puzzles and the Macroeconomy",
    "vryzka": "https://www.federalreserve.gov/newsevents/speech/jefferson20261113a.htm",
    "izvor": "Fed",
@@ -2635,6 +2639,6 @@
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   }
  ],
- "s_bg_red": 102,
+ "s_bg_red": 103,
  "mahnati_ezik": 2
 }
