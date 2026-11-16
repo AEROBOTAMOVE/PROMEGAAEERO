@@ -1,19 +1,19 @@
 {
- "kogato": "2026-11-16T22:50:19Z",
- "sekundi": 1.09,
+ "kogato": "2026-11-16T23:00:36Z",
+ "sekundi": 1.42,
  "broi": 200,
- "novi_tozi_pyt": 3,
+ "novi_tozi_pyt": 2,
  "iztochnici_ok": [
+  "Fed политика",
+  "Fed речи",
   "Investing",
   "Fed всички",
   "CNBC",
-  "Fed речи",
-  "Fed политика",
   "Google Fed",
-  "MarketWatch",
-  "Yahoo долар",
-  "Yahoo злато",
   "FT пазари",
+  "Yahoo злато",
+  "Yahoo долар",
+  "MarketWatch",
   "Mining.com"
  ],
  "iztochnici_padnali": [
@@ -23,21 +23,47 @@
   }
  ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.47с",
-  "новини · FT пазари · 25 бр. за 0.98с",
-  "новини · Fed всички · 8 бр. за 0.46с",
-  "новини · Fed политика · 15 бр. за 0.6с",
-  "новини · Fed речи · 15 бр. за 0.58с",
-  "новини · Google Fed · 40 бр. за 0.36с",
+  "новини · CNBC · 30 бр. за 0.49с",
+  "новини · FT пазари · 25 бр. за 0.95с",
+  "новини · Fed всички · 8 бр. за 0.41с",
+  "новини · Fed политика · 15 бр. за 0.28с",
+  "новини · Fed речи · 15 бр. за 0.28с",
+  "новини · Google Fed · 40 бр. за 0.35с",
   "новини · Google злато · ПАДНА: HTTPError: HTTP Error 429: Too Many Requests",
-  "новини · Investing · 10 бр. за 0.27с",
-  "новини · MarketWatch · 10 бр. за 0.64с",
-  "новини · Mining.com · 36 бр. за 1.02с",
-  "новини · Yahoo долар · 12 бр. за 0.92с",
-  "новини · Yahoo злато · 15 бр. за 0.95с",
-  "новини · български ред: 71 от 200 · махнати по език: 0"
+  "новини · Investing · 10 бр. за 0.28с",
+  "новини · MarketWatch · 10 бр. за 1.26с",
+  "новини · Mining.com · 36 бр. за 1.35с",
+  "новини · Yahoo долар · 12 бр. за 1.11с",
+  "новини · Yahoo злато · 15 бр. за 1.11с",
+  "новини · български ред: 69 от 200 · махнати по език: 0"
  ],
  "novini": [
+  {
+   "zaglavie": "Berkshire Hathaway raised its stake in Delta in the third quarter. It also trimmed a key bank holding",
+   "vryzka": "https://www.cnbc.com/2026/11/16/berkshire-hathaway-raised-its-stake-in-delta-air-in-the-third-quarter.html",
+   "izvor": "CNBC",
+   "chas": "2026-11-16T22:58:26Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "CNBC",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "Orezone revenue more than triples as record gold output lifts Q3 results",
+   "vryzka": "https://finance.yahoo.com/markets/stocks/articles/orezone-revenue-more-triples-record-225609453.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-16T22:56:09Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": null
+  },
   {
    "zaglavie": "U.S. dollar’s AI-driven breakout could become a stock-market wrecking ball",
    "vryzka": "https://www.marketwatch.com/story/u-s-dollars-ai-driven-breakout-could-become-a-stock-market-wrecking-ball-18199b95?mod=mw_rss_topstories",
@@ -114,19 +140,6 @@
    "chas_ot_iztochnika": true,
    "duma": "treasury",
    "zashto": "Доходността на американския дълг е прякото сравнение за златото — качи ли се тя, златото обикновено пада.",
-   "bg": null
-  },
-  {
-   "zaglavie": "Berkshire Hathaway raised its stake in Delta in the third quarter. It also trimmed a key bank holding",
-   "vryzka": "https://www.cnbc.com/2026/11/16/berkshire-hathaway-raised-its-stake-in-delta-air-in-the-third-quarter.html",
-   "izvor": "CNBC",
-   "chas": "2026-11-16T22:22:52Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "CNBC",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
    "bg": null
   },
   {
@@ -241,6 +254,19 @@
    "vazhnost": 1,
    "za": "общо",
    "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "Greenland Energy, 80 Mile merge in $97 million all share deal",
+   "vryzka": "https://www.mining.com/greenland-energy-80-mile-merge-in-97-million-all-share-deal/",
+   "izvor": "Mining.com",
+   "chas": "2026-11-16T21:49:32Z",
+   "vazhnost": 1,
+   "za": "злато",
+   "emisiya": "Mining.com",
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null,
@@ -2509,32 +2535,6 @@
    "bg": "Цената на златото днес"
   },
   {
-   "zaglavie": "Deutsche Bank Sees Three Straight Fed Hikes as Inflation Runs Hot",
-   "vryzka": "https://news.google.com/rss/articles/CBMidkFVX3lxTFB4SmhxcEFob3kxcGFnX092NU1WMWlXVjlLZVVYNzBRNVJ4V1hyWm51UGZxUXJ2QWZOWEE1aTNMZFBmV0V3bHp3TkVmNC14NmRoX0NLWW5qalZ1ZlNCN2U5ZUFqTEx0SlN4RDIza3RRMWJTN1hnNFE?oc=5",
-   "izvor": "BigGo Finance",
-   "chas": "2026-11-16T12:35:00Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": "Очаквания за по-висока лихва от Фед"
-  },
-  {
-   "zaglavie": "Silver price today: Silver falls, according to FXStreet data",
-   "vryzka": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxQcmhGRFNZdHJ1WGYyQUhXZHEtdGZ6OHRWYVBCYm9HZmVvc2ZBYVl2N2FGTDNlb3ZLT2xjdkFTZFpKRTFPam5POGRKTy1LNlU5bENkZDFTY2RIcGJ1UENVT2lJTURTdy05dnJzd2JSa090YjdPS0hkcVlsV0s1TVpWenEwalA5a05ZQ1Atbi1MLVl0WGFaZEpVWUt3c3FjWjlKaW52OGlUTFBDaDhGOG5BU2FGcVpaOFZodW9YaS03M1ZpUQ?oc=5",
-   "izvor": "www.tmgm.com",
-   "chas": "2026-11-16T12:34:46Z",
-   "vazhnost": 1,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": "Цената на среброто днес"
-  },
-  {
    "zaglavie": "Barr, Some Potential Financial Stability Implications of Artificial Intelligence",
    "vryzka": "https://www.federalreserve.gov/newsevents/speech/barr20261116a.htm",
    "izvor": "Fed",
@@ -2580,10 +2580,10 @@
    "chas": "2026-11-12T17:45:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed всички",
+   "emisiya": "Fed политика",
    "chas_ot_iztochnika": true,
    "duma": "fed",
-   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
+   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
    "bg": "Съобщение на Фед — централната банка на САЩ"
   },
   {
@@ -2632,13 +2632,13 @@
    "chas": "2026-10-28T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed всички",
+   "emisiya": "Fed политика",
    "chas_ot_iztochnika": true,
    "duma": "fomc",
-   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
+   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   }
  ],
- "s_bg_red": 71,
+ "s_bg_red": 69,
  "mahnati_ezik": 0
 }
