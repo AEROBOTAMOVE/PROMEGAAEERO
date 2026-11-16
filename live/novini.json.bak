@@ -1,46 +1,72 @@
 {
- "kogato": "2026-11-16T14:15:31Z",
- "sekundi": 6.02,
+ "kogato": "2026-11-16T14:26:33Z",
+ "sekundi": 7.75,
  "broi": 200,
- "novi_tozi_pyt": 2,
+ "novi_tozi_pyt": 0,
  "iztochnici_ok": [
   "MarketWatch",
   "Fed всички",
   "Fed политика",
-  "Investing",
   "Fed речи",
+  "Investing",
   "CNBC",
-  "Yahoo злато",
   "Yahoo долар",
+  "Yahoo злато",
   "FT пазари",
   "Mining.com"
  ],
  "iztochnici_padnali": [
   {
-   "ime": "Google Fed",
+   "ime": "Google злато",
    "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
   },
   {
-   "ime": "Google злато",
+   "ime": "Google Fed",
    "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
   }
  ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.23с",
-  "новини · FT пазари · 25 бр. за 0.38с",
+  "новини · CNBC · 30 бр. за 0.19с",
+  "новини · FT пазари · 25 бр. за 0.36с",
   "новини · Fed всички · 8 бр. за 0.1с",
-  "новини · Fed политика · 15 бр. за 0.13с",
+  "новини · Fed политика · 15 бр. за 0.16с",
   "новини · Fed речи · 15 бр. за 0.16с",
   "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
   "новини · Google злато · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
-  "новини · Investing · 10 бр. за 0.14с",
+  "новини · Investing · 10 бр. за 0.17с",
   "новини · MarketWatch · 10 бр. за 0.05с",
-  "новини · Mining.com · 36 бр. за 0.8с",
-  "новини · Yahoo долар · 16 бр. за 0.3с",
-  "новини · Yahoo злато · 20 бр. за 0.28с",
+  "новини · Mining.com · 36 бр. за 0.78с",
+  "новини · Yahoo долар · 16 бр. за 0.32с",
+  "новини · Yahoo злато · 20 бр. за 0.32с",
   "новини · български ред: 97 от 200 · махнати по език: 0"
  ],
  "novini": [
+  {
+   "zaglavie": "US tech stocks set to open lower amid Nvidia fallout",
+   "vryzka": "https://www.ft.com/content/12d927a9-98b1-40b9-8f75-01fb56a693d1?syn-25a6b1a6=1",
+   "izvor": "Financial Times",
+   "chas": "2026-11-16T14:15:12Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "FT пазари",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "I’m in my 40s. Should I accept a lower pension in exchange for naming my husband or child as a beneficiary?",
+   "vryzka": "https://www.marketwatch.com/story/im-in-my-40s-should-i-accept-a-lower-pension-in-exchange-for-naming-my-husband-or-child-as-a-beneficiary-b2352059?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-11-16T14:15:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
   {
    "zaglavie": "Nvidia is gearing up for one of Wall Street’s most anticipated earnings calls in years",
    "vryzka": "https://www.marketwatch.com/story/nvidia-is-gearing-up-for-one-of-wall-streets-most-anticipated-earnings-calls-in-years-91855b1e?mod=mw_rss_topstories",
@@ -419,19 +445,6 @@
    "bg": null
   },
   {
-   "zaglavie": "US tech stocks set to open lower amid Nvidia fallout",
-   "vryzka": "https://www.ft.com/content/12d927a9-98b1-40b9-8f75-01fb56a693d1?syn-25a6b1a6=1",
-   "izvor": "Financial Times",
-   "chas": "2026-11-16T12:32:01Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "FT пазари",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
    "zaglavie": "Metalsource Mining Moves to Unlock Byrd-Pilot Value Through Potential Spinout or Strategic Transaction",
    "vryzka": "https://finance.yahoo.com/markets/commodities/articles/metalsource-mining-moves-unlock-byrd-123000856.html?.tsrc=rss",
    "izvor": "Yahoo Finance",
@@ -711,7 +724,7 @@
    "chas": "2026-11-16T11:33:10Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Yahoo злато",
+   "emisiya": "Yahoo долар",
    "chas_ot_iztochnika": true,
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
@@ -1197,19 +1210,6 @@
    "duma": "dollar",
    "zashto": "Златото се мери в долари: по-силен долар обикновено значи по-евтино злато.",
    "bg": "Доларът поскъпва на фона на данните за растежа на икономиката в Япония (БВП)"
-  },
-  {
-   "zaglavie": "I’m in my 40s. Should I accept a lower pension in exchange for naming my husband or child as a beneficiary?",
-   "vryzka": "https://www.marketwatch.com/story/im-in-my-40s-should-i-accept-a-lower-pension-in-exchange-for-naming-my-husband-or-child-as-a-beneficiary-b2352059?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-11-16T10:15:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
   },
   {
    "zaglavie": "Japan’s economy stalls as inflation weighs on growth",
