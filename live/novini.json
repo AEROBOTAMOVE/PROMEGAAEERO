@@ -1,37 +1,44 @@
 {
- "kogato": "2026-11-16T21:24:51Z",
- "sekundi": 0.62,
+ "kogato": "2026-11-16T21:35:51Z",
+ "sekundi": 1.32,
  "broi": 200,
- "novi_tozi_pyt": 3,
+ "novi_tozi_pyt": 1,
  "iztochnici_ok": [
   "MarketWatch",
-  "Fed речи",
   "Fed всички",
-  "Fed политика",
-  "Investing",
-  "CNBC",
-  "Yahoo злато",
   "Yahoo долар",
+  "Yahoo злато",
+  "Investing",
+  "Fed речи",
+  "Fed политика",
+  "CNBC",
   "FT пазари",
-  "Google Fed",
-  "Google злато",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google Fed",
+   "greshka": "HTTPError: HTTP Error 429: Too Many Requests"
+  },
+  {
+   "ime": "Google злато",
+   "greshka": "HTTPError: HTTP Error 429: Too Many Requests"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.09с",
-  "новини · FT пазари · 25 бр. за 0.28с",
+  "новини · CNBC · 30 бр. за 0.21с",
+  "новини · FT пазари · 25 бр. за 0.52с",
   "новини · Fed всички · 8 бр. за 0.05с",
-  "новини · Fed политика · 15 бр. за 0.05с",
-  "новини · Fed речи · 15 бр. за 0.03с",
-  "новини · Google Fed · 40 бр. за 0.35с",
-  "новини · Google злато · 40 бр. за 0.4с",
-  "новини · Investing · 10 бр. за 0.05с",
-  "новини · MarketWatch · 10 бр. за 0.02с",
-  "новини · Mining.com · 36 бр. за 0.56с",
-  "новини · Yahoo долар · 12 бр. за 0.12с",
-  "новини · Yahoo злато · 17 бр. за 0.12с",
-  "новини · български ред: 69 от 200 · махнати по език: 1"
+  "новини · Fed политика · 15 бр. за 0.14с",
+  "новини · Fed речи · 15 бр. за 0.13с",
+  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 429: Too Many Requests",
+  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 429: Too Many Requests",
+  "новини · Investing · 10 бр. за 0.1с",
+  "новини · MarketWatch · 10 бр. за 0.04с",
+  "новини · Mining.com · 36 бр. за 1.27с",
+  "новини · Yahoo долар · 12 бр. за 0.08с",
+  "новини · Yahoo злато · 17 бр. за 0.09с",
+  "новини · български ред: 68 от 200 · махнати по език: 0"
  ],
  "novini": [
   {
@@ -1203,6 +1210,19 @@
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
    "bg": "За лихвата на Фед"
+  },
+  {
+   "zaglavie": "Fireweed to receive $9.8 million in federal funding for Mactung tungsten project",
+   "vryzka": "https://www.mining.com/fireweed-to-receive-14-million-in-federal-funding-for-mactung/",
+   "izvor": "Mining.com",
+   "chas": "2026-11-16T16:24:00Z",
+   "vazhnost": 1,
+   "za": "злато",
+   "emisiya": "Mining.com",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
   },
   {
    "zaglavie": "Fireweed to receive $14 million in federal funding for Mactung",
@@ -2518,19 +2538,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Gold stabilises after touching lowest level since October 2025 as hawkish Fed restrains gains",
-   "vryzka": "https://news.google.com/rss/articles/CBMi3gFBVV95cUxOeFFMR2E3bXp1MVdzT05aZW5HSkllcDd4anZpdHlGOFRlYmZqcDlob2xMcUhPZVlTT0FnWmJhSzBYbVZEejRUNWFfLUJhb3BYaHBEdEQ3dGFVSWN1NGdaQWtEUzhXNWt5aDhuZGo4OUhHMS0tRGpqUHo1bGJvSTd2azh3UWJpbDVPai1mTE03M21VM1k2ZFo4aHBDUzZSam5RNU9xalJiQXBITUt0V1BTSEhvbk44U1RNVHJTODdVX2FmRTRKX2Z1MEhuTldlN0JOdkdaUXI2YVhwU2VhNHc?oc=5",
-   "izvor": "www.tmgm.com",
-   "chas": "2026-11-16T11:56:18Z",
-   "vazhnost": 3,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": "Златото е без голяма промяна на фона на очакванията за по-висока лихва от Фед"
-  },
-  {
    "zaglavie": "Barr, Some Potential Financial Stability Implications of Artificial Intelligence",
    "vryzka": "https://www.federalreserve.gov/newsevents/speech/barr20261116a.htm",
    "izvor": "Fed",
@@ -2635,6 +2642,6 @@
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   }
  ],
- "s_bg_red": 69,
- "mahnati_ezik": 1
+ "s_bg_red": 68,
+ "mahnati_ezik": 0
 }
