@@ -1,39 +1,59 @@
 {
- "kogato": "2026-11-16T14:04:39Z",
- "sekundi": 0.77,
+ "kogato": "2026-11-16T14:15:31Z",
+ "sekundi": 6.02,
  "broi": 200,
- "novi_tozi_pyt": 5,
+ "novi_tozi_pyt": 2,
  "iztochnici_ok": [
   "MarketWatch",
   "Fed всички",
-  "Fed речи",
-  "Investing",
   "Fed политика",
-  "Yahoo долар",
-  "Yahoo злато",
+  "Investing",
+  "Fed речи",
   "CNBC",
-  "Google Fed",
+  "Yahoo злато",
+  "Yahoo долар",
   "FT пазари",
-  "Google злато",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google Fed",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  },
+  {
+   "ime": "Google злато",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.27с",
-  "новини · FT пазари · 25 бр. за 0.43с",
-  "новини · Fed всички · 8 бр. за 0.11с",
-  "новини · Fed политика · 15 бр. за 0.15с",
-  "новини · Fed речи · 15 бр. за 0.12с",
-  "новини · Google Fed · 40 бр. за 0.38с",
-  "новини · Google злато · 40 бр. за 0.54с",
+  "новини · CNBC · 30 бр. за 0.23с",
+  "новини · FT пазари · 25 бр. за 0.38с",
+  "новини · Fed всички · 8 бр. за 0.1с",
+  "новини · Fed политика · 15 бр. за 0.13с",
+  "новини · Fed речи · 15 бр. за 0.16с",
+  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
   "новини · Investing · 10 бр. за 0.14с",
-  "новини · MarketWatch · 10 бр. за 0.03с",
-  "новини · Mining.com · 36 бр. за 0.72с",
-  "новини · Yahoo долар · 16 бр. за 0.25с",
-  "новини · Yahoo злато · 20 бр. за 0.26с",
-  "новини · български ред: 96 от 200 · махнати по език: 1"
+  "новини · MarketWatch · 10 бр. за 0.05с",
+  "новини · Mining.com · 36 бр. за 0.8с",
+  "новини · Yahoo долар · 16 бр. за 0.3с",
+  "новини · Yahoo злато · 20 бр. за 0.28с",
+  "новини · български ред: 97 от 200 · махнати по език: 0"
  ],
  "novini": [
+  {
+   "zaglavie": "Nvidia is gearing up for one of Wall Street’s most anticipated earnings calls in years",
+   "vryzka": "https://www.marketwatch.com/story/nvidia-is-gearing-up-for-one-of-wall-streets-most-anticipated-earnings-calls-in-years-91855b1e?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-11-16T14:07:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
   {
    "zaglavie": "Silver prices today, Monday, November 16, 2026: Lowest open price in over a year",
    "vryzka": "https://finance.yahoo.com/personal-finance/investing/article/silver-prices-today-monday-november-16-2026-lowest-open-price-in-over-a-year-140403715.html?.tsrc=rss",
@@ -46,6 +66,32 @@
    "duma": null,
    "zashto": null,
    "bg": "Цената на среброто днес"
+  },
+  {
+   "zaglavie": "Value per Security",
+   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/value-per-security-140400389.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-16T14:04:00Z",
+   "vazhnost": 1,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "LaFleur Minerals Continues to Expand Swanson Gold Deposit Mineralization Near Surface and Along Strike with 2.52 g/t Au over 14.35 Metres",
+   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/lafleur-minerals-continues-expand-swanson-140000386.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-16T14:00:00Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": "Минна компания съобщава резултати от сондажи за злато"
   },
   {
    "zaglavie": "Riverside Resources launches Phase 2B drilling at La Union in Sonora",
@@ -665,7 +711,7 @@
    "chas": "2026-11-16T11:33:10Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Yahoo долар",
+   "emisiya": "Yahoo злато",
    "chas_ot_iztochnika": true,
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
@@ -1359,19 +1405,6 @@
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
    "bg": "Изказване на член на Фед (Collins) за вдигане на лихвата"
-  },
-  {
-   "zaglavie": "Value per Security",
-   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/value-per-security-092900615.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-11-16T09:29:00Z",
-   "vazhnost": 1,
-   "za": "злато",
-   "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
   },
   {
    "zaglavie": "World gold price today, November 16th: Sharp drop pushes gold into a disadvantageous position",
@@ -2518,32 +2551,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Horizon Gold targets 880,000oz gold production and A$1.85bn cash flow at Gum Creek",
-   "vryzka": "https://finance.yahoo.com/video/horizon-gold-targets-880-000oz-050003419.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-11-16T05:00:03Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": null
-  },
-  {
-   "zaglavie": "US allies sign accord to keep China out of AI supply chains",
-   "vryzka": "https://www.ft.com/content/00501acf-8cfc-483d-bbd6-154013e4ca4b?syn-25a6b1a6=1",
-   "izvor": "Financial Times",
-   "chas": "2026-11-16T05:00:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "FT пазари",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
    "zaglavie": "Jefferson, New Technology, Old Questions: Productivity Puzzles and the Macroeconomy",
    "vryzka": "https://www.federalreserve.gov/newsevents/speech/jefferson20261113a.htm",
    "izvor": "Fed",
@@ -2635,6 +2642,6 @@
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   }
  ],
- "s_bg_red": 96,
- "mahnati_ezik": 1
+ "s_bg_red": 97,
+ "mahnati_ezik": 0
 }
