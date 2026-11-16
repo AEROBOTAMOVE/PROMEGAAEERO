@@ -1,37 +1,44 @@
 {
- "kogato": "2026-11-16T06:35:35Z",
- "sekundi": 0.76,
+ "kogato": "2026-11-16T06:46:39Z",
+ "sekundi": 8.97,
  "broi": 200,
- "novi_tozi_pyt": 2,
+ "novi_tozi_pyt": 0,
  "iztochnici_ok": [
   "MarketWatch",
-  "Fed речи",
   "Fed всички",
-  "Fed политика",
+  "Fed речи",
   "Investing",
-  "CNBC",
-  "Yahoo долар",
   "Yahoo злато",
+  "Yahoo долар",
   "FT пазари",
-  "Google Fed",
-  "Google злато",
+  "Fed политика",
+  "CNBC",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google Fed",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  },
+  {
+   "ime": "Google злато",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.26с",
-  "новини · FT пазари · 25 бр. за 0.38с",
-  "новини · Fed всички · 8 бр. за 0.09с",
-  "новини · Fed политика · 15 бр. за 0.09с",
-  "новини · Fed речи · 15 бр. за 0.08с",
-  "новини · Google Fed · 40 бр. за 0.36с",
-  "новини · Google злато · 40 бр. за 0.42с",
-  "новини · Investing · 10 бр. за 0.15с",
-  "новини · MarketWatch · 10 бр. за 0.04с",
-  "новини · Mining.com · 36 бр. за 0.7с",
-  "новини · Yahoo долар · 12 бр. за 0.3с",
-  "новини · Yahoo злато · 18 бр. за 0.32с",
-  "новини · български ред: 105 от 200 · махнати по език: 2"
+  "новини · CNBC · 30 бр. за 0.32с",
+  "новини · FT пазари · 25 бр. за 0.21с",
+  "новини · Fed всички · 8 бр. за 0.04с",
+  "новини · Fed политика · 15 бр. за 0.27с",
+  "новини · Fed речи · 15 бр. за 0.05с",
+  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Investing · 10 бр. за 0.08с",
+  "новини · MarketWatch · 10 бр. за 0.02с",
+  "новини · Mining.com · 36 бр. за 0.55с",
+  "новини · Yahoo долар · 12 бр. за 0.12с",
+  "новини · Yahoo злато · 18 бр. за 0.12с",
+  "новини · български ред: 105 от 200 · махнати по език: 0"
  ],
  "novini": [
   {
@@ -821,7 +828,7 @@
    "chas": "2026-11-16T02:13:43Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Yahoo долар",
+   "emisiya": "Yahoo злато",
    "chas_ot_iztochnika": true,
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
@@ -1353,8 +1360,8 @@
    "izvor": "Yahoo Finance",
    "chas": "2026-11-15T22:36:00Z",
    "vazhnost": 1,
-   "za": "долар",
-   "emisiya": "Yahoo долар",
+   "za": "злато",
+   "emisiya": "Yahoo злато",
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null,
@@ -2636,5 +2643,5 @@
   }
  ],
  "s_bg_red": 105,
- "mahnati_ezik": 2
+ "mahnati_ezik": 0
 }
