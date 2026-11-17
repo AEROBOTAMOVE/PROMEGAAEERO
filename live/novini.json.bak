@@ -1,39 +1,56 @@
 {
- "kogato": "2026-11-17T13:26:30Z",
+ "kogato": "2026-11-17T13:37:19Z",
  "sekundi": 0.85,
  "broi": 200,
- "novi_tozi_pyt": 8,
+ "novi_tozi_pyt": 2,
  "iztochnici_ok": [
-  "Fed речи",
-  "Fed политика",
-  "Investing",
-  "Fed всички",
   "MarketWatch",
+  "Fed политика",
+  "Fed всички",
+  "Investing",
+  "Fed речи",
   "CNBC",
-  "Yahoo долар",
   "Yahoo злато",
-  "FT пазари",
-  "Google злато",
+  "Yahoo долар",
   "Google Fed",
+  "FT пазари",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google злато",
+   "greshka": "HTTPError: HTTP Error 429: Too Many Requests"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.13с",
-  "новини · FT пазари · 25 бр. за 0.27с",
-  "новини · Fed всички · 8 бр. за 0.1с",
-  "новини · Fed политика · 15 бр. за 0.09с",
-  "новини · Fed речи · 15 бр. за 0.06с",
-  "новини · Google Fed · 40 бр. за 0.55с",
-  "новини · Google злато · 40 бр. за 0.52с",
-  "новини · Investing · 10 бр. за 0.09с",
-  "новини · MarketWatch · 10 бр. за 0.11с",
-  "новини · Mining.com · 36 бр. за 0.81с",
-  "новини · Yahoo долар · 12 бр. за 0.16с",
-  "новини · Yahoo злато · 18 бр. за 0.18с",
-  "новини · български ред: 100 от 200 · махнати по език: 2"
+  "новини · CNBC · 30 бр. за 0.24с",
+  "новини · FT пазари · 25 бр. за 0.57с",
+  "новини · Fed всички · 8 бр. за 0.12с",
+  "новини · Fed политика · 15 бр. за 0.1с",
+  "новини · Fed речи · 15 бр. за 0.16с",
+  "новини · Google Fed · 40 бр. за 0.48с",
+  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 429: Too Many Requests",
+  "новини · Investing · 10 бр. за 0.12с",
+  "новини · MarketWatch · 10 бр. за 0.06с",
+  "новини · Mining.com · 36 бр. за 0.77с",
+  "новини · Yahoo долар · 12 бр. за 0.26с",
+  "новини · Yahoo злато · 19 бр. за 0.26с",
+  "новини · български ред: 101 от 200 · махнати по език: 0"
  ],
  "novini": [
+  {
+   "zaglavie": "Farmonaut Clients Report Mineralization in All 5 Drilled Gold, Copper Projects",
+   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/farmonaut-clients-report-mineralization-5-133000998.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-17T13:30:00Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": "Новина от минния бранш (злато)"
+  },
   {
    "zaglavie": "Gold Price Today on November 17, 2026",
    "vryzka": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxOMm1INVR1ekhhdFl5NUVKVzAtbmtRSHkwSTkzQm1vWkNabEZEYUFUcUZfa0NyQkZBaGZQclJrcjFJck5od2xTaTl2X21Xcmp0SFhSX1c1d05GeV95bExvTUVROEstYTQwUk1aakN1QzJ6LVRlLVRkUHBwMUJxWEhfVEd2WHprQ0FPVGg4ZXZ0Y2FYeHd6Nk12T19RdHZTWHppUm81eXlzZUE1UUE?oc=5",
@@ -46,6 +63,19 @@
    "duma": "gold",
    "zashto": "Пряко за златото.",
    "bg": "Цената на златото днес"
+  },
+  {
+   "zaglavie": "Gold struggles near $3,850 as traders bet on back-to-back Fed rate hikes",
+   "vryzka": "https://news.google.com/rss/articles/CBMitAFBVV95cUxNcEtWTjJMVFRtUzNQWVJIMlhHTV9DcHJHbXFfb3V2dl9talY1NFZTWGF1YlhqdUlUZkpyaWd0aGhJWk1tR1hUd1hjQjlLa2FJUEZBajdTNVZEbHdwN2ZjZUg1WTR0YmtmYm5VcTh6ZWZSMHJFMEpJVlFEM3o4WHFERzZOampRZUZtNlRCRWZ6RnF1NnVtNlUySTNhVWUxQXNjMkRjd1VQakRtRGkyd2g5ZG9VYUo?oc=5",
+   "izvor": "FXStreet",
+   "chas": "2026-11-17T13:18:01Z",
+   "vazhnost": 3,
+   "za": "злато",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": "Златото и очакванията за по-висока лихва от Фед"
   },
   {
    "zaglavie": "The Fed rate may need to rise by 1 percentage point, Musalem says",
@@ -114,12 +144,12 @@
   },
   {
    "zaglavie": "US dollar rally erases ‘liberation day’ losses as rate expectations rise",
-   "vryzka": "https://www.ft.com/content/b8215e9c-bed2-49e8-a36f-6d7aca599bba?syn-25a6b1a6=1",
+   "vryzka": "https://news.google.com/rss/articles/CBMihAFBVV95cUxQcmwyeDNFekNsR3Z3akxhWGlnZGVCMWNSS05lOEk0akFnMmJaU0M4ZUJURnZ4V2VER2M2bzdqVjJ1SVY3M05qZjdIckE4VVlVMDNndlBPTVRoZ3VzQjNFVHdPTTlVclpYME5DSFBWcnNGMXJKZjFFbnlaOUQ3YnVSUDltcTU?oc=5",
    "izvor": "Financial Times",
    "chas": "2026-11-17T13:07:17Z",
    "vazhnost": 3,
    "za": "долар",
-   "emisiya": "FT пазари",
+   "emisiya": "Google Fed",
    "chas_ot_iztochnika": true,
    "duma": "rate",
    "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
@@ -189,6 +219,19 @@
    "duma": null,
    "zashto": null,
    "bg": null
+  },
+  {
+   "zaglavie": "PDI Gold receives Guinea permits for Bankan and Mansounia mines",
+   "vryzka": "https://www.mining-technology.com/news/pdi-gold-guinea-permits-bankan-mansounia-mines/?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-17T12:56:24Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": "Новина от минния бранш (злато)"
   },
   {
    "zaglavie": "Lahontan Receives Final Drill Results For Santa Fe Heap Leach Pad Two, Confirming Gold And Silver Grades",
@@ -542,19 +585,6 @@
    "bg": "Новина от минния бранш (злато)"
   },
   {
-   "zaglavie": "Minnova Corp. Announces Filing of NI 43-101 Technical Report on the Preliminary Economic Assessment for PL Gold Mine and Identifies Significant Resource Expansion Opportunities and Debt Settlement",
-   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/minnova-corp-announces-filing-ni-120000907.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-11-17T12:00:00Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Новина от минния бранш (злато)"
-  },
-  {
    "zaglavie": "West Point Gold Commences 30,000-Metre Drill Program at Gold Chain",
    "vryzka": "https://finance.yahoo.com/markets/commodities/articles/west-point-gold-commences-30-120000046.html?.tsrc=rss",
    "izvor": "Yahoo Finance",
@@ -579,6 +609,19 @@
    "duma": null,
    "zashto": null,
    "bg": null
+  },
+  {
+   "zaglavie": "Minnova Corp. Announces Filing of NI 43-101 Technical Report on the Preliminary Economic Assessment for PL Gold Mine and Identifies Significant Resource Expansion Opportunities and Debt Settlement",
+   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/minnova-corp-announces-filing-ni-120000907.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-17T12:00:00Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": "Новина от минния бранш (злато)"
   },
   {
    "zaglavie": "Delta Resources Advances I-Zone Drilling and District-Scale Gold Exploration Ahead of Swiss Mining Institute Conference in Zurich",
@@ -711,19 +754,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Gold struggles near $3,850 as traders bet on back-to-back Fed rate hikes",
-   "vryzka": "https://news.google.com/rss/articles/CBMitAFBVV95cUxNcEtWTjJMVFRtUzNQWVJIMlhHTV9DcHJHbXFfb3V2dl9talY1NFZTWGF1YlhqdUlUZkpyaWd0aGhJWk1tR1hUd1hjQjlLa2FJUEZBajdTNVZEbHdwN2ZjZUg1WTR0YmtmYm5VcTh6ZWZSMHJFMEpJVlFEM3o4WHFERzZOampRZUZtNlRCRWZ6RnF1NnVtNlUySTNhVWUxQXNjMkRjd1VQakRtRGkyd2g5ZG9VYUo?oc=5",
-   "izvor": "FXStreet",
-   "chas": "2026-11-17T11:02:08Z",
-   "vazhnost": 3,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": "Златото и очакванията за по-висока лихва от Фед"
-  },
-  {
    "zaglavie": "Top CD rates today, Nov. 17, 2026: Lock in up to up to 5.00%",
    "vryzka": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9qTEFYdDE0cUUxeGFmQ0tzekw5T3VYUHlhY2JGZ3RaMzdORjdSYnJhV25RaFdiRjdkeEZJNFhRS0F6Ti1VekRWRnNNNy0yTl9zd181bHY3dWtuQQ?oc=5",
    "izvor": "Fortune",
@@ -847,7 +877,7 @@
    "chas": "2026-11-17T10:17:14Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Google злато",
+   "emisiya": "Google Fed",
    "chas_ot_iztochnika": true,
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
@@ -2492,32 +2522,6 @@
    "bg": null
   },
   {
-   "zaglavie": "CVC plans to back out of Italian deal with Advent, triggering potential legal clash",
-   "vryzka": "https://www.ft.com/content/bd65d6e0-3ecb-498c-b684-c7e4c782a0ae?syn-25a6b1a6=1",
-   "izvor": "Financial Times",
-   "chas": "2026-11-16T23:08:52Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "FT пазари",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
-   "zaglavie": "Central bank buying to support higher gold price in 2027: Goldman",
-   "vryzka": "https://news.google.com/rss/articles/CBMikAFBVV95cUxNUEs3S0xHeDRPVXFScDQ5YUlydTFXeG9jOHRZYTZGSWpCbGhvNE1ITGc2Nk9Vbk5WVXFMQXRpckxabDRKVW9wNGpQVmJUVHU0OU5WcDVlTDItcEVxWDZ5amlSQzEzT0MxLXliWGpHRGJXSUV3M1hZLWZ6NFVBWWZJTG1wTWhqM3ZPSWtYeFpRS00?oc=5",
-   "izvor": "Mining.com.au",
-   "chas": "2026-11-16T23:04:58Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Централни банки купуват злато"
-  },
-  {
    "zaglavie": "Warsh, Opening Remarks",
    "vryzka": "https://www.federalreserve.gov/newsevents/speech/warsh20261116a.htm",
    "izvor": "Fed",
@@ -2635,6 +2639,6 @@
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   }
  ],
- "s_bg_red": 100,
- "mahnati_ezik": 2
+ "s_bg_red": 101,
+ "mahnati_ezik": 0
 }
