@@ -1,43 +1,65 @@
 {
- "kogato": "2026-11-17T10:15:00Z",
- "sekundi": 0.86,
+ "kogato": "2026-11-17T10:25:01Z",
+ "sekundi": 1.25,
  "broi": 200,
- "novi_tozi_pyt": 1,
+ "novi_tozi_pyt": 2,
  "iztochnici_ok": [
   "MarketWatch",
+  "Fed речи",
   "Fed политика",
   "Fed всички",
-  "Fed речи",
-  "Investing",
   "CNBC",
   "Yahoo долар",
   "Yahoo злато",
+  "Investing",
   "FT пазари",
   "Google злато",
+  "Google Fed",
   "Mining.com"
  ],
- "iztochnici_padnali": [
-  {
-   "ime": "Google Fed",
-   "greshka": "HTTPError: HTTP Error 429: Too Many Requests"
-  }
- ],
+ "iztochnici_padnali": [],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.12с",
-  "новини · FT пазари · 25 бр. за 0.22с",
-  "новини · Fed всички · 8 бр. за 0.05с",
+  "новини · CNBC · 30 бр. за 0.08с",
+  "новини · FT пазари · 25 бр. за 0.31с",
+  "новини · Fed всички · 8 бр. за 0.06с",
   "новини · Fed политика · 15 бр. за 0.05с",
   "новини · Fed речи · 15 бр. за 0.05с",
-  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 429: Too Many Requests",
-  "новини · Google злато · 40 бр. за 0.4с",
-  "новини · Investing · 10 бр. за 0.08с",
-  "новини · MarketWatch · 10 бр. за 0.04с",
-  "новини · Mining.com · 36 бр. за 0.78с",
-  "новини · Yahoo долар · 11 бр. за 0.15с",
-  "новини · Yahoo злато · 18 бр. за 0.21с",
-  "новини · български ред: 88 от 200 · махнати по език: 0"
+  "новини · Google Fed · 40 бр. за 0.35с",
+  "новини · Google злато · 40 бр. за 0.37с",
+  "новини · Investing · 10 бр. за 0.11с",
+  "новини · MarketWatch · 10 бр. за 0.03с",
+  "новини · Mining.com · 36 бр. за 1.18с",
+  "новини · Yahoo долар · 11 бр. за 0.12с",
+  "новини · Yahoo злато · 18 бр. за 0.12с",
+  "новини · български ред: 87 от 200 · махнати по език: 0"
  ],
  "novini": [
+  {
+   "zaglavie": "Goldman Sachs has cut its gold price target twice. What is lacking for gold prices to return to the high level?",
+   "vryzka": "https://news.google.com/rss/articles/CBMiU0FVX3lxTFBpWXR3S1Z1Tmw3a01EVGVJYmVhWld4YUdZMVJrVzlGM00xS2FIMkxiY1M3SkN2bC1vSTZBeFZobVVLZTB2RUtUVHdSa0oyR2FoM1Zn?oc=5",
+   "izvor": "eu.36kr.com",
+   "chas": "2026-11-17T10:21:38Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": null
+  },
+  {
+   "zaglavie": "‘Nvidia spooked me’: Should I sell my stocks or ride out the market turmoil?",
+   "vryzka": "https://www.marketwatch.com/story/nvidia-spooked-me-should-i-sell-my-stocks-or-ride-out-the-market-turmoil-560583c6?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-11-17T10:15:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
   {
    "zaglavie": "‘Breaking Bad’ star Dean Norris is selling 11-acre California estate for $3.2 million amid divorce",
    "vryzka": "https://www.marketwatch.com/story/breaking-bad-star-dean-norris-is-selling-11-acre-california-estate-for-3-2-million-amid-divorce-03963997?mod=mw_rss_topstories",
@@ -2496,32 +2518,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Fed’s Hammack reiterates case for slow, steady rate hikes -Bloomberg TV By Reuters",
-   "vryzka": "https://news.google.com/rss/articles/CBMivAFBVV95cUxOdFREbGhRSEN6dC1KZWl4SzNWYzNyYURnRnZzLUlacW1YeFVBWGxtd2RDNmhjcUxucTJqMGZabjBqci13V0d3Z19YYnBXcGl1aGpzcVFDbzBFdk1iaGNTT2VJazB5UUtGdkwxWFRySTh4T2hLdVBGWGZiNklxNE1CWVhFVk0wNmxVY0VRdF9VRVRfSGVfZFp5MktSdmUwOHQyMlRiRldIOFJoTXpBcW5XTE5McGtHQ0ZfQ0tieA?oc=5",
-   "izvor": "Investing.com",
-   "chas": "2026-11-16T20:00:29Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": "Изказване на член на Фед (Hammack) за вдигане на лихвата"
-  },
-  {
-   "zaglavie": "BC-Gold-Silver",
-   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/bc-gold-silver-200014301.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-11-16T20:00:14Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": null
-  },
-  {
    "zaglavie": "Warsh, Opening Remarks",
    "vryzka": "https://www.federalreserve.gov/newsevents/speech/warsh20261116a.htm",
    "izvor": "Fed",
@@ -2639,6 +2635,6 @@
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   }
  ],
- "s_bg_red": 88,
+ "s_bg_red": 87,
  "mahnati_ezik": 0
 }
