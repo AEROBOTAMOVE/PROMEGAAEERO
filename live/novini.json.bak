@@ -1,39 +1,56 @@
 {
- "kogato": "2026-11-17T01:09:08Z",
- "sekundi": 0.63,
+ "kogato": "2026-11-17T01:19:57Z",
+ "sekundi": 0.86,
  "broi": 200,
  "novi_tozi_pyt": 1,
  "iztochnici_ok": [
-  "MarketWatch",
-  "Fed речи",
   "Fed всички",
-  "Investing",
+  "Fed речи",
   "Fed политика",
-  "Yahoo злато",
+  "Investing",
+  "MarketWatch",
   "Yahoo долар",
-  "FT пазари",
-  "Google Fed",
-  "Google злато",
+  "Yahoo злато",
   "CNBC",
+  "FT пазари",
+  "Google злато",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google Fed",
+   "greshka": "HTTPError: HTTP Error 429: Too Many Requests"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.44с",
-  "новини · FT пазари · 25 бр. за 0.19с",
-  "новини · Fed всички · 8 бр. за 0.04с",
-  "новини · Fed политика · 15 бр. за 0.08с",
-  "новини · Fed речи · 15 бр. за 0.03с",
-  "новини · Google Fed · 40 бр. за 0.38с",
-  "новини · Google злато · 40 бр. за 0.44с",
-  "новини · Investing · 10 бр. за 0.06с",
-  "новини · MarketWatch · 10 бр. за 0.02с",
-  "новини · Mining.com · 36 бр. за 0.58с",
-  "новини · Yahoo долар · 13 бр. за 0.15с",
-  "новини · Yahoo злато · 16 бр. за 0.13с",
-  "новини · български ред: 66 от 200 · махнати по език: 0"
+  "новини · CNBC · 30 бр. за 0.16с",
+  "новини · FT пазари · 25 бр. за 0.22с",
+  "новини · Fed всички · 8 бр. за 0.05с",
+  "новини · Fed политика · 15 бр. за 0.06с",
+  "новини · Fed речи · 15 бр. за 0.05с",
+  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 429: Too Many Requests",
+  "новини · Google злато · 40 бр. за 0.4с",
+  "новини · Investing · 10 бр. за 0.08с",
+  "новини · MarketWatch · 10 бр. за 0.11с",
+  "новини · Mining.com · 36 бр. за 0.79с",
+  "новини · Yahoo долар · 13 бр. за 0.13с",
+  "новини · Yahoo злато · 16 бр. за 0.15с",
+  "новини · български ред: 65 от 200 · махнати по език: 0"
  ],
  "novini": [
+  {
+   "zaglavie": "Analyst: Tech Selloff Could Be New “Catalyst” for Precious Metals",
+   "vryzka": "https://news.google.com/rss/articles/CBMimwFBVV95cUxPdTBPeEwxSktTZFpCQmQ4dlQyc1FhU3VRUnVLOHR5NnhkNmV6YjlGRkpXZG81V1FnZUpVdWNWSUFYX1RfbXdqTzR3Z1ZFNXRibjk3NWd5Rmh3STJxQ1RPcU4yY09kQmtVLUFQUWppREZOX29wU3dDa0ZYYlpqOFdjVUhhN3NUaTZGSGN4NmhSWTdTNWloYzJGbmFpVQ?oc=5",
+   "izvor": "NAI500",
+   "chas": "2026-11-17T01:16:52Z",
+   "vazhnost": 1,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
   {
    "zaglavie": "US Dollar Rallies as Fed Rate Risks Pressure Global Markets",
    "vryzka": "https://news.google.com/rss/articles/CBMirwFBVV95cUxPRW5sYi1KT0JlMy05aEdRd1pKRWlRcFBKQnZ0OEJNOVZLaHAtbDNxWV9FbTdqZU9SVGtxeXRGRFNVVWJaNUdNSThzX1FPaGdjZzU4YzY1SHdhN0p6NUxZSlB5SFIwZlNlM19CMnREbkpra0NEeUVjLXM5MGlyZ1RmNFJYdjVqQjk4RFJnVFdlVTZLY3gzbV93SEV1WHhjeXJfZXF1OExCQXR6bHo2emNB?oc=5",
@@ -2518,19 +2535,6 @@
    "bg": null
   },
   {
-   "zaglavie": "LaFleur Minerals Continues to Expand Swanson Gold Deposit Mineralization Near Surface and Along Strike with 2.52 g/t Au over 14.35 Metres",
-   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/lafleur-minerals-continues-expand-swanson-140000386.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-11-16T14:00:00Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Минна компания съобщава резултати от сондажи за злато"
-  },
-  {
    "zaglavie": "Barr, Some Potential Financial Stability Implications of Artificial Intelligence",
    "vryzka": "https://www.federalreserve.gov/newsevents/speech/barr20261116a.htm",
    "izvor": "Fed",
@@ -2635,6 +2639,6 @@
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   }
  ],
- "s_bg_red": 66,
+ "s_bg_red": 65,
  "mahnati_ezik": 0
 }
