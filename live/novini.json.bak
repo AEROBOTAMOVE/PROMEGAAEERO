@@ -1,16 +1,16 @@
 {
- "kogato": "2026-11-17T11:39:29Z",
- "sekundi": 1.07,
+ "kogato": "2026-11-17T11:50:18Z",
+ "sekundi": 0.92,
  "broi": 200,
- "novi_tozi_pyt": 3,
+ "novi_tozi_pyt": 2,
  "iztochnici_ok": [
   "MarketWatch",
-  "Fed политика",
   "Fed всички",
-  "Fed речи",
+  "Fed политика",
   "Investing",
-  "Yahoo долар",
+  "Fed речи",
   "Yahoo злато",
+  "Yahoo долар",
   "CNBC",
   "FT пазари",
   "Google злато",
@@ -19,19 +19,19 @@
  ],
  "iztochnici_padnali": [],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.25с",
-  "новини · FT пазари · 25 бр. за 0.29с",
-  "новини · Fed всички · 8 бр. за 0.1с",
-  "новини · Fed политика · 15 бр. за 0.1с",
-  "новини · Fed речи · 15 бр. за 0.1с",
-  "новини · Google Fed · 40 бр. за 0.44с",
-  "новини · Google злато · 40 бр. за 0.46с",
+  "новини · CNBC · 30 бр. за 0.2с",
+  "новини · FT пазари · 25 бр. за 0.35с",
+  "новини · Fed всички · 8 бр. за 0.05с",
+  "новини · Fed политика · 15 бр. за 0.05с",
+  "новини · Fed речи · 15 бр. за 0.12с",
+  "новини · Google Fed · 40 бр. за 0.38с",
+  "новини · Google злато · 40 бр. за 0.35с",
   "новини · Investing · 10 бр. за 0.11с",
-  "новини · MarketWatch · 10 бр. за 0.09с",
-  "новини · Mining.com · 36 бр. за 0.99с",
-  "новини · Yahoo долар · 11 бр. за 0.2с",
-  "новини · Yahoo злато · 18 бр. за 0.21с",
-  "новини · български ред: 88 от 200 · махнати по език: 1"
+  "новини · MarketWatch · 10 бр. за 0.04с",
+  "новини · Mining.com · 36 бр. за 0.87с",
+  "новини · Yahoo долар · 11 бр. за 0.18с",
+  "новини · Yahoo злато · 18 бр. за 0.18с",
+  "новини · български ред: 90 от 200 · махнати по език: 1"
  ],
  "novini": [
   {
@@ -210,7 +210,7 @@
    "chas": "2026-11-17T10:15:21Z",
    "vazhnost": 2,
    "za": "злато",
-   "emisiya": "Yahoo долар",
+   "emisiya": "Yahoo злато",
    "chas_ot_iztochnika": true,
    "duma": "gold",
    "zashto": "Пряко за златото.",
@@ -1068,7 +1068,7 @@
    "chas": "2026-11-17T04:30:00Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Yahoo долар",
+   "emisiya": "Yahoo злато",
    "chas_ot_iztochnika": true,
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
@@ -1341,7 +1341,7 @@
    "chas": "2026-11-17T02:09:06Z",
    "vazhnost": 2,
    "za": "злато",
-   "emisiya": "Yahoo долар",
+   "emisiya": "Yahoo злато",
    "chas_ot_iztochnika": true,
    "duma": "gold",
    "zashto": "Пряко за златото.",
@@ -1463,6 +1463,19 @@
    "duma": null,
    "zashto": null,
    "bg": "Среброто поевтинява"
+  },
+  {
+   "zaglavie": "Dollar steady after five-day rally, NZ dollar at lowest since 2020",
+   "vryzka": "https://news.google.com/rss/articles/CBMipgFBVV95cUxPb0Z6TDRSbVp3QXhMLUlLR3Vaam5aam1wVW9LV2tGSmJPZVFaU2dCNnhzVjJSY25lNWR3N1lmOFVPeno3UWpkamE2SDVxOVVfcUxUY0RxYTd5cm8wYzg0M1FVZTdrVXU2RXJzbXFmNElPb0ZqVVJ2WUxhS1B5WXVhRFFobUJPb2FaNzdsdlFkNmludUtnSXY3eUJoZ0J5UXFJdTlQUVhR?oc=5",
+   "izvor": "Reuters",
+   "chas": "2026-11-17T01:42:00Z",
+   "vazhnost": 2,
+   "za": "долар",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "dollar",
+   "zashto": "Златото се мери в долари: по-силен долар обикновено значи по-евтино злато.",
+   "bg": "Доларът е без голяма промяна"
   },
   {
    "zaglavie": "Canadian Dollar loses ground to US Dollar as oil prices decline amid Fed rate hike bets",
@@ -1957,6 +1970,19 @@
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
    "bg": "Очаквания за по-висока лихва от Фед"
+  },
+  {
+   "zaglavie": "Hammack Says Fed Interventions Should Be Temporary, Targeted",
+   "vryzka": "https://news.google.com/rss/articles/CBMirwFBVV95cUxQRXF4YXRLb0todXdxN2NrSUZITVg2U2hRUWVsU2M5bGNTVkxTOTJiZEtLWjIwSE1RdV81azItMzYwbDlSYmtrT0pvMzlISmM0YXY5dUNMNElxeENMZ2tWYmlEUHRkVThJRDdFNTRFa3lxOW5UdDFhMGhYZUlYRXJEYlBxRHZDZDVNQVdUREhwUV9oNlRtR1E3b1JMRG9OOGkzUGhVR1JoY2tBN2o4Y3c4?oc=5",
+   "izvor": "Bloomberg.com",
+   "chas": "2026-11-16T22:41:11Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": "Изказване на член на Фед (Hammack)"
   },
   {
    "zaglavie": "Perenti inks $670 million contract with AngloGold Ashanti at Geita gold mine",
@@ -2492,32 +2518,6 @@
    "bg": "Златото поевтинява на фона на движението на долара"
   },
   {
-   "zaglavie": "‘I felt so seen’: Why families across America are laughing — and crying — over SNL’s ‘Sister’ sketch",
-   "vryzka": "https://www.marketwatch.com/story/so-sad-and-so-true-has-your-family-talked-about-snls-sister-sketch-yet-19bf9d67?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-11-16T20:46:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
-   "zaglavie": "What the F Fund? Bond losses, rate hikes and the G Fund temptation",
-   "vryzka": "https://news.google.com/rss/articles/CBMitgFBVV95cUxPWnlGS05mbk1lTG1oaGJaa2k3LW1sa0s1a1IzaTRUQzhJd2ZqWWhNcEh0Z29YQVFVd2lRdXpJVEYzVTBmWXVZZzB3dEVoQm1aUE1zQnp2dm9ZQXRJTjBKcmFNMEF1ZW5BQi1NcmdlWi1EeTNUVkJUSGp6dFVSTEdaNmc2UzFnUEpfOUJMek43V3hlMmVRcVdlQ0gwU3oxeVVFN0VaelVSdVd1b19Id0EtaUQ0azJVQQ?oc=5",
-   "izvor": "Federal News Network",
-   "chas": "2026-11-16T20:41:30Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "rate",
-   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
-   "bg": null
-  },
-  {
    "zaglavie": "Warsh, Opening Remarks",
    "vryzka": "https://www.federalreserve.gov/newsevents/speech/warsh20261116a.htm",
    "izvor": "Fed",
@@ -2576,10 +2576,10 @@
    "chas": "2026-11-12T17:45:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed политика",
+   "emisiya": "Fed всички",
    "chas_ot_iztochnika": true,
    "duma": "fed",
-   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
+   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
    "bg": "Съобщение на Фед — централната банка на САЩ"
   },
   {
@@ -2628,13 +2628,13 @@
    "chas": "2026-10-28T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed политика",
+   "emisiya": "Fed всички",
    "chas_ot_iztochnika": true,
    "duma": "fomc",
-   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
+   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   }
  ],
- "s_bg_red": 88,
+ "s_bg_red": 90,
  "mahnati_ezik": 1
 }
