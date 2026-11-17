@@ -1,43 +1,65 @@
 {
- "kogato": "2026-11-17T02:25:17Z",
- "sekundi": 0.7,
+ "kogato": "2026-11-17T02:36:02Z",
+ "sekundi": 0.92,
  "broi": 200,
- "novi_tozi_pyt": 1,
+ "novi_tozi_pyt": 2,
  "iztochnici_ok": [
-  "MarketWatch",
   "Fed политика",
-  "Fed всички",
   "Fed речи",
-  "Investing",
-  "CNBC",
+  "Fed всички",
   "Yahoo злато",
-  "FT пазари",
+  "Investing",
+  "MarketWatch",
   "Yahoo долар",
+  "FT пазари",
+  "Google Fed",
   "Google злато",
+  "CNBC",
   "Mining.com"
  ],
- "iztochnici_padnali": [
-  {
-   "ime": "Google Fed",
-   "greshka": "HTTPError: HTTP Error 429: Too Many Requests"
-  }
- ],
+ "iztochnici_padnali": [],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.14с",
-  "новини · FT пазари · 25 бр. за 0.23с",
-  "новини · Fed всички · 8 бр. за 0.08с",
-  "новини · Fed политика · 15 бр. за 0.07с",
-  "новини · Fed речи · 15 бр. за 0.08с",
-  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 429: Too Many Requests",
-  "новини · Google злато · 40 бр. за 0.42с",
+  "новини · CNBC · 30 бр. за 0.69с",
+  "новини · FT пазари · 25 бр. за 0.34с",
+  "новини · Fed всички · 8 бр. за 0.07с",
+  "новини · Fed политика · 15 бр. за 0.06с",
+  "новини · Fed речи · 15 бр. за 0.06с",
+  "новини · Google Fed · 40 бр. за 0.38с",
+  "новини · Google злато · 40 бр. за 0.47с",
   "новини · Investing · 10 бр. за 0.1с",
-  "новини · MarketWatch · 10 бр. за 0.06с",
-  "новини · Mining.com · 36 бр. за 0.64с",
-  "новини · Yahoo долар · 11 бр. за 0.26с",
-  "новини · Yahoo злато · 16 бр. за 0.19с",
-  "новини · български ред: 67 от 200 · махнати по език: 0"
+  "новини · MarketWatch · 10 бр. за 0.11с",
+  "новини · Mining.com · 36 бр. за 0.86с",
+  "новини · Yahoo долар · 11 бр. за 0.12с",
+  "новини · Yahoo злато · 16 бр. за 0.1с",
+  "новини · български ред: 68 от 200 · махнати по език: 0"
  ],
  "novini": [
+  {
+   "zaglavie": "I’m in my 40s. Should I accept a lower pension in exchange for naming my husband or child as a beneficiary?",
+   "vryzka": "https://www.marketwatch.com/story/im-in-my-40s-should-i-accept-a-lower-pension-in-exchange-for-naming-my-husband-or-child-as-a-beneficiary-b2352059?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-11-17T02:30:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "Nasdaq 100 sinks 2.7% in gloomy start to pivotal week for AI trade",
+   "vryzka": "https://www.ft.com/content/12d927a9-98b1-40b9-8f75-01fb56a693d1?syn-25a6b1a6=1",
+   "izvor": "Financial Times",
+   "chas": "2026-11-17T02:29:11Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "FT пазари",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
   {
    "zaglavie": "Gold hovers near 14-month low as Fed hike bets and tech selloff weigh",
    "vryzka": "https://finance.yahoo.com/markets/commodities/articles/gold-hovers-near-14-month-020906633.html?.tsrc=rss",
@@ -91,6 +113,19 @@
    "bg": "Среброто поевтинява"
   },
   {
+   "zaglavie": "Canadian Dollar loses ground to US Dollar as oil prices decline amid Fed rate hike bets",
+   "vryzka": "https://news.google.com/rss/articles/CBMi6AFBVV95cUxPNjlGSDZpYmpYQ1Nqbjd2cDV3Z0phei1SRlRmemE1ZVVybjhYSEd4MjNZVGdzMmRna3FkT0paOWtyZzlQX3N0NDRsM0NNbmUzd3FYbUtOS1pNQkVLSzZIWmxnc2xPY05uZGhxazItWXFfLWxRNjhwd1IzVEh6Q1oyMDdhbGMyWi1vdjZsbV9ua2Q2ajdOZUt4a01JY3pKUzR2VUpQa0RGMXNGa2VUa3RZcWdTeXVYdWlCUGxscWNfRVZZSTVLLWhrWmhmQzdIUjdhaU1fUzVVMk1GdmRDRzFUVmw0c29QZ0Qw?oc=5",
+   "izvor": "www.tmgm.com",
+   "chas": "2026-11-17T01:41:39Z",
+   "vazhnost": 3,
+   "za": "долар",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": "Канадският долар поевтинява на фона на очакванията за по-висока лихва от Фед и цената на петрола"
+  },
+  {
    "zaglavie": "US dollar hits 19-month peak on Fed hike bets; Aussie dips",
    "vryzka": "https://news.google.com/rss/articles/CBMilwFBVV95cUxNS3M2TGFXYzBtZ3daalBpMGVWM2tpOXhnTzBPcnFYNGkwaXRLLUpmd2JOb0p6SFZGRFZ4LThMa2owaE1lZ3d2ejh3MTVPUkdaalBJSkVpa05takNBTHRqMVR3TnE2U2F2V0pRTi1acUVqWFlNTFhyMTdDUUxGdGd6LXh6Rllzcy1iZFJlT3RCRHlzTnFULVk4?oc=5",
    "izvor": "Yahoo Finance",
@@ -102,19 +137,6 @@
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
    "bg": "Доларът е на най-високото си ниво от месеци на фона на очакванията за по-висока лихва от Фед"
-  },
-  {
-   "zaglavie": "Tracker: The Federal Reserve’s Balance Sheet Assets",
-   "vryzka": "https://news.google.com/rss/articles/CBMikAFBVV95cUxNR2NrRDdoQ1MwS0paZFliV01BelV0MS1tQkNMSEdJYmYweWctanpzZU5hMllmVUtjQWR2cXBPSVhFeFluSFlMbi1ZVTg1ZS1TYzRMam81MFlRbWxockRRN2RpeEk2OGhpYWVXUVpsX3lvcUx4QUFERERGQVdkeVRndHJNeExJTU9DLS1GRW9GTW0?oc=5",
-   "izvor": "The American Action Forum",
-   "chas": "2026-11-17T01:28:32Z",
-   "vazhnost": 1,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
   },
   {
    "zaglavie": "Gold Falls to One-Year Low, Down 31% From Record High; Headed for Worst Annual Decline Since 2015",
@@ -429,19 +451,6 @@
    "bg": null
   },
   {
-   "zaglavie": "My husband is happily retired at 64 and thinks I should keep working. Is he being fair?",
-   "vryzka": "https://www.marketwatch.com/story/my-husband-is-happily-retired-at-64-and-thinks-i-should-keep-working-is-he-being-fair-325c5f38?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-11-16T23:00:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
    "zaglavie": "Daura Gold Announces Grant of Options",
    "vryzka": "https://finance.yahoo.com/markets/stocks/articles/daura-gold-announces-grant-options-230000375.html?.tsrc=rss",
    "izvor": "Yahoo Finance",
@@ -452,6 +461,19 @@
    "chas_ot_iztochnika": true,
    "duma": "gold",
    "zashto": "Пряко за златото.",
+   "bg": null
+  },
+  {
+   "zaglavie": "My husband is happily retired at 64 and thinks I should keep working. Is he being fair?",
+   "vryzka": "https://www.marketwatch.com/story/my-husband-is-happily-retired-at-64-and-thinks-i-should-keep-working-is-he-being-fair-325c5f38?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-11-16T23:00:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
    "bg": null
   },
   {
@@ -644,19 +666,6 @@
    "vazhnost": 1,
    "za": "злато",
    "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
-   "zaglavie": "Nasdaq 100 sinks 2.7% in gloomy start to pivotal week for AI trade",
-   "vryzka": "https://www.ft.com/content/12d927a9-98b1-40b9-8f75-01fb56a693d1?syn-25a6b1a6=1",
-   "izvor": "Financial Times",
-   "chas": "2026-11-16T21:58:59Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "FT пазари",
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null,
@@ -1326,19 +1335,6 @@
    "bg": "Златото поевтинява"
   },
   {
-   "zaglavie": "I’m in my 40s. Should I accept a lower pension in exchange for naming my husband or child as a beneficiary?",
-   "vryzka": "https://www.marketwatch.com/story/im-in-my-40s-should-i-accept-a-lower-pension-in-exchange-for-naming-my-husband-or-child-as-a-beneficiary-b2352059?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-11-16T19:31:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
    "zaglavie": "Inflation is back - so why is gold falling?",
    "vryzka": "https://news.google.com/rss/articles/CBMigAFBVV95cUxOZ01FckYwQ21PN282MW10eWlUV1Q4aUlPekdkbVRmMHVVSmNKNGx6NDhhMXp5MmRzbEF0WmRQY3BlMzJwbmdST0VXdWN6am1kbUJuaUNtenJvUHBpXzJrX2pFSmsxdVJIZWFtb2Z6M2t1VzVLQjFxdlVrcEhyOGZ2OQ?oc=5",
    "izvor": "Kitco",
@@ -1742,6 +1738,19 @@
    "bg": null
   },
   {
+   "zaglavie": "Tracker: The Federal Reserve’s Balance Sheet Assets",
+   "vryzka": "https://news.google.com/rss/articles/CBMikAFBVV95cUxNR2NrRDdoQ1MwS0paZFliV01BelV0MS1tQkNMSEdJYmYweWctanpzZU5hMllmVUtjQWR2cXBPSVhFeFluSFlMbi1ZVTg1ZS1TYzRMam81MFlRbWxockRRN2RpeEk2OGhpYWVXUVpsX3lvcUx4QUFERERGQVdkeVRndHJNeExJTU9DLS1GRW9GTW0?oc=5",
+   "izvor": "The American Action Forum",
+   "chas": "2026-11-16T17:25:16Z",
+   "vazhnost": 1,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
    "zaglavie": "BTC and interest rates: how Fed moves hit bitcoin",
    "vryzka": "https://news.google.com/rss/articles/CBMikgFBVV95cUxQdmFBcXBid0RBOEtkamJUYUlTZ0VrWWYtTVk3V3dhZWNqdEpudEhUSEh6azlfcDUxTHlkOG5OUElxdzNLMFlFQUNKMWI1UnV3WkJuTXZZek5qejVMa2doOFVTRHJ3amhjazloRlFPcHRWbnRjajVKUHBkdDFpTkJWYWFWQjRWTmxzMERZQVg3U1F6dw?oc=5",
    "izvor": "CryptoTicker.io",
@@ -1948,6 +1957,19 @@
    "duma": null,
    "zashto": null,
    "bg": null
+  },
+  {
+   "zaglavie": "U.S. inflation report highlights strain of rising food, energy and housing costs",
+   "vryzka": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxOVEI0ajRDVk9UaDlyeXZSYVhqSDlXcDlzZGtJcURDM0plUHhkMklBX3E0VXA2bTNpZ0FYaV8wRkRoZW5OQ1VrQUkzSTJZYU1mMUJVV2E0Tjk5NzBzVk9pQlZxMWVqQnkxT002X3c0WXo0SFlUemdOUEVXbXZ2WG1jaUJaY2l2MVFINjBjV2RBQVFTRVVSQ3dCVG5GN1F3V0pjVFlCa3pvZzZTZ3JMdDVYcGZJNTdDVVY4RFpEMGV1U2VMZ1R3VUowSDBWT2hCVGdZR3JYdERwNlRscEk?oc=5",
+   "izvor": "PBS",
+   "chas": "2026-11-16T16:40:13Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "inflation",
+   "zashto": "Инфлацията е основната причина да се държи злато — то пази стойност, когато парите я губят.",
+   "bg": "Данни за инфлацията в САЩ"
   },
   {
    "zaglavie": "Nvidia is gearing up for one of Wall Street’s most anticipated earnings calls in years",
@@ -2509,32 +2531,6 @@
    "bg": null
   },
   {
-   "zaglavie": "SMX Targets the Missing Link in Global Gold Markets: Proof",
-   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/smx-targets-missing-global-gold-143000710.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-11-16T14:30:00Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": null
-  },
-  {
-   "zaglavie": "How will Fed rate hikes impact markets?",
-   "vryzka": "https://news.google.com/rss/articles/CBMimwFBVV95cUxNYkd3Q0pMb0Jpdm9pNEg2WVRrNjd3WXRYVS1uemRuc0F2SnZTRS0weVhpVXVwRXFsTjV6YWVNckdnUHdrRldUR3F2azB1TU11RHdac25wOWY0NDVxOC1BT3JnMmRxaTJjc0VlRkhGSm5BUnYzVXQ2RkNwcnVFa2FSLWtBU3BfM2lpaHRLZzZJNTZINk1aeHo4UXZZRQ?oc=5",
-   "izvor": "Investing.com",
-   "chas": "2026-11-16T14:24:41Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": "Какво значи вдигане на лихвата от Фед"
-  },
-  {
    "zaglavie": "Barr, Some Potential Financial Stability Implications of Artificial Intelligence",
    "vryzka": "https://www.federalreserve.gov/newsevents/speech/barr20261116a.htm",
    "izvor": "Fed",
@@ -2639,6 +2635,6 @@
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   }
  ],
- "s_bg_red": 67,
+ "s_bg_red": 68,
  "mahnati_ezik": 0
 }
