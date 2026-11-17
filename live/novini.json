@@ -1,46 +1,78 @@
 {
- "kogato": "2026-11-17T03:50:39Z",
- "sekundi": 0.79,
+ "kogato": "2026-11-17T04:00:39Z",
+ "sekundi": 0.83,
  "broi": 200,
- "novi_tozi_pyt": 0,
+ "novi_tozi_pyt": 3,
  "iztochnici_ok": [
   "MarketWatch",
-  "Fed речи",
   "Fed политика",
-  "Investing",
   "Fed всички",
-  "Yahoo долар",
+  "Fed речи",
+  "Investing",
   "Yahoo злато",
+  "Yahoo долар",
   "CNBC",
   "FT пазари",
+  "Google злато",
+  "Google Fed",
   "Mining.com"
  ],
- "iztochnici_padnali": [
-  {
-   "ime": "Google злато",
-   "greshka": "HTTPError: HTTP Error 429: Too Many Requests"
-  },
-  {
-   "ime": "Google Fed",
-   "greshka": "HTTPError: HTTP Error 429: Too Many Requests"
-  }
- ],
+ "iztochnici_padnali": [],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.29с",
-  "новини · FT пазари · 25 бр. за 0.29с",
-  "новини · Fed всички · 8 бр. за 0.15с",
-  "новини · Fed политика · 15 бр. за 0.09с",
+  "новини · CNBC · 30 бр. за 0.31с",
+  "новини · FT пазари · 25 бр. за 0.34с",
+  "новини · Fed всички · 8 бр. за 0.06с",
+  "новини · Fed политика · 15 бр. за 0.06с",
   "новини · Fed речи · 15 бр. за 0.06с",
-  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 429: Too Many Requests",
-  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 429: Too Many Requests",
+  "новини · Google Fed · 40 бр. за 0.45с",
+  "новини · Google злато · 40 бр. за 0.48с",
   "новини · Investing · 10 бр. за 0.1с",
-  "новини · MarketWatch · 10 бр. за 0.06с",
-  "новини · Mining.com · 36 бр. за 0.73с",
+  "новини · MarketWatch · 10 бр. за 0.05с",
+  "новини · Mining.com · 36 бр. за 0.76с",
   "новини · Yahoo долар · 11 бр. за 0.24с",
-  "новини · Yahoo злато · 16 бр. за 0.26с",
+  "новини · Yahoo злато · 16 бр. за 0.24с",
   "новини · български ред: 72 от 200 · махнати по език: 0"
  ],
  "novini": [
+  {
+   "zaglavie": "Goldman Sachs just revamped its 2027 gold target for the second time",
+   "vryzka": "https://www.thestreet.com/investing/goldman-sachs-2027-gold-forecast-cut?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-17T03:47:00Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": null
+  },
+  {
+   "zaglavie": "Goldman Sachs Adjusts Bellevue Gold's Price Target to AU$1.85",
+   "vryzka": "https://news.google.com/rss/articles/CBMitAFBVV95cUxNc0s0SU9SNTlHVGxZLWtsZFU4Q1g5enlnTnNXWmN1U2cxd2J2V1FlTWs4cF8xa2Fjd2VBMmFST1ZsUlJlUG1nR05IRjNEQzQtb3M1Zl8zYUlmd0FTZ0pYZkd5enB4azFjY0NnbVBFZTBDdGhkaUl1NjhUSkk0RVFuRkR4ZF9Cd1U2cS1tSHpyQlRieHRUZG9namxoNmE4Tm1TdWxIazNoVWJaRjRGd210OVMxYms?oc=5",
+   "izvor": "www.marketscreener.com",
+   "chas": "2026-11-17T03:39:14Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": null
+  },
+  {
+   "zaglavie": "Gold Price Forecast: XAU/USD stays vulnerable amid Fed hike bets, geopolitical uncertainty",
+   "vryzka": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxQYnBqMTVHa2ZYbHBiNkdZZEtVM0sxWEpUS3NTQTJxTEpKQ2c0bEpRV3JzV1RrcXZjYUtReG9VLVJ2TGo3LXBTUlRITGR5dUdhRnNvbEdiSEJEeEM3VFdNckNycThBNW5SVEJXaXJ2RjBOMzkxNUYzZC1hUHlsa0duX2ZfMVZVWDZOeDg2Rl9pTEhyeXhyZDBRbFJ4dGZxOHNDUm80M1gyakp0UEJyTm1nbWl4NzBCcVlWVnloN3NwcjNEM0NOMThCR010ZEh3VW9H?oc=5",
+   "izvor": "FXStreet",
+   "chas": "2026-11-17T03:37:03Z",
+   "vazhnost": 3,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": "Анализ и прогноза за златото"
+  },
   {
    "zaglavie": "Gold Price Drops to Lowest Level in Over a Year Amid Expectations of Fed Rate Hike",
    "vryzka": "https://news.google.com/rss/articles/CBMinAFBVV95cUxNbERrSnMyR3NUYnI1cjlJQkNuclZQczdFbHk2TzRhQW4tcHhoV0lzTFVwc2k0SkFZeUVIR2c2OVhqRDlrM2tJOEFrRllMMUQ5RktpTTBHcUFXaDk0cnB5Ti1hdXBIYjU5WEtULVlDTENoYTRqZ3FPdHZFU0tSR0JlTFRMa0xSZTY1TFVJbUNjTVpoSS1BT2JHN1N5M0c?oc=5",
@@ -165,7 +197,7 @@
    "chas": "2026-11-17T02:09:06Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Yahoo долар",
+   "emisiya": "Yahoo злато",
    "chas_ot_iztochnika": true,
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
@@ -549,6 +581,19 @@
    "bg": null
   },
   {
+   "zaglavie": "Central bank buying to support higher gold price in 2027: Goldman",
+   "vryzka": "https://news.google.com/rss/articles/CBMikAFBVV95cUxNUEs3S0xHeDRPVXFScDQ5YUlydTFXeG9jOHRZYTZGSWpCbGhvNE1ITGc2Nk9Vbk5WVXFMQXRpckxabDRKVW9wNGpQVmJUVHU0OU5WcDVlTDItcEVxWDZ5amlSQzEzT0MxLXliWGpHRGJXSUV3M1hZLWZ6NFVBWWZJTG1wTWhqM3ZPSWtYeFpRS00?oc=5",
+   "izvor": "Mining.com.au",
+   "chas": "2026-11-16T23:04:58Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": "Централни банки купуват злато"
+  },
+  {
    "zaglavie": "Do Amazon’s Black Friday deals really save you money? A new report casts doubt.",
    "vryzka": "https://www.marketwatch.com/story/do-amazons-black-friday-deals-really-save-you-money-03859cf3?mod=mw_rss_topstories",
    "izvor": "MarketWatch",
@@ -573,19 +618,6 @@
    "duma": null,
    "zashto": null,
    "bg": null
-  },
-  {
-   "zaglavie": "Central bank buying to support higher gold price in 2027: Goldman",
-   "vryzka": "https://news.google.com/rss/articles/CBMikAFBVV95cUxNUEs3S0xHeDRPVXFScDQ5YUlydTFXeG9jOHRZYTZGSWpCbGhvNE1ITGc2Nk9Vbk5WVXFMQXRpckxabDRKVW9wNGpQVmJUVHU0OU5WcDVlTDItcEVxWDZ5amlSQzEzT0MxLXliWGpHRGJXSUV3M1hZLWZ6NFVBWWZJTG1wTWhqM3ZPSWtYeFpRS00?oc=5",
-   "izvor": "Mining.com.au",
-   "chas": "2026-11-16T23:03:45Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Централни банки купуват злато"
   },
   {
    "zaglavie": "Berkshire Hathaway raised its stake in Delta in the third quarter. It also trimmed a key bank holding",
@@ -2497,45 +2529,6 @@
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
    "bg": "Анализ и прогноза за златото"
-  },
-  {
-   "zaglavie": "Barrick Mining And 2 Other Canadian Undervalued Stocks To Own",
-   "vryzka": "https://finance.yahoo.com/markets/stocks/articles/barrick-mining-2-other-canadian-151626573.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-11-16T15:16:26Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": "rates",
-   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
-   "bg": null
-  },
-  {
-   "zaglavie": "The price of gold today, Nov. 16, 2026 — and the best places to buy",
-   "vryzka": "https://news.google.com/rss/articles/CBMickFVX3lxTE51RXJFR0hvanlBak5MOWdLM2x6eExDOVdybUM1QWM3V3pabV9KZUZKQmk1STU1a29wd1FBLURtTFRXRGs5WjN2d19EWFo5dzl3UmMyN2hsN1A0S3VQd3Q1NFgxWExKaFJ1eEpqTEJjeDM2d9IBd0FVX3lxTE9lZmxTVTA4VVpjREwxX3VGdG1WdmQwakxoLVk3M0VsdFE5Ym5XcER2cXZLSllBWEVUVWJmQ1U5RTczLUNHeFVINWpBUFVaa2c2NEQ1dU5uWjVRb3BkTVBGYlY3RUlKTGMzMHd5bjlSYThmZTRYMTRr?oc=5",
-   "izvor": "CNBC",
-   "chas": "2026-11-16T15:15:17Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Цената на златото днес"
-  },
-  {
-   "zaglavie": "The FDA declined to approve one of biotech’s most closely watched cancer drugs",
-   "vryzka": "https://www.marketwatch.com/story/the-fda-declined-to-approve-one-of-biotechs-most-closely-watched-cancer-drugs-d7c6a0a3?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-11-16T15:06:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
   },
   {
    "zaglavie": "Barr, Some Potential Financial Stability Implications of Artificial Intelligence",
