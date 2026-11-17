@@ -1,36 +1,40 @@
 {
- "kogato": "2026-11-17T10:04:07Z",
- "sekundi": 0.84,
+ "kogato": "2026-11-17T10:15:00Z",
+ "sekundi": 0.86,
  "broi": 200,
- "novi_tozi_pyt": 5,
+ "novi_tozi_pyt": 1,
  "iztochnici_ok": [
   "MarketWatch",
   "Fed политика",
-  "Fed речи",
-  "Yahoo долар",
-  "Yahoo злато",
   "Fed всички",
+  "Fed речи",
   "Investing",
   "CNBC",
+  "Yahoo долар",
+  "Yahoo злато",
   "FT пазари",
   "Google злато",
-  "Google Fed",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google Fed",
+   "greshka": "HTTPError: HTTP Error 429: Too Many Requests"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.21с",
-  "новини · FT пазари · 25 бр. за 0.33с",
-  "новини · Fed всички · 8 бр. за 0.15с",
-  "новини · Fed политика · 15 бр. за 0.07с",
-  "новини · Fed речи · 15 бр. за 0.08с",
-  "новини · Google Fed · 40 бр. за 0.38с",
-  "новини · Google злато · 40 бр. за 0.38с",
-  "новини · Investing · 10 бр. за 0.16с",
-  "новини · MarketWatch · 10 бр. за 0.07с",
-  "новини · Mining.com · 36 бр. за 0.76с",
-  "новини · Yahoo долар · 11 бр. за 0.11с",
-  "новини · Yahoo злато · 18 бр. за 0.12с",
+  "новини · CNBC · 30 бр. за 0.12с",
+  "новини · FT пазари · 25 бр. за 0.22с",
+  "новини · Fed всички · 8 бр. за 0.05с",
+  "новини · Fed политика · 15 бр. за 0.05с",
+  "новини · Fed речи · 15 бр. за 0.05с",
+  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 429: Too Many Requests",
+  "новини · Google злато · 40 бр. за 0.4с",
+  "новини · Investing · 10 бр. за 0.08с",
+  "новини · MarketWatch · 10 бр. за 0.04с",
+  "новини · Mining.com · 36 бр. за 0.78с",
+  "новини · Yahoo долар · 11 бр. за 0.15с",
+  "новини · Yahoo злато · 18 бр. за 0.21с",
   "новини · български ред: 88 от 200 · махнати по език: 0"
  ],
  "novini": [
@@ -58,6 +62,19 @@
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "Vietnamese Gold Prices Erase VND 6.5 Million per Tael in Three Months; Worst-Hit Investors Lose VND 10.5 Million",
+   "vryzka": "https://news.google.com/rss/articles/CBMidkFVX3lxTE9ZZUZqOU0zZ3Fpc2ZaajRVYkFIT0ZRb2s3c0xTNXh2dlVUcE1xbjFTVHRnMmZROWF6bGVTS0Jlc1pIVEhSZU13dE93MV9rNVpMOVhtM1JPOGc5M0c5elIxcUFxSW5XcldmMm9Mdkx4dEJiWEktQ1E?oc=5",
+   "izvor": "BigGo Finance",
+   "chas": "2026-11-17T09:55:00Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
    "bg": null
   },
   {
@@ -2502,19 +2519,6 @@
    "chas_ot_iztochnika": true,
    "duma": "gold",
    "zashto": "Пряко за златото.",
-   "bg": null
-  },
-  {
-   "zaglavie": "Will Jensen Huang’s Chinese Spy Scandal Hurt Corn, Soybean and Wheat Prices?",
-   "vryzka": "https://www.barchart.com/story/news/8860880/will-jensen-huangs-chinese-spy-scandal-hurt-corn-soybean-and-wheat-prices?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-11-16T20:00:03Z",
-   "vazhnost": 1,
-   "za": "долар",
-   "emisiya": "Yahoo долар",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
    "bg": null
   },
   {
