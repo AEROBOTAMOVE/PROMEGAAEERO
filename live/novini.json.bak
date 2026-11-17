@@ -1,41 +1,41 @@
 {
- "kogato": "2026-11-17T06:19:23Z",
- "sekundi": 0.85,
+ "kogato": "2026-11-17T06:30:04Z",
+ "sekundi": 1.21,
  "broi": 200,
  "novi_tozi_pyt": 1,
  "iztochnici_ok": [
   "Fed политика",
-  "Investing",
   "Fed всички",
   "Fed речи",
   "MarketWatch",
+  "Investing",
   "Yahoo долар",
   "Yahoo злато",
-  "CNBC",
   "FT пазари",
-  "Google злато",
+  "CNBC",
+  "Google Fed",
   "Mining.com"
  ],
  "iztochnici_padnali": [
   {
-   "ime": "Google Fed",
+   "ime": "Google злато",
    "greshka": "HTTPError: HTTP Error 429: Too Many Requests"
   }
  ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.33с",
-  "новини · FT пазари · 25 бр. за 0.43с",
-  "новини · Fed всички · 8 бр. за 0.11с",
-  "новини · Fed политика · 15 бр. за 0.1с",
-  "новини · Fed речи · 15 бр. за 0.12с",
-  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 429: Too Many Requests",
-  "новини · Google злато · 40 бр. за 0.46с",
-  "новини · Investing · 10 бр. за 0.09с",
-  "новини · MarketWatch · 10 бр. за 0.13с",
-  "новини · Mining.com · 36 бр. за 0.79с",
-  "новини · Yahoo долар · 11 бр. за 0.15с",
+  "новини · CNBC · 30 бр. за 0.43с",
+  "новини · FT пазари · 25 бр. за 0.37с",
+  "новини · Fed всички · 8 бр. за 0.13с",
+  "новини · Fed политика · 15 бр. за 0.11с",
+  "новини · Fed речи · 15 бр. за 0.15с",
+  "новини · Google Fed · 40 бр. за 0.4с",
+  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 429: Too Many Requests",
+  "новини · Investing · 10 бр. за 0.17с",
+  "новини · MarketWatch · 10 бр. за 0.16с",
+  "новини · Mining.com · 36 бр. за 1.17с",
+  "новини · Yahoo долар · 11 бр. за 0.19с",
   "новини · Yahoo злато · 17 бр. за 0.2с",
-  "новини · български ред: 79 от 200 · махнати по език: 0"
+  "новини · български ред: 80 от 200 · махнати по език: 0"
  ],
  "novini": [
   {
@@ -102,6 +102,19 @@
    "duma": "rate",
    "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
    "bg": "Цената на златото днес"
+  },
+  {
+   "zaglavie": "Institutional forecast: The Federal Reserve will implement consecutive rate hikes in December and January, followed by a prolonged pause.",
+   "vryzka": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxQTjJHeFRvdE9EM2JOSm9XMTkzLXVSQ292bHdiLVVDU2RfTkU0Z29FSmJLVHpacVBsYzRKSHJVVzMxNUVnanlzbU04NjBBWVlCSVJlbVp3VGpOckJjX1lxWGFfdE1fSDJOdXlCd01ORzhQZFBwek5DSTF5Y1FrRUFwOUpZZHM3T3hQZXRTMTVpZFI4dm1iSF9RZ1laYmxkYTZMMXZhSE1KT3htc0Q0WThLNGtnVGZWMWZnQ2dDTWRJenpvQQ?oc=5",
+   "izvor": "Moomoo",
+   "chas": "2026-11-17T05:06:41Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "rate",
+   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
+   "bg": "За вдигане на лихвата от Фед"
   },
   {
    "zaglavie": "Tech sell-off deepens as Nvidia results loom",
@@ -188,7 +201,7 @@
    "chas": "2026-11-17T04:37:37Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Google злато",
+   "emisiya": "Google Fed",
    "chas_ot_iztochnika": true,
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
@@ -747,7 +760,7 @@
    "chas": "2026-11-17T00:02:59Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Google злато",
+   "emisiya": "Google Fed",
    "chas_ot_iztochnika": true,
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
@@ -2522,19 +2535,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Gold: The Bubble Is Bursting And $2,500 Should Not Be Ruled Out (Commodity:XAUUSD:CUR)",
-   "vryzka": "https://news.google.com/rss/articles/CBMingFBVV95cUxNVGhXRXZMbDV2RU80REZrR2MyT2l2YmRiUERNejI4OTZ4UGJULWJWVjYwNUJVYU9XdzlaZENwMXA3S1VMZWtKM3dQMUdIc0VpM0tHNGk4V19aN3p0WkxqdWFrZzNzMTRmV0ctbE5VVW1UbFBrQzRuSm82cVVXOTJJWjU1dHJFTTBfeUY1bGh3S3ZjcUcwMS1IRFlmSnhpUQ?oc=5",
-   "izvor": "Seeking Alpha",
-   "chas": "2026-11-16T16:34:27Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": null
-  },
-  {
    "zaglavie": "Barr, Some Potential Financial Stability Implications of Artificial Intelligence",
    "vryzka": "https://www.federalreserve.gov/newsevents/speech/barr20261116a.htm",
    "izvor": "Fed",
@@ -2639,6 +2639,6 @@
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   }
  ],
- "s_bg_red": 79,
+ "s_bg_red": 80,
  "mahnati_ezik": 0
 }
