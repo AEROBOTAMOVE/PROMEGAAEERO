@@ -1,36 +1,40 @@
 {
- "kogato": "2026-11-17T17:45:03Z",
- "sekundi": 1.04,
+ "kogato": "2026-11-17T17:56:01Z",
+ "sekundi": 0.87,
  "broi": 200,
- "novi_tozi_pyt": 5,
+ "novi_tozi_pyt": 0,
  "iztochnici_ok": [
-  "Fed речи",
   "MarketWatch",
+  "Fed речи",
   "Fed всички",
-  "Investing",
-  "Fed политика",
   "Yahoo долар",
   "Yahoo злато",
-  "FT пазари",
-  "CNBC",
   "Google злато",
-  "Google Fed",
+  "Investing",
+  "Fed политика",
+  "CNBC",
+  "FT пазари",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google Fed",
+   "greshka": "HTTPError: HTTP Error 429: Too Many Requests"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.36с",
-  "новини · FT пазари · 25 бр. за 0.28с",
-  "новини · Fed всички · 8 бр. за 0.07с",
+  "новини · CNBC · 30 бр. за 0.21с",
+  "новини · FT пазари · 25 бр. за 0.52с",
+  "новини · Fed всички · 8 бр. за 0.1с",
   "новини · Fed политика · 15 бр. за 0.14с",
-  "новини · Fed речи · 15 бр. за 0.05с",
-  "новини · Google Fed · 40 бр. за 0.44с",
-  "новини · Google злато · 40 бр. за 0.45с",
-  "новини · Investing · 10 бр. за 0.1с",
-  "новини · MarketWatch · 10 бр. за 0.05с",
-  "новини · Mining.com · 36 бр. за 0.96с",
-  "новини · Yahoo долар · 11 бр. за 0.17с",
-  "новини · Yahoo злато · 18 бр. за 0.21с",
+  "новини · Fed речи · 15 бр. за 0.08с",
+  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 429: Too Many Requests",
+  "новини · Google злато · 40 бр. за 0.09с",
+  "новини · Investing · 10 бр. за 0.13с",
+  "новини · MarketWatch · 10 бр. за 0.08с",
+  "новини · Mining.com · 36 бр. за 0.8с",
+  "новини · Yahoo долар · 11 бр. за 0.11с",
+  "новини · Yahoo злато · 18 бр. за 0.11с",
   "новини · български ред: 90 от 200 · махнати по език: 0"
  ],
  "novini": [
@@ -113,19 +117,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Gold Prices Rebound on Trump’s Comments, but Key Resistance Keeps Sellers Alert",
-   "vryzka": "https://www.investing.com/analysis/gold-prices-rebound-on-trumps-comments-but-key-resistance-keeps-sellers-alert-200691762",
-   "izvor": "Investing.com",
-   "chas": "2026-11-17T17:09:00Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Investing",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Златото се връща нагоре"
-  },
-  {
    "zaglavie": "Update - Solomon Global Offers Signed Una and the Lion 2027 Gold Bullion Coins",
    "vryzka": "https://finance.yahoo.com/markets/commodities/articles/solomon-global-offers-signed-una-170900789.html?.tsrc=rss",
    "izvor": "Yahoo Finance",
@@ -137,6 +128,19 @@
    "duma": "gold",
    "zashto": "Пряко за златото.",
    "bg": null
+  },
+  {
+   "zaglavie": "Gold Prices Rebound on Trump’s Comments, but Key Resistance Keeps Sellers Alert",
+   "vryzka": "https://www.investing.com/analysis/gold-prices-rebound-on-trumps-comments-but-key-resistance-keeps-sellers-alert-200691762",
+   "izvor": "Investing.com",
+   "chas": "2026-11-17T17:09:00Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Investing",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": "Златото се връща нагоре"
   },
   {
    "zaglavie": "Parents told us what it’s like to help their kids battle sports-gambling addiction: ‘There’s no handbook’",
