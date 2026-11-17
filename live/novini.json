@@ -1,37 +1,37 @@
 {
- "kogato": "2026-11-17T21:52:06Z",
- "sekundi": 1.13,
+ "kogato": "2026-11-17T22:02:53Z",
+ "sekundi": 0.81,
  "broi": 200,
- "novi_tozi_pyt": 2,
+ "novi_tozi_pyt": 0,
  "iztochnici_ok": [
   "Fed политика",
   "Fed всички",
-  "Fed речи",
-  "Yahoo злато",
   "MarketWatch",
-  "Yahoo долар",
+  "Fed речи",
   "Investing",
+  "Yahoo долар",
+  "Yahoo злато",
   "CNBC",
-  "FT пазари",
   "Google Fed",
   "Google злато",
+  "FT пазари",
   "Mining.com"
  ],
  "iztochnici_padnali": [],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.36с",
-  "новини · FT пазари · 25 бр. за 0.38с",
-  "новини · Fed всички · 8 бр. за 0.08с",
-  "новини · Fed политика · 15 бр. за 0.08с",
-  "новини · Fed речи · 15 бр. за 0.08с",
-  "новини · Google Fed · 40 бр. за 0.32с",
-  "новини · Google злато · 40 бр. за 0.57с",
-  "новини · Investing · 10 бр. за 0.18с",
-  "новини · MarketWatch · 10 бр. за 0.1с",
-  "новини · Mining.com · 36 бр. за 1.09с",
-  "новини · Yahoo долар · 12 бр. за 0.11с",
-  "новини · Yahoo злато · 19 бр. за 0.1с",
-  "новини · български ред: 83 от 200 · махнати по език: 1"
+  "новини · CNBC · 30 бр. за 0.2с",
+  "новини · FT пазари · 25 бр. за 0.51с",
+  "новини · Fed всички · 8 бр. за 0.06с",
+  "новини · Fed политика · 15 бр. за 0.06с",
+  "новини · Fed речи · 15 бр. за 0.07с",
+  "новини · Google Fed · 40 бр. за 0.41с",
+  "новини · Google злато · 40 бр. за 0.5с",
+  "новини · Investing · 10 бр. за 0.12с",
+  "новини · MarketWatch · 10 бр. за 0.06с",
+  "новини · Mining.com · 36 бр. за 0.74с",
+  "новини · Yahoo долар · 12 бр. за 0.18с",
+  "новини · Yahoo злато · 19 бр. за 0.18с",
+  "новини · български ред: 83 от 200 · махнати по език: 0"
  ],
  "novini": [
   {
@@ -42,6 +42,19 @@
    "vazhnost": 1,
    "za": "долар",
    "emisiya": "Yahoo долар",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "My older brother, who has no children, cut our only sister out of his will. I’ll get everything instead. Do I tell her?",
+   "vryzka": "https://www.marketwatch.com/story/she-has-a-history-of-financial-mismanagement-my-brother-cut-my-sister-out-of-his-will-im-getting-everything-do-i-tell-her-3e537851?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-11-17T21:30:00Z",
+   "vazhnost": 1,
+   "za": "лихви",
+   "emisiya": "MarketWatch",
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null,
@@ -85,19 +98,6 @@
    "duma": "gold",
    "zashto": "Пряко за златото.",
    "bg": "Новина от минния бранш (злато)"
-  },
-  {
-   "zaglavie": "My older brother, who has no children, cut our only sister out of his will. I’ll get everything instead. Do I tell her?",
-   "vryzka": "https://www.marketwatch.com/story/she-has-a-history-of-financial-mismanagement-my-brother-cut-my-sister-out-of-his-will-im-getting-everything-do-i-tell-her-3e537851?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-11-17T21:30:00Z",
-   "vazhnost": 1,
-   "za": "лихви",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
   },
   {
    "zaglavie": "Gold Weekly Forecast: Strong Dollar and Rate Hike Bets Add Pressure",
@@ -984,19 +984,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Update - Solomon Global Offers Signed Una and the Lion 2027 Gold Bullion Coins",
-   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/solomon-global-offers-signed-una-170900789.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-11-17T17:09:00Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": null
-  },
-  {
    "zaglavie": "Gold Prices Rebound on Trump’s Comments, but Key Resistance Keeps Sellers Alert",
    "vryzka": "https://www.investing.com/analysis/gold-prices-rebound-on-trumps-comments-but-key-resistance-keeps-sellers-alert-200691762",
    "izvor": "Investing.com",
@@ -1008,6 +995,19 @@
    "duma": "gold",
    "zashto": "Пряко за златото.",
    "bg": "Златото се връща нагоре"
+  },
+  {
+   "zaglavie": "Update - Solomon Global Offers Signed Una and the Lion 2027 Gold Bullion Coins",
+   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/solomon-global-offers-signed-una-170900789.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-17T17:09:00Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": null
   },
   {
    "zaglavie": "Coeur Drops 37.2% in 3 Months as Execution Risks Keep Pressure On",
@@ -2636,5 +2636,5 @@
   }
  ],
  "s_bg_red": 83,
- "mahnati_ezik": 1
+ "mahnati_ezik": 0
 }
