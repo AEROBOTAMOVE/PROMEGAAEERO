@@ -156,6 +156,7 @@ jobs:
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT_ID: "-1003827523037"
+          BOT_SABITIE_TAINA: ${{ secrets.BOT_SABITIE_TAINA }}   # 17.11 · v19.49 · БОТ_СЪБИТИЕ · картата → платформата за секунди
           BALANCE: ${{ vars.BALANCE || '1000' }}
           RISK_PCT: ${{ vars.RISK_PCT || '2' }}
           STATUS_CARD: ${{ github.event.inputs.status || 'no' }}

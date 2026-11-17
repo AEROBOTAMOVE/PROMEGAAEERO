@@ -19185,6 +19185,41 @@ def _пд_проба_текст(т):
     "<i>Няма нужда да пишете пак.</i>")
 
 
+# 17.11 · v19.49 · БОТ_СЪБИТИЕ · собственикът: «алармата за сделките леко закъснява» (мерено: картата 05:00:42,
+# push-ът 05:02:26 — 1 мин 44 s: GitHub комит + raw + кронът веднъж в минута). Сега след ВСЯКА пратена карта
+# за вход («signal») или изход («exit:*») ботът праща подписано събитие направо до платформата
+# (POST {AERO_URL}/api/bot-sabitie, HMAC-SHA256 на суровото тяло с тайната BOT_SABITIE_TAINA) → push до админа
+# за секунди. Без тайна → нищо. Таван 3 s. Всяка грешка се гълта: търговията и картите НЕ зависят от това.
+# Сървърът пише същия ключ като крона (avto-sdb|<tag>|<utc>) → кронът не праща втори път.
+# ПЪТ НАЗАД: БОТ_СЪБИТИЕ = 0 (или махни тайната от Secrets).
+БОТ_СЪБИТИЕ = 1
+
+
+def _бот_събитие(tag, utc, text):
+    """Подписано събитие до платформата за пратена карта. Никога не хвърля; връща кратък статус."""
+    try:
+        if not БОТ_СЪБИТИЕ:
+            return "off"
+        t = str(tag or "")
+        if not (t == "signal" or t.startswith("exit:")):
+            return "skip"
+        тайна = os.environ.get("BOT_SABITIE_TAINA", "").strip()
+        if not тайна:
+            return "no-secret"
+        import hmac as _hm, hashlib as _hl
+        адрес = (os.environ.get("AERO_URL", "").strip() or "https://aero.aaeromove.workers.dev").rstrip("/")
+        тяло = json.dumps({"v": 1, "tag": t, "utc": str(utc), "tekst": str(text or "")[:6000],
+                           "id": t + "|" + str(utc)}, ensure_ascii=False).encode("utf-8")
+        подпис = _hm.new(тайна.encode("utf-8"), тяло, _hl.sha256).hexdigest()
+        req = urllib.request.Request(адрес + "/api/bot-sabitie", data=тяло, method="POST",
+                                     headers={"Content-Type": "application/json", "X-AERO-Podpis": подпис,
+                                              "User-Agent": "aero-bot"})
+        with urllib.request.urlopen(req, timeout=3) as r:
+            return "http %s" % getattr(r, "status", "?")
+    except Exception as _e:
+        return "err %s" % type(_e).__name__
+
+
 def _tg_updates(tok, offset=None, timeout=10, диаг=None):
     """Новите съобщения до бота. Връща (списък, следващ_offset) или ([], offset).
 
@@ -20396,6 +20431,7 @@ def _outbox_flush(out_dir, new_msgs, statuses, dry=False):
                 _рд["повторно"] = True          # v18.89 · и повторът си носи белега
             with (out_dir / "sent_log.jsonl").open("a", encoding="utf-8") as fh:
                 fh.write(json.dumps(_с_д_ред(_рд, msg), ensure_ascii=False) + "\n")
+            _бот_събитие(msg.get("tag"), now_iso, msg.get("text", ""))   # 17.11 · БОТ_СЪБИТИЕ · несигурното е почти сигурно показано
             statuses[-1] = (f"{msg['tag']}=НЕСИГУРНО (таймаут при четене — "
                             f"Телеграм най-вероятно я е показал)")
             if (ПОВТОР_ИЗХОД and str(msg.get("tag", "")).split(":")[0] in EXIT_TAGS
@@ -20413,6 +20449,9 @@ def _outbox_flush(out_dir, new_msgs, statuses, dry=False):
                 _рд["повторно"] = True
             with (out_dir / "sent_log.jsonl").open("a", encoding="utf-8") as fh:
                 fh.write(json.dumps(_с_д_ред(_рд, msg), ensure_ascii=False) + "\n")
+            _бс = _бот_събитие(msg.get("tag"), now_iso, msg.get("text", ""))   # 17.11 · БОТ_СЪБИТИЕ
+            if _бс not in ("off", "skip", "no-secret"):
+                statuses.append(f"{msg['tag']}→платформата {_бс}")
         elif st.startswith("AUTH_FAIL"):
             # Самоличността е обща за всяка карта → НЕ брои за «отровна» карта.
             # Съобщението остава в пощата и се вдига същата тревога като при

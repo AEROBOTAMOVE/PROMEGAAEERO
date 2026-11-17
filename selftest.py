@@ -29235,7 +29235,7 @@ try:
        and "БЕЗ_СРЕЩУ_МАКРО" in _к209 and "БЕЗ_ЛОНГ_10_12" in _к209 and "BALANCE" in _к209
        and _ИЗХ209.count("\nЛОСТОВЕ_ОТ_YML = (\n") == 1)
     ck("П209 Д · извън списъка са само тайната, чатът и бутонът %s — нито една тайна в списъка" % _не_лост209,
-       _не_лост209 == ["STATUS_CARD", "TELEGRAM_CHAT_ID", "TELEGRAM_TOKEN", "КАНАРЧЕ_ЛОСТОВЕ"]
+       _не_лост209 == sorted(["STATUS_CARD", "TELEGRAM_CHAT_ID", "TELEGRAM_TOKEN", "КАНАРЧЕ_ЛОСТОВЕ", "BOT_SABITIE_TAINA"])   # 17.11 · + тайната на БОТ_СЪБИТИЕ
        and not any("secrets." in _в for _к, _в in _вс209 if _к in _лост209)
        and "TELEGRAM_TOKEN" not in _к209)
     _ямл_n209 = _yml209.replace("\r\n", "\n")
