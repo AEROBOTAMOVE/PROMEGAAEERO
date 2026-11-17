@@ -1,43 +1,52 @@
 {
- "kogato": "2026-11-17T07:12:43Z",
+ "kogato": "2026-11-17T07:23:13Z",
  "sekundi": 0.87,
  "broi": 200,
- "novi_tozi_pyt": 1,
+ "novi_tozi_pyt": 2,
  "iztochnici_ok": [
-  "Fed политика",
-  "Fed речи",
   "Fed всички",
+  "Fed политика",
   "MarketWatch",
-  "Investing",
+  "Fed речи",
   "Yahoo злато",
   "Yahoo долар",
+  "Investing",
   "CNBC",
-  "FT пазари",
   "Google злато",
+  "Google Fed",
+  "FT пазари",
   "Mining.com"
  ],
- "iztochnici_padnali": [
-  {
-   "ime": "Google Fed",
-   "greshka": "HTTPError: HTTP Error 429: Too Many Requests"
-  }
- ],
+ "iztochnici_padnali": [],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.2с",
-  "новини · FT пазари · 25 бр. за 0.32с",
-  "новини · Fed всички · 8 бр. за 0.14с",
-  "новини · Fed политика · 15 бр. за 0.12с",
-  "новини · Fed речи · 15 бр. за 0.13с",
-  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 429: Too Many Requests",
-  "новини · Google злато · 40 бр. за 0.41с",
-  "новини · Investing · 10 бр. за 0.19с",
-  "новини · MarketWatch · 10 бр. за 0.15с",
-  "новини · Mining.com · 36 бр. за 0.8с",
-  "новини · Yahoo долар · 10 бр. за 0.21с",
-  "новини · Yahoo злато · 18 бр. за 0.21с",
+  "новини · CNBC · 30 бр. за 0.35с",
+  "новини · FT пазари · 25 бр. за 0.68с",
+  "новини · Fed всички · 8 бр. за 0.07с",
+  "новини · Fed политика · 15 бр. за 0.11с",
+  "новини · Fed речи · 15 бр. за 0.12с",
+  "новини · Google Fed · 40 бр. за 0.42с",
+  "новини · Google злато · 40 бр. за 0.43с",
+  "новини · Investing · 10 бр. за 0.17с",
+  "новини · MarketWatch · 10 бр. за 0.1с",
+  "новини · Mining.com · 36 бр. за 0.82с",
+  "новини · Yahoo долар · 10 бр. за 0.18с",
+  "новини · Yahoo злато · 18 бр. за 0.18с",
   "новини · български ред: 82 от 200 · махнати по език: 0"
  ],
  "novini": [
+  {
+   "zaglavie": "Japan proposes ‘Asian IEA’ to manage oil stockpiles",
+   "vryzka": "https://www.ft.com/content/208b3dff-5d7a-4250-989a-821fb70fb896?syn-25a6b1a6=1",
+   "izvor": "Financial Times",
+   "chas": "2026-11-17T07:01:23Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "FT пазари",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
   {
    "zaglavie": "Gold (XAUUSD) & Silver Price Forecast: Gold Hovers Near One-Year Low on Fed Hike Bets, Can $3,832 Hold?",
    "vryzka": "https://news.google.com/rss/articles/CBMi3gFBVV95cUxOVk5Lb0pZQWhWYUVzMUs3aC1QMmJOUG5sRmlpYXB2TWU5YlNWVkd0ejZtUUVGM002eGhBUV9NTDJWa0pmRWkyODk0TldtWWdac1M2dGJxTTJMcHpwR1JWSVFoV0VyWDhZc0VobzFRbngxeGRRMGdRQ2NWN1czTFExZ0k5QkVqM0pxT3A4RmlVV0o5THg4MXN4M1h1a2c0MFFVQTNZZ2pheDE2d3FIVjhGaWY1dHdYckFkWnFjU1JmRFV5ZklhVllqYUU3dFVPUUU5V3kwQTZuamhvR0gxdGc?oc=5",
@@ -76,6 +85,19 @@
    "duma": "gold",
    "zashto": "Пряко за златото.",
    "bg": "Анализ и прогноза за златото"
+  },
+  {
+   "zaglavie": "Making the US dollar great again",
+   "vryzka": "https://www.ft.com/content/2c8ebea3-f202-44b6-8319-e7a466c51981?syn-25a6b1a6=1",
+   "izvor": "Financial Times",
+   "chas": "2026-11-17T06:30:04Z",
+   "vazhnost": 2,
+   "za": "долар",
+   "emisiya": "FT пазари",
+   "chas_ot_iztochnika": true,
+   "duma": "dollar",
+   "zashto": "Златото се мери в долари: по-силен долар обикновено значи по-евтино злато.",
+   "bg": null
   },
   {
    "zaglavie": "3 Australian Stock Picks Trading Up To 45% Below Cash Flow Value",
@@ -751,6 +773,19 @@
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "Silver Leads Gold to New 2026 Lows: What the Ratio Says",
+   "vryzka": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxPMW1rNWJLc3pBMGZtYnZoZVlPUXplXzJ5NDk2VU5IZFNheTAwWFNmaVJmX21sRGFOUVBLMmtNTjNBUk5CUndtcmNuV2ZGQWFTTDdNVUJWSWVCS284MlVROU12M3ZNNEtQblNLdEN1MklSbzh6ODcyWkpJWE9rb2ZFZlp1SUN0ajd0YldRaTJhLWFQZXoxLU5PbXJsNnFDS3BUUTcyNDVTbHM?oc=5",
+   "izvor": "FXEmpire",
+   "chas": "2026-11-17T01:13:00Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
    "bg": null
   },
   {
@@ -2249,19 +2284,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Silver Leads Gold to New 2026 Lows: What the Ratio Says",
-   "vryzka": "https://www.investing.com/analysis/silver-leads-gold-to-new-2026-lows-what-the-ratio-says-200691678",
-   "izvor": "Investing.com",
-   "chas": "2026-11-16T17:54:00Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Investing",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": null
-  },
-  {
    "zaglavie": "390-year-old Ivy League university quietly hoards Bitcoin and gold",
    "vryzka": "https://www.thestreet.com/crypto/markets/this-390-year-old-university-is-quietly-betting-big-on-bitcoin-and-gold?.tsrc=rss",
    "izvor": "Yahoo Finance",
@@ -2496,32 +2518,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Rio pledges $250 million to address Panguna damage",
-   "vryzka": "https://www.mining.com/rio-pledges-250m-to-address-panguna-damage/",
-   "izvor": "Mining.com",
-   "chas": "2026-11-16T17:00:54Z",
-   "vazhnost": 1,
-   "za": "злато",
-   "emisiya": "Mining.com",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
-   "zaglavie": "Rio pledges $250M to address Panguna damage",
-   "vryzka": "https://www.mining.com/rio-pledges-250m-to-address-panguna-damage/",
-   "izvor": "Mining.com",
-   "chas": "2026-11-16T17:00:54Z",
-   "vazhnost": 1,
-   "za": "злато",
-   "emisiya": "Mining.com",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
    "zaglavie": "Warsh, Opening Remarks",
    "vryzka": "https://www.federalreserve.gov/newsevents/speech/warsh20261116a.htm",
    "izvor": "Fed",
@@ -2580,10 +2576,10 @@
    "chas": "2026-11-12T17:45:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed политика",
+   "emisiya": "Fed всички",
    "chas_ot_iztochnika": true,
    "duma": "fed",
-   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
+   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
    "bg": "Съобщение на Фед — централната банка на САЩ"
   },
   {
@@ -2632,10 +2628,10 @@
    "chas": "2026-10-28T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed политика",
+   "emisiya": "Fed всички",
    "chas_ot_iztochnika": true,
    "duma": "fomc",
-   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
+   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   }
  ],

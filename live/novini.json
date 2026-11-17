@@ -1,39 +1,59 @@
 {
- "kogato": "2026-11-17T07:23:13Z",
- "sekundi": 0.87,
+ "kogato": "2026-11-17T07:33:58Z",
+ "sekundi": 0.92,
  "broi": 200,
- "novi_tozi_pyt": 2,
+ "novi_tozi_pyt": 1,
  "iztochnici_ok": [
-  "Fed всички",
   "Fed политика",
-  "MarketWatch",
   "Fed речи",
-  "Yahoo злато",
-  "Yahoo долар",
+  "Fed всички",
+  "MarketWatch",
   "Investing",
+  "Yahoo долар",
+  "Yahoo злато",
   "CNBC",
-  "Google злато",
-  "Google Fed",
   "FT пазари",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google Fed",
+   "greshka": "HTTPError: HTTP Error 429: Too Many Requests"
+  },
+  {
+   "ime": "Google злато",
+   "greshka": "HTTPError: HTTP Error 429: Too Many Requests"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.35с",
-  "новини · FT пазари · 25 бр. за 0.68с",
-  "новини · Fed всички · 8 бр. за 0.07с",
-  "новини · Fed политика · 15 бр. за 0.11с",
-  "новини · Fed речи · 15 бр. за 0.12с",
-  "новини · Google Fed · 40 бр. за 0.42с",
-  "новини · Google злато · 40 бр. за 0.43с",
-  "новини · Investing · 10 бр. за 0.17с",
-  "новини · MarketWatch · 10 бр. за 0.1с",
-  "новини · Mining.com · 36 бр. за 0.82с",
-  "новини · Yahoo долар · 10 бр. за 0.18с",
-  "новини · Yahoo злато · 18 бр. за 0.18с",
+  "новини · CNBC · 30 бр. за 0.23с",
+  "новини · FT пазари · 25 бр. за 0.61с",
+  "новини · Fed всички · 8 бр. за 0.08с",
+  "новини · Fed политика · 15 бр. за 0.05с",
+  "новини · Fed речи · 15 бр. за 0.06с",
+  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 429: Too Many Requests",
+  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 429: Too Many Requests",
+  "новини · Investing · 10 бр. за 0.15с",
+  "новини · MarketWatch · 10 бр. за 0.08с",
+  "новини · Mining.com · 36 бр. за 0.85с",
+  "новини · Yahoo долар · 10 бр. за 0.17с",
+  "новини · Yahoo злато · 18 бр. за 0.19с",
   "новини · български ред: 82 от 200 · махнати по език: 0"
  ],
  "novini": [
+  {
+   "zaglavie": "Gold and Silver Alert: Is a Precious Metals Reversal Ahead?",
+   "vryzka": "https://www.investing.com/analysis/gold-and-silver-alert-is-a-precious-metals-reversal-ahead-200691702",
+   "izvor": "Investing.com",
+   "chas": "2026-11-17T07:07:00Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Investing",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": null
+  },
   {
    "zaglavie": "Japan proposes ‘Asian IEA’ to manage oil stockpiles",
    "vryzka": "https://www.ft.com/content/208b3dff-5d7a-4250-989a-821fb70fb896?syn-25a6b1a6=1",
@@ -327,7 +347,7 @@
    "chas": "2026-11-17T04:30:00Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Yahoo злато",
+   "emisiya": "Yahoo долар",
    "chas_ot_iztochnika": true,
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
@@ -587,7 +607,7 @@
    "chas": "2026-11-17T02:09:06Z",
    "vazhnost": 2,
    "za": "злато",
-   "emisiya": "Yahoo злато",
+   "emisiya": "Yahoo долар",
    "chas_ot_iztochnika": true,
    "duma": "gold",
    "zashto": "Пряко за златото.",
@@ -773,19 +793,6 @@
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null,
-   "bg": null
-  },
-  {
-   "zaglavie": "Silver Leads Gold to New 2026 Lows: What the Ratio Says",
-   "vryzka": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxPMW1rNWJLc3pBMGZtYnZoZVlPUXplXzJ5NDk2VU5IZFNheTAwWFNmaVJmX21sRGFOUVBLMmtNTjNBUk5CUndtcmNuV2ZGQWFTTDdNVUJWSWVCS284MlVROU12M3ZNNEtQblNLdEN1MklSbzh6ODcyWkpJWE9rb2ZFZlp1SUN0ajd0YldRaTJhLWFQZXoxLU5PbXJsNnFDS3BUUTcyNDVTbHM?oc=5",
-   "izvor": "FXEmpire",
-   "chas": "2026-11-17T01:13:00Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
    "bg": null
   },
   {
@@ -2284,6 +2291,19 @@
    "bg": null
   },
   {
+   "zaglavie": "Silver Leads Gold to New 2026 Lows: What the Ratio Says",
+   "vryzka": "https://www.investing.com/analysis/silver-leads-gold-to-new-2026-lows-what-the-ratio-says-200691678",
+   "izvor": "Investing.com",
+   "chas": "2026-11-16T17:54:00Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Investing",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": null
+  },
+  {
    "zaglavie": "390-year-old Ivy League university quietly hoards Bitcoin and gold",
    "vryzka": "https://www.thestreet.com/crypto/markets/this-390-year-old-university-is-quietly-betting-big-on-bitcoin-and-gold?.tsrc=rss",
    "izvor": "Yahoo Finance",
@@ -2505,19 +2525,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Toy sales aren’t just about kids anymore",
-   "vryzka": "https://www.retaildive.com/news/toy-sales-growth-adults-circana/874706/?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-11-16T17:05:00Z",
-   "vazhnost": 2,
-   "za": "долар",
-   "emisiya": "Yahoo долар",
-   "chas_ot_iztochnika": true,
-   "duma": "dollar",
-   "zashto": "Златото се мери в долари: по-силен долар обикновено значи по-евтино злато.",
-   "bg": null
-  },
-  {
    "zaglavie": "Warsh, Opening Remarks",
    "vryzka": "https://www.federalreserve.gov/newsevents/speech/warsh20261116a.htm",
    "izvor": "Fed",
@@ -2576,10 +2583,10 @@
    "chas": "2026-11-12T17:45:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed всички",
+   "emisiya": "Fed политика",
    "chas_ot_iztochnika": true,
    "duma": "fed",
-   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
+   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
    "bg": "Съобщение на Фед — централната банка на САЩ"
   },
   {
@@ -2628,10 +2635,10 @@
    "chas": "2026-10-28T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed всички",
+   "emisiya": "Fed политика",
    "chas_ot_iztochnika": true,
    "duma": "fomc",
-   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
+   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   }
  ],
