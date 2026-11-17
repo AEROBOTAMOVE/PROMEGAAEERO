@@ -1,40 +1,40 @@
 {
- "kogato": "2026-11-17T04:43:50Z",
- "sekundi": 0.92,
+ "kogato": "2026-11-17T04:54:41Z",
+ "sekundi": 12.23,
  "broi": 200,
- "novi_tozi_pyt": 3,
+ "novi_tozi_pyt": 0,
  "iztochnici_ok": [
+  "Fed всички",
   "Fed политика",
   "Fed речи",
-  "Fed всички",
   "MarketWatch",
   "Investing",
-  "CNBC",
-  "Yahoo долар",
   "Yahoo злато",
+  "Yahoo долар",
+  "CNBC",
   "FT пазари",
   "Google злато",
-  "Mining.com"
+  "Google Fed"
  ],
  "iztochnici_padnali": [
   {
-   "ime": "Google Fed",
-   "greshka": "HTTPError: HTTP Error 429: Too Many Requests"
+   "ime": "Mining.com",
+   "greshka": "TimeoutError: The read operation timed out"
   }
  ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.1с",
-  "новини · FT пазари · 25 бр. за 0.21с",
-  "новини · Fed всички · 8 бр. за 0.06с",
-  "новини · Fed политика · 15 бр. за 0.05с",
-  "новини · Fed речи · 15 бр. за 0.05с",
-  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 429: Too Many Requests",
-  "новини · Google злато · 40 бр. за 0.36с",
-  "новини · Investing · 10 бр. за 0.09с",
-  "новини · MarketWatch · 10 бр. за 0.06с",
-  "новини · Mining.com · 36 бр. за 0.84с",
-  "новини · Yahoo долар · 11 бр. за 0.12с",
-  "новини · Yahoo злато · 16 бр. за 0.12с",
+  "новини · CNBC · 30 бр. за 0.26с",
+  "новини · FT пазари · 25 бр. за 0.28с",
+  "новини · Fed всички · 8 бр. за 0.11с",
+  "новини · Fed политика · 15 бр. за 0.14с",
+  "новини · Fed речи · 15 бр. за 0.15с",
+  "новини · Google Fed · 40 бр. за 0.42с",
+  "новини · Google злато · 40 бр. за 0.41с",
+  "новини · Investing · 10 бр. за 0.2с",
+  "новини · MarketWatch · 10 бр. за 0.17с",
+  "новини · Mining.com · ПАДНА: TimeoutError: The read operation timed out",
+  "новини · Yahoo долар · 11 бр. за 0.26с",
+  "новини · Yahoo злато · 16 бр. за 0.23с",
   "новини · български ред: 76 от 200 · махнати по език: 0"
  ],
  "novini": [
@@ -292,7 +292,7 @@
    "chas": "2026-11-17T02:09:06Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Yahoo долар",
+   "emisiya": "Yahoo злато",
    "chas_ot_iztochnika": true,
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
@@ -2580,10 +2580,10 @@
    "chas": "2026-11-12T17:45:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed политика",
+   "emisiya": "Fed всички",
    "chas_ot_iztochnika": true,
    "duma": "fed",
-   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
+   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
    "bg": "Съобщение на Фед — централната банка на САЩ"
   },
   {
@@ -2632,10 +2632,10 @@
    "chas": "2026-10-28T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed политика",
+   "emisiya": "Fed всички",
    "chas_ot_iztochnika": true,
    "duma": "fomc",
-   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
+   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   }
  ],
