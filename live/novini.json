@@ -1,44 +1,61 @@
 {
- "kogato": "2026-11-17T16:51:09Z",
- "sekundi": 0.84,
+ "kogato": "2026-11-17T17:02:00Z",
+ "sekundi": 0.9,
  "broi": 200,
- "novi_tozi_pyt": 3,
+ "novi_tozi_pyt": 2,
  "iztochnici_ok": [
-  "MarketWatch",
   "Fed всички",
-  "Fed политика",
   "Fed речи",
+  "Fed политика",
   "Investing",
+  "MarketWatch",
   "Yahoo злато",
   "Yahoo долар",
-  "FT пазари",
-  "Google Fed",
-  "Google злато",
   "CNBC",
+  "Google злато",
+  "FT пазари",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google Fed",
+   "greshka": "HTTPError: HTTP Error 429: Too Many Requests"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.54с",
-  "новини · FT пазари · 25 бр. за 0.34с",
-  "новини · Fed всички · 8 бр. за 0.09с",
-  "новини · Fed политика · 15 бр. за 0.12с",
-  "новини · Fed речи · 15 бр. за 0.13с",
-  "новини · Google Fed · 40 бр. за 0.37с",
-  "новини · Google злато · 40 бр. за 0.45с",
-  "новини · Investing · 10 бр. за 0.13с",
-  "новини · MarketWatch · 10 бр. за 0.08с",
-  "новини · Mining.com · 36 бр. за 0.79с",
-  "новини · Yahoo долар · 11 бр. за 0.27с",
-  "новини · Yahoo злато · 18 бр. за 0.23с",
+  "новини · CNBC · 30 бр. за 0.21с",
+  "новини · FT пазари · 25 бр. за 0.54с",
+  "новини · Fed всички · 8 бр. за 0.05с",
+  "новини · Fed политика · 15 бр. за 0.05с",
+  "новини · Fed речи · 15 бр. за 0.04с",
+  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 429: Too Many Requests",
+  "новини · Google злато · 40 бр. за 0.39с",
+  "новини · Investing · 10 бр. за 0.08с",
+  "новини · MarketWatch · 10 бр. за 0.11с",
+  "новини · Mining.com · 36 бр. за 0.83с",
+  "новини · Yahoo долар · 11 бр. за 0.18с",
+  "новини · Yahoo злато · 18 бр. за 0.16с",
   "новини · български ред: 93 от 200 · махнати по език: 0"
  ],
  "novini": [
   {
+   "zaglavie": "Magna Terra Minerals Begins High-Resolution Airborne Magnetic and Radiometric Survey Over Cape Spencer Project",
+   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/magna-terra-minerals-begins-high-165341554.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-17T16:53:41Z",
+   "vazhnost": 1,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
    "zaglavie": "Gold Weekly Forecast: Strong Dollar and Rate Hike Bets Add Pressure",
    "vryzka": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxOR0lDUzNyWktLdGtvcDJwMXJZblJnV2ZVMFZZOG9SXzQzS294UGo5QWR1QkNaTmNkcGxJZzRCVFlMN0NNcnNFdkMyWFNCcFE0MVJreDdEa0szcUdFVEVVdWRCdWpINHlSVHMtaE9velhranVFenBqUUJPa2J3ZkdESnFkN2l2dmU5Ymdna2RhMkdEeEhveTNoOVh6clF4QWx0bnpuc1hpcFh3dnJWV28wLTl5V1QxdjFB?oc=5",
    "izvor": "FXEmpire",
-   "chas": "2026-11-17T16:47:42Z",
+   "chas": "2026-11-17T16:51:54Z",
    "vazhnost": 3,
    "za": "злато",
    "emisiya": "Google злато",
@@ -111,6 +128,19 @@
    "duma": "gold",
    "zashto": "Пряко за златото.",
    "bg": "Цената на златото днес"
+  },
+  {
+   "zaglavie": "Gold will reclaim $5,600/oz in 2028 as rate cuts bring Western investors back to precious metals – Goldman Sachs",
+   "vryzka": "https://news.google.com/rss/articles/CBMitAFBVV95cUxQSkFNSTNMZjM2c2VOOW1qQmlURFQ2UFNPaVBlLTd0Mm11WVN1c1ptLWxqMlF6MmVTU2ctZlUtWXBHMGsxenpqUGo3RlVDY1Bsd0JIRE8xNUNKV2x4anJJT0FqaFJOZ2VLVE85eXUxZzhJU0IzcEUxc1lfblkxTFA5VXVPVElrcDVTLV9FaDJETTBKc080ZGFYWFU3ZXhGaThoblBNN0xoLTBvWGNQNHR2dDJHWTk?oc=5",
+   "izvor": "Kitco",
+   "chas": "2026-11-17T16:22:43Z",
+   "vazhnost": 3,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "rate",
+   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
+   "bg": null
   },
   {
    "zaglavie": "Emerging markets are less hostile to the Fed than they used to be",
@@ -737,6 +767,19 @@
    "bg": null
   },
   {
+   "zaglavie": "Goldman Sachs Predicts Gold Price Will Reach $5,600 by 2028",
+   "vryzka": "https://news.google.com/rss/articles/CBMingFBVV95cUxOMDJWXzRYcmRiWGxaVnpCa21QRy1JaTlWRFpLNmxhSlllUWlJdzBjbU91bTNBVk1fVGp3SnItVkFhNURURU5hR3NhT3J5ZHdQRm4yeFZEanNKVHB1ZHp0Sm40YmxnT01qeUtTLWl2U0xoV2FtaXRFZnRPSEE0NFk0Y243TDdSMjg5dEpUQ1k3NDZmNzlJMm1kYlpxMzhNQdIBowFBVV95cUxQSTRLMlRRS29nWTdkUEIwbl9vdnk0MnYzSzZpTWI2bm5DZVgyTW1DZnFON3Ixek1WZGdQTTBsaTVrdkJuVUhvLXhMMUNYS3dyZE9ZcENrMHVrZHNlV2N4VEF3T3dxZG1ES0YxbVozdWR2ajRlUDNQcHMxRWNqR1NEcVRPMUwzSjlTXzQ0TWV6cnE2SGhyaGk0ampnYUhJc0FTYjA4?oc=5",
+   "izvor": "Coinpedia",
+   "chas": "2026-11-17T13:48:31Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": null
+  },
+  {
    "zaglavie": "U.S. retail sales slow just ahead of the holiday shopping season. A hint of trouble?",
    "vryzka": "https://www.marketwatch.com/story/u-s-retail-sales-slow-just-ahead-of-the-holiday-shopping-season-a-hint-of-trouble-a89c9f98?mod=mw_rss_topstories",
    "izvor": "MarketWatch",
@@ -748,19 +791,6 @@
    "duma": null,
    "zashto": null,
    "bg": "Данни за продажбите на дребно в САЩ"
-  },
-  {
-   "zaglavie": "Goldman Sachs Predicts Gold Price Will Reach $5,600 by 2028",
-   "vryzka": "https://news.google.com/rss/articles/CBMingFBVV95cUxOMDJWXzRYcmRiWGxaVnpCa21QRy1JaTlWRFpLNmxhSlllUWlJdzBjbU91bTNBVk1fVGp3SnItVkFhNURURU5hR3NhT3J5ZHdQRm4yeFZEanNKVHB1ZHp0Sm40YmxnT01qeUtTLWl2U0xoV2FtaXRFZnRPSEE0NFk0Y243TDdSMjg5dEpUQ1k3NDZmNzlJMm1kYlpxMzhNQdIBowFBVV95cUxQSTRLMlRRS29nWTdkUEIwbl9vdnk0MnYzSzZpTWI2bm5DZVgyTW1DZnFON3Ixek1WZGdQTTBsaTVrdkJuVUhvLXhMMUNYS3dyZE9ZcENrMHVrZHNlV2N4VEF3T3dxZG1ES0YxbVozdWR2ajRlUDNQcHMxRWNqR1NEcVRPMUwzSjlTXzQ0TWV6cnE2SGhyaGk0ampnYUhJc0FTYjA4?oc=5",
-   "izvor": "Coinpedia",
-   "chas": "2026-11-17T13:39:31Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": null
   },
   {
    "zaglavie": "5 Things Investors Need to Know About Tuesday’s Markets",
@@ -1010,19 +1040,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Here’s when Goldman expects gold prices to reach $5,600/oz",
-   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/goldman-expects-gold-prices-reach-130204961.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-11-17T13:02:04Z",
-   "vazhnost": 3,
-   "za": "злато",
-   "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": "rates",
-   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
-   "bg": null
-  },
-  {
    "zaglavie": "Puma Refines the Grog Gold Zone Potential",
    "vryzka": "https://finance.yahoo.com/markets/commodities/articles/puma-refines-grog-gold-zone-130200588.html?.tsrc=rss",
    "izvor": "Yahoo Finance",
@@ -1173,6 +1190,19 @@
    "vazhnost": 2,
    "za": "злато",
    "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": null
+  },
+  {
+   "zaglavie": "Here’s when Goldman expects gold prices to reach $5,600/oz",
+   "vryzka": "https://news.google.com/rss/articles/CBMirwFBVV95cUxOUWxQdG1wQVJSRHJnd3hLOVFadl91eno5X2NSZlpxcmdUNHd4b29tREdBVU9sQjJyY3V3dERjUDRmMnVBVldDY3J4RUZOcGVKSXhxNG1WMXlpVU9VNVNQMDZ6bHhHYjF5V0ZzcXkzdnlLYVJuNXpEbWZuWVM2YzZjdWkxRHNNbzduSUJzSDFhOUZFVC14Y29heUU0aDEwUzZaODc5MV95bU9Tc3ZKbVJV?oc=5",
+   "izvor": "Investing.com",
+   "chas": "2026-11-17T12:37:07Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
    "chas_ot_iztochnika": true,
    "duma": "gold",
    "zashto": "Пряко за златото.",
@@ -1770,7 +1800,7 @@
    "chas": "2026-11-17T10:17:14Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Google Fed",
+   "emisiya": "Google злато",
    "chas_ot_iztochnika": true,
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
@@ -2490,32 +2520,6 @@
    "duma": "rate",
    "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
    "bg": "За вдигане на лихвата от Фед"
-  },
-  {
-   "zaglavie": "Orezone Gold Corp (ORZCF) (Q3 2026) Earnings Call Highlights: Record Gold Production and Strong ...",
-   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/orezone-gold-corp-orzcf-q3-050052876.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-11-17T05:00:52Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": null
-  },
-  {
-   "zaglavie": "Jay-Z backed music rights firm raises nearly $700mn to expand portfolio",
-   "vryzka": "https://www.ft.com/content/3b51a260-2e6c-452e-a109-ea7c1fe85b3a?syn-25a6b1a6=1",
-   "izvor": "Financial Times",
-   "chas": "2026-11-17T05:00:25Z",
-   "vazhnost": 2,
-   "za": "лихви",
-   "emisiya": "FT пазари",
-   "chas_ot_iztochnika": true,
-   "duma": "yields",
-   "zashto": "Доходността другаде е цената, която златото плаща — то самò не плаща лихва.",
-   "bg": null
   },
   {
    "zaglavie": "Warsh, Opening Remarks",
