@@ -1,39 +1,56 @@
 {
- "kogato": "2026-11-18T06:08:28Z",
- "sekundi": 0.8,
+ "kogato": "2026-11-18T06:19:20Z",
+ "sekundi": 0.82,
  "broi": 200,
  "novi_tozi_pyt": 1,
  "iztochnici_ok": [
+  "Fed речи",
   "Fed политика",
   "Fed всички",
-  "MarketWatch",
-  "Fed речи",
   "Investing",
-  "CNBC",
   "Yahoo злато",
+  "MarketWatch",
+  "CNBC",
   "Yahoo долар",
-  "Google злато",
-  "Google Fed",
   "FT пазари",
+  "Google Fed",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google злато",
+   "greshka": "HTTPError: HTTP Error 429: Too Many Requests"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.28с",
-  "новини · FT пазари · 25 бр. за 0.62с",
-  "новини · Fed всички · 8 бр. за 0.08с",
-  "новини · Fed политика · 15 бр. за 0.08с",
-  "новини · Fed речи · 15 бр. за 0.13с",
-  "новини · Google Fed · 40 бр. за 0.45с",
-  "новини · Google злато · 40 бр. за 0.49с",
-  "новини · Investing · 10 бр. за 0.18с",
-  "новини · MarketWatch · 10 бр. за 0.08с",
-  "новини · Mining.com · 36 бр. за 0.76с",
-  "новини · Yahoo долар · 10 бр. за 0.32с",
-  "новини · Yahoo злато · 19 бр. за 0.31с",
-  "новини · български ред: 82 от 200 · махнати по език: 2"
+  "новини · CNBC · 30 бр. за 0.21с",
+  "новини · FT пазари · 25 бр. за 0.23с",
+  "новини · Fed всички · 8 бр. за 0.07с",
+  "новини · Fed политика · 15 бр. за 0.06с",
+  "новини · Fed речи · 15 бр. за 0.06с",
+  "новини · Google Fed · 40 бр. за 0.37с",
+  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 429: Too Many Requests",
+  "новини · Investing · 10 бр. за 0.09с",
+  "новини · MarketWatch · 10 бр. за 0.14с",
+  "новини · Mining.com · 36 бр. за 0.75с",
+  "новини · Yahoo долар · 10 бр. за 0.23с",
+  "новини · Yahoo злато · 19 бр. за 0.14с",
+  "новини · български ред: 83 от 200 · махнати по език: 2"
  ],
  "novini": [
+  {
+   "zaglavie": "JPMorgan is working on AI agent transactions that don’t involve humans",
+   "vryzka": "https://www.cnbc.com/2026/11/18/jpmorgan-hyundai-card-ai-agents-payments.html",
+   "izvor": "CNBC",
+   "chas": "2026-11-18T06:18:11Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "CNBC",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
   {
    "zaglavie": "Three things to watch as Trump, Xi and Putin meet in China",
    "vryzka": "https://www.cnbc.com/2026/11/18/apec-trump-xi-putin-shenzhen.html",
@@ -59,19 +76,6 @@
    "duma": "gold",
    "zashto": "Пряко за златото.",
    "bg": "Анализ и прогноза за златото"
-  },
-  {
-   "zaglavie": "JPMorgan is working on AI agent transactions that don’t involve humans",
-   "vryzka": "https://www.cnbc.com/2026/11/18/jpmorgan-hyundai-card-ai-agents-payments.html",
-   "izvor": "CNBC",
-   "chas": "2026-11-18T05:46:17Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "CNBC",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
   },
   {
    "zaglavie": "Gold price falls by Tk 2,216 per bhari",
@@ -561,7 +565,7 @@
    "chas": "2026-11-18T02:16:00Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Google злато",
+   "emisiya": "Google Fed",
    "chas_ot_iztochnika": true,
    "duma": "rate",
    "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
@@ -800,6 +804,19 @@
    "duma": "rates",
    "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
    "bg": null
+  },
+  {
+   "zaglavie": "Dead Cross Nears for Major US Bank Stocks as Fed Rate Hikes, AI Concerns Weigh",
+   "vryzka": "https://news.google.com/rss/articles/CBMidkFVX3lxTE1NOWtQQV8wNHVZYnZQQmpUSXZZSUw3NkpYNHhuZ3ZGcGM5VHppUUlkRDlCWnVDbndTekpqcnNBNWEwTGNEYTVrV0xYbUtVMnY5eEFMakxEN1BzcUZtYWhINlNVVjM0eFlMaXZ2NHlUOTdpaURTcWc?oc=5",
+   "izvor": "BigGo Finance",
+   "chas": "2026-11-17T23:55:00Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": "За вдигане на лихвата от Фед"
   },
   {
    "zaglavie": "My husband is happily retired at 64 and thinks I should keep working. Is he being fair?",
@@ -1101,19 +1118,6 @@
    "bg": null
   },
   {
-   "zaglavie": "My older brother, who has no children, cut our only sister out of his will. I’ll get everything instead. Do I tell her?",
-   "vryzka": "https://www.marketwatch.com/story/she-has-a-history-of-financial-mismanagement-my-brother-cut-my-sister-out-of-his-will-im-getting-everything-do-i-tell-her-3e537851?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-11-17T21:30:00Z",
-   "vazhnost": 1,
-   "za": "лихви",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
    "zaglavie": "Coeur to Participate in National Bank’s CEO Mining Conference",
    "vryzka": "https://finance.yahoo.com/markets/commodities/articles/coeur-participate-national-bank-ceo-213000825.html?.tsrc=rss",
    "izvor": "Yahoo Finance",
@@ -1121,6 +1125,19 @@
    "vazhnost": 1,
    "za": "злато",
    "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "My older brother, who has no children, cut our only sister out of his will. I’ll get everything instead. Do I tell her?",
+   "vryzka": "https://www.marketwatch.com/story/she-has-a-history-of-financial-mismanagement-my-brother-cut-my-sister-out-of-his-will-im-getting-everything-do-i-tell-her-3e537851?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-11-17T21:30:00Z",
+   "vazhnost": 1,
+   "za": "лихви",
+   "emisiya": "MarketWatch",
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null,
@@ -1900,7 +1917,7 @@
    "chas": "2026-11-17T18:02:58Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Google злато",
+   "emisiya": "Google Fed",
    "chas_ot_iztochnika": true,
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
@@ -2492,19 +2509,6 @@
    "bg": null
   },
   {
-   "zaglavie": "BC-Gold Futures",
-   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/bc-gold-futures-150025256.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-11-17T15:00:25Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": null
-  },
-  {
    "zaglavie": "Waller, Considerations at the Intersection of Payments and Tokenized Markets",
    "vryzka": "https://www.federalreserve.gov/newsevents/speech/waller20261117a.htm",
    "izvor": "Fed",
@@ -2635,6 +2639,6 @@
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   }
  ],
- "s_bg_red": 82,
+ "s_bg_red": 83,
  "mahnati_ezik": 2
 }
