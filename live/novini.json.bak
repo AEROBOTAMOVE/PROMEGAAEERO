@@ -1,39 +1,56 @@
 {
- "kogato": "2026-11-18T16:50:51Z",
- "sekundi": 0.85,
+ "kogato": "2026-11-18T17:01:47Z",
+ "sekundi": 0.83,
  "broi": 200,
- "novi_tozi_pyt": 7,
+ "novi_tozi_pyt": 2,
  "iztochnici_ok": [
-  "Fed речи",
+  "MarketWatch",
   "Fed политика",
   "Fed всички",
+  "Fed речи",
   "Investing",
-  "MarketWatch",
-  "CNBC",
-  "Yahoo злато",
   "Yahoo долар",
-  "Google Fed",
+  "Yahoo злато",
   "FT пазари",
-  "Google злато",
+  "CNBC",
+  "Google Fed",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google злато",
+   "greshka": "HTTPError: HTTP Error 429: Too Many Requests"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.23с",
-  "новини · FT пазари · 25 бр. за 0.51с",
-  "новини · Fed всички · 8 бр. за 0.11с",
-  "новини · Fed политика · 15 бр. за 0.1с",
-  "новини · Fed речи · 15 бр. за 0.09с",
-  "новини · Google Fed · 40 бр. за 0.42с",
-  "новини · Google злато · 40 бр. за 0.65с",
-  "новини · Investing · 10 бр. за 0.15с",
-  "новини · MarketWatch · 10 бр. за 0.19с",
-  "новини · Mining.com · 36 бр. за 0.77с",
-  "новини · Yahoo долар · 15 бр. за 0.25с",
-  "новини · Yahoo злато · 16 бр. за 0.24с",
-  "новини · български ред: 87 от 200 · махнати по език: 2"
+  "новини · CNBC · 30 бр. за 0.44с",
+  "новини · FT пазари · 25 бр. за 0.37с",
+  "новини · Fed всички · 8 бр. за 0.07с",
+  "новини · Fed политика · 15 бр. за 0.07с",
+  "новини · Fed речи · 15 бр. за 0.08с",
+  "новини · Google Fed · 40 бр. за 0.45с",
+  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 429: Too Many Requests",
+  "новини · Investing · 10 бр. за 0.1с",
+  "новини · MarketWatch · 10 бр. за 0.06с",
+  "новини · Mining.com · 36 бр. за 0.75с",
+  "новини · Yahoo долар · 15 бр. за 0.14с",
+  "новини · Yahoo злато · 16 бр. за 0.16с",
+  "новини · български ред: 87 от 200 · махнати по език: 1"
  ],
  "novini": [
+  {
+   "zaglavie": "The Fed's next moves come into focus",
+   "vryzka": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5KbmF6LXJjeHdMZ1c5SHl1d0FreWlmM1NHX1NKbkhFR0EzV3NnSXlZaVgyNXNmbGdBeERPQ2xPaUNRN2lhX3VLOTJfaF9XTmpFS3BQcDlfaU9vMExQeEYxbmJ3U1hlYTZOUkNaUw?oc=5",
+   "izvor": "Axios",
+   "chas": "2026-11-18T16:59:21Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": null
+  },
   {
    "zaglavie": "Gold prices shed Tk 14,288 a bhari in 6 straight cuts",
    "vryzka": "https://news.google.com/rss/articles/CBMirgFBVV95cUxPeE5JdHEyTGVLRHBwZVZjUFFSVlhNYkRWYzFNUXdDbFNDMVFlQjMwRXhlNnJmWkQ0NVRGTHVYeU5jVVlzOWpQUUZjb2lCRS1DMU9vNUs5cU9PcGl6Tjg0OHhXWHdYSWc1a2MwSFhvS3dLWGRtRF91UWRJTUZQR1RKZms1a2tzZE4zWWxocWI5OC1VU3Q2aXg0QmRibW9fS2c5cE9hamdNYTRRYTI3Q2c?oc=5",
@@ -46,6 +63,19 @@
    "duma": "gold",
    "zashto": "Пряко за златото.",
    "bg": "Златото поевтинява"
+  },
+  {
+   "zaglavie": "Gold Is at a 14-Month Low as Traders Bet on More Fed Hikes",
+   "vryzka": "https://247wallst.com/investing/2026/11/18/gold-is-at-a-14-month-low-as-traders-bet-on-more-fed-hikes/?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-18T16:43:18Z",
+   "vazhnost": 3,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": "Златото и очакванията за по-висока лихва от Фед"
   },
   {
    "zaglavie": "US tech lower after Nvidia results",
@@ -87,19 +117,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Gold Is Reliving 2022, but the Selloff Is Already Worse",
-   "vryzka": "https://www.investing.com/analysis/gold-is-reliving-2022-but-the-selloff-is-already-worse-200691847",
-   "izvor": "Investing.com",
-   "chas": "2026-11-18T16:30:00Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Investing",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": null
-  },
-  {
    "zaglavie": "CoreWeave’s stock drops as Nvidia talks up a ‘disciplined’ approach to financing",
    "vryzka": "https://www.marketwatch.com/story/coreweaves-stock-pops-even-as-nvidia-talks-up-a-disciplined-approach-to-financing-e7f00876?mod=mw_rss_topstories",
    "izvor": "MarketWatch",
@@ -110,6 +127,19 @@
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "Gold Is Reliving 2022, but the Selloff Is Already Worse",
+   "vryzka": "https://www.investing.com/analysis/gold-is-reliving-2022-but-the-selloff-is-already-worse-200691847",
+   "izvor": "Investing.com",
+   "chas": "2026-11-18T16:30:00Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Investing",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
    "bg": null
   },
   {
@@ -308,19 +338,6 @@
    "bg": "Изказване на член на Фед (Waller) за вдигане на лихвата"
   },
   {
-   "zaglavie": "The Energy Report: Supply Side Oil Economics",
-   "vryzka": "https://www.investing.com/analysis/the-energy-report-supply-side-oil-economics-200691844",
-   "izvor": "Investing.com",
-   "chas": "2026-11-18T15:32:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "Investing",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
    "zaglavie": "‘I felt so seen’: Why families across America are laughing — and crying — over SNL’s ‘Sister’ sketch",
    "vryzka": "https://www.marketwatch.com/story/so-sad-and-so-true-has-your-family-talked-about-snls-sister-sketch-yet-19bf9d67?mod=mw_rss_topstories",
    "izvor": "MarketWatch",
@@ -328,6 +345,19 @@
    "vazhnost": 1,
    "za": "общо",
    "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "The Energy Report: Supply Side Oil Economics",
+   "vryzka": "https://www.investing.com/analysis/the-energy-report-supply-side-oil-economics-200691844",
+   "izvor": "Investing.com",
+   "chas": "2026-11-18T15:32:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "Investing",
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null,
@@ -1029,7 +1059,7 @@
    "chas": "2026-11-18T13:32:09Z",
    "vazhnost": 2,
    "za": "злато",
-   "emisiya": "Yahoo злато",
+   "emisiya": "Yahoo долар",
    "chas_ot_iztochnika": true,
    "duma": "gold",
    "zashto": "Пряко за златото.",
@@ -2479,32 +2509,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Epic Gold Announces Updated Benoist Gold Project Mineral Resource Estimate with 150,700 Indicated Ounces at 2.26 g/t Au and 86,900 Inferred Ounces at 1.67 g/t Au",
-   "vryzka": "https://news.google.com/rss/articles/CBMixwJBVV95cUxOM3NHanQwU3VJcmQ3LW8tRURxaUF6U3lvaHBtektmQ0RmY016MnFjdy11S20xZTlyZHN3dXdzNXdqRHFSYkM1eV9zd3owT2FEWkRJVG0wd0RQX2RBYmJuR2YzR2NBakR0eFFRU1lWQ1lnX01uVmtqTW1iRy01c0NySURsOG40bUgwbzFzVFMyY25iMGRXcTRwUEttMmEtMEVWaFBzenp5RFBuN0g5cFF6S1pmWF95RFlEMWFkVG5pbXFVS3pwdXBfOGxvTnNxcWZpbXBfYkx5X1lYcFhsVHZ0aXZ4cmFuaVVDcHgzd2NzWFFCSy1yVDFDbDkycG9vdDFqWEVPZnRxM3p5Zkd4MDA1T0pQNVVpTUtVNnpzbGVYdFFSTnBMcVcyZFcyWUlWX2VoWV9VWDNORTRpeDYwanVFcS1uSGExbms?oc=5",
-   "izvor": "TradingView",
-   "chas": "2026-11-18T09:30:00Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Минна компания съобщава резултати от сондажи за злато"
-  },
-  {
-   "zaglavie": "Gold price correction may support jewellery demand during India's wedding season: WGC",
-   "vryzka": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxPNmNkMTRBRV9uWXl0MVpTZGI4WGlLOHI0UXBNZnZZemN2VFUxMVpTeG9sWmNJUF9IMWVURHhNMnFYcnFqdjhxTXNRdWV5NEFIOUI1NzNRUnJST183YWNQQm5IMGRicGhNUEJWT2hoenhPdzlZOTFtQUlhOVFqQWVLVDVFYkFabmhIWHNoQVBfTUhUU1lpMjNodWUwRmlHckFYQ0dIZ253STZ6OXAtWXZZVlpOWFVjc0lJUHdZSmdDcmhFYVFac3FIVFp5ekgtdjEwcGxZ0gHYAUFVX3lxTFB4ZnRHZHRFckdaUEtGT0s5aVduZ3hFSzYxaEpUMXhDeVNKaW5WY3JxbHNmeFlDSDZlSmFMaEhfWXVoZG5XUWh3Z2xReFBBLTBGbHdMRGRscktnN3djcm9LUmFtaTdIT2t0S2lqRWtRMmMwYzhuRUtuRW1VU3IyUWY0OUI4SjlfY0JXUm01Yy1NbEFYN01PZnBUVDY1a0NqM0xhX1JpV2NJcTZKX0NRdGU4Y2Q2ZmhwV1JlOTJ5VXFtX016QUdCemJwVTZ",
-   "izvor": "Devdiscourse",
-   "chas": "2026-11-18T09:27:17Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": null
-  },
-  {
    "zaglavie": "Waller, Considerations at the Intersection of Payments and Tokenized Markets",
    "vryzka": "https://www.federalreserve.gov/newsevents/speech/waller20261117a.htm",
    "izvor": "Fed",
@@ -2636,5 +2640,5 @@
   }
  ],
  "s_bg_red": 87,
- "mahnati_ezik": 2
+ "mahnati_ezik": 1
 }
