@@ -1,39 +1,56 @@
 {
- "kogato": "2026-11-18T02:55:36Z",
- "sekundi": 0.88,
+ "kogato": "2026-11-18T03:06:25Z",
+ "sekundi": 0.83,
  "broi": 200,
  "novi_tozi_pyt": 1,
  "iztochnici_ok": [
+  "MarketWatch",
+  "Fed всички",
   "Fed политика",
   "Fed речи",
-  "Fed всички",
   "Investing",
-  "MarketWatch",
-  "Yahoo долар",
   "Yahoo злато",
-  "FT пазари",
+  "Yahoo долар",
   "CNBC",
   "Google злато",
-  "Google Fed",
+  "FT пазари",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google Fed",
+   "greshka": "HTTPError: HTTP Error 429: Too Many Requests"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.4с",
-  "новини · FT пазари · 25 бр. за 0.28с",
-  "новини · Fed всички · 8 бр. за 0.08с",
-  "новини · Fed политика · 15 бр. за 0.07с",
-  "новини · Fed речи · 15 бр. за 0.07с",
-  "новини · Google Fed · 40 бр. за 0.41с",
-  "новини · Google злато · 40 бр. за 0.42с",
-  "новини · Investing · 10 бр. за 0.16с",
-  "новини · MarketWatch · 10 бр. за 0.19с",
-  "новини · Mining.com · 36 бр. за 0.81с",
-  "новини · Yahoo долар · 10 бр. за 0.23с",
-  "новини · Yahoo злато · 19 бр. за 0.27с",
+  "новини · CNBC · 30 бр. за 0.31с",
+  "новини · FT пазари · 25 бр. за 0.58с",
+  "новини · Fed всички · 8 бр. за 0.09с",
+  "новини · Fed политика · 15 бр. за 0.09с",
+  "новини · Fed речи · 15 бр. за 0.1с",
+  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 429: Too Many Requests",
+  "новини · Google злато · 40 бр. за 0.45с",
+  "новини · Investing · 10 бр. за 0.23с",
+  "новини · MarketWatch · 10 бр. за 0.05с",
+  "новини · Mining.com · 36 бр. за 0.78с",
+  "новини · Yahoo долар · 10 бр. за 0.3с",
+  "новини · Yahoo злато · 19 бр. за 0.3с",
   "новини · български ред: 76 от 200 · махнати по език: 0"
  ],
  "novini": [
+  {
+   "zaglavie": "Gold (XAU/USD) Price Forecast: Bearish Pressure Builds Below Key Resistance",
+   "vryzka": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxNTjVFclpBTzNDQ2haQl9ENEV2SzRVeHUxM2FCYXJVdnVyTll2WHg4UHpuYnc2U2RJS0NqLUotRTRRZ1F2UUJHNlhXUE9Eai1ZYVU3U2FFM3B6aVJHQVZTcG9iZ0VuNGtUQXFIU3h6aGdrdHNaQkZqZHk5VWpBME9oRGYzdGFWa2NnaVN4Sk52dW9TN1FTU0VpM2pxdUVRUGN3cm5BOXV3WEVEbDQxdnh4WEFSSW1HUENWZklmdXk3NjFLU1E?oc=5",
+   "izvor": "FXEmpire",
+   "chas": "2026-11-18T02:59:53Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": "Анализ и прогноза за златото"
+  },
   {
    "zaglavie": "JPMorgan is working on AI agent transactions that don’t involve humans",
    "vryzka": "https://www.cnbc.com/2026/11/18/jpmorgan-hyundai-card-ai-agents-payments.html",
@@ -45,6 +62,19 @@
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "Goldman Sachs Cuts Gold Price Forecast for Second Time This Month to $4,650; Bank of Korea Bucked the Trend by Raising Its Gold ETF Stake by More Than 40%",
+   "vryzka": "https://news.google.com/rss/articles/CBMidkFVX3lxTE1vaThUeW1uN1JQMGlzZGxqRm1GSm05VkZnVzJ6LXFpcGhxQXZOcXhEQklKRHhzWFk4b3JsM2JYX0ZQNVFkTldmamxFcFRBN3ZmandYSF9nMGtVUWFFVjZrQ0dFMzFvRVRvdUhoSlN6TWZGQXlYNlE?oc=5",
+   "izvor": "BigGo Finance",
+   "chas": "2026-11-18T02:25:00Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
    "bg": null
   },
   {
@@ -145,7 +175,7 @@
    "chas": "2026-11-18T01:41:50Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Yahoo долар",
+   "emisiya": "Yahoo злато",
    "chas_ot_iztochnika": true,
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
@@ -490,19 +520,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Gold (XAU/USD) Price Forecast: Bearish Pressure Builds Below Key Resistance",
-   "vryzka": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxNTjVFclpBTzNDQ2haQl9ENEV2SzRVeHUxM2FCYXJVdnVyTll2WHg4UHpuYnc2U2RJS0NqLUotRTRRZ1F2UUJHNlhXUE9Eai1ZYVU3U2FFM3B6aVJHQVZTcG9iZ0VuNGtUQXFIU3h6aGdrdHNaQkZqZHk5VWpBME9oRGYzdGFWa2NnaVN4Sk52dW9TN1FTU0VpM2pxdUVRUGN3cm5BOXV3WEVEbDQxdnh4WEFSSW1HUENWZklmdXk3NjFLU1E?oc=5",
-   "izvor": "FXEmpire",
-   "chas": "2026-11-17T22:26:42Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Анализ и прогноза за златото"
-  },
-  {
    "zaglavie": "‘Nvidia’s turmoil has me spooked’: Has the time come to sell my stocks?",
    "vryzka": "https://www.marketwatch.com/story/nvidia-spooked-me-should-i-sell-my-stocks-or-ride-out-the-market-turmoil-560583c6?mod=mw_rss_topstories",
    "izvor": "MarketWatch",
@@ -774,19 +791,6 @@
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
    "bg": "Изказване на член на Фед (Williams) за вдигане на лихвата и изкуствения интелект"
-  },
-  {
-   "zaglavie": "SD Bullion Publishes Long-Term Gold Price Analysis Examining Gold’s 50-Year Record Against Inflation",
-   "vryzka": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxNNHVVS1FINVlISmotaTdBTFI2YjVVMlNCNm43MGUwQWJaUDkySGdxWnoxcDdGUGtReXJmNHVWaVBjSjkwS2M0MUVlZ0NkR0djeGpoS2hFMDhGS1NDMzNMMDVNWmpwUy1wY2s0LURadXJEVzBZSy1CWEtZcUpxOTB6UDM2Tjl3ZVBTbWh4UGpVUUR0cmxrLUI4akZsVFE4d2Q2ZVhTamoxVWdVT0dFSzRiVjZiVUxWdTFpRTFCcUF0S3JDV014TFVOVUo5OVZNQmc1dmxlWDd2aHNOdw?oc=5",
-   "izvor": "www.entrepreneur.com",
-   "chas": "2026-11-17T21:05:59Z",
-   "vazhnost": 3,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "inflation",
-   "zashto": "Инфлацията е основната причина да се държи злато — то пази стойност, когато парите я губят.",
-   "bg": null
   },
   {
    "zaglavie": "Fed’s Williams Says No Need for ‘Dramatic’ Rate Move",
@@ -1475,6 +1479,19 @@
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "SD Bullion Publishes Long-Term Gold Price Analysis Examining Gold’s 50-Year Record Against Inflation",
+   "vryzka": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxNNHVVS1FINVlISmotaTdBTFI2YjVVMlNCNm43MGUwQWJaUDkySGdxWnoxcDdGUGtReXJmNHVWaVBjSjkwS2M0MUVlZ0NkR0djeGpoS2hFMDhGS1NDMzNMMDVNWmpwUy1wY2s0LURadXJEVzBZSy1CWEtZcUpxOTB6UDM2Tjl3ZVBTbWh4UGpVUUR0cmxrLUI4akZsVFE4d2Q2ZVhTamoxVWdVT0dFSzRiVjZiVUxWdTFpRTFCcUF0S3JDV014TFVOVUo5OVZNQmc1dmxlWDd2aHNOdw?oc=5",
+   "izvor": "www.entrepreneur.com",
+   "chas": "2026-11-17T17:29:32Z",
+   "vazhnost": 3,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "inflation",
+   "zashto": "Инфлацията е основната причина да се държи злато — то пази стойност, когато парите я губят.",
    "bg": null
   },
   {
@@ -2505,19 +2522,6 @@
    "bg": "Данни за продажбите на дребно в САЩ"
   },
   {
-   "zaglavie": "5 Things Investors Need to Know About Tuesday’s Markets",
-   "vryzka": "https://www.investopedia.com/5-things-to-know-stock-market-november-17-2026-12260055?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-11-17T13:36:00Z",
-   "vazhnost": 1,
-   "za": "злато",
-   "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
    "zaglavie": "Warsh, Opening Remarks",
    "vryzka": "https://www.federalreserve.gov/newsevents/speech/warsh20261116a.htm",
    "izvor": "Fed",
@@ -2576,10 +2580,10 @@
    "chas": "2026-11-12T17:45:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed политика",
+   "emisiya": "Fed всички",
    "chas_ot_iztochnika": true,
    "duma": "fed",
-   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
+   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
    "bg": "Съобщение на Фед — централната банка на САЩ"
   },
   {
@@ -2628,10 +2632,10 @@
    "chas": "2026-10-28T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed политика",
+   "emisiya": "Fed всички",
    "chas_ot_iztochnika": true,
    "duma": "fomc",
-   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
+   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   }
  ],
