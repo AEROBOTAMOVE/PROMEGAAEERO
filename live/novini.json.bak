@@ -1,41 +1,37 @@
 {
- "kogato": "2026-11-18T03:06:25Z",
- "sekundi": 0.83,
+ "kogato": "2026-11-18T03:16:38Z",
+ "sekundi": 0.78,
  "broi": 200,
- "novi_tozi_pyt": 1,
+ "novi_tozi_pyt": 2,
  "iztochnici_ok": [
   "MarketWatch",
-  "Fed всички",
   "Fed политика",
+  "Fed всички",
   "Fed речи",
   "Investing",
-  "Yahoo злато",
   "Yahoo долар",
-  "CNBC",
-  "Google злато",
+  "Yahoo злато",
   "FT пазари",
+  "Google злато",
+  "CNBC",
+  "Google Fed",
   "Mining.com"
  ],
- "iztochnici_padnali": [
-  {
-   "ime": "Google Fed",
-   "greshka": "HTTPError: HTTP Error 429: Too Many Requests"
-  }
- ],
+ "iztochnici_padnali": [],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.31с",
-  "новини · FT пазари · 25 бр. за 0.58с",
-  "новини · Fed всички · 8 бр. за 0.09с",
+  "новини · CNBC · 30 бр. за 0.46с",
+  "новини · FT пазари · 25 бр. за 0.38с",
+  "новини · Fed всички · 8 бр. за 0.1с",
   "новини · Fed политика · 15 бр. за 0.09с",
-  "новини · Fed речи · 15 бр. за 0.1с",
-  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 429: Too Many Requests",
-  "новини · Google злато · 40 бр. за 0.45с",
-  "новини · Investing · 10 бр. за 0.23с",
-  "новини · MarketWatch · 10 бр. за 0.05с",
-  "новини · Mining.com · 36 бр. за 0.78с",
-  "новини · Yahoo долар · 10 бр. за 0.3с",
-  "новини · Yahoo злато · 19 бр. за 0.3с",
-  "новини · български ред: 76 от 200 · махнати по език: 0"
+  "новини · Fed речи · 15 бр. за 0.12с",
+  "новини · Google Fed · 40 бр. за 0.4с",
+  "новини · Google злато · 40 бр. за 0.44с",
+  "новини · Investing · 10 бр. за 0.17с",
+  "новини · MarketWatch · 10 бр. за 0.07с",
+  "новини · Mining.com · 36 бр. за 0.74с",
+  "новини · Yahoo долар · 10 бр. за 0.21с",
+  "новини · Yahoo злато · 19 бр. за 0.21с",
+  "новини · български ред: 77 от 200 · махнати по език: 0"
  ],
  "novini": [
   {
@@ -175,11 +171,24 @@
    "chas": "2026-11-18T01:41:50Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Yahoo злато",
+   "emisiya": "Yahoo долар",
    "chas_ot_iztochnika": true,
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
    "bg": "Златото поевтинява на фона на очакванията за по-висока лихва от Фед"
+  },
+  {
+   "zaglavie": "Dollar Near 19-Month High as Fed Data Backs US Rate Hikes",
+   "vryzka": "https://news.google.com/rss/articles/CBMioAFBVV95cUxPOWtWVTlvOXVUd1JwQ2c3UE04a0wzVmxaZ3ZZclZyMS0xaWVxSnRmaFV2TnZpR2xSUS14SE9sRTBQaUd0cTVGR0xvdXBQdVNXVWlHckJlUkt4N0lWcFFoeTdRRnFvejZTNlMyWHIzM2lEZlVLMms3TDVmYVZNSWtEU2JHZFBUb1NZQmtPVFBENkoyY1ZPWGgzbFBCb2taV3B0?oc=5",
+   "izvor": "Global Banking & Finance Review",
+   "chas": "2026-11-18T01:40:05Z",
+   "vazhnost": 3,
+   "za": "долар",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": "Доларът е близо до най-високото си ниво от месеци на фона на решенията на Фед за лихвата"
   },
   {
    "zaglavie": "The Fed Just Raised Rates Again - And Another Change May Be Coming",
@@ -882,6 +891,19 @@
    "duma": null,
    "zashto": null,
    "bg": null
+  },
+  {
+   "zaglavie": "New York Fed President Signals Further Rate Hike as Inflation Stays Elevated; December FOMC Speculation Intensifies",
+   "vryzka": "https://news.google.com/rss/articles/CBMidkFVX3lxTE5JOEd0cUk2enpQSVp1dlprcjNaeVI5TjluWDRpdlRMNVR3a2FTMk5CU2ZEX3VSWU9yRGFsQjFsU2lTRGliNXQyZVRsN09USWthRWQwNVhFSUZJVmFMem9MMGhUUW81SGx5dTV0bEd0THgxSGJ4TWc?oc=5",
+   "izvor": "BigGo Finance",
+   "chas": "2026-11-17T20:55:00Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": "Решението на Фед за лихвата"
   },
   {
    "zaglavie": "New York Fed President Williams Signals Possible Further Rate Hike as Inflation Stays Elevated, Says 'No Dramatic Response' Needed",
@@ -2496,32 +2518,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Goldman Sachs Predicts Gold Price Will Reach $5,600 by 2028",
-   "vryzka": "https://news.google.com/rss/articles/CBMingFBVV95cUxOMDJWXzRYcmRiWGxaVnpCa21QRy1JaTlWRFpLNmxhSlllUWlJdzBjbU91bTNBVk1fVGp3SnItVkFhNURURU5hR3NhT3J5ZHdQRm4yeFZEanNKVHB1ZHp0Sm40YmxnT01qeUtTLWl2U0xoV2FtaXRFZnRPSEE0NFk0Y243TDdSMjg5dEpUQ1k3NDZmNzlJMm1kYlpxMzhNQdIBowFBVV95cUxQSTRLMlRRS29nWTdkUEIwbl9vdnk0MnYzSzZpTWI2bm5DZVgyTW1DZnFON3Ixek1WZGdQTTBsaTVrdkJuVUhvLXhMMUNYS3dyZE9ZcENrMHVrZHNlV2N4VEF3T3dxZG1ES0YxbVozdWR2ajRlUDNQcHMxRWNqR1NEcVRPMUwzSjlTXzQ0TWV6cnE2SGhyaGk0ampnYUhJc0FTYjA4?oc=5",
-   "izvor": "Coinpedia",
-   "chas": "2026-11-17T13:48:31Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": null
-  },
-  {
-   "zaglavie": "U.S. retail sales slow just ahead of the holiday shopping season. A hint of trouble?",
-   "vryzka": "https://www.marketwatch.com/story/u-s-retail-sales-slow-just-ahead-of-the-holiday-shopping-season-a-hint-of-trouble-a89c9f98?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-11-17T13:41:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": "Данни за продажбите на дребно в САЩ"
-  },
-  {
    "zaglavie": "Warsh, Opening Remarks",
    "vryzka": "https://www.federalreserve.gov/newsevents/speech/warsh20261116a.htm",
    "izvor": "Fed",
@@ -2580,10 +2576,10 @@
    "chas": "2026-11-12T17:45:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed всички",
+   "emisiya": "Fed политика",
    "chas_ot_iztochnika": true,
    "duma": "fed",
-   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
+   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
    "bg": "Съобщение на Фед — централната банка на САЩ"
   },
   {
@@ -2632,13 +2628,13 @@
    "chas": "2026-10-28T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed всички",
+   "emisiya": "Fed политика",
    "chas_ot_iztochnika": true,
    "duma": "fomc",
-   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
+   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   }
  ],
- "s_bg_red": 76,
+ "s_bg_red": 77,
  "mahnati_ezik": 0
 }
