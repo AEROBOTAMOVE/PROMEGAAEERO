@@ -1,31 +1,31 @@
 {
- "den": "2026-11-17",
- "sazdadeno_utc": "2026-11-17T05:00:00Z",
- "v": "v19.48",
- "cena": 3875.3,
- "bazis": 0.63,
+ "den": "2026-11-18",
+ "sazdadeno_utc": "2026-11-18T05:00:00Z",
+ "v": "v19.50",
+ "cena": 3786.99,
+ "bazis": 0.28,
  "nosht": {
-  "ot": 3844.69,
-  "do": 3879.12,
-  "shirina": 34.43,
-  "atr": 95.59,
-  "dyal_atr": 0.36,
-  "rezhim": "тясна"
+  "ot": 3786.26,
+  "do": 3857.05,
+  "shirina": 70.79,
+  "atr": 97.25,
+  "dyal_atr": 0.728,
+  "rezhim": "широка"
  },
  "vchera": {
-  "vryh": 3881.77,
-  "dyno": 3845.27,
-  "zatvaryane": 3873.87
+  "vryh": 3893.72,
+  "dyno": 3838.92,
+  "zatvaryane": 3851.62
  },
  "idei": [
   {
    "posoka": "long",
-   "nivo": 3844.69,
-   "stop": 3831.69,
+   "nivo": 3786.26,
+   "stop": 3773.26,
    "celi": [
-    3849.69,
-    3854.69,
-    3857.69
+    3791.26,
+    3796.26,
+    3799.26
    ],
    "izvor": "нощно дъно",
    "belezhka": "наблюдение, не вход: сигнал е само картата ВЛЕЗ · нивото е от живата цена на бота",
@@ -33,12 +33,12 @@
   },
   {
    "posoka": "short",
-   "nivo": 3879.12,
-   "stop": 3892.12,
+   "nivo": 3857.05,
+   "stop": 3870.05,
    "celi": [
-    3874.12,
-    3869.12,
-    3866.12
+    3852.05,
+    3847.05,
+    3844.05
    ],
    "izvor": "нощен връх",
    "belezhka": "наблюдение, не вход: сигнал е само картата ВЛЕЗ · нивото е от живата цена на бота",
@@ -47,26 +47,26 @@
  ],
  "sabitiya": [
   {
-   "ime": "Retail Sales",
-   "utc": "2026-11-17T13:30:00Z",
-   "sila": "high",
+   "ime": "FOMC Meeting Minutes",
+   "utc": "2026-11-18T19:00:00Z",
+   "sila": "critical",
    "prozorec_min": [
     20,
-    40
-   ]
-  },
-  {
-   "ime": "Industrial Production",
-   "utc": "2026-11-17T14:15:00Z",
-   "sila": "high",
-   "prozorec_min": [
-    20,
-    40
+    150
    ]
   },
   {
    "ime": "FOMC Member Williams Speaks",
-   "utc": "2026-11-17T19:25:00Z",
+   "utc": "2026-11-18T19:30:00Z",
+   "sila": "high",
+   "prozorec_min": [
+    20,
+    40
+   ]
+  },
+  {
+   "ime": "FOMC Member Kashkari Speaks",
+   "utc": "2026-11-18T21:15:00Z",
    "sila": "high",
    "prozorec_min": [
     20,
@@ -74,6 +74,6 @@
    ]
   }
  ],
- "yasna_ideya": true,
- "zashto_nyama": ""
+ "yasna_ideya": false,
+ "zashto_nyama": "денят е на новината: FOMC в 21:00 (20:40–23:30)"
 }
