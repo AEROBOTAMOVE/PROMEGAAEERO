@@ -1,17 +1,17 @@
 {
- "kogato": "2026-11-18T18:27:01Z",
- "sekundi": 1.0,
+ "kogato": "2026-11-18T18:37:17Z",
+ "sekundi": 0.77,
  "broi": 200,
- "novi_tozi_pyt": 2,
+ "novi_tozi_pyt": 5,
  "iztochnici_ok": [
-  "Fed политика",
   "MarketWatch",
-  "Investing",
-  "Fed речи",
   "Fed всички",
+  "Fed политика",
+  "Fed речи",
+  "Investing",
+  "CNBC",
   "Yahoo злато",
   "Yahoo долар",
-  "CNBC",
   "FT пазари",
   "Google злато",
   "Google Fed",
@@ -19,21 +19,60 @@
  ],
  "iztochnici_padnali": [],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.21с",
-  "новини · FT пазари · 25 бр. за 0.35с",
-  "новини · Fed всички · 8 бр. за 0.15с",
-  "новини · Fed политика · 15 бр. за 0.08с",
-  "новини · Fed речи · 15 бр. за 0.14с",
-  "новини · Google Fed · 40 бр. за 0.36с",
-  "новини · Google злато · 40 бр. за 0.39с",
-  "новини · Investing · 10 бр. за 0.11с",
-  "новини · MarketWatch · 10 бр. за 0.11с",
-  "новини · Mining.com · 36 бр. за 0.94с",
-  "новини · Yahoo долар · 14 бр. за 0.22с",
-  "новини · Yahoo злато · 16 бр. за 0.19с",
-  "новини · български ред: 87 от 200 · махнати по език: 1"
+  "новини · CNBC · 30 бр. за 0.1с",
+  "новини · FT пазари · 25 бр. за 0.2с",
+  "новини · Fed всички · 8 бр. за 0.04с",
+  "новини · Fed политика · 15 бр. за 0.05с",
+  "новини · Fed речи · 15 бр. за 0.06с",
+  "новини · Google Fed · 40 бр. за 0.44с",
+  "новини · Google злато · 40 бр. за 0.41с",
+  "новини · Investing · 10 бр. за 0.06с",
+  "новини · MarketWatch · 10 бр. за 0.01с",
+  "новини · Mining.com · 36 бр. за 0.72с",
+  "новини · Yahoo долар · 14 бр. за 0.12с",
+  "новини · Yahoo злато · 16 бр. за 0.11с",
+  "новини · български ред: 86 от 200 · махнати по език: 1"
  ],
  "novini": [
+  {
+   "zaglavie": "Barr, Investing in America’s Underserved Communities",
+   "vryzka": "https://www.federalreserve.gov/newsevents/speech/barr20261118a.htm",
+   "izvor": "Fed",
+   "chas": "2026-11-18T18:35:00Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Fed речи",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Реч на член на Фед — думите им местят очакванията за лихвата, а с тях и златото.",
+   "bg": "Реч на член на Фед (Barr)"
+  },
+  {
+   "zaglavie": "My husband is happily retired at 64 and thinks I should keep working. Is he being fair?",
+   "vryzka": "https://www.marketwatch.com/story/my-husband-is-happily-retired-at-64-and-thinks-i-should-keep-working-is-he-being-fair-325c5f38?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-11-18T18:30:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "‘GTA 6’ is the biggest game ever. Take-Two’s stock, delivery apps and podcasts are along for the ride.",
+   "vryzka": "https://www.marketwatch.com/story/gta-6-is-the-biggest-game-ever-take-twos-stock-delivery-apps-and-podcasts-are-along-for-the-ride-71014bf2?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-11-18T18:28:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
   {
    "zaglavie": "Fed’s Daly Urges Rate Hikes With a Thoughtful, Measured Approach",
    "vryzka": "https://news.google.com/rss/articles/CBMitAFBVV95cUxNRDJGNGRIU0Q3NE5tbW9qVUpjd2NCUTRuZTdERXEwY2Q5bEQtZ1NNVjFLQmwwdnVMRERPSnN4cm1TcXBLRWxDcWtxS0tZdXdBanJVNVhhRVBOVWtKYlplWXFwcHFkUmJTRWtVQjBUaGRZUGpiWU1acVdESEZvck9TSzBiNHVhdk5rNlZDMEpKYk5zS1dxSVpDdGxZWjEyOEJKTTdldVo2Q3Z6dHpPOVF0cWJGSW4?oc=5",
@@ -46,6 +85,32 @@
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
    "bg": "Изказване на член на Фед (Daly) за вдигане на лихвата"
+  },
+  {
+   "zaglavie": "Fed's Waller Calls for 50-Basis-Point Rate Hike, Says Tokenized Finance Still Needs Traditional Banks",
+   "vryzka": "https://news.google.com/rss/articles/CBMifEFVX3lxTFBlQXNPc0RwODJHbmJZVERZN1JjMUItc2JlZ0N0Y2pCVVdLZHhvLU5TMmdMTFlibVJ2RmVyRjQ0Q1FSbktRT21Xem0xd2xwZ2ZseTM3ejJpNndpMnY0ZGRRc2Z4ODN6SS1jYjk3UnVYb2tYSUY2SVFUM2d5cFM?oc=5",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-18T18:16:02Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": "Изказване на член на Фед (Waller) за вдигане на лихвата"
+  },
+  {
+   "zaglavie": "GBM Resources (ASX:GBM) Shares May Be Overvalued As Twin Hills Drilling Extends",
+   "vryzka": "https://finance.yahoo.com/markets/stocks/articles/gbm-resources-asx-gbm-shares-180947315.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-18T18:09:47Z",
+   "vazhnost": 1,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
   },
   {
    "zaglavie": "Why did gold fall 13% while fear indicators soared?",
@@ -451,19 +516,6 @@
    "bg": null
   },
   {
-   "zaglavie": "CoreWeave’s stock drops as Nvidia talks up a ‘disciplined’ approach to financing",
-   "vryzka": "https://www.marketwatch.com/story/coreweaves-stock-pops-even-as-nvidia-talks-up-a-disciplined-approach-to-financing-e7f00876?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-11-18T16:30:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
    "zaglavie": "Gold Is Reliving 2022, but the Selloff Is Already Worse",
    "vryzka": "https://www.investing.com/analysis/gold-is-reliving-2022-but-the-selloff-is-already-worse-200691847",
    "izvor": "Investing.com",
@@ -474,6 +526,19 @@
    "chas_ot_iztochnika": true,
    "duma": "gold",
    "zashto": "Пряко за златото.",
+   "bg": null
+  },
+  {
+   "zaglavie": "CoreWeave’s stock drops as Nvidia talks up a ‘disciplined’ approach to financing",
+   "vryzka": "https://www.marketwatch.com/story/coreweaves-stock-pops-even-as-nvidia-talks-up-a-disciplined-approach-to-financing-e7f00876?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-11-18T16:30:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
    "bg": null
   },
   {
@@ -1398,19 +1463,6 @@
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
    "bg": null
-  },
-  {
-   "zaglavie": "Gold drops 2% to over one-year low as hawkish Fed signals boost dollar",
-   "vryzka": "https://news.google.com/rss/articles/CBMitAFBVV95cUxQQ0VJSlZDemZHTlZuTnlwbHdTYmV5dFRfWHlIZUlIbXF0RWN0aWNRMUFoNW5PSEttRkdLa29MbDYwRkhvTDRxSlhzM0JPQnNLNGpuVTVoNlFsak9BLVJLY2l6TV9MUXJKcjlyZzZ6eDNtaVJCb2NWVjh0WGNOV05YMW5MZk90bjRtMlgwaWFoS3l5djUyMGphd1RGOVVaQU4yazVOVm9NbTFUYml1M1p2U0xlODU?oc=5",
-   "izvor": "Kitco",
-   "chas": "2026-11-18T13:45:37Z",
-   "vazhnost": 3,
-   "za": "злато",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": "Златото поевтинява на фона на очакванията за по-висока лихва от Фед и движението на долара"
   },
   {
    "zaglavie": "Medicare Part B premiums rise due to higher healthcare spending",
@@ -2466,58 +2518,6 @@
    "bg": "Протоколът от заседанието на Фед за лихвата (FOMC)"
   },
   {
-   "zaglavie": "Bitcoin-to-gold ratio flashes bullish signal as BTC price outperforms the precious metal",
-   "vryzka": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxQR1JRUnBpbkVvbnQ2WTcxbHI3dloxazRwd0FYT25wWkF1Z0ZFNmNpbU9nTlJ4NjlaTGcySE1SeVk4ZTBoTmc4VmltTU9hQ0ZjLU4zVThMaW1jdW96bHdYWGh4ZVZSZkFEWUVqVlV4WVYwYXJDOERaMmc0dFMtS3pXOUU5VVkyVVB2V2VnMEw4OEVLbkxIWHAwdG9YdHYwTTB3cDhxMGVyeUkweVM0a09NaTBJeVh0ZGZTODdvYy1MY0c5QQ?oc=5",
-   "izvor": "CoinDesk",
-   "chas": "2026-11-18T10:58:36Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": null
-  },
-  {
-   "zaglavie": "Gold slumps as Fed hike bets deepen bullion selloff",
-   "vryzka": "https://news.google.com/rss/articles/CBMiugFBVV95cUxPdV9IVnZLcFhYNmM5d3UyYzVXV19hTE5GYUxSOXYxNDNZbHZJRWtkcVZQQl9MTVQ5Tl96cmhYNTVJX3FMNG9pMVF6bUphTUxaRXBwV3dBcTZzclBZb0I2QXFKNl9LbFJHTHc0WVRYM3MyREFzT1VXZ0w4VXFJcjlUV1ZhWmloZk9MeUd5ZTJUbW9yT2RXeWtpY0pJdk5ROVhXRG83Qk5wZ2EtVlVwY2hEQ1Rza0J2bmFqckE?oc=5",
-   "izvor": "Investing.com",
-   "chas": "2026-11-18T10:50:05Z",
-   "vazhnost": 3,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": "Златото поевтинява на фона на очакванията за по-висока лихва от Фед"
-  },
-  {
-   "zaglavie": "Gold drops below $3,800 as Fed hike bets deepen bullion selloff",
-   "vryzka": "https://news.google.com/rss/articles/CBMiugFBVV95cUxPdV9IVnZLcFhYNmM5d3UyYzVXV19hTE5GYUxSOXYxNDNZbHZJRWtkcVZQQl9MTVQ5Tl96cmhYNTVJX3FMNG9pMVF6bUphTUxaRXBwV3dBcTZzclBZb0I2QXFKNl9LbFJHTHc0WVRYM3MyREFzT1VXZ0w4VXFJcjlUV1ZhWmloZk9MeUd5ZTJUbW9yT2RXeWtpY0pJdk5ROVhXRG83Qk5wZ2EtVlVwY2hEQ1Rza0J2bmFqckE?oc=5",
-   "izvor": "Investing.com",
-   "chas": "2026-11-18T10:50:05Z",
-   "vazhnost": 3,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": "Златото поевтинява на фона на очакванията за по-висока лихва от Фед"
-  },
-  {
-   "zaglavie": "GLD, SLV Sink To Near 14-Month Lows – But This Commodities Expert Sees A ‘Relative Bright Spot’",
-   "vryzka": "https://stocktwits.com/news-articles/markets/equity/gld-slv-sink-to-near-14-month-lows-gold-silver-prices/cNbXzasR9LJ?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-11-18T10:46:32Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Yahoo долар",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": null
-  },
-  {
    "zaglavie": "Waller, Considerations at the Intersection of Payments and Tokenized Markets",
    "vryzka": "https://www.federalreserve.gov/newsevents/speech/waller20261117a.htm",
    "izvor": "Fed",
@@ -2589,10 +2589,10 @@
    "chas": "2026-11-12T17:45:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed политика",
+   "emisiya": "Fed всички",
    "chas_ot_iztochnika": true,
    "duma": "fed",
-   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
+   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
    "bg": "Съобщение на Фед — централната банка на САЩ"
   },
   {
@@ -2635,6 +2635,6 @@
    "bg": "Реч на член на Фед (Waller) за пазара на труда и икономиката"
   }
  ],
- "s_bg_red": 87,
+ "s_bg_red": 86,
  "mahnati_ezik": 1
 }
