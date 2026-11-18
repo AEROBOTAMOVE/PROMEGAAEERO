@@ -1,37 +1,41 @@
 {
- "kogato": "2026-11-17T23:50:15Z",
- "sekundi": 0.79,
+ "kogato": "2026-11-18T00:01:04Z",
+ "sekundi": 0.86,
  "broi": 200,
- "novi_tozi_pyt": 1,
+ "novi_tozi_pyt": 2,
  "iztochnici_ok": [
-  "Fed политика",
-  "Fed речи",
   "Fed всички",
-  "Investing",
   "MarketWatch",
-  "CNBC",
-  "Yahoo злато",
+  "Investing",
+  "Fed политика",
   "Yahoo долар",
+  "Fed речи",
+  "Yahoo злато",
+  "CNBC",
   "FT пазари",
   "Google Fed",
-  "Google злато",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google злато",
+   "greshka": "HTTPError: HTTP Error 429: Too Many Requests"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.11с",
-  "новини · FT пазари · 25 бр. за 0.28с",
-  "новини · Fed всички · 8 бр. за 0.07с",
-  "новини · Fed политика · 15 бр. за 0.06с",
-  "новини · Fed речи · 15 бр. за 0.06с",
-  "новини · Google Fed · 40 бр. за 0.37с",
-  "новини · Google злато · 40 бр. за 0.47с",
-  "новини · Investing · 10 бр. за 0.08с",
-  "новини · MarketWatch · 10 бр. за 0.1с",
-  "новини · Mining.com · 36 бр. за 0.72с",
-  "новини · Yahoo долар · 11 бр. за 0.21с",
-  "новини · Yahoo злато · 18 бр. за 0.21с",
-  "новини · български ред: 84 от 200 · махнати по език: 1"
+  "новини · CNBC · 30 бр. за 0.3с",
+  "новини · FT пазари · 25 бр. за 0.34с",
+  "новини · Fed всички · 8 бр. за 0.1с",
+  "новини · Fed политика · 15 бр. за 0.2с",
+  "новини · Fed речи · 15 бр. за 0.27с",
+  "новини · Google Fed · 40 бр. за 0.5с",
+  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 429: Too Many Requests",
+  "новини · Investing · 10 бр. за 0.16с",
+  "новини · MarketWatch · 10 бр. за 0.15с",
+  "новини · Mining.com · 36 бр. за 0.8с",
+  "новини · Yahoo долар · 11 бр. за 0.22с",
+  "новини · Yahoo злато · 18 бр. за 0.28с",
+  "новини · български ред: 83 от 200 · махнати по език: 1"
  ],
  "novini": [
   {
@@ -48,6 +52,19 @@
    "bg": "Златото е без голяма промяна"
   },
   {
+   "zaglavie": "JPMorgan is working on AI agent transactions that don’t involve humans",
+   "vryzka": "https://www.cnbc.com/2026/11/18/jpmorgan-hyundai-card-ai-agents-payments.html",
+   "izvor": "CNBC",
+   "chas": "2026-11-17T23:30:13Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "CNBC",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
    "zaglavie": "My husband is happily retired at 64 and thinks I should keep working. Is he being fair?",
    "vryzka": "https://www.marketwatch.com/story/my-husband-is-happily-retired-at-64-and-thinks-i-should-keep-working-is-he-being-fair-325c5f38?mod=mw_rss_topstories",
    "izvor": "MarketWatch",
@@ -55,6 +72,19 @@
    "vazhnost": 1,
    "za": "общо",
    "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "What Business Leaders Can Learn From Elite Athletes | WSJLI",
+   "vryzka": "https://finance.yahoo.com/video/business-leaders-learn-elite-athletes-232600805.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-17T23:26:00Z",
+   "vazhnost": 1,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null,
@@ -477,19 +507,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Silver Hits Fibonacci Target, but Resistance Keeps the Bearish Case Alive",
-   "vryzka": "https://www.investing.com/analysis/silver-hits-fibonacci-target-but-resistance-keeps-the-bearish-case-alive-200691776",
-   "izvor": "Investing.com",
-   "chas": "2026-11-17T21:11:00Z",
-   "vazhnost": 1,
-   "za": "злато",
-   "emisiya": "Investing",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
    "zaglavie": "‘Can I pick your brain?’ and other terrible things to say in a networking email",
    "vryzka": "https://www.marketwatch.com/story/nows-the-perfect-time-for-networking-heres-how-to-send-a-cringe-free-email-73ad34ea?mod=mw_rss_topstories",
    "izvor": "MarketWatch",
@@ -497,6 +514,19 @@
    "vazhnost": 1,
    "za": "общо",
    "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "Silver Hits Fibonacci Target, but Resistance Keeps the Bearish Case Alive",
+   "vryzka": "https://www.investing.com/analysis/silver-hits-fibonacci-target-but-resistance-keeps-the-bearish-case-alive-200691776",
+   "izvor": "Investing.com",
+   "chas": "2026-11-17T21:11:00Z",
+   "vazhnost": 1,
+   "za": "злато",
+   "emisiya": "Investing",
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null,
@@ -514,19 +544,6 @@
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
    "bg": "Изказване на член на Фед (Williams) за вдигане на лихвата и изкуствения интелект"
-  },
-  {
-   "zaglavie": "SD Bullion Publishes Long-Term Gold Price Analysis Examining Gold’s 50-Year Record Against Inflation",
-   "vryzka": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxNNHVVS1FINVlISmotaTdBTFI2YjVVMlNCNm43MGUwQWJaUDkySGdxWnoxcDdGUGtReXJmNHVWaVBjSjkwS2M0MUVlZ0NkR0djeGpoS2hFMDhGS1NDMzNMMDVNWmpwUy1wY2s0LURadXJEVzBZSy1CWEtZcUpxOTB6UDM2Tjl3ZVBTbWh4UGpVUUR0cmxrLUI4akZsVFE4d2Q2ZVhTamoxVWdVT0dFSzRiVjZiVUxWdTFpRTFCcUF0S3JDV014TFVOVUo5OVZNQmc1dmxlWDd2aHNOdw?oc=5",
-   "izvor": "www.entrepreneur.com",
-   "chas": "2026-11-17T21:05:59Z",
-   "vazhnost": 3,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "inflation",
-   "zashto": "Инфлацията е основната причина да се държи злато — то пази стойност, когато парите я губят.",
-   "bg": null
   },
   {
    "zaglavie": "US tech stocks slide ahead of Nvidia results",
@@ -1358,6 +1375,19 @@
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "SD Bullion Publishes Long-Term Gold Price Analysis Examining Gold’s 50-Year Record Against Inflation",
+   "vryzka": "https://www.entrepreneur.com/business-news/sd-bullion-publishes-long-term-gold-price-analysis-examining-golds-50-year-record-against-inflation?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-17T16:51:49Z",
+   "vazhnost": 3,
+   "za": "злато",
+   "emisiya": "Yahoo долар",
+   "chas_ot_iztochnika": true,
+   "duma": "inflation",
+   "zashto": "Инфлацията е основната причина да се държи злато — то пази стойност, когато парите я губят.",
    "bg": null
   },
   {
@@ -2492,32 +2522,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Magna Terra Initiates High-Resolution Airborne Magnetic and Radiometric Survey at the Cape Spencer Project in Southern New Brunswick",
-   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/magna-terra-initiates-high-resolution-130000595.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-11-17T13:00:00Z",
-   "vazhnost": 1,
-   "za": "злато",
-   "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
-   "zaglavie": "PDI Gold receives Guinea permits for Bankan and Mansounia mines",
-   "vryzka": "https://www.mining-technology.com/news/pdi-gold-guinea-permits-bankan-mansounia-mines/?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-11-17T12:56:24Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Новина от минния бранш (злато)"
-  },
-  {
    "zaglavie": "Warsh, Opening Remarks",
    "vryzka": "https://www.federalreserve.gov/newsevents/speech/warsh20261116a.htm",
    "izvor": "Fed",
@@ -2576,10 +2580,10 @@
    "chas": "2026-11-12T17:45:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed политика",
+   "emisiya": "Fed всички",
    "chas_ot_iztochnika": true,
    "duma": "fed",
-   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
+   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
    "bg": "Съобщение на Фед — централната банка на САЩ"
   },
   {
@@ -2628,13 +2632,13 @@
    "chas": "2026-10-28T18:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed политика",
+   "emisiya": "Fed всички",
    "chas_ot_iztochnika": true,
    "duma": "fomc",
-   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
+   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
    "bg": "Решението на Фед за лихвата (изявлението на FOMC)"
   }
  ],
- "s_bg_red": 84,
+ "s_bg_red": 83,
  "mahnati_ezik": 1
 }
