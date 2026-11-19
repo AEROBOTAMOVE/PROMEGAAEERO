@@ -1,39 +1,56 @@
 {
- "kogato": "2026-11-19T05:04:46Z",
- "sekundi": 0.78,
+ "kogato": "2026-11-19T05:15:37Z",
+ "sekundi": 0.69,
  "broi": 200,
- "novi_tozi_pyt": 0,
+ "novi_tozi_pyt": 1,
  "iztochnici_ok": [
+  "Investing",
   "MarketWatch",
-  "Fed всички",
-  "Fed речи",
-  "Fed политика",
   "Yahoo долар",
   "Yahoo злато",
-  "Investing",
+  "FT пазари",
+  "Fed всички",
+  "Fed политика",
+  "Fed речи",
   "CNBC",
   "Google злато",
-  "Google Fed",
-  "FT пазари",
-  "Mining.com"
+  "Google Fed"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Mining.com",
+   "greshka": "HTTPError: HTTP Error 502: Bad Gateway"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.26с",
-  "новини · FT пазари · 25 бр. за 0.57с",
-  "новини · Fed всички · 9 бр. за 0.04с",
-  "новини · Fed политика · 15 бр. за 0.05с",
-  "новини · Fed речи · 15 бр. за 0.04с",
-  "новини · Google Fed · 40 бр. за 0.47с",
-  "новини · Google злато · 40 бр. за 0.38с",
+  "новини · CNBC · 30 бр. за 0.45с",
+  "новини · FT пазари · 25 бр. за 0.31с",
+  "новини · Fed всички · 9 бр. за 0.38с",
+  "новини · Fed политика · 15 бр. за 0.38с",
+  "новини · Fed речи · 15 бр. за 0.41с",
+  "новини · Google Fed · 40 бр. за 0.5с",
+  "новини · Google злато · 40 бр. за 0.48с",
   "новини · Investing · 10 бр. за 0.12с",
-  "новини · MarketWatch · 10 бр. за 0.03с",
-  "новини · Mining.com · 36 бр. за 0.73с",
-  "новини · Yahoo долар · 12 бр. за 0.08с",
-  "новини · Yahoo злато · 15 бр. за 0.09с",
-  "новини · български ред: 117 от 200 · махнати по език: 0"
+  "новини · MarketWatch · 10 бр. за 0.14с",
+  "новини · Mining.com · ПАДНА: HTTPError: HTTP Error 502: Bad Gateway",
+  "новини · Yahoo долар · 13 бр. за 0.2с",
+  "новини · Yahoo злато · 15 бр. за 0.2с",
+  "новини · български ред: 118 от 200 · махнати по език: 0"
  ],
  "novini": [
+  {
+   "zaglavie": "Gold price sinks to 14-month low on growing Fed hike fears",
+   "vryzka": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNek1TUm0xRm9HOWVhRDBjQTlJQklQVTBmeloxWHRTRXAyUzZHWDI0WDdpQkNGTFNSeklTZnVUSUlySkROeGs2a3RMTTh1NDNyRU1fdXVpZlMwQnBWdk5MMldERTVSYXNRc1pYcDlxaDJ1U05DSWZaWnJrXzVwSWdEeWYtTGhFS0hV?oc=5",
+   "izvor": "Mining.com.au",
+   "chas": "2026-11-19T04:55:55Z",
+   "vazhnost": 3,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": "Златото е на най-ниското си ниво от месеци на фона на очакванията за по-висока лихва от Фед"
+  },
   {
    "zaglavie": "Dollar hits fresh 19-mth peak on hawkish Fed; Aussie slides after weak jobs data",
    "vryzka": "https://finance.yahoo.com/markets/currencies/articles/dollar-hits-fresh-19-mth-044558996.html?.tsrc=rss",
@@ -2505,19 +2522,6 @@
    "bg": "Протоколът от заседанието на Фед за лихвата (FOMC)"
   },
   {
-   "zaglavie": "Worried investors are paying a premium for these stocks — some with as much as 49% upside, analysts say",
-   "vryzka": "https://www.marketwatch.com/story/worried-investors-are-paying-up-for-these-stocks-some-with-up-to-49-upside-analysts-say-ea8f2c6f?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-11-18T16:04:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
    "zaglavie": "Waller, Considerations at the Intersection of Payments and Tokenized Markets",
    "vryzka": "https://www.federalreserve.gov/newsevents/speech/waller20261117a.htm",
    "izvor": "Fed",
@@ -2635,6 +2639,6 @@
    "bg": "Реч на член на Фед (Waller) за пазара на труда и икономиката"
   }
  ],
- "s_bg_red": 117,
+ "s_bg_red": 118,
  "mahnati_ezik": 0
 }

@@ -1,40 +1,36 @@
 {
- "kogato": "2026-11-19T04:54:02Z",
- "sekundi": 12.17,
+ "kogato": "2026-11-19T05:04:46Z",
+ "sekundi": 0.78,
  "broi": 200,
- "novi_tozi_pyt": 2,
+ "novi_tozi_pyt": 0,
  "iztochnici_ok": [
-  "Fed речи",
-  "Fed политика",
   "MarketWatch",
   "Fed всички",
-  "Investing",
+  "Fed речи",
+  "Fed политика",
   "Yahoo долар",
   "Yahoo злато",
+  "Investing",
   "CNBC",
-  "FT пазари",
   "Google злато",
-  "Google Fed"
+  "Google Fed",
+  "FT пазари",
+  "Mining.com"
  ],
- "iztochnici_padnali": [
-  {
-   "ime": "Mining.com",
-   "greshka": "TimeoutError: The read operation timed out"
-  }
- ],
+ "iztochnici_padnali": [],
  "belezhki": [
   "новини · CNBC · 30 бр. за 0.26с",
-  "новини · FT пазари · 25 бр. за 0.3с",
-  "новини · Fed всички · 9 бр. за 0.08с",
-  "новини · Fed политика · 15 бр. за 0.06с",
-  "новини · Fed речи · 15 бр. за 0.05с",
-  "новини · Google Fed · 40 бр. за 0.41с",
-  "новини · Google злато · 40 бр. за 0.4с",
-  "новини · Investing · 10 бр. за 0.09с",
-  "новини · MarketWatch · 10 бр. за 0.06с",
-  "новини · Mining.com · ПАДНА: TimeoutError: The read operation timed out",
-  "новини · Yahoo долар · 12 бр. за 0.15с",
-  "новини · Yahoo злато · 15 бр. за 0.17с",
+  "новини · FT пазари · 25 бр. за 0.57с",
+  "новини · Fed всички · 9 бр. за 0.04с",
+  "новини · Fed политика · 15 бр. за 0.05с",
+  "новини · Fed речи · 15 бр. за 0.04с",
+  "новини · Google Fed · 40 бр. за 0.47с",
+  "новини · Google злато · 40 бр. за 0.38с",
+  "новини · Investing · 10 бр. за 0.12с",
+  "новини · MarketWatch · 10 бр. за 0.03с",
+  "новини · Mining.com · 36 бр. за 0.73с",
+  "новини · Yahoo долар · 12 бр. за 0.08с",
+  "новини · Yahoo злато · 15 бр. за 0.09с",
   "новини · български ред: 117 от 200 · махнати по език: 0"
  ],
  "novini": [
@@ -1196,19 +1192,6 @@
    "bg": "За вдигане на лихвата от Фед"
   },
   {
-   "zaglavie": "The Fed's next moves come into focus",
-   "vryzka": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5KbmF6LXJjeHdMZ1c5SHl1d0FreWlmM1NHX1NKbkhFR0EzV3NnSXlZaVgyNXNmbGdBeERPQ2xPaUNRN2lhX3VLOTJfaF9XTmpFS3BQcDlfaU9vMExQeEYxbmJ3U1hlYTZOUkNaUw?oc=5",
-   "izvor": "Axios",
-   "chas": "2026-11-18T20:16:02Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": null
-  },
-  {
    "zaglavie": "US rare earths regulations to get stricter in the new year",
    "vryzka": "https://www.mining.com/us-rare-earths-regulations-to-get-stricter-in-the-new-year/",
    "izvor": "Mining.com",
@@ -1709,10 +1692,10 @@
    "chas": "2026-11-18T19:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed политика",
+   "emisiya": "Fed всички",
    "chas_ot_iztochnika": true,
    "duma": "fed",
-   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
+   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
    "bg": "Протоколът от заседанието на Фед за лихвата (FOMC)"
   },
   {
@@ -2065,6 +2048,19 @@
    "duma": "gold",
    "zashto": "Пряко за златото.",
    "bg": "Златото поевтинява"
+  },
+  {
+   "zaglavie": "The Fed's next moves come into focus",
+   "vryzka": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5KbmF6LXJjeHdMZ1c5SHl1d0FreWlmM1NHX1NKbkhFR0EzV3NnSXlZaVgyNXNmbGdBeERPQ2xPaUNRN2lhX3VLOTJfaF9XTmpFS3BQcDlfaU9vMExQeEYxbmJ3U1hlYTZOUkNaUw?oc=5",
+   "izvor": "Axios",
+   "chas": "2026-11-18T17:59:21Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": null
   },
   {
    "zaglavie": "Newmont slumps 8% amid broad losses among gold peers (NEM:NYSE)",
@@ -2593,10 +2589,10 @@
    "chas": "2026-11-12T17:45:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed политика",
+   "emisiya": "Fed всички",
    "chas_ot_iztochnika": true,
    "duma": "fed",
-   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
+   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
    "bg": "Съобщение на Фед — централната банка на САЩ"
   },
   {
