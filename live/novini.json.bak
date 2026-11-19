@@ -1,39 +1,56 @@
 {
- "kogato": "2026-11-19T02:24:40Z",
- "sekundi": 0.95,
+ "kogato": "2026-11-19T02:34:54Z",
+ "sekundi": 0.83,
  "broi": 200,
- "novi_tozi_pyt": 3,
+ "novi_tozi_pyt": 1,
  "iztochnici_ok": [
-  "Fed всички",
   "Fed политика",
   "Fed речи",
+  "Fed всички",
   "Investing",
-  "MarketWatch",
-  "CNBC",
   "Yahoo долар",
+  "MarketWatch",
   "Yahoo злато",
   "FT пазари",
   "Google Fed",
-  "Google злато",
+  "CNBC",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google злато",
+   "greshka": "HTTPError: HTTP Error 429: Too Many Requests"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.2с",
-  "новини · FT пазари · 25 бр. за 0.3с",
-  "новини · Fed всички · 9 бр. за 0.1с",
-  "новини · Fed политика · 15 бр. за 0.12с",
+  "новини · CNBC · 30 бр. за 0.61с",
+  "новини · FT пазари · 25 бр. за 0.5с",
+  "новини · Fed всички · 9 бр. за 0.13с",
+  "новини · Fed политика · 15 бр. за 0.08с",
   "новини · Fed речи · 15 бр. за 0.12с",
-  "новини · Google Fed · 40 бр. за 0.44с",
-  "новини · Google злато · 40 бр. за 0.53с",
-  "новини · Investing · 10 бр. за 0.14с",
-  "новини · MarketWatch · 10 бр. за 0.16с",
-  "новини · Mining.com · 36 бр. за 0.91с",
-  "новини · Yahoo долар · 12 бр. за 0.24с",
+  "новини · Google Fed · 40 бр. за 0.52с",
+  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 429: Too Many Requests",
+  "новини · Investing · 10 бр. за 0.13с",
+  "новини · MarketWatch · 10 бр. за 0.23с",
+  "новини · Mining.com · 36 бр. за 0.79с",
+  "новини · Yahoo долар · 12 бр. за 0.22с",
   "новини · Yahoo злато · 15 бр. за 0.24с",
-  "новини · български ред: 117 от 200 · махнати по език: 1"
+  "новини · български ред: 118 от 200 · махнати по език: 1"
  ],
  "novini": [
+  {
+   "zaglavie": "Talisker Provides Ore Sorter Facility Construction Update for the Bralorne Gold Project",
+   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/talisker-provides-ore-sorter-facility-022200467.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-19T02:22:00Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": "Новина от минния бранш (злато)"
+  },
   {
    "zaglavie": "Gold rebounds from 14-month low as bargain hunters emerge despite Fed hike risks",
    "vryzka": "https://finance.yahoo.com/markets/commodities/articles/gold-rebounds-14-month-low-020048872.html?.tsrc=rss",
@@ -85,6 +102,19 @@
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
    "bg": "Златото поевтинява"
+  },
+  {
+   "zaglavie": "Gold Steadies Near 14-Month Low as Fed Signals More Rate Hikes",
+   "vryzka": "https://news.google.com/rss/articles/CBMiswFBVV95cUxNQXdmV3hhblFoX2xZNXU1UVFXemNQdDJXUlpqV3o3bmxiNUVxNTFWRkVRektBa1o0d1N2LWhFcWJYZ0VYWWUydHhnVjFrQ3VYOUI1Z25abXdHV0JucmhFcTFBZTNKSjR6WXB1MnFVanVTekJxY2cyNG9HdzB4NlkyTUtaM3N5bFQwSVd5UGQwaHJNNlRNUU5KU2tCOU5uaEVoRXY5cUhEMHBtZEtxY1B2VkRtRQ?oc=5",
+   "izvor": "Bloomberg.com",
+   "chas": "2026-11-19T01:03:00Z",
+   "vazhnost": 3,
+   "za": "злато",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": "Златото е без голяма промяна на фона на очакванията за по-висока лихва от Фед"
   },
   {
    "zaglavie": "Palo Alto Networks’ stock gets a fresh AI-fueled boost from earnings",
@@ -202,19 +232,6 @@
    "duma": "gold",
    "zashto": "Пряко за златото.",
    "bg": null
-  },
-  {
-   "zaglavie": "Gold Steadies Near 14-Month Low as Fed Signals More Rate Hikes",
-   "vryzka": "https://news.google.com/rss/articles/CBMiswFBVV95cUxNQXdmV3hhblFoX2xZNXU1UVFXemNQdDJXUlpqV3o3bmxiNUVxNTFWRkVRektBa1o0d1N2LWhFcWJYZ0VYWWUydHhnVjFrQ3VYOUI1Z25abXdHV0JucmhFcTFBZTNKSjR6WXB1MnFVanVTekJxY2cyNG9HdzB4NlkyTUtaM3N5bFQwSVd5UGQwaHJNNlRNUU5KU2tCOU5uaEVoRXY5cUhEMHBtZEtxY1B2VkRtRQ?oc=5",
-   "izvor": "Bloomberg.com",
-   "chas": "2026-11-18T23:24:06Z",
-   "vazhnost": 3,
-   "za": "злато",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": "Златото е без голяма промяна на фона на очакванията за по-висока лихва от Фед"
   },
   {
    "zaglavie": "The Dollar Climbs Higher as Gold Breaks Below 3800",
@@ -1406,10 +1423,10 @@
    "chas": "2026-11-18T19:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed всички",
+   "emisiya": "Fed политика",
    "chas_ot_iztochnika": true,
    "duma": "fed",
-   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
+   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
    "bg": "Протоколът от заседанието на Фед за лихвата (FOMC)"
   },
   {
@@ -2505,19 +2522,6 @@
    "bg": "Очаквания за по-висока лихва от Фед"
   },
   {
-   "zaglavie": "Tech outages are causing people to panic buy. Costco is benefitting",
-   "vryzka": "https://www.cnbc.com/2026/11/18/tech-outage-costco-panic-buying.html",
-   "izvor": "CNBC",
-   "chas": "2026-11-18T15:22:24Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "CNBC",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
    "zaglavie": "Waller, Considerations at the Intersection of Payments and Tokenized Markets",
    "vryzka": "https://www.federalreserve.gov/newsevents/speech/waller20261117a.htm",
    "izvor": "Fed",
@@ -2589,10 +2593,10 @@
    "chas": "2026-11-12T17:45:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed всички",
+   "emisiya": "Fed политика",
    "chas_ot_iztochnika": true,
    "duma": "fed",
-   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
+   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
    "bg": "Съобщение на Фед — централната банка на САЩ"
   },
   {
@@ -2635,6 +2639,6 @@
    "bg": "Реч на член на Фед (Waller) за пазара на труда и икономиката"
   }
  ],
- "s_bg_red": 117,
+ "s_bg_red": 118,
  "mahnati_ezik": 1
 }
