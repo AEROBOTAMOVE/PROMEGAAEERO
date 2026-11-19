@@ -1,14 +1,15 @@
 {
- "kogato": "2026-11-19T18:40:52Z",
- "sekundi": 1.17,
+ "kogato": "2026-11-19T18:51:06Z",
+ "sekundi": 1.07,
  "broi": 200,
  "novi_tozi_pyt": 2,
  "iztochnici_ok": [
+  "MarketWatch",
   "Fed речи",
   "Fed политика",
-  "MarketWatch",
-  "Yahoo долар",
+  "Fed всички",
   "Investing",
+  "Yahoo долар",
   "Yahoo злато",
   "CNBC",
   "FT пазари",
@@ -16,28 +17,36 @@
   "Google Fed",
   "Mining.com"
  ],
- "iztochnici_padnali": [
-  {
-   "ime": "Fed всички",
-   "greshka": "HTTPError: HTTP Error 404: Not Found"
-  }
- ],
+ "iztochnici_padnali": [],
  "belezhki": [
   "новини · CNBC · 30 бр. за 0.21с",
-  "новини · FT пазари · 25 бр. за 0.37с",
-  "новини · Fed всички · ПАДНА: HTTPError: HTTP Error 404: Not Found",
+  "новини · FT пазари · 25 бр. за 0.28с",
+  "новини · Fed всички · 8 бр. за 0.08с",
   "новини · Fed политика · 15 бр. за 0.07с",
-  "новини · Fed речи · 15 бр. за 0.06с",
-  "новини · Google Fed · 40 бр. за 0.41с",
+  "новини · Fed речи · 15 бр. за 0.07с",
+  "новини · Google Fed · 40 бр. за 0.46с",
   "новини · Google злато · 40 бр. за 0.45с",
-  "новини · Investing · 10 бр. за 0.13с",
-  "новини · MarketWatch · 10 бр. за 0.1с",
-  "новини · Mining.com · 36 бр. за 1.12с",
-  "новини · Yahoo долар · 17 бр. за 0.13с",
-  "новини · Yahoo злато · 18 бр. за 0.17с",
-  "новини · български ред: 79 от 200 · махнати по език: 0"
+  "новини · Investing · 10 бр. за 0.08с",
+  "новини · MarketWatch · 10 бр. за 0.06с",
+  "новини · Mining.com · 36 бр. за 1.02с",
+  "новини · Yahoo долар · 17 бр. за 0.19с",
+  "новини · Yahoo злато · 18 бр. за 0.19с",
+  "новини · български ред: 80 от 200 · махнати по език: 0"
  ],
  "novini": [
+  {
+   "zaglavie": "Elon Musk becomes the latest tech billionaire to make a peace offering to Democrats after the midterms",
+   "vryzka": "https://www.marketwatch.com/story/elon-musk-becomes-the-latest-tech-billionaire-to-make-a-peace-offering-to-democrats-after-the-midterms-05df0c0e?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-11-19T18:43:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
   {
    "zaglavie": "She Stashed $374,000 of IRA Gold Coins in Her Home Safe and Thought She’d Found a Loophole. The Tax Court Judge Didn’t Agree, and the Penalties Followed",
    "vryzka": "https://247wallst.com/personal-finance/2026/11/19/she-stashed-374000-of-ira-gold-coins-in-her-home-safe-and-thought-shed-found-a-loophole-the-tax-court-judge-didnt-agree-and-the-penalties-followed/?.tsrc=rss",
@@ -154,6 +163,19 @@
    "duma": "rate",
    "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
    "bg": null
+  },
+  {
+   "zaglavie": "Mexican Peso Hits 17-Month Low as Fed Outlook Rattles Markets",
+   "vryzka": "https://news.google.com/rss/articles/CBMisgFBVV95cUxOUlpnbkxHVEExS0lGS1ZYWmdlLU5HT1gzdTZYR0RUbW1VeDlaQ0lXdWFXQzdjR3U1YUVQOHl1cHIwVHdLZV8taUVmb0NhejNvTmtlcGRaS19lSmlzbEpma3lVN1BSc2JmMEJzVFpFaU1ucFFhZGRIYVdMekpKUlR5azFoOGdJaUtlZkJaZXJBNFgyNFQ0YXU4WVBXQkoxc2xEQUFoeFNITy1XeS1iRFdqeS1n?oc=5",
+   "izvor": "Bloomberg.com",
+   "chas": "2026-11-19T17:41:13Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": "За лихвата на Фед"
   },
   {
    "zaglavie": "Fed officials broadly expect rate hikes but debate timing",
@@ -388,19 +410,6 @@
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
    "bg": "Златото е на най-ниското си ниво от месеци на фона на очакванията за по-висока лихва от Фед"
-  },
-  {
-   "zaglavie": "Mexican Peso Hits 17-Month Low as Fed Outlook Rattles Markets",
-   "vryzka": "https://news.google.com/rss/articles/CBMisgFBVV95cUxOUlpnbkxHVEExS0lGS1ZYWmdlLU5HT1gzdTZYR0RUbW1VeDlaQ0lXdWFXQzdjR3U1YUVQOHl1cHIwVHdLZV8taUVmb0NhejNvTmtlcGRaS19lSmlzbEpma3lVN1BSc2JmMEJzVFpFaU1ucFFhZGRIYVdMekpKUlR5azFoOGdJaUtlZkJaZXJBNFgyNFQ0YXU4WVBXQkoxc2xEQUFoeFNITy1XeS1iRFdqeS1n?oc=5",
-   "izvor": "Bloomberg.com",
-   "chas": "2026-11-19T16:36:57Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": "За лихвата на Фед"
   },
   {
    "zaglavie": "Want to create more competition in grocery delivery? Let DoorDash and Instacart merge.",
@@ -713,6 +722,19 @@
    "duma": null,
    "zashto": null,
    "bg": null
+  },
+  {
+   "zaglavie": "Tudor dumps copper miners, doubles down on gold, silver",
+   "vryzka": "https://www.mining.com/tudor-dumps-copper-miners-doubles-down-on-gold-silver/",
+   "izvor": "Mining.com",
+   "chas": "2026-11-19T15:28:42Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Mining.com",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": "Новина от минния бранш (злато)"
   },
   {
    "zaglavie": "The Energy Report: Glut Check",
@@ -2470,32 +2492,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Not everyone got the same 2027 Social Security bump — and no one is giving you the exact reason why. Protect your check",
-   "vryzka": "https://finance.yahoo.com/economy/policy/articles/not-everyone-got-same-2027-105000961.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-11-19T10:50:00Z",
-   "vazhnost": 1,
-   "za": "злато",
-   "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
-   "zaglavie": "FirstFT: Anthropic’s blockbuster IPO raises record $81bn",
-   "vryzka": "https://www.ft.com/content/5f8b63e0-aaf7-48d4-8695-c8195043c537?syn-25a6b1a6=1",
-   "izvor": "Financial Times",
-   "chas": "2026-11-19T10:46:35Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "FT пазари",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
    "zaglavie": "Minutes of the Federal Open Market Committee, October 27-28, 2026",
    "vryzka": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261118a.htm",
    "izvor": "Fed",
@@ -2639,6 +2635,6 @@
    "bg": "Реч на член на Фед (Waller) за пазара на труда и икономиката"
   }
  ],
- "s_bg_red": 79,
+ "s_bg_red": 80,
  "mahnati_ezik": 0
 }
