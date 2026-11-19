@@ -1,39 +1,56 @@
 {
- "kogato": "2026-11-19T18:30:06Z",
- "sekundi": 1.82,
+ "kogato": "2026-11-19T18:40:52Z",
+ "sekundi": 1.17,
  "broi": 200,
  "novi_tozi_pyt": 2,
  "iztochnici_ok": [
-  "Fed всички",
   "Fed речи",
-  "MarketWatch",
   "Fed политика",
-  "Investing",
+  "MarketWatch",
   "Yahoo долар",
+  "Investing",
   "Yahoo злато",
+  "CNBC",
   "FT пазари",
   "Google злато",
   "Google Fed",
-  "CNBC",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Fed всички",
+   "greshka": "HTTPError: HTTP Error 404: Not Found"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.43с",
-  "новини · FT пазари · 25 бр. за 0.28с",
-  "новини · Fed всички · 8 бр. за 0.06с",
-  "новини · Fed политика · 15 бр. за 0.1с",
-  "новини · Fed речи · 15 бр. за 0.07с",
-  "новини · Google Fed · 40 бр. за 0.37с",
-  "новини · Google злато · 40 бр. за 0.41с",
-  "новини · Investing · 10 бр. за 0.12с",
-  "новини · MarketWatch · 10 бр. за 0.07с",
-  "новини · Mining.com · 36 бр. за 1.75с",
-  "новини · Yahoo долар · 17 бр. за 0.15с",
+  "новини · CNBC · 30 бр. за 0.21с",
+  "новини · FT пазари · 25 бр. за 0.37с",
+  "новини · Fed всички · ПАДНА: HTTPError: HTTP Error 404: Not Found",
+  "новини · Fed политика · 15 бр. за 0.07с",
+  "новини · Fed речи · 15 бр. за 0.06с",
+  "новини · Google Fed · 40 бр. за 0.41с",
+  "новини · Google злато · 40 бр. за 0.45с",
+  "новини · Investing · 10 бр. за 0.13с",
+  "новини · MarketWatch · 10 бр. за 0.1с",
+  "новини · Mining.com · 36 бр. за 1.12с",
+  "новини · Yahoo долар · 17 бр. за 0.13с",
   "новини · Yahoo злато · 18 бр. за 0.17с",
-  "новини · български ред: 80 от 200 · махнати по език: 0"
+  "новини · български ред: 79 от 200 · махнати по език: 0"
  ],
  "novini": [
+  {
+   "zaglavie": "She Stashed $374,000 of IRA Gold Coins in Her Home Safe and Thought She’d Found a Loophole. The Tax Court Judge Didn’t Agree, and the Penalties Followed",
+   "vryzka": "https://247wallst.com/personal-finance/2026/11/19/she-stashed-374000-of-ira-gold-coins-in-her-home-safe-and-thought-shed-found-a-loophole-the-tax-court-judge-didnt-agree-and-the-penalties-followed/?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-19T18:29:24Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": null
+  },
   {
    "zaglavie": "Gold (XAUUSD), Silver, Platinum Forecasts – Gold Tests Yearly Lows As Sell-Off Continues",
    "vryzka": "https://news.google.com/rss/articles/CBMizgFBVV95cUxQM3c4dnNlZXh0U194M3dIeFBFTU95RTNPajRGMC1ITFNhbXU1LVE3N3JYN3lDUnFyNWlxeEhsOGtNTDhBVDl2MmJVSzdjdk1zUDVVeWRlWEx5RlR3RHk5YWEzT25GY19kMDJqcHFjNnIyeGh6WjE1N28xZWtBVkpua2t4ZVJoUURsZUtBUTBTTW9aeHNHZWNzMGhZTWpBU0tTWEIwZ25kRUF3T0ZaSDBEZW5ucFVCdmhKay1PaGE2RjY3cTNIR29vSkZIN2FyZw?oc=5",
@@ -45,6 +62,19 @@
    "chas_ot_iztochnika": true,
    "duma": "gold",
    "zashto": "Пряко за златото.",
+   "bg": null
+  },
+  {
+   "zaglavie": "3 Australian Resilient Stocks With ROE Up To 28%",
+   "vryzka": "https://finance.yahoo.com/markets/stocks/articles/3-australian-resilient-stocks-roe-181539689.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-19T18:15:39Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": "rate",
+   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
    "bg": null
   },
   {
@@ -113,6 +143,19 @@
    "bg": null
   },
   {
+   "zaglavie": "The average US 30-year mortgage rate rises to 7.28% this week, ending a four-week slide",
+   "vryzka": "https://news.google.com/rss/articles/CBMilAFBVV95cUxNVk1HT0JYWFpsYVpBVGdFN01IVkRsdkJ2SUctME9mXy1vVm51WVY3THhGSTVPWU4tM0twTHh1ZGZBdkVuUUR2QUs5NXRYOHNFYnROV19lZEo4a0kzQndOUXlLWVpWT0RtNDRzWWRnWjFiTG5JRkdXdERjdGRHUHlHSzdFeFNKUmp1U0FldTF0cjFNSHFF?oc=5",
+   "izvor": "Newsday",
+   "chas": "2026-11-19T17:41:26Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "rate",
+   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
+   "bg": null
+  },
+  {
    "zaglavie": "Fed officials broadly expect rate hikes but debate timing",
    "vryzka": "https://news.google.com/rss/articles/CBMihwFBVV95cUxNTG9sR1Q2eG9UcTRDYjZITDdhTms4VGJMcEwzbkVQVGRUb2txcXNFZGtqeG1Hb0FUUm0tRUQxUjJmcTNQOGVHLWpiMU13Sk5kdGVIaFRDcXh1cHNKVFd2X0RMTlZOU2MtT1pXSTJtQkVvdUc2Q2dqMmVDTnQzM2pYSjNJanh2UXM?oc=5",
    "izvor": "Mezha.net",
@@ -137,19 +180,6 @@
    "duma": "rates",
    "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
    "bg": "Цената на златото днес"
-  },
-  {
-   "zaglavie": "The average US 30-year mortgage rate rises to 7.28% this week, ending a four-week slide",
-   "vryzka": "https://news.google.com/rss/articles/CBMi4wFBVV95cUxNaWFyU3l6d3lJdVV5OG1QbTFQSFo2Q1FuTmlGTkhSZTRnazN5eDU2SmQ0NUF5V0FHemhCZThhcVpzalp4am15RVlGZ1BxcjVYa3ljc3N3dllEMjFmNG14ejJzNnQwOTZzMWU1MF9NMWNuNEFncmM4WG9vYkdaRnJCM1FNd1FPUjkxUjZqRDRjMXVXQmdyZF9mR19FSm8yajFmWm1jWXRWZHgxeFBRVElIeEx4WEtBVmFTM3YySk1qU3VSNGdCQVhfNFBqWG9qS1REOHhrOWRsY1JwUWRlTXJkNzJ2cw?oc=5",
-   "izvor": "The Washington Post",
-   "chas": "2026-11-19T17:26:51Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "rate",
-   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
-   "bg": null
   },
   {
    "zaglavie": "The dollar has hit a 19-month high: what’s going on?",
@@ -457,7 +487,7 @@
    "chas": "2026-11-19T16:15:42Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Google злато",
+   "emisiya": "Google Fed",
    "chas_ot_iztochnika": true,
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
@@ -2466,42 +2496,16 @@
    "bg": null
   },
   {
-   "zaglavie": "Can Online Savings Rates Really Last? A South Carolina Caller Put the Question to Clark Howard",
-   "vryzka": "https://news.google.com/rss/articles/CBMi8wFBVV95cUxNcHlKdjZaczVsck5mdElMTDlSQ1NEUUJkVnZsajdvTzZoQTVJRGRzYkFqMmlUTTMzT3RSWFJYd2VCNndpVXkzNHhvbUMtMkJFWG9uR0NSN3AycGQ4TzF4Y05BblpiZF9tWDJ3RzJmT19ickdUWVEzNjFnQWJfMnk5cjE0eGtmQ1k2bGR2ZndGNDd3T0Jlcjl1M3Rtci1SdnFIcE03UVVfOTlPcENIYjRyUUJVTlQzRkJmN2hwaGtMaTZ5ZERreWFRb1g5X3k4aTR0QWxMMlJKMWxuUGhSNC15eXNITDJLR0VKYkMtSWR2UzRnc1E?oc=5",
-   "izvor": "24/7 Wall St.",
-   "chas": "2026-11-19T10:41:00Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "rates",
-   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
-   "bg": null
-  },
-  {
-   "zaglavie": "Gold Hits 14-Month Low Near $3,693 as Fed Tightening Risks Persist",
-   "vryzka": "https://www.investing.com/analysis/gold-hits-14month-low-near-3693-as-fed-tightening-risks-persist-200691912",
-   "izvor": "Investing.com",
-   "chas": "2026-11-19T10:35:00Z",
-   "vazhnost": 3,
-   "za": "злато",
-   "emisiya": "Investing",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": "Златото е на най-ниското си ниво от месеци на фона на очакванията за по-висока лихва от Фед"
-  },
-  {
    "zaglavie": "Minutes of the Federal Open Market Committee, October 27-28, 2026",
    "vryzka": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261118a.htm",
    "izvor": "Fed",
    "chas": "2026-11-18T19:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed всички",
+   "emisiya": "Fed политика",
    "chas_ot_iztochnika": true,
    "duma": "fed",
-   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
+   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
    "bg": "Протоколът от заседанието на Фед за лихвата (FOMC)"
   },
   {
@@ -2589,10 +2593,10 @@
    "chas": "2026-11-12T17:45:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed всички",
+   "emisiya": "Fed политика",
    "chas_ot_iztochnika": true,
    "duma": "fed",
-   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
+   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
    "bg": "Съобщение на Фед — централната банка на САЩ"
   },
   {
@@ -2635,6 +2639,6 @@
    "bg": "Реч на член на Фед (Waller) за пазара на труда и икономиката"
   }
  ],
- "s_bg_red": 80,
+ "s_bg_red": 79,
  "mahnati_ezik": 0
 }
