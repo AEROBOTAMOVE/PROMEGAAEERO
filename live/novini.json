@@ -1,8 +1,8 @@
 {
- "kogato": "2026-11-19T03:18:21Z",
- "sekundi": 7.38,
+ "kogato": "2026-11-19T03:29:09Z",
+ "sekundi": 3.53,
  "broi": 200,
- "novi_tozi_pyt": 0,
+ "novi_tozi_pyt": 2,
  "iztochnici_ok": [
   "MarketWatch",
   "Fed всички",
@@ -13,32 +13,25 @@
   "Yahoo злато",
   "CNBC",
   "FT пазари",
+  "Google злато",
+  "Google Fed",
   "Mining.com"
  ],
- "iztochnici_padnali": [
-  {
-   "ime": "Google злато",
-   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
-  },
-  {
-   "ime": "Google Fed",
-   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
-  }
- ],
+ "iztochnici_padnali": [],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.2с",
-  "новини · FT пазари · 25 бр. за 0.2с",
-  "новини · Fed всички · 9 бр. за 0.04с",
-  "новини · Fed политика · 15 бр. за 0.04с",
-  "новини · Fed речи · 15 бр. за 0.04с",
-  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
-  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
-  "новини · Investing · 10 бр. за 0.06с",
-  "новини · MarketWatch · 10 бр. за 0.02с",
-  "новини · Mining.com · 36 бр. за 0.59с",
-  "новини · Yahoo долар · 12 бр. за 0.11с",
-  "новини · Yahoo злато · 15 бр. за 0.11с",
-  "новини · български ред: 117 от 200 · махнати по език: 0"
+  "новини · CNBC · 30 бр. за 0.26с",
+  "новини · FT пазари · 25 бр. за 0.34с",
+  "новини · Fed всички · 9 бр. за 0.06с",
+  "новини · Fed политика · 15 бр. за 0.07с",
+  "новини · Fed речи · 15 бр. за 0.08с",
+  "новини · Google Fed · 40 бр. за 0.44с",
+  "новини · Google злато · 40 бр. за 0.44с",
+  "новини · Investing · 10 бр. за 0.12с",
+  "новини · MarketWatch · 10 бр. за 0.04с",
+  "новини · Mining.com · 36 бр. за 3.46с",
+  "новини · Yahoo долар · 12 бр. за 0.24с",
+  "новини · Yahoo злато · 15 бр. за 0.25с",
+  "новини · български ред: 119 от 200 · махнати по език: 0"
  ],
  "novini": [
   {
@@ -66,6 +59,19 @@
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
    "bg": "Златото се връща нагоре на фона на очакванията за по-висока лихва от Фед"
+  },
+  {
+   "zaglavie": "Gold Rate Today 19 November 2026 | Check 18K, 22K & 24K Gold Rate Today – Live Updates",
+   "vryzka": "https://news.google.com/rss/articles/CBMibkFVX3lxTE1uNkdLbm9nd0dkT0lqZmhCRVhZMHJmVW5vczlxMU5sU0dvT3JrRGotWExwSDJRWm5wYXh2eFNKVHJZaEVOY0JOODdDYmROQkJ4aEYta3dmV1hya2lKcUxOamlmUlBrS2tLV0ZOTEpn?oc=5",
+   "izvor": "The Times of India",
+   "chas": "2026-11-19T01:55:01Z",
+   "vazhnost": 3,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "rate",
+   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
+   "bg": "Цената на златото днес"
   },
   {
    "zaglavie": "Gold (XAU/USD) Price Forecast: Breakdown Opens Door to $3,500",
@@ -724,7 +730,7 @@
    "chas": "2026-11-18T21:03:23Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Google Fed",
+   "emisiya": "Google злато",
    "chas_ot_iztochnika": true,
    "duma": "rate",
    "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
@@ -1101,7 +1107,7 @@
    "chas": "2026-11-18T19:43:05Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Google Fed",
+   "emisiya": "Google злато",
    "chas_ot_iztochnika": true,
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
@@ -1186,6 +1192,19 @@
    "bg": null
   },
   {
+   "zaglavie": "Fed officials divided on December rate hike amid inflation concerns",
+   "vryzka": "https://news.google.com/rss/articles/CBMimwFBVV95cUxPV21EZDk3N0hFaklObWxwemJKbEFDcnZ6eUhvZEVObzFraVZFNllId3UxbG0wWXRFYk9aSTNSeEMyTTlwY3V6aHpObjloVkR1eTFZaUlHa25GLTZhVkkxaGhrTFZmbnU1S1FZbUxYV1Z1NjFGdVliTGE2U0xUYjFnaFFKcThTSUpuNi1HcnpyUUxoN3E3OXNxaHFzYw?oc=5",
+   "izvor": "Crypto Briefing",
+   "chas": "2026-11-18T19:27:12Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": "За вдигане на лихвата от Фед"
+  },
+  {
    "zaglavie": "Fed’s Michael Barr Says Inflation Still Too High, Could Support Further Rate Hikes",
    "vryzka": "https://news.google.com/rss/articles/CBMiVEFVX3lxTFBNZG1JWTJleDlRQVBhQ2RrN3d2NkpZNlg2VmY1Yk5nUkxVek9SY2p4ZXd2TWdtSTNwUFJVcW1KSEtMZkc0T281aXRIbXlnZXF3WkFFWg?oc=5",
    "izvor": "bloomingbit",
@@ -1267,7 +1286,7 @@
    "zaglavie": "Gold price drops to 14-month low as dollar, yields rise on hawkish Fed rhetoric",
    "vryzka": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxNTzJ3SW41M0FnMmVhbTNmV0xqR3dfYlZLMV9nM0FDNzMydGI3MFdLVmJWYnZLRFVyd2pWdGZucHl6SGdqdDZTekg4NmE0TVNHVGFIb09Zc1gxdHk3TjBicmdIYWhmQkZnUDVobWJvTk83U0pCSEdLbXBfTWMyUThHb2JwVjU5OFFOWHBxbk5NR01ReVdseDVhalB1cGYtWncyZFV4cVhPOUVIZw?oc=5",
    "izvor": "Mining.com",
-   "chas": "2026-11-18T19:14:14Z",
+   "chas": "2026-11-18T19:14:34Z",
    "vazhnost": 3,
    "za": "злато",
    "emisiya": "Google злато",
@@ -2044,6 +2063,19 @@
    "bg": "Златото поевтинява"
   },
   {
+   "zaglavie": "The Fed's next moves come into focus",
+   "vryzka": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5KbmF6LXJjeHdMZ1c5SHl1d0FreWlmM1NHX1NKbkhFR0EzV3NnSXlZaVgyNXNmbGdBeERPQ2xPaUNRN2lhX3VLOTJfaF9XTmpFS3BQcDlfaU9vMExQeEYxbmJ3U1hlYTZOUkNaUw?oc=5",
+   "izvor": "Axios",
+   "chas": "2026-11-18T17:16:02Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": null
+  },
+  {
    "zaglavie": "I tried TikTok’s viral ‘corporate slop lunch hacks’ — and finally escaped the $20 desk salad",
    "vryzka": "https://www.marketwatch.com/story/i-tried-tiktoks-viral-corporate-slop-lunch-hacks-and-finally-escaped-the-20-desk-salad-60daf133?mod=mw_rss_topstories",
    "izvor": "MarketWatch",
@@ -2054,19 +2086,6 @@
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null,
-   "bg": null
-  },
-  {
-   "zaglavie": "The Fed's next moves come into focus",
-   "vryzka": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5KbmF6LXJjeHdMZ1c5SHl1d0FreWlmM1NHX1NKbkhFR0EzV3NnSXlZaVgyNXNmbGdBeERPQ2xPaUNRN2lhX3VLOTJfaF9XTmpFS3BQcDlfaU9vMExQeEYxbmJ3U1hlYTZOUkNaUw?oc=5",
-   "izvor": "Axios",
-   "chas": "2026-11-18T17:15:14Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
    "bg": null
   },
   {
@@ -2424,7 +2443,7 @@
    "zaglavie": "Gold drops 2.5% 📉 Are precious metals entering a bear market?",
    "vryzka": "https://news.google.com/rss/articles/CBMitgFBVV95cUxPT04zNGxlQmJrbm1YMEF1TkViWXV3WEpPcC1tMHFlSGxiODRFX3NTMTl5NzRWbjhYVy1aakRHdHFmWEJSOHVicm5xRjNKSEQtWXNJY1kxNU1jaUVmU2I5d2c0dzF6ZEw4MWhYVHllVHdjUEpkTkhHWFJ1Q0czYTdRMmMyUlplbkNFU3AwU0lidHB5VmNiNjh5QW9Fa19VN1RaWC1naVpldXJROGhJS3o4S0pVeFRoQQ?oc=5",
    "izvor": "XTB.com",
-   "chas": "2026-11-18T15:46:19Z",
+   "chas": "2026-11-18T15:46:18Z",
    "vazhnost": 2,
    "za": "злато",
    "emisiya": "Google злато",
@@ -2497,32 +2516,6 @@
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
    "bg": "Доларът поскъпва на фона на изказванията на членове на Фед"
-  },
-  {
-   "zaglavie": "The Energy Report: Supply Side Oil Economics",
-   "vryzka": "https://www.investing.com/analysis/the-energy-report-supply-side-oil-economics-200691844",
-   "izvor": "Investing.com",
-   "chas": "2026-11-18T15:32:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "Investing",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
-   "zaglavie": "‘I felt so seen’: Why families across America are laughing — and crying — over SNL’s ‘Sister’ sketch",
-   "vryzka": "https://www.marketwatch.com/story/so-sad-and-so-true-has-your-family-talked-about-snls-sister-sketch-yet-19bf9d67?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-11-18T15:32:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
   },
   {
    "zaglavie": "Waller, Considerations at the Intersection of Payments and Tokenized Markets",
@@ -2642,6 +2635,6 @@
    "bg": "Реч на член на Фед (Waller) за пазара на труда и икономиката"
   }
  ],
- "s_bg_red": 117,
+ "s_bg_red": 119,
  "mahnati_ezik": 0
 }
