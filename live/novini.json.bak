@@ -1,39 +1,69 @@
 {
- "kogato": "2026-11-19T12:58:07Z",
- "sekundi": 0.88,
+ "kogato": "2026-11-19T13:09:01Z",
+ "sekundi": 0.76,
  "broi": 200,
  "novi_tozi_pyt": 4,
  "iztochnici_ok": [
+  "MarketWatch",
+  "Fed речи",
   "Fed всички",
   "Fed политика",
-  "MarketWatch",
   "Investing",
-  "Fed речи",
   "Yahoo злато",
-  "Yahoo долар",
   "CNBC",
   "FT пазари",
+  "Yahoo долар",
   "Google злато",
-  "Google Fed",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google Fed",
+   "greshka": "HTTPError: HTTP Error 429: Too Many Requests"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.32с",
-  "новини · FT пазари · 25 бр. за 0.35с",
-  "новини · Fed всички · 9 бр. за 0.08с",
-  "новини · Fed политика · 15 бр. за 0.09с",
-  "новини · Fed речи · 15 бр. за 0.15с",
-  "новини · Google Fed · 40 бр. за 0.39с",
-  "новини · Google злато · 40 бр. за 0.38с",
-  "новини · Investing · 10 бр. за 0.12с",
-  "новини · MarketWatch · 10 бр. за 0.09с",
-  "новини · Mining.com · 36 бр. за 0.82с",
-  "новини · Yahoo долар · 16 бр. за 0.18с",
-  "новини · Yahoo злато · 20 бр. за 0.17с",
-  "новини · български ред: 99 от 200 · махнати по език: 2"
+  "новини · CNBC · 30 бр. за 0.18с",
+  "новини · FT пазари · 25 бр. за 0.19с",
+  "новини · Fed всички · 9 бр. за 0.04с",
+  "новини · Fed политика · 15 бр. за 0.04с",
+  "новини · Fed речи · 15 бр. за 0.04с",
+  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 429: Too Many Requests",
+  "новини · Google злато · 40 бр. за 0.39с",
+  "новини · Investing · 10 бр. за 0.06с",
+  "новини · MarketWatch · 10 бр. за 0.01с",
+  "новини · Mining.com · 36 бр. за 0.71с",
+  "новини · Yahoo долар · 17 бр. за 0.24с",
+  "новини · Yahoo злато · 20 бр. за 0.19с",
+  "новини · български ред: 97 от 200 · махнати по език: 1"
  ],
  "novini": [
+  {
+   "zaglavie": "Silver Bullet Mines Corp. Begins Work on First 200 Tons of DSO for Shipment",
+   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/silver-bullet-mines-corp-begins-130000011.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-19T13:00:00Z",
+   "vazhnost": 1,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "Bitcoin Open Interest Drops 20% as Ethereum and Solana Slide Further",
+   "vryzka": "https://www.ccn.com/news/crypto/bitcoin-ethereum-solana-open-interest-drop/?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-19T12:47:15Z",
+   "vazhnost": 1,
+   "za": "долар",
+   "emisiya": "Yahoo долар",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
   {
    "zaglavie": "If the AI trade unwinds, other pillars holding up the U.S. economy are ‘irrelevant,’ says Barclays",
    "vryzka": "https://www.marketwatch.com/story/if-the-ai-trade-unwinds-other-pillars-holding-up-the-u-s-economy-are-irrelevant-says-barclays-b6f1bdca?mod=mw_rss_topstories",
@@ -124,6 +154,19 @@
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
    "bg": "Канадският долар е под натиск"
+  },
+  {
+   "zaglavie": "More than 100,000 UK retail investors rush to buy Anthropic shares",
+   "vryzka": "https://www.ft.com/content/30d21725-f889-4e3d-a3a8-63ed6b55e4d8?syn-25a6b1a6=1",
+   "izvor": "Financial Times",
+   "chas": "2026-11-19T12:31:14Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "FT пазари",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
   },
   {
    "zaglavie": "More than 100,000 UK retail investors rush to buy Anthropic shares in IPO",
@@ -458,6 +501,19 @@
    "vazhnost": 1,
    "za": "злато",
    "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "Wall Street Subdued So Far in Q4: What Lies Ahead?",
+   "vryzka": "https://finance.yahoo.com/markets/stocks/articles/wall-street-subdued-far-q4-120000528.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-19T12:00:00Z",
+   "vazhnost": 1,
+   "za": "долар",
+   "emisiya": "Yahoo долар",
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null,
@@ -984,19 +1040,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Fed minutes: Higher interest rates needed in December as inflation worries mount",
-   "vryzka": "https://news.google.com/rss/articles/CBMiggJBVV95cUxQaU43bmxkNzVPckNkT09OVjlmT2JMLWRjTDh3ZllFY3NrOV9HTFFycG52QmVRd1pLalFQWVVyY2JHdDlRUFBfY2NoU3ZVTUN2a1hZYTUxMjRabkdCMFFEUm9DUGh2TWNqNU5aT0lJX2NLemRVcUlWUFdRcl9HOW5hUks0S2hyNXgwNmd0OTkwVXE2UUNfTFVDOHlfRFYtRTUzeDduc1VYRkh0TEoySC1TcmlEdzVLbzZjOWJWX2lKU3c5S0FES3pfR1hLN29rdU1ScDhfdTBxLTZ2a0c5aURYVnZ4dDdBRGpOSF9CZlpFbEh1NG1RM2lNd2p0djFqUENhcnc?oc=5",
-   "izvor": "Bedford Gazette",
-   "chas": "2026-11-19T10:00:00Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": "Протоколът от заседанието на Фед за лихвата (FOMC)"
-  },
-  {
    "zaglavie": "Ground View Pakistan: The message behind the words",
    "vryzka": "https://www.mining.com/ground-view-pakistan-the-message-behind-the-words/",
    "izvor": "Mining.com",
@@ -1008,6 +1051,19 @@
    "duma": null,
    "zashto": null,
    "bg": null
+  },
+  {
+   "zaglavie": "Fed minutes: Higher interest rates needed in December as inflation worries mount",
+   "vryzka": "https://news.google.com/rss/articles/CBMiggJBVV95cUxQaU43bmxkNzVPckNkT09OVjlmT2JMLWRjTDh3ZllFY3NrOV9HTFFycG52QmVRd1pLalFQWVVyY2JHdDlRUFBfY2NoU3ZVTUN2a1hZYTUxMjRabkdCMFFEUm9DUGh2TWNqNU5aT0lJX2NLemRVcUlWUFdRcl9HOW5hUks0S2hyNXgwNmd0OTkwVXE2UUNfTFVDOHlfRFYtRTUzeDduc1VYRkh0TEoySC1TcmlEdzVLbzZjOWJWX2lKU3c5S0FES3pfR1hLN29rdU1ScDhfdTBxLTZ2a0c5aURYVnZ4dDdBRGpOSF9CZlpFbEh1NG1RM2lNd2p0djFqUENhcnc?oc=5",
+   "izvor": "Bedford Gazette",
+   "chas": "2026-11-19T10:00:00Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": "Протоколът от заседанието на Фед за лихвата (FOMC)"
   },
   {
    "zaglavie": "VIZSLA SILVER PROVIDES UPDATE ON PANUCO PROJECT DEVELOPMENT",
@@ -2440,58 +2496,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Gold and Silver Crash Again: Is the Precious Metals Rally Over?",
-   "vryzka": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFBqX1QySGtiaGowRFJGc0o0UWhtMEVldTlic0VuNFdXX25hVFcwYVluU2VwMm9kTVFOOFZhZXVwWGk4eE5xbGE4dzdlY0F1VUxvcnVjRWhZVmlwQTA?oc=5",
-   "izvor": "Cryptonews.net",
-   "chas": "2026-11-18T23:31:11Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Златото и среброто поевтиняват"
-  },
-  {
-   "zaglavie": "Alamos Gold Cautions Shareholders Regarding Newcastle Capital Partners' Mini-Tender Offer For Shares",
-   "vryzka": "https://news.google.com/rss/articles/CBMixAFBVV95cUxObVo5enZiMHRiUmRRcWpsU0JfWnF5TVh1TkZ3dTBWM0NYVGR5Q2x4ZGZXbWxJMHMzZHlCT2xlUWRtdzRZMzVNY1RCaE9xSFItcGdYRHVsSFpETWE3Y1JEOHhGOVFDR2h0emZSMnZZanBqTEJ4eVBXUlFLbVhpbThxbkY5YUMzYWhDbHlQWmhtS1k0M2I4R21ncHJCSFpZMVZmRmdPR0pNRFlSUllURE5oQjIxZ0V3YTRtZHVEYUNjTVN3MUlG?oc=5",
-   "izvor": "Investing News Network",
-   "chas": "2026-11-18T23:30:44Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": null
-  },
-  {
-   "zaglavie": "The Dollar Climbs Higher as Gold Breaks Below 3800",
-   "vryzka": "https://news.google.com/rss/articles/CBMiowFBVV95cUxQM1FaUVJWWlBsWnlWVWIyUUM4amYyOWlNYWZINTl4bkZSZGlKb0pQMmNmcklwUWxDcENvcmdXakFqN0s1cUdlWXF2RUZtbmdnYnIxMkpELVBYZXlJa2Y3bGdSbl9KWEV1S3lSRDNxUHFweW5BT1E4cXZ6WEhXN0U4SUY2cHdoRTdxb3FqN1NvQ0xrX0JTNGk5V25Ed0ZZOEtBRktn?oc=5",
-   "izvor": "FXEmpire",
-   "chas": "2026-11-18T23:21:15Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "dollar",
-   "zashto": "Златото се мери в долари: по-силен долар обикновено значи по-евтино злато.",
-   "bg": "Доларът поскъпва"
-  },
-  {
-   "zaglavie": "What the ‘death cross’ in small-cap stocks means for the rest of the market",
-   "vryzka": "https://www.marketwatch.com/story/what-the-death-cross-in-small-cap-stocks-means-for-the-rest-of-the-stock-market-edd8e86e?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-11-18T23:12:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
    "zaglavie": "Minutes of the Federal Open Market Committee, October 27-28, 2026",
    "vryzka": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261118a.htm",
    "izvor": "Fed",
@@ -2635,6 +2639,6 @@
    "bg": "Реч на член на Фед (Waller) за пазара на труда и икономиката"
   }
  ],
- "s_bg_red": 99,
- "mahnati_ezik": 2
+ "s_bg_red": 97,
+ "mahnati_ezik": 1
 }
