@@ -1,37 +1,41 @@
 {
- "kogato": "2026-11-19T02:45:36Z",
- "sekundi": 2.56,
+ "kogato": "2026-11-19T02:56:24Z",
+ "sekundi": 0.77,
  "broi": 200,
  "novi_tozi_pyt": 1,
  "iztochnici_ok": [
   "MarketWatch",
   "Fed всички",
-  "Fed политика",
-  "Yahoo долар",
-  "Yahoo злато",
-  "Investing",
   "Fed речи",
+  "Fed политика",
+  "Investing",
   "CNBC",
   "FT пазари",
+  "Yahoo злато",
+  "Yahoo долар",
   "Google злато",
-  "Mining.com",
-  "Google Fed"
+  "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google Fed",
+   "greshka": "HTTPError: HTTP Error 429: Too Many Requests"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.23с",
-  "новини · FT пазари · 25 бр. за 0.3с",
-  "новини · Fed всички · 9 бр. за 0.04с",
-  "новини · Fed политика · 15 бр. за 0.05с",
-  "новини · Fed речи · 15 бр. за 0.13с",
-  "новини · Google Fed · 40 бр. за 2.49с",
-  "новини · Google злато · 40 бр. за 0.35с",
-  "новини · Investing · 10 бр. за 0.1с",
-  "новини · MarketWatch · 10 бр. за 0.03с",
-  "новини · Mining.com · 36 бр. за 0.75с",
-  "новини · Yahoo долар · 12 бр. за 0.09с",
-  "новини · Yahoo злато · 15 бр. за 0.09с",
-  "новини · български ред: 118 от 200 · махнати по език: 1"
+  "новини · CNBC · 30 бр. за 0.18с",
+  "новини · FT пазари · 25 бр. за 0.34с",
+  "новини · Fed всички · 9 бр. за 0.11с",
+  "новини · Fed политика · 15 бр. за 0.11с",
+  "новини · Fed речи · 15 бр. за 0.11с",
+  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 429: Too Many Requests",
+  "новини · Google злато · 40 бр. за 0.52с",
+  "новини · Investing · 10 бр. за 0.17с",
+  "новини · MarketWatch · 10 бр. за 0.04с",
+  "новини · Mining.com · 36 бр. за 0.72с",
+  "новини · Yahoo долар · 12 бр. за 0.5с",
+  "новини · Yahoo злато · 15 бр. за 0.5с",
+  "новини · български ред: 117 от 200 · махнати по език: 0"
  ],
  "novini": [
   {
@@ -54,7 +58,7 @@
    "chas": "2026-11-19T02:00:48Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Yahoo долар",
+   "emisiya": "Yahoo злато",
    "chas_ot_iztochnika": true,
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
@@ -93,7 +97,7 @@
    "chas": "2026-11-19T01:05:00Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Yahoo долар",
+   "emisiya": "Yahoo злато",
    "chas_ot_iztochnika": true,
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
@@ -522,7 +526,7 @@
    "chas": "2026-11-18T21:50:30Z",
    "vazhnost": 2,
    "za": "злато",
-   "emisiya": "Yahoo долар",
+   "emisiya": "Yahoo злато",
    "chas_ot_iztochnika": true,
    "duma": "gold",
    "zashto": "Пряко за златото.",
@@ -1595,6 +1599,19 @@
    "bg": null
   },
   {
+   "zaglavie": "META_TITLE_QUOTE - Yahoo Finance",
+   "vryzka": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE9LRXk3WmZ5Y1MwZVR2TUhJNEJYakk2Z3ZPbHkyWklVNkdJTnB3bjBpb0ctRzhrUzNhUmstaFJfUkJ0SVZ3VmRGTVJGS3F3aG95?oc=5",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-18T18:25:20Z",
+   "vazhnost": 1,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
    "zaglavie": "Gold and silver weather a perfect storm as demand holds firm",
    "vryzka": "https://news.google.com/rss/articles/CBMinAFBVV95cUxQYXBiSnI5YkVSWEZJZTJlV3A2ZnR0azV0NTNGY3c3WlN2Y2o4NFlPUUFQeldxdTFMYlVzNDNTSWh6bVFzRXhqVEd5cjAwMlpMTXowOGhFUEpDbVdKcnZmb0gtUXBPREJFclFxTVJCT0RIYng4amRxNUxlRV9vSjY0RFBFdXE5RWFnSVVFWHR5QWZQVS12MklMejlzSkQ?oc=5",
    "izvor": "Kitco",
@@ -2505,19 +2522,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Rate Spotlight: Fed pause off the table as markets fully price in December hike (TBF:NYSEARCA)",
-   "vryzka": "https://news.google.com/rss/articles/CBMitwFBVV95cUxQN1cwdUwtX0FEWnBxWFgyU3JIRDljUTVKaGUtbVVNdFhzdWJzNDVNaEozS293enJyUTNzdGd4ZUFiSVR0dWE0SDBqcUV6VWpaZTdRSUJTSHRLTFRRRFlsM0t3YkhMTzJfVDhnOEhnMmRmX29HTnduemR3QXFsVTc3Z3J5V1RET3lFU2RicXdNS05CRzEwR1FxeFR0WmtrMzU1X1o5ZWhQS3lLbHN6QU5sMjJ5OEJ3Wlk?oc=5",
-   "izvor": "Seeking Alpha",
-   "chas": "2026-11-18T15:26:42Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "rate",
-   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
-   "bg": "Очаквания за по-висока лихва от Фед"
-  },
-  {
    "zaglavie": "Waller, Considerations at the Intersection of Payments and Tokenized Markets",
    "vryzka": "https://www.federalreserve.gov/newsevents/speech/waller20261117a.htm",
    "izvor": "Fed",
@@ -2635,6 +2639,6 @@
    "bg": "Реч на член на Фед (Waller) за пазара на труда и икономиката"
   }
  ],
- "s_bg_red": 118,
- "mahnati_ezik": 1
+ "s_bg_red": 117,
+ "mahnati_ezik": 0
 }
