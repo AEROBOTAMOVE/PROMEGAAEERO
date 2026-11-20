@@ -1,39 +1,56 @@
 {
- "kogato": "2026-11-20T23:45:19Z",
- "sekundi": 0.51,
+ "kogato": "2026-11-20T23:56:18Z",
+ "sekundi": 0.53,
  "broi": 200,
- "novi_tozi_pyt": 4,
+ "novi_tozi_pyt": 2,
  "iztochnici_ok": [
-  "Fed всички",
   "Fed речи",
+  "Fed всички",
   "Fed политика",
   "Investing",
-  "Mining.com",
+  "MarketWatch",
   "Yahoo долар",
   "CNBC",
+  "Mining.com",
   "Yahoo злато",
   "FT пазари",
-  "MarketWatch",
-  "Google злато",
   "Google Fed"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google злато",
+   "greshka": "HTTPError: HTTP Error 429: Too Many Requests"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.16с",
+  "новини · CNBC · 30 бр. за 0.15с",
   "новини · FT пазари · 25 бр. за 0.25с",
   "новини · Fed всички · 9 бр. за 0.08с",
   "новини · Fed политика · 15 бр. за 0.1с",
-  "новини · Fed речи · 15 бр. за 0.09с",
-  "новини · Google Fed · 40 бр. за 0.39с",
-  "новини · Google злато · 40 бр. за 0.43с",
+  "новини · Fed речи · 15 бр. за 0.08с",
+  "новини · Google Fed · 40 бр. за 0.4с",
+  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 429: Too Many Requests",
   "новини · Investing · 10 бр. за 0.12с",
-  "новини · MarketWatch · 10 бр. за 0.34с",
-  "новини · Mining.com · 36 бр. за 0.14с",
+  "новини · MarketWatch · 10 бр. за 0.13с",
+  "новини · Mining.com · 36 бр. за 0.16с",
   "новини · Yahoo долар · 16 бр. за 0.16с",
-  "новини · Yahoo злато · 16 бр. за 0.23с",
-  "новини · български ред: 90 от 200 · махнати по език: 0"
+  "новини · Yahoo злато · 16 бр. за 0.18с",
+  "новини · български ред: 91 от 200 · махнати по език: 0"
  ],
  "novini": [
+  {
+   "zaglavie": "Fed hawks keep 10-year yield elevated despite lower oil prices",
+   "vryzka": "https://news.google.com/rss/articles/CBMiekFVX3lxTE9wNGpNMHlmRDQtSHVldVlHdFNwN0d6NURRUExpVmZub3dOamRlbWNwQnI2VzhqVUZxX2JhaXpjZElobi04eFpQLTg3U0RYWTlOVmZEb25ocHQyQ2hLMkNlalRBYTV1TVc3XzZjcndtVFpkRTNHSTgwUmtR?oc=5",
+   "izvor": "HousingWire",
+   "chas": "2026-11-20T23:46:20Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": "Очаквания за по-висока лихва от Фед"
+  },
   {
    "zaglavie": "Gold Weekly Forecast: $3,500 at Risk as Real Yields Stay High",
    "vryzka": "https://news.google.com/rss/articles/CBMirgFBVV95cUxNMkowTVdiY0FySURiV2RDeTY0QXBVUGRBdHMtekh5QzRsVEJqOEllYTF2UzBpQVlSaWt5VW1CX283dko1c1hMTzNLQ1B1a1dQclp1U3dRRnJYM003YWViOXNLQXZqb29vdkdvWVRzc2l2eHVXcjMzeTlvcHNKSnpxWEQ4RE1oaElpNUxpNjRpSHJiLWtyWnVYMWZRRzJReE9aYU9FekJsd1d0V1FzbEE?oc=5",
@@ -63,7 +80,7 @@
   {
    "zaglavie": "Fed Governor Cook Defends Rare Dissent: 3.75%-4% Rate Range Still Not Enough to Fight Inflation",
    "vryzka": "https://news.google.com/rss/articles/CBMidkFVX3lxTE9idm14SjVJcWxCb3NlbVBJaTBmN29vTTNRclg3clRxY3EyZjhKSnF3eGhwMkxxX0tVVTh1dTE4bU5wYUFRSGI2akl2VW02LTNNeVE4V1NhYjNJZVB1WkVkS0VrZ3BOdG5WdjVfeURvMExtM2lRWnc?oc=5",
-   "izvor": "finance.biggo.com",
+   "izvor": "BigGo Finance",
    "chas": "2026-11-20T23:25:00Z",
    "vazhnost": 3,
    "za": "лихви",
@@ -607,6 +624,19 @@
    "bg": null
   },
   {
+   "zaglavie": "ElementUSA, Geophysx partner to advance Jamaica’s critical minerals sector",
+   "vryzka": "https://www.mining.com/elementusa-geophysx-partner-to-advance-jamaicas-critical-minerals-sector/",
+   "izvor": "Mining.com",
+   "chas": "2026-11-20T20:41:07Z",
+   "vazhnost": 1,
+   "za": "злато",
+   "emisiya": "Mining.com",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
    "zaglavie": "Mortgage rates skyrocket again thanks to hotter-than-expected inflation rates",
    "vryzka": "https://news.google.com/rss/articles/CBMivAFBVV95cUxQNUxyLXFibXVLN1V2c1lMcTlrXzVhc0dacGNnYVhWREhoNU5za2tYZ2lkZHlnY0c5MXpjVXVoQV9PWUE3VGJwWUFHUzY5UmkzM2hFWG5QTmdKczVvbHVDc3hfZTFQckZtYWxSWVg1WUNvWHAwekhscHE5ZkdOZ3VVcUFtdjFVaWs0dnlXRlVTMWtHX0JsMXktVnk4RkRXX0hTcmxWNzdIU1dIbkJBUFN5TEh0aTZuUnZtN1Y1dQ?oc=5",
    "izvor": "New York Post",
@@ -1003,7 +1033,7 @@
    "chas": "2026-11-20T18:34:46Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Google злато",
+   "emisiya": "Google Fed",
    "chas_ot_iztochnika": true,
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
@@ -1037,7 +1067,7 @@
   },
   {
    "zaglavie": "Fed’s Cook questions whether one rate hike is enough",
-   "vryzka": "https://news.google.com/rss/articles/CBMikgFBVV95cUxNY0tKMDNCS1VrWi1YQ2g2d1BHZ09rTF8zSC0wY09oOWpCYzk3VjVESVZlemxIMWVYOUJlZ1R5VjduUWtNaHQydUVha1FlQWdCa1NlQTdPZFBtXy1FNlczdVhHbzJUa1BwazJLaUY3YWt3WXFzLTlZOFdPaldOdVNLaW5QQ1NjWXdEQVVWS1kwaFhUdw?oc=5",
+   "vryzka": "https://news.google.com/rss/articles/CBMikAFBVV95cUxQbnR1ZGdnUkoyVDJISWhfelhMMnpBd2llcHlVUndjOTRDaEUyX1Yya1dkWXFvQ0M2REJJclZvM1R0VkJPQlJUQXAybUtzNjBGZnFRSUtMbHhvcTVzX2xxeTNFR3FPRF93Q1RnZXZIRFA4cFlWZW5CTVQ3cFpYT2ktTHZoRndPUTNoYXp6bXAxYVM?oc=5",
    "izvor": "American Banker",
    "chas": "2026-11-20T18:22:11Z",
    "vazhnost": 3,
@@ -2492,32 +2522,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Anthropic shares slide 13% as fears over AI boom dominate",
-   "vryzka": "https://www.ft.com/content/c7ad2e0c-efd1-40c2-a5a8-819ced8acf5b?syn-25a6b1a6=1",
-   "izvor": "Financial Times",
-   "chas": "2026-11-20T13:29:02Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "FT пазари",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
-   "zaglavie": "Anthropic shares slide 10% as fears over AI boom dominate",
-   "vryzka": "https://www.ft.com/content/c7ad2e0c-efd1-40c2-a5a8-819ced8acf5b?syn-25a6b1a6=1",
-   "izvor": "Financial Times",
-   "chas": "2026-11-20T13:29:02Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "FT пазари",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
    "zaglavie": "Waller, Opening Remarks",
    "vryzka": "https://www.federalreserve.gov/newsevents/speech/waller20261120a.htm",
    "izvor": "Fed",
@@ -2635,6 +2639,6 @@
    "bg": "Съобщение на Фед — централната банка на САЩ"
   }
  ],
- "s_bg_red": 90,
+ "s_bg_red": 91,
  "mahnati_ezik": 0
 }
