@@ -1,39 +1,78 @@
 {
- "kogato": "2026-11-20T13:21:11Z",
- "sekundi": 0.87,
+ "kogato": "2026-11-20T13:31:58Z",
+ "sekundi": 1.5,
  "broi": 200,
- "novi_tozi_pyt": 3,
+ "novi_tozi_pyt": 6,
  "iztochnici_ok": [
   "MarketWatch",
   "Fed всички",
-  "Google злато",
-  "Fed речи",
   "Fed политика",
   "Investing",
-  "CNBC",
+  "Fed речи",
   "Yahoo долар",
   "Yahoo злато",
+  "CNBC",
   "FT пазари",
+  "Google злато",
   "Google Fed",
   "Mining.com"
  ],
  "iztochnici_padnali": [],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.21с",
+  "новини · CNBC · 30 бр. за 0.29с",
   "новини · FT пазари · 25 бр. за 0.34с",
-  "новини · Fed всички · 8 бр. за 0.12с",
-  "новини · Fed политика · 15 бр. за 0.13с",
-  "новини · Fed речи · 15 бр. за 0.13с",
-  "новини · Google Fed · 40 бр. за 0.43с",
-  "новини · Google злато · 40 бр. за 0.12с",
-  "новини · Investing · 10 бр. за 0.14с",
-  "новини · MarketWatch · 10 бр. за 0.05с",
-  "новини · Mining.com · 36 бр. за 0.81с",
-  "новини · Yahoo долар · 18 бр. за 0.24с",
-  "новини · Yahoo злато · 19 бр. за 0.27с",
-  "новини · български ред: 99 от 200 · махнати по език: 0"
+  "новини · Fed всички · 8 бр. за 0.1с",
+  "новини · Fed политика · 15 бр. за 0.12с",
+  "новини · Fed речи · 15 бр. за 0.14с",
+  "новини · Google Fed · 40 бр. за 0.38с",
+  "новини · Google злато · 40 бр. за 0.43с",
+  "новини · Investing · 10 бр. за 0.12с",
+  "новини · MarketWatch · 10 бр. за 0.09с",
+  "новини · Mining.com · 36 бр. за 1.46с",
+  "новини · Yahoo долар · 18 бр. за 0.23с",
+  "новини · Yahoo злато · 19 бр. за 0.25с",
+  "новини · български ред: 98 от 200 · махнати по език: 1"
  ],
  "novini": [
+  {
+   "zaglavie": "Anthropic shares slide 10% as fears over AI boom dominate",
+   "vryzka": "https://www.ft.com/content/c7ad2e0c-efd1-40c2-a5a8-819ced8acf5b?syn-25a6b1a6=1",
+   "izvor": "Financial Times",
+   "chas": "2026-11-20T13:29:02Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "FT пазари",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "Waller, Opening Remarks",
+   "vryzka": "https://www.federalreserve.gov/newsevents/speech/waller20261120a.htm",
+   "izvor": "Fed",
+   "chas": "2026-11-20T13:25:00Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Fed речи",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Реч на член на Фед — думите им местят очакванията за лихвата, а с тях и златото.",
+   "bg": "Встъпително слово на член на Фед (Waller)"
+  },
+  {
+   "zaglavie": "Anthropic’s stock slides closer to IPO price and drags down the AI trade",
+   "vryzka": "https://www.marketwatch.com/story/anthropics-stock-slides-closer-to-ipo-price-and-drags-down-the-ai-trade-cc43a0c4?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-11-20T13:25:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
   {
    "zaglavie": "Kylie Jenner made $3.25M on her $12M mansion — stocks could’ve made her $30M. How good an investment is your home?",
    "vryzka": "https://finance.yahoo.com/real-estate/articles/kylie-jenner-made-3-25m-131500699.html?.tsrc=rss",
@@ -46,6 +85,19 @@
    "duma": null,
    "zashto": null,
    "bg": null
+  },
+  {
+   "zaglavie": "Canadian Stock Market Today: TSX Futures Dip As Hawkish Fed And Strong Dollar Bite",
+   "vryzka": "https://finance.yahoo.com/markets/stocks/articles/canadian-stock-market-today-tsx-130907307.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-20T13:09:07Z",
+   "vazhnost": 3,
+   "za": "долар",
+   "emisiya": "Yahoo долар",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": "Очаквания за по-висока лихва от Фед"
   },
   {
    "zaglavie": "Is Social Security a Ponzi scheme? No. Don’t get carried away with 1930s-era prophecies of doom.",
@@ -243,19 +295,6 @@
    "bg": null
   },
   {
-   "zaglavie": "What Gold’s Price Collapse Means For Millions of Americans",
-   "vryzka": "https://news.google.com/rss/articles/CBMilgFBVV95cUxORVVaYTJtVXF1Q0RCemZkeThoZGVQeUhmOEs1MDk3RE1LeWRFZjlTdlhrOHhKMldyMmVNMF96T2VaLVlkZm9qdkNUMjBKbzBwYnYyZ3FMc3BtdDdaMFFjYXEzelZJUnRqOUdDTTJtRDBnRndUMzlGRl96c2N3NWpzbnZsOXU0dTZSd3NnbGI1VVk5c0Uydnc?oc=5",
-   "izvor": "Newsweek",
-   "chas": "2026-11-20T12:15:00Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": null
-  },
-  {
    "zaglavie": "Stanley Druckenmiller dumps Google stock in a bid to ‘not lose money’ as the outlook darkens. Here’s what he’s buying",
    "vryzka": "https://finance.yahoo.com/markets/stocks/articles/stanley-druckenmiller-dumps-google-stock-121500032.html?.tsrc=rss",
    "izvor": "Yahoo Finance",
@@ -266,6 +305,19 @@
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "What Gold’s Price Collapse Means For Millions of Americans",
+   "vryzka": "https://news.google.com/rss/articles/CBMilgFBVV95cUxORVVaYTJtVXF1Q0RCemZkeThoZGVQeUhmOEs1MDk3RE1LeWRFZjlTdlhrOHhKMldyMmVNMF96T2VaLVlkZm9qdkNUMjBKbzBwYnYyZ3FMc3BtdDdaMFFjYXEzelZJUnRqOUdDTTJtRDBnRndUMzlGRl96c2N3NWpzbnZsOXU0dTZSd3NnbGI1VVk5c0Uydnc?oc=5",
+   "izvor": "Newsweek",
+   "chas": "2026-11-20T12:15:00Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
    "bg": null
   },
   {
@@ -283,12 +335,12 @@
   },
   {
    "zaglavie": "Gold price today, Friday, November 20, 2026: Gold prices continue to fall as rate hike expectations crystallize",
-   "vryzka": "https://news.google.com/rss/articles/CBMikAJBVV95cUxPTWVucXBjLXNwR3NFaDRBOEtsSTVNUnFfeXRCb3hndUlvT0V4VGpuV0ZLbnI1dzEzZmtOTnNMMlFZdVVkaFFTQ0M2aXY1S3dFOFRja1FwRFpYUFpXM0J4dGxCV0pMcEhoclJfa0NxR1loR2NEalljdjNMZEpVdkNzeS1QWUtZS1laRHYydWRGTFQwNi01MDdaNmhpZzlDTGZtUExVUURYWHJ0bTNiY3R5ZXhhbThvQmtadWtOOGxmc1EzeTdVSl9keGJxdGxvTzZkNHVTQjhZQWtlY0w0M1gtOFd1VlhLRXo0aFNTdEszb0ltQ0NZOXJfVXRqdE43TERBR0U2bWUzb3U4TVRwQ3hOdw?oc=5",
+   "vryzka": "https://finance.yahoo.com/personal-finance/investing/article/gold-price-today-friday-november-20-2026-gold-prices-continue-to-fall-as-rate-hike-expectations-crystallize-121116915.html?.tsrc=rss",
    "izvor": "Yahoo Finance",
    "chas": "2026-11-20T12:11:16Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Google злато",
+   "emisiya": "Yahoo злато",
    "chas_ot_iztochnika": true,
    "duma": "rate",
    "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
@@ -490,6 +542,19 @@
    "bg": "Анализ и прогноза за златото"
   },
   {
+   "zaglavie": "Compare Today's Mortgage Interest Rates",
+   "vryzka": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5mYUhVU09pZkpOYUR0TEl5M0xtRHZMS082M0Z3LVZrWWJ1NWdTZUlYc25kY1l6N3JtSmliYm52OEdDSy1yUWh0MUtIcWo4Vk1aZWphWmZyTHNMc2pKTnN3TA?oc=5",
+   "izvor": "NerdWallet",
+   "chas": "2026-11-20T11:11:48Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "rates",
+   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
+   "bg": null
+  },
+  {
    "zaglavie": "Gold Price Today on November 20, 2026",
    "vryzka": "https://www.usatoday.com/story/money/investing/2026/11/20/gold-price-on-november-20-2026/92874871007/?.tsrc=rss",
    "izvor": "Yahoo Finance",
@@ -542,19 +607,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Peter Schiff says there’s something ‘most investors don’t understand’ about gold as it crashes — is the glitter gone?",
-   "vryzka": "https://news.google.com/rss/articles/CBMipAFBVV95cUxQQmkxU3M1SDdLeWlqYV9iMXBLZ0lYNXA5Wk0zY3FFdGJsRnJhbUZvakl0c3BoekpfaGdJSW5IUHc4ak52eVJKVW83OXhqcjVKTmRNQWNiaUpiSGxpYXVSc1VsQ0JhX3N6dXBNYktMaG42R1dmVFNlQ0ZkWVF5WVc1bl9tbHpqUjY3d2ZiNVFUM3hCX1NweEUyb01FaW9CY29sT1ZIbw?oc=5",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-11-20T11:00:00Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": null
-  },
-  {
    "zaglavie": "The Odds of a Fed Rate Hike Are 100%. Why That Would Be 100% Bad.",
    "vryzka": "https://finance.yahoo.com/m/186ac046-b9a3-3d6c-82ee-5012ac62ea49/the-odds-of-a-fed-rate-hike.html?.tsrc=rss",
    "izvor": "Yahoo Finance",
@@ -566,6 +618,19 @@
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
    "bg": "Очаквания за по-висока лихва от Фед"
+  },
+  {
+   "zaglavie": "Peter Schiff says there’s something ‘most investors don’t understand’ about gold as it crashes — is the glitter gone?",
+   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/peter-schiff-says-something-most-110000159.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-20T11:00:00Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": null
   },
   {
    "zaglavie": "I’m terrified of a market crash. Should I put $400,000 of my $1 million retirement savings into an annuity?",
@@ -1751,6 +1816,19 @@
    "bg": null
   },
   {
+   "zaglavie": "China seeks to re-enter US private equity with ‘disaster scenario’ protections",
+   "vryzka": "https://www.ft.com/content/73e7d386-c5d1-4422-8abb-adbfaf92aa0d?syn-25a6b1a6=1",
+   "izvor": "Financial Times",
+   "chas": "2026-11-20T05:00:07Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "FT пазари",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
    "zaglavie": "China prepares to restart US private equity investments after pullback",
    "vryzka": "https://www.ft.com/content/73e7d386-c5d1-4422-8abb-adbfaf92aa0d?syn-25a6b1a6=1",
    "izvor": "Financial Times",
@@ -2414,71 +2492,6 @@
    "bg": "Доларът и очакванията за по-висока лихва от Фед"
   },
   {
-   "zaglavie": "Fed's Paulson: Communications need to be clear on perspectives",
-   "vryzka": "https://news.google.com/rss/articles/CBMipgFBVV95cUxNS3BVakJBa25oaE5rYUdNT3YxSS1tcXBld2tlUmUwZ3FaRm1TRkI0R2RMazZ2SVJ0c0FUOFlDbGNjU1JodS10WVdNbXN2dGdBeTl6akNKSkJtQTlSN0xLREM3c3Q0TTlEbmRBY1FKWUpPMjdqcHVtQmdGYnN2amdEcWh3ZWJJc2RQWEgxZVluMnZFMWZrS1Z3YTN5VkswcjhoSlhZVjFR?oc=5",
-   "izvor": "FXStreet",
-   "chas": "2026-11-20T00:30:13Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": "Изказване на член на Фед (Paulson)"
-  },
-  {
-   "zaglavie": "Dollar Heads for Fourth Week of Gains Following Anthropic IPO",
-   "vryzka": "https://finance.yahoo.com/markets/currencies/articles/dollar-heads-fourth-week-gains-002047173.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-11-20T00:20:47Z",
-   "vazhnost": 2,
-   "za": "долар",
-   "emisiya": "Yahoo долар",
-   "chas_ot_iztochnika": true,
-   "duma": "dollar",
-   "zashto": "Златото се мери в долари: по-силен долар обикновено значи по-евтино злато.",
-   "bg": null
-  },
-  {
-   "zaglavie": "What K92 Mining Doubters Overlooked",
-   "vryzka": "https://finance.yahoo.com/markets/stocks/articles/k92-mining-doubters-overlooked-001655628.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-11-20T00:16:55Z",
-   "vazhnost": 1,
-   "za": "злато",
-   "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
-   "zaglavie": "Lenders aim to bar SpaceX from launching $40bn of chips into orbit",
-   "vryzka": "https://www.ft.com/content/33b5643c-2957-4d42-9116-5e34a3c54e29?syn-25a6b1a6=1",
-   "izvor": "Financial Times",
-   "chas": "2026-11-20T00:15:12Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "FT пазари",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
-   "zaglavie": "Fed’s Paulson says understanding, not guidance, drives effective communication",
-   "vryzka": "https://news.google.com/rss/articles/CBMipwFBVV95cUxNaEs0ODNHR2VsT1FJN0RKbkVTY2dsNHZhWWpwVDE4ZUIxUmJlZWk4ZUp5ZHZMcUNfWU1PQi1zWlVWUDNIMFVZc0dLUzhpenBrNE1xSUd0M3FxWWM1RVUwMkd6ZmpKNW1neFBnakJJaGM4WDRlbGFodWh6V0RxZ1A3SzVsb1pqclBJTFplZW93T0Y1TnY0ekM3cHlPelZtTkcyUjROdHhsQQ?oc=5",
-   "izvor": "KFGO",
-   "chas": "2026-11-20T00:13:21Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": "Изказване на член на Фед (Paulson)"
-  },
-  {
    "zaglavie": "Jefferson, Monetary Policy amid Frequent and Complex Shocks",
    "vryzka": "https://www.federalreserve.gov/newsevents/speech/jefferson20261119a.htm",
    "izvor": "Fed",
@@ -2620,21 +2633,8 @@
    "duma": "fed",
    "zashto": "Реч на член на Фед — думите им местят очакванията за лихвата, а с тях и златото.",
    "bg": "Реч на член на Фед (Bowman) за паричната политика и икономиката"
-  },
-  {
-   "zaglavie": "Waller, The Economic Outlook and Some Thoughts on Labor Market Dynamism",
-   "vryzka": "https://www.federalreserve.gov/newsevents/speech/waller20261110a.htm",
-   "izvor": "Fed",
-   "chas": "2026-11-10T09:00:00Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Fed речи",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Реч на член на Фед — думите им местят очакванията за лихвата, а с тях и златото.",
-   "bg": "Реч на член на Фед (Waller) за пазара на труда и икономиката"
   }
  ],
- "s_bg_red": 99,
- "mahnati_ezik": 0
+ "s_bg_red": 98,
+ "mahnati_ezik": 1
 }
