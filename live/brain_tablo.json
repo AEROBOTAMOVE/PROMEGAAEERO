@@ -1,13 +1,13 @@
 {
- "data": "2026-11-19",
- "izchisleno_utc": "2026-11-19T18:59",
+ "data": "2026-11-20",
+ "izchisleno_utc": "2026-11-20T18:59",
  "ot_utc": "2026-09-15T06:03",
- "versiya": "v19.54",
- "zapisi_nova_skala": 2593,
- "idei": 2372,
- "bliznaci_sleti": 221,
+ "versiya": "v19.59",
+ "zapisi_nova_skala": 2623,
+ "idei": 2401,
+ "bliznaci_sleti": 222,
  "bez_baza": 0,
- "bari_5m": 13662,
+ "bari_5m": 13737,
  "prag": "МИНА прага: n ≥ 40 · 95% интервал на ръба изцяло над 0 · ръбът без най-добрия ден над 0 · поне половината дни в плюс. n < 40 → мери още; иначе → не мина.",
  "povishavane": "ръчно (лостът МОЗЪК_СДЕЛКИ) — таблото само докладва",
  "hipotezi": {
@@ -76,18 +76,18 @@
   }
  },
  "vsichki_spravka": {
-  "n": 2372,
-  "torba_sr_pips": 5.2,
+  "n": 2401,
+  "torba_sr_pips": 7.0,
   "sluchayno_sr_pips": -0.3,
-  "rab_pips": 5.5,
+  "rab_pips": 7.2,
   "di95_pips": [
-   -2.5,
-   13.8
+   -0.8,
+   15.4
   ],
-  "rab_bez_nay_dobriya_den_pips": 3.5,
-  "dni": 48,
-  "dni_v_plyus": 25,
-  "dni_v_plyus_dyal": 0.521,
+  "rab_bez_nay_dobriya_den_pips": 5.3,
+  "dni": 49,
+  "dni_v_plyus": 27,
+  "dni_v_plyus_dyal": 0.551,
   "belezhka": "справка — не е хипотеза и не се съди"
  },
  "idei_detayl": {
@@ -595,7 +595,7 @@
    "torba_usd": 7.96,
    "sluchayno_usd": 0.0212,
    "starta": 597,
-   "svoya_usd": 11.34
+   "svoya_usd": 11.24
   },
   "5м|long|4293.2|2026-09-15T20:37": {
    "den": "2026-09-15",
@@ -5155,7 +5155,7 @@
    "torba_usd": 34.51,
    "sluchayno_usd": -1.7266,
    "starta": 595,
-   "svoya_usd": 34.51
+   "svoya_usd": 10.48
   },
   "5м|long|4359.58|2026-09-22T20:24": {
    "den": "2026-09-22",
@@ -6076,7 +6076,7 @@
    "torba_usd": 12.19,
    "sluchayno_usd": 0.6047,
    "starta": 597,
-   "svoya_usd": 7.43
+   "svoya_usd": 7.93
   },
   "1мин|short|4274.36|2026-09-24T22:10": {
    "den": "2026-09-25",
@@ -6676,7 +6676,7 @@
    "torba_usd": 11.49,
    "sluchayno_usd": -0.7241,
    "starta": 600,
-   "svoya_usd": 11.21
+   "svoya_usd": 11.11
   },
   "1мин|short|4294.16|2026-09-25T19:25": {
    "den": "2026-09-25",
@@ -6691,7 +6691,7 @@
    "torba_usd": 7.08,
    "sluchayno_usd": 0.3097,
    "starta": 598,
-   "svoya_usd": 6.13
+   "svoya_usd": 2.33
   },
   "15м|short|4295.76|2026-09-25T19:25": {
    "den": "2026-09-25",
@@ -6706,7 +6706,7 @@
    "torba_usd": 9.5,
    "sluchayno_usd": 0.307,
    "starta": 598,
-   "svoya_usd": 7.6
+   "svoya_usd": 7.8
   },
   "1мин|long|4290.34|2026-09-25T19:40": {
    "den": "2026-09-25",
@@ -6933,7 +6933,7 @@
    "torba_usd": -7.24,
    "sluchayno_usd": -0.1039,
    "starta": 600,
-   "svoya_usd": 8.37
+   "svoya_usd": -7.24
   },
   "1мин|short|4158.89|2026-09-28T10:50": {
    "den": "2026-09-28",
@@ -7413,7 +7413,7 @@
    "torba_usd": 4.21,
    "sluchayno_usd": -1.0328,
    "starta": 600,
-   "svoya_usd": 4.21
+   "svoya_usd": -6.1
   },
   "1мин|short|4126.31|2026-09-29T05:01": {
    "den": "2026-09-29",
@@ -8443,7 +8443,7 @@
    "torba_usd": -16.76,
    "sluchayno_usd": 0.8275,
    "starta": 600,
-   "svoya_usd": -16.76
+   "svoya_usd": 8.82
   },
   "15м|long|4167.79|2026-09-30T14:45": {
    "den": "2026-09-30",
@@ -9454,7 +9454,7 @@
    "torba_usd": 0.22,
    "sluchayno_usd": -0.689,
    "starta": 596,
-   "svoya_usd": -0.8
+   "svoya_usd": -1.6
   },
   "5м|long|4175.9|2026-10-01T20:55": {
    "den": "2026-10-01",
@@ -14770,7 +14770,7 @@
    "torba_usd": -5.76,
    "sluchayno_usd": -0.6937,
    "starta": 593,
-   "svoya_usd": -4.8
+   "svoya_usd": -5.0
   },
   "5м|short|4162.12|2026-10-13T22:10": {
    "den": "2026-10-14",
@@ -15910,7 +15910,7 @@
    "torba_usd": -21.06,
    "sluchayno_usd": 0.4994,
    "starta": 600,
-   "svoya_usd": -21.06
+   "svoya_usd": 0.93
   },
   "1час|short|4126.77|2026-10-15T00:17": {
    "den": "2026-10-15",
@@ -16765,7 +16765,7 @@
    "torba_usd": 1.82,
    "sluchayno_usd": 0.0737,
    "starta": 600,
-   "svoya_usd": 6.64
+   "svoya_usd": 1.82
   },
   "1мин|short|4154.25|2026-10-16T00:44": {
    "den": "2026-10-16",
@@ -17560,7 +17560,7 @@
    "torba_usd": -6.86,
    "sluchayno_usd": 0.6126,
    "starta": 600,
-   "svoya_usd": 9.0
+   "svoya_usd": -2.2
   },
   "1мин|long|4156.94|2026-10-16T18:38": {
    "den": "2026-10-16",
@@ -17590,7 +17590,7 @@
    "torba_usd": 21.14,
    "sluchayno_usd": -0.3869,
    "starta": 598,
-   "svoya_usd": 13.9
+   "svoya_usd": 8.3
   },
   "1мин|short|4174.96|2026-10-16T19:38": {
    "den": "2026-10-16",
@@ -17605,7 +17605,7 @@
    "torba_usd": 2.89,
    "sluchayno_usd": -0.6689,
    "starta": 598,
-   "svoya_usd": 7.39
+   "svoya_usd": 12.99
   },
   "5м|short|4174.97|2026-10-16T19:39": {
    "den": "2026-10-16",
@@ -17680,7 +17680,7 @@
    "torba_usd": -14.26,
    "sluchayno_usd": 0.3512,
    "starta": 598,
-   "svoya_usd": 3.0
+   "svoya_usd": -2.6
   },
   "15м|long|4157.26|2026-10-18T22:00": {
    "den": "2026-10-19",
@@ -18655,7 +18655,7 @@
    "torba_usd": 3.16,
    "sluchayno_usd": -0.2298,
    "starta": 600,
-   "svoya_usd": 3.16
+   "svoya_usd": 1.18
   },
   "4час|long|4133.01|2026-10-20T00:06": {
    "den": "2026-10-20",
@@ -19360,7 +19360,7 @@
    "torba_usd": 58.32,
    "sluchayno_usd": -2.3837,
    "starta": 590,
-   "svoya_usd": 59.79
+   "svoya_usd": 60.39
   },
   "1час|short|4139.05|2026-10-20T15:00": {
    "den": "2026-10-20",
@@ -23155,7 +23155,7 @@
    "torba_usd": 51.55,
    "sluchayno_usd": -0.4766,
    "starta": 593,
-   "svoya_usd": 51.55
+   "svoya_usd": -16.02
   },
   "1мин|long|4063.03|2026-10-28T20:18": {
    "den": "2026-10-28",
@@ -24310,7 +24310,7 @@
    "torba_usd": 0.55,
    "sluchayno_usd": 0.5002,
    "starta": 600,
-   "svoya_usd": -21.86
+   "svoya_usd": 0.55
   },
   "5м|long|3998.61|2026-10-30T01:00": {
    "den": "2026-10-30",
@@ -24325,7 +24325,7 @@
    "torba_usd": 1.14,
    "sluchayno_usd": 0.0269,
    "starta": 600,
-   "svoya_usd": -21.86
+   "svoya_usd": 1.14
   },
   "5м|long|3996.91|2026-10-30T01:01": {
    "den": "2026-10-30",
@@ -24340,7 +24340,7 @@
    "torba_usd": 0.89,
    "sluchayno_usd": 0.2008,
    "starta": 600,
-   "svoya_usd": -22.32
+   "svoya_usd": 0.89
   },
   "15м|long|3996.8|2026-10-30T01:15": {
    "den": "2026-10-30",
@@ -27745,7 +27745,7 @@
    "torba_usd": 20.36,
    "sluchayno_usd": -0.101,
    "starta": 596,
-   "svoya_usd": 20.5
+   "svoya_usd": 20.7
   },
   "1мин|long|4064.2|2026-11-04T18:23": {
    "den": "2026-11-04",
@@ -28000,7 +28000,7 @@
    "torba_usd": 5.17,
    "sluchayno_usd": -0.9451,
    "starta": 598,
-   "svoya_usd": 5.17
+   "svoya_usd": 17.66
   },
   "15м|long|4057.2|2026-11-04T21:45": {
    "den": "2026-11-04",
@@ -28405,7 +28405,7 @@
    "torba_usd": -14.48,
    "sluchayno_usd": -0.1353,
    "starta": 600,
-   "svoya_usd": 3.62
+   "svoya_usd": 12.51
   },
   "1мин|long|4116.7|2026-11-05T13:13": {
    "den": "2026-11-05",
@@ -28420,7 +28420,7 @@
    "torba_usd": -15.62,
    "sluchayno_usd": -0.0333,
    "starta": 600,
-   "svoya_usd": 3.7
+   "svoya_usd": 13.01
   },
   "5м|long|4114.99|2026-11-05T13:16": {
    "den": "2026-11-05",
@@ -28915,7 +28915,7 @@
    "torba_usd": 9.43,
    "sluchayno_usd": 0.5375,
    "starta": 595,
-   "svoya_usd": -17.0
+   "svoya_usd": 9.43
   },
   "1мин|short|4104.22|2026-11-06T00:34": {
    "den": "2026-11-06",
@@ -29635,7 +29635,7 @@
    "torba_usd": 19.77,
    "sluchayno_usd": 1.0142,
    "starta": 599,
-   "svoya_usd": 23.9
+   "svoya_usd": 23.7
   },
   "15м|short|4081.89|2026-11-06T19:00": {
    "den": "2026-11-06",
@@ -29650,7 +29650,7 @@
    "torba_usd": 17.25,
    "sluchayno_usd": 0.9183,
    "starta": 599,
-   "svoya_usd": 21.38
+   "svoya_usd": 21.18
   },
   "5м|short|4080.66|2026-11-06T19:03": {
    "den": "2026-11-06",
@@ -31870,7 +31870,7 @@
    "torba_usd": 2.48,
    "sluchayno_usd": 0.2887,
    "starta": 595,
-   "svoya_usd": 1.2
+   "svoya_usd": 1.0
   },
   "5м|long|3983.7|2026-11-11T21:03": {
    "den": "2026-11-11",
@@ -31885,7 +31885,7 @@
    "torba_usd": 4.6,
    "sluchayno_usd": -0.5923,
    "starta": 597,
-   "svoya_usd": -11.28
+   "svoya_usd": 12.6
   },
   "1мин|long|3982.59|2026-11-11T23:18": {
    "den": "2026-11-12",
@@ -36011,6 +36011,441 @@
    "sluchayno_usd": -0.87,
    "starta": 600,
    "svoya_usd": -26.28
+  },
+  "1час|short|3677.53|2026-11-19T18:00": {
+   "den": "2026-11-19",
+   "otvoren_utc": "2026-11-19T18:00",
+   "ramka": "1час",
+   "posoka": "short",
+   "povod": "гап",
+   "glavna": null,
+   "izhod": "цел2",
+   "bliznaci": 0,
+   "hipotezi": [],
+   "torba_usd": 93.25,
+   "sluchayno_usd": -0.5426,
+   "starta": 591,
+   "svoya_usd": 93.25
+  },
+  "1мин|long|3663.22|2026-11-19T20:04": {
+   "den": "2026-11-19",
+   "otvoren_utc": "2026-11-19T20:04",
+   "ramka": "1мин",
+   "posoka": "long",
+   "povod": "свип",
+   "glavna": null,
+   "izhod": "стоп",
+   "bliznaci": 0,
+   "hipotezi": [],
+   "torba_usd": 3.36,
+   "sluchayno_usd": 0.618,
+   "starta": 598,
+   "svoya_usd": 3.36
+  },
+  "5м|short|3634.58|2026-11-19T23:10": {
+   "den": "2026-11-20",
+   "otvoren_utc": "2026-11-19T23:10",
+   "ramka": "5м",
+   "posoka": "short",
+   "povod": "гап",
+   "glavna": null,
+   "izhod": "стоп",
+   "bliznaci": 0,
+   "hipotezi": [],
+   "torba_usd": 2.48,
+   "sluchayno_usd": 1.0128,
+   "starta": 598,
+   "svoya_usd": 2.48
+  },
+  "15м|short|3629.21|2026-11-19T23:15": {
+   "den": "2026-11-20",
+   "otvoren_utc": "2026-11-19T23:15",
+   "ramka": "15м",
+   "posoka": "short",
+   "povod": "гап",
+   "glavna": null,
+   "izhod": "цел2",
+   "bliznaci": 0,
+   "hipotezi": [],
+   "torba_usd": 46.75,
+   "sluchayno_usd": 0.4106,
+   "starta": 599,
+   "svoya_usd": 46.75
+  },
+  "15м|short|3627.11|2026-11-19T23:21": {
+   "den": "2026-11-20",
+   "otvoren_utc": "2026-11-19T23:21",
+   "ramka": "15м",
+   "posoka": "short",
+   "povod": "гап",
+   "glavna": null,
+   "izhod": "цел2",
+   "bliznaci": 0,
+   "hipotezi": [],
+   "torba_usd": 57.65,
+   "sluchayno_usd": 2.6993,
+   "starta": 597,
+   "svoya_usd": 57.65
+  },
+  "15м|short|3628.92|2026-11-19T23:24": {
+   "den": "2026-11-20",
+   "otvoren_utc": "2026-11-19T23:24",
+   "ramka": "15м",
+   "posoka": "short",
+   "povod": "гап",
+   "glavna": null,
+   "izhod": "цел2",
+   "bliznaci": 0,
+   "hipotezi": [],
+   "torba_usd": 44.97,
+   "sluchayno_usd": 2.3334,
+   "starta": 597,
+   "svoya_usd": 44.97
+  },
+  "1час|short|3617.18|2026-11-20T00:17": {
+   "den": "2026-11-20",
+   "otvoren_utc": "2026-11-20T00:17",
+   "ramka": "1час",
+   "posoka": "short",
+   "povod": "гап",
+   "glavna": null,
+   "izhod": "цел2",
+   "bliznaci": 0,
+   "hipotezi": [],
+   "torba_usd": 169.66,
+   "sluchayno_usd": 27.1764,
+   "starta": 600,
+   "svoya_usd": 169.66
+  },
+  "1мин|short|3588.95|2026-11-20T01:23": {
+   "den": "2026-11-20",
+   "otvoren_utc": "2026-11-20T01:23",
+   "ramka": "1мин",
+   "posoka": "short",
+   "povod": "свип",
+   "glavna": null,
+   "izhod": "стоп",
+   "bliznaci": 0,
+   "hipotezi": [],
+   "torba_usd": 2.47,
+   "sluchayno_usd": 1.1395,
+   "starta": 600,
+   "svoya_usd": 15.15
+  },
+  "1мин|long|3538.11|2026-11-20T02:31": {
+   "den": "2026-11-20",
+   "otvoren_utc": "2026-11-20T02:31",
+   "ramka": "1мин",
+   "posoka": "long",
+   "povod": "свип",
+   "glavna": "short",
+   "izhod": "стоп",
+   "bliznaci": 0,
+   "hipotezi": [],
+   "torba_usd": 11.55,
+   "sluchayno_usd": -1.4046,
+   "starta": 600,
+   "svoya_usd": 11.55
+  },
+  "1мин|long|3538.81|2026-11-20T04:21": {
+   "den": "2026-11-20",
+   "otvoren_utc": "2026-11-20T04:21",
+   "ramka": "1мин",
+   "posoka": "long",
+   "povod": "свип",
+   "glavna": null,
+   "izhod": "стоп",
+   "bliznaci": 0,
+   "hipotezi": [],
+   "torba_usd": -8.24,
+   "sluchayno_usd": -0.9445,
+   "starta": 600,
+   "svoya_usd": -8.24
+  },
+  "15м|long|3523.78|2026-11-20T04:34": {
+   "den": "2026-11-20",
+   "otvoren_utc": "2026-11-20T04:34",
+   "ramka": "15м",
+   "posoka": "long",
+   "povod": "зона",
+   "glavna": null,
+   "izhod": "цел2",
+   "bliznaci": 0,
+   "hipotezi": [],
+   "torba_usd": 79.38,
+   "sluchayno_usd": -12.8053,
+   "starta": 600,
+   "svoya_usd": 79.38
+  },
+  "15м|short|3558.89|2026-11-20T06:15": {
+   "den": "2026-11-20",
+   "otvoren_utc": "2026-11-20T06:15",
+   "ramka": "15м",
+   "posoka": "short",
+   "povod": "гап",
+   "glavna": null,
+   "izhod": "стоп",
+   "bliznaci": 0,
+   "hipotezi": [],
+   "torba_usd": -45.58,
+   "sluchayno_usd": 11.2153,
+   "starta": 600,
+   "svoya_usd": -45.58
+  },
+  "1мин|long|3551.96|2026-11-20T06:36": {
+   "den": "2026-11-20",
+   "otvoren_utc": "2026-11-20T06:36",
+   "ramka": "1мин",
+   "posoka": "long",
+   "povod": "свип",
+   "glavna": "short",
+   "izhod": "стоп",
+   "bliznaci": 0,
+   "hipotezi": [],
+   "torba_usd": 4.51,
+   "sluchayno_usd": -1.4879,
+   "starta": 600,
+   "svoya_usd": 4.51
+  },
+  "1мин|short|3573.21|2026-11-20T07:56": {
+   "den": "2026-11-20",
+   "otvoren_utc": "2026-11-20T07:56",
+   "ramka": "1мин",
+   "posoka": "short",
+   "povod": "свип",
+   "glavna": null,
+   "izhod": "стоп",
+   "bliznaci": 0,
+   "hipotezi": [],
+   "torba_usd": -13.16,
+   "sluchayno_usd": 0.813,
+   "starta": 600,
+   "svoya_usd": 4.52
+  },
+  "15м|long|3577.41|2026-11-20T10:15": {
+   "den": "2026-11-20",
+   "otvoren_utc": "2026-11-20T10:15",
+   "ramka": "15м",
+   "posoka": "long",
+   "povod": "гап",
+   "glavna": null,
+   "izhod": "стоп",
+   "bliznaci": 0,
+   "hipotezi": [],
+   "torba_usd": 22.75,
+   "sluchayno_usd": -7.2138,
+   "starta": 600,
+   "svoya_usd": -24.0
+  },
+  "1мин|short|3580.76|2026-11-20T10:18": {
+   "den": "2026-11-20",
+   "otvoren_utc": "2026-11-20T10:18",
+   "ramka": "1мин",
+   "posoka": "short",
+   "povod": "свип",
+   "glavna": null,
+   "izhod": "стоп",
+   "bliznaci": 0,
+   "hipotezi": [],
+   "torba_usd": -10.66,
+   "sluchayno_usd": 0.5174,
+   "starta": 600,
+   "svoya_usd": -10.66
+  },
+  "1мин|short|3590.42|2026-11-20T11:31": {
+   "den": "2026-11-20",
+   "otvoren_utc": "2026-11-20T11:31",
+   "ramka": "1мин",
+   "posoka": "short",
+   "povod": "свип",
+   "glavna": null,
+   "izhod": "стоп",
+   "bliznaci": 0,
+   "hipotezi": [],
+   "torba_usd": 2.23,
+   "sluchayno_usd": 0.3651,
+   "starta": 600,
+   "svoya_usd": 7.86
+  },
+  "1мин|long|3583.49|2026-11-20T11:47": {
+   "den": "2026-11-20",
+   "otvoren_utc": "2026-11-20T11:47",
+   "ramka": "1мин",
+   "posoka": "long",
+   "povod": "свип",
+   "glavna": null,
+   "izhod": "стоп",
+   "bliznaci": 0,
+   "hipotezi": [],
+   "torba_usd": -9.9,
+   "sluchayno_usd": -0.6602,
+   "starta": 600,
+   "svoya_usd": -9.9
+  },
+  "5м|long|3576.2|2026-11-20T11:55": {
+   "den": "2026-11-20",
+   "otvoren_utc": "2026-11-20T11:55",
+   "ramka": "5м",
+   "posoka": "long",
+   "povod": "гап",
+   "glavna": null,
+   "izhod": "стоп",
+   "bliznaci": 0,
+   "hipotezi": [],
+   "torba_usd": -17.6,
+   "sluchayno_usd": -0.376,
+   "starta": 600,
+   "svoya_usd": -17.6
+  },
+  "15м|long|3570.37|2026-11-20T12:16": {
+   "den": "2026-11-20",
+   "otvoren_utc": "2026-11-20T12:16",
+   "ramka": "15м",
+   "posoka": "long",
+   "povod": "гап",
+   "glavna": null,
+   "izhod": "стоп",
+   "bliznaci": 0,
+   "hipotezi": [],
+   "torba_usd": -30.26,
+   "sluchayno_usd": -6.8744,
+   "starta": 600,
+   "svoya_usd": -30.26
+  },
+  "5м|long|3564.42|2026-11-20T12:50": {
+   "den": "2026-11-20",
+   "otvoren_utc": "2026-11-20T12:50",
+   "ramka": "5м",
+   "posoka": "long",
+   "povod": "гап",
+   "glavna": "short",
+   "izhod": "цел2",
+   "bliznaci": 1,
+   "hipotezi": [],
+   "torba_usd": 18.61,
+   "sluchayno_usd": -1.5463,
+   "starta": 600,
+   "svoya_usd": 5.48
+  },
+  "1мин|long|3564.9|2026-11-20T12:52": {
+   "den": "2026-11-20",
+   "otvoren_utc": "2026-11-20T12:52",
+   "ramka": "1мин",
+   "posoka": "long",
+   "povod": "свип",
+   "glavna": "short",
+   "izhod": "цел2",
+   "bliznaci": 0,
+   "hipotezi": [],
+   "torba_usd": 14.04,
+   "sluchayno_usd": -0.9727,
+   "starta": 600,
+   "svoya_usd": 14.04
+  },
+  "5м|long|3576.38|2026-11-20T12:59": {
+   "den": "2026-11-20",
+   "otvoren_utc": "2026-11-20T12:59",
+   "ramka": "5м",
+   "posoka": "long",
+   "povod": "свип",
+   "glavna": "short",
+   "izhod": "стоп",
+   "bliznaci": 0,
+   "hipotezi": [],
+   "torba_usd": -8.22,
+   "sluchayno_usd": -1.8138,
+   "starta": 600,
+   "svoya_usd": -8.22
+  },
+  "15м|long|3555.09|2026-11-20T13:31": {
+   "den": "2026-11-20",
+   "otvoren_utc": "2026-11-20T13:31",
+   "ramka": "15м",
+   "posoka": "long",
+   "povod": "гап",
+   "glavna": null,
+   "izhod": "стоп",
+   "bliznaci": 0,
+   "hipotezi": [],
+   "torba_usd": 15.77,
+   "sluchayno_usd": -8.2926,
+   "starta": 600,
+   "svoya_usd": 15.77
+  },
+  "5м|short|3576.6|2026-11-20T14:25": {
+   "den": "2026-11-20",
+   "otvoren_utc": "2026-11-20T14:25",
+   "ramka": "5м",
+   "posoka": "short",
+   "povod": "свип",
+   "glavna": null,
+   "izhod": "цел2",
+   "bliznaci": 0,
+   "hipotezi": [],
+   "torba_usd": 35.06,
+   "sluchayno_usd": 4.0453,
+   "starta": 600,
+   "svoya_usd": 11.47
+  },
+  "1мин|long|3564.63|2026-11-20T14:46": {
+   "den": "2026-11-20",
+   "otvoren_utc": "2026-11-20T14:46",
+   "ramka": "1мин",
+   "posoka": "long",
+   "povod": "свип",
+   "glavna": null,
+   "izhod": "цел2",
+   "bliznaci": 0,
+   "hipotezi": [],
+   "torba_usd": 11.32,
+   "sluchayno_usd": -0.9318,
+   "starta": 600,
+   "svoya_usd": 11.32
+  },
+  "1мин|long|3535.91|2026-11-20T17:09": {
+   "den": "2026-11-20",
+   "otvoren_utc": "2026-11-20T17:09",
+   "ramka": "1мин",
+   "posoka": "long",
+   "povod": "свип",
+   "glavna": null,
+   "izhod": "стоп",
+   "bliznaci": 0,
+   "hipotezi": [],
+   "torba_usd": -21.78,
+   "sluchayno_usd": -0.5236,
+   "starta": 600,
+   "svoya_usd": 2.81
+  },
+  "5м|long|3522.23|2026-11-20T17:27": {
+   "den": "2026-11-20",
+   "otvoren_utc": "2026-11-20T17:27",
+   "ramka": "5м",
+   "posoka": "long",
+   "povod": "свип",
+   "glavna": null,
+   "izhod": "стоп",
+   "bliznaci": 0,
+   "hipotezi": [],
+   "torba_usd": -32.18,
+   "sluchayno_usd": 1.1823,
+   "starta": 600,
+   "svoya_usd": -32.18
+  },
+  "1мин|long|3522.8|2026-11-20T17:47": {
+   "den": "2026-11-20",
+   "otvoren_utc": "2026-11-20T17:47",
+   "ramka": "1мин",
+   "posoka": "long",
+   "povod": "свип",
+   "glavna": null,
+   "izhod": "стоп",
+   "bliznaci": 0,
+   "hipotezi": [],
+   "torba_usd": 6.13,
+   "sluchayno_usd": -0.5531,
+   "starta": 600,
+   "svoya_usd": -8.88
   }
  },
  "hipotezi_sapadat": true
