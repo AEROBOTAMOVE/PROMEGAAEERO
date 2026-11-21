@@ -1,37 +1,41 @@
 {
- "kogato": "2026-11-21T17:15:45Z",
- "sekundi": 0.67,
+ "kogato": "2026-11-21T17:31:18Z",
+ "sekundi": 0.55,
  "broi": 200,
- "novi_tozi_pyt": 2,
+ "novi_tozi_pyt": 1,
  "iztochnici_ok": [
-  "Fed речи",
-  "Fed всички",
   "MarketWatch",
+  "Fed всички",
+  "Fed речи",
   "Fed политика",
   "Investing",
   "Mining.com",
+  "CNBC",
   "Yahoo злато",
   "Yahoo долар",
-  "CNBC",
   "FT пазари",
-  "Google Fed",
-  "Google злато"
+  "Google Fed"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google злато",
+   "greshka": "HTTPError: HTTP Error 429: Too Many Requests"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.35с",
-  "новини · FT пазари · 25 бр. за 0.52с",
-  "новини · Fed всички · 9 бр. за 0.06с",
-  "новини · Fed политика · 15 бр. за 0.08с",
-  "новини · Fed речи · 15 бр. за 0.06с",
-  "новини · Google Fed · 40 бр. за 0.54с",
-  "новини · Google злато · 40 бр. за 0.59с",
-  "новини · Investing · 10 бр. за 0.11с",
-  "новини · MarketWatch · 10 бр. за 0.07с",
-  "новини · Mining.com · 36 бр. за 0.14с",
-  "новини · Yahoo долар · 15 бр. за 0.16с",
-  "новини · Yahoo злато · 16 бр. за 0.15с",
-  "новини · български ред: 90 от 200 · махнати по език: 3"
+  "новини · CNBC · 30 бр. за 0.24с",
+  "новини · FT пазари · 25 бр. за 0.34с",
+  "новини · Fed всички · 9 бр. за 0.1с",
+  "новини · Fed политика · 15 бр. за 0.18с",
+  "новини · Fed речи · 15 бр. за 0.17с",
+  "новини · Google Fed · 40 бр. за 0.42с",
+  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 429: Too Many Requests",
+  "новини · Investing · 10 бр. за 0.19с",
+  "новини · MarketWatch · 10 бр. за 0.06с",
+  "новини · Mining.com · 36 бр. за 0.2с",
+  "новини · Yahoo долар · 15 бр. за 0.35с",
+  "новини · Yahoo злато · 16 бр. за 0.35с",
+  "новини · български ред: 89 от 200 · махнати по език: 2"
  ],
  "novini": [
   {
@@ -1374,19 +1378,6 @@
    "bg": "Златото поевтинява"
   },
   {
-   "zaglavie": "Gold price fall nears $3,500 as miners face soaring costs",
-   "vryzka": "https://news.google.com/rss/articles/CBMihwFBVV95cUxQYTBKNGdIMDJlUk1JZ3E1dm1pOEtVZmVuT3l5UmRYaHhXMVZVQXdCMlhDVmpYc0FwXzdydlBlMFZDeV9XS2lndUoyaFc1TE5DaXN6T09zTTJNSVgxZVRGbHdMS3dLZnJadlRLdlBDTzRwSlU4VUFwV09ZV2dLdk5LUHhzNHRNSjg?oc=5",
-   "izvor": "Mining.com",
-   "chas": "2026-11-20T23:50:45Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Златото поевтинява"
-  },
-  {
    "zaglavie": "Fed hawks keep 10-year yield elevated despite lower oil prices",
    "vryzka": "https://news.google.com/rss/articles/CBMiekFVX3lxTE9wNGpNMHlmRDQtSHVldVlHdFNwN0d6NURRUExpVmZub3dOamRlbWNwQnI2VzhqVUZxX2JhaXpjZElobi04eFpQLTg3U0RYWTlOVmZEb25ocHQyQ2hLMkNlalRBYTV1TVc3XzZjcndtVFpkRTNHSTgwUmtR?oc=5",
    "izvor": "HousingWire",
@@ -2141,19 +2132,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Gold Price Crash Tests $3,500 as Fed Hike Bets Reach 97%",
-   "vryzka": "https://news.google.com/rss/articles/CBMinwFBVV95cUxQbUFSQ1BqTTJFVk9QLWhaTlMzaEFLZ3ljUlo0X1RFODhsZnFTQkFEX0VWaVRnM3VYa0MxbHdsRlhOQTBJaEo0akFXVWF0UkNwUzBsZzdJaHkxcXYydzcxRndDZVEzOExaUk1RaHFEZkFtNzd2MWVsU1R5SlVyLTlIVkM2MlAzbFRGOGczSXZHb2ZQejVJVzJSUmNxS092UkE?oc=5",
-   "izvor": "Investing.com",
-   "chas": "2026-11-20T20:05:40Z",
-   "vazhnost": 3,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": "Златото поевтинява на фона на очакванията за по-висока лихва от Фед"
-  },
-  {
    "zaglavie": "Citi says US interest rates are unsustainably high, sees Fed cuts in 2027",
    "vryzka": "https://news.google.com/rss/articles/CBMif0FVX3lxTE9VS2NmUGFGTDlSLWpYbS1IcFh5RU1yNlZmSGZEUHZOQW9DbUVJT190aENYcTl5UnRuRjRMTmVnYW9qSjVzdTlodVBGZmFBTXlwNndnLW9ydXJzR3FXcHBubXo4VUp0dnlPRmFmcXh5WE41aHdkTW1aM3VMLVR1TzQ?oc=5",
    "izvor": "Crypto Briefing",
@@ -2243,6 +2221,19 @@
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
    "bg": "Златото и очакванията за по-висока лихва от Фед"
+  },
+  {
+   "zaglavie": "Gold Price Crash Tests $3,500 as Fed Hike Bets Reach 97%",
+   "vryzka": "https://www.investing.com/analysis/gold-price-crash-tests-3500-as-fed-hike-bets-reach-97-200692028",
+   "izvor": "Investing.com",
+   "chas": "2026-11-20T19:26:00Z",
+   "vazhnost": 3,
+   "za": "злато",
+   "emisiya": "Investing",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": "Златото поевтинява на фона на очакванията за по-висока лихва от Фед"
   },
   {
    "zaglavie": "Alphabet just overtook Nvidia in market value for the first time in over 2 years",
@@ -2492,6 +2483,19 @@
    "bg": "Изказване на член на Фед (Cook) за вдигане на лихвата и инфлацията"
   },
   {
+   "zaglavie": "Anthropic shares slide as tech stocks tumble",
+   "vryzka": "https://www.ft.com/content/c7ad2e0c-efd1-40c2-a5a8-819ced8acf5b?syn-25a6b1a6=1",
+   "izvor": "Financial Times",
+   "chas": "2026-11-20T18:03:21Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "FT пазари",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
    "zaglavie": "Cook, The U.S. Economy in Global Context",
    "vryzka": "https://www.federalreserve.gov/newsevents/speech/cook20261120a.htm",
    "izvor": "Fed",
@@ -2635,6 +2639,6 @@
    "bg": "Съобщение на Фед — централната банка на САЩ"
   }
  ],
- "s_bg_red": 90,
- "mahnati_ezik": 3
+ "s_bg_red": 89,
+ "mahnati_ezik": 2
 }
