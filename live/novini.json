@@ -1,37 +1,37 @@
 {
- "kogato": "2026-11-21T13:05:54Z",
- "sekundi": 0.6,
+ "kogato": "2026-11-21T13:16:54Z",
+ "sekundi": 0.62,
  "broi": 200,
- "novi_tozi_pyt": 3,
+ "novi_tozi_pyt": 0,
  "iztochnici_ok": [
-  "Fed политика",
   "Fed всички",
+  "Fed политика",
   "Fed речи",
   "MarketWatch",
   "Investing",
   "Mining.com",
-  "FT пазари",
-  "Yahoo долар",
   "CNBC",
   "Yahoo злато",
+  "Yahoo долар",
   "Google злато",
-  "Google Fed"
+  "Google Fed",
+  "FT пазари"
  ],
  "iztochnici_padnali": [],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.3с",
-  "новини · FT пазари · 25 бр. за 0.26с",
+  "новини · CNBC · 30 бр. за 0.35с",
+  "новини · FT пазари · 25 бр. за 0.55с",
   "новини · Fed всички · 9 бр. за 0.06с",
-  "новини · Fed политика · 15 бр. за 0.05с",
-  "новини · Fed речи · 15 бр. за 0.07с",
-  "новини · Google Fed · 40 бр. за 0.49с",
-  "новини · Google злато · 40 бр. за 0.41с",
-  "новини · Investing · 10 бр. за 0.11с",
+  "новини · Fed политика · 15 бр. за 0.06с",
+  "новини · Fed речи · 15 бр. за 0.06с",
+  "новини · Google Fed · 40 бр. за 0.39с",
+  "новини · Google злато · 40 бр. за 0.39с",
+  "новини · Investing · 10 бр. за 0.09с",
   "новини · MarketWatch · 10 бр. за 0.08с",
-  "новини · Mining.com · 36 бр. за 0.12с",
-  "новини · Yahoo долар · 16 бр. за 0.29с",
-  "новини · Yahoo злато · 17 бр. за 0.33с",
-  "новини · български ред: 93 от 200 · махнати по език: 2"
+  "новини · Mining.com · 36 бр. за 0.17с",
+  "новини · Yahoo долар · 15 бр. за 0.41с",
+  "новини · Yahoo злато · 17 бр. за 0.39с",
+  "новини · български ред: 93 от 200 · махнати по език: 1"
  ],
  "novini": [
   {
@@ -1055,7 +1055,7 @@
    "chas": "2026-11-20T22:56:19Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Yahoo долар",
+   "emisiya": "Yahoo злато",
    "chas_ot_iztochnika": true,
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
@@ -1678,8 +1678,8 @@
    "izvor": "Yahoo Finance",
    "chas": "2026-11-20T20:30:00Z",
    "vazhnost": 1,
-   "za": "долар",
-   "emisiya": "Yahoo долар",
+   "za": "злато",
+   "emisiya": "Yahoo злато",
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null,
@@ -1866,19 +1866,6 @@
    "duma": "recession",
    "zashto": "Свиване на икономиката обикновено значи по-ниски лихви и повече търсене на убежище.",
    "bg": null
-  },
-  {
-   "zaglavie": "Fed officials sound alarm over AI boom's growing inflation risks",
-   "vryzka": "https://news.google.com/rss/articles/CBMigAJBVV95cUxQMWVFUXg2ZWN6R3cwbWxEZi1WWEpjUHh3Um5oa3h5X0JnNWJydUk5M2F0NUk5aGJmazFpU01tWVZSQ0d0Mmp6TXEwbHBTQlNDZzN5cmFoOFNMZWVDNkVHWGVkd1RBZDVVbVNTeGRRTEVEbXRla1ZqTEdMRDdsQmpjQWZFS1hfQlVraVVsZkIxdUhNX3B3a1czY3U2Y1lnMzhvRGNWTU53ekhZaGZaMjdfN3ZFZWFWeUl5OU9KRld2VDZxOE1jUGh2T2FWT1hOTnFRWks0aE95Z2F4OGZ2bWFLT0pyT21OZGVHU09YcWp6YlViZkg4c0sxSkdrYW95bGhV?oc=5",
-   "izvor": "NBC Montana",
-   "chas": "2026-11-20T19:39:46Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": "Изказвания на членове на Фед за инфлацията и изкуствения интелект"
   },
   {
    "zaglavie": "Gold Price Near $3,560 After Hitting 14-Month Low as Fed Hike Odds Reach 99%",
@@ -2505,6 +2492,19 @@
    "bg": null
   },
   {
+   "zaglavie": "Fed officials sound alarm over AI boom's growing inflation risks",
+   "vryzka": "https://news.google.com/rss/articles/CBMigwJBVV95cUxOemVpbm9uQzF0UlBFM0tZaWM0RkNvdDU2a1lueEdodEpUZ0RPZVdqVFJpUlNvdHBxNFUzZDRMRlJ6azVmXzVHOE5jcUhMVzFSQ2IzOEY3VUtYWHhSM25zSy1hcWtWZ3pKWHdlb3p0dC1OMTlyRVRORXFyMXMyOUVJX2ZJaDAtSE45YUJ1ZTZMWndOaU5VSkNmV0NjQzRGcEg1N1FZNUU0VFFKdGNCUEpXRWo1Z2ZLQk91cng1Ykx2bnVEZWt4bWcwVXpQT1B0TFlGWnRnMWstX09xMTQ0RHFudkNCUWpEeE43WEdMUmhHTHAzWXo1Z3FtVEJ4bDhKcHV0Qm84?oc=5",
+   "izvor": "WBFF",
+   "chas": "2026-11-20T17:11:29Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": "Изказвания на членове на Фед за инфлацията и изкуствения интелект"
+  },
+  {
    "zaglavie": "Federal Reserve Board releases results from survey of senior financial officers at banks about their strategies and practices for managing reserve balances",
    "vryzka": "https://www.federalreserve.gov/newsevents/pressreleases/other20261120a.htm",
    "izvor": "Fed",
@@ -2550,10 +2550,10 @@
    "chas": "2026-11-18T19:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed политика",
+   "emisiya": "Fed всички",
    "chas_ot_iztochnika": true,
    "duma": "fed",
-   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
+   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
    "bg": "Протоколът от заседанието на Фед за лихвата (FOMC)"
   },
   {
@@ -2636,5 +2636,5 @@
   }
  ],
  "s_bg_red": 93,
- "mahnati_ezik": 2
+ "mahnati_ezik": 1
 }
