@@ -1,39 +1,56 @@
 {
- "kogato": "2026-11-21T01:35:00Z",
- "sekundi": 0.53,
+ "kogato": "2026-11-21T01:46:12Z",
+ "sekundi": 12.28,
  "broi": 200,
- "novi_tozi_pyt": 3,
+ "novi_tozi_pyt": 2,
  "iztochnici_ok": [
   "Fed речи",
   "Fed всички",
-  "MarketWatch",
   "Fed политика",
   "Investing",
-  "Mining.com",
-  "Yahoo долар",
+  "MarketWatch",
   "Yahoo злато",
-  "FT пазари",
+  "Yahoo долар",
   "CNBC",
+  "FT пазари",
   "Google злато",
   "Google Fed"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Mining.com",
+   "greshka": "TimeoutError: The read operation timed out"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.38с",
-  "новини · FT пазари · 25 бр. за 0.31с",
+  "новини · CNBC · 30 бр. за 0.22с",
+  "новини · FT пазари · 25 бр. за 0.24с",
   "новини · Fed всички · 9 бр. за 0.07с",
   "новини · Fed политика · 15 бр. за 0.08с",
   "новини · Fed речи · 15 бр. за 0.07с",
-  "новини · Google Fed · 40 бр. за 0.41с",
-  "новини · Google злато · 40 бр. за 0.44с",
-  "новини · Investing · 10 бр. за 0.09с",
-  "новини · MarketWatch · 10 бр. за 0.07с",
-  "новини · Mining.com · 36 бр. за 0.15с",
+  "новини · Google Fed · 40 бр. за 0.42с",
+  "новини · Google злато · 40 бр. за 0.42с",
+  "новини · Investing · 10 бр. за 0.1с",
+  "новини · MarketWatch · 10 бр. за 0.11с",
+  "новини · Mining.com · ПАДНА: TimeoutError: The read operation timed out",
   "новини · Yahoo долар · 16 бр. за 0.18с",
-  "новини · Yahoo злато · 16 бр. за 0.18с",
-  "новини · български ред: 91 от 200 · махнати по език: 1"
+  "новини · Yahoo злато · 16 бр. за 0.16с",
+  "новини · български ред: 93 от 200 · махнати по език: 0"
  ],
  "novini": [
+  {
+   "zaglavie": "Jared Dillian: Fed likely to hike rates by 25bps despite potential consequences",
+   "vryzka": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPNDdHVHg4blFWcmQzdWMwdG1ocmtudGtqTnU5ZEFvNlkzX1JYeTR5YkZlaDhpUWFGa0hiU0Z4dTJFazRWM3pkZWJkYUdjZDA4bGhuZzJxWVBjNHplUHI3cHZtMkVuSkZ3anBFVGc5LVFkRnA4WC1vQWdsa2lWZVZWT1lzWG44cXhD?oc=5",
+   "izvor": "Traders Union",
+   "chas": "2026-11-21T01:20:08Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": "Очаквания за по-висока лихва от Фед"
+  },
   {
    "zaglavie": "He Handed His Daughter 50 Ounces of Gold in January, Worth $265,920 at the Record Close. It’s Down to About $177,000 Now, and if He Needs Medicaid, His Penalty Will Still Be Figured on $265,920",
    "vryzka": "https://247wallst.com/personal-finance/2026/11/20/he-handed-his-daughter-50-ounces-of-gold-in-january-worth-265920-at-the-record-close-its-down-to-about-177000-now-and-if-he-needs-medicaid-his-penalty-will-still-be-figured-on-265920/?.tsrc=rss",
@@ -230,13 +247,26 @@
    "bg": "Златото поевтинява"
   },
   {
+   "zaglavie": "Bessent Pushes Back on Half-Point Fed Hike as Bitcoin Slips Below $60,000",
+   "vryzka": "https://news.google.com/rss/articles/CBMidkFVX3lxTFBfV29rNmJQSHhiQ2RqSEZidDl6M0NZT0FoWERZRjlNaHVnUUw3NlItTVV4aFZCbTA3YnpZTzhuOGZCcDYweVpabUc2bDVTTkdsbGozTWFmTkR4UWc3cXNrcy1wVFhMMWtTWTNmSTVhM2cteGt1dkE?oc=5",
+   "izvor": "BigGo Finance",
+   "chas": "2026-11-20T23:05:00Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": "За вдигане на лихвата от Фед"
+  },
+  {
    "zaglavie": "Gold Takes a Beating as Hawkish Fed Sparks Worst Week in Eight Months",
    "vryzka": "https://finance.yahoo.com/markets/commodities/articles/gold-takes-beating-hawkish-fed-225619554.html?.tsrc=rss",
    "izvor": "Yahoo Finance",
    "chas": "2026-11-20T22:56:19Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Yahoo долар",
+   "emisiya": "Yahoo злато",
    "chas_ot_iztochnika": true,
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
@@ -324,7 +354,7 @@
    "zaglavie": "The Federal Reserve Is Expected to Raise Interest Rates Next Month. By How Much Is an Open Question.",
    "vryzka": "https://news.google.com/rss/articles/CBMijwFBVV95cUxNdTFoLTh6OXU1N2ZjSmNYN09CTWhISTZuaVhMSXJCbklsdEFyWGpQN3B3c0NieVdVRUV6VnRDYjdIWG1vaFVOQWRRM19ZaklQMUZuUktlT2hCT3V3NnhCZDg2Y215b09aVmFFRkNyeTNmYzZYYWt1LXlnRkM3bG1ad1YxdGVNUnVhcE82RXh4TQ?oc=5",
    "izvor": "Barron's",
-   "chas": "2026-11-20T22:39:00Z",
+   "chas": "2026-11-20T22:40:32Z",
    "vazhnost": 3,
    "za": "лихви",
    "emisiya": "Google Fed",
@@ -794,8 +824,8 @@
    "izvor": "Yahoo Finance",
    "chas": "2026-11-20T20:30:00Z",
    "vazhnost": 1,
-   "za": "долар",
-   "emisiya": "Yahoo долар",
+   "za": "злато",
+   "emisiya": "Yahoo злато",
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null,
@@ -1484,7 +1514,7 @@
    "chas": "2026-11-20T17:23:00Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Yahoo долар",
+   "emisiya": "Yahoo злато",
    "chas_ot_iztochnika": true,
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
@@ -1523,7 +1553,7 @@
    "chas": "2026-11-20T17:21:01Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Yahoo долар",
+   "emisiya": "Yahoo злато",
    "chas_ot_iztochnika": true,
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
@@ -2492,32 +2522,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Anthropic shares tumble as AI giant swept up in tech sell-off",
-   "vryzka": "https://www.ft.com/content/23fa83d8-e078-4853-959e-bd1f19d14ff5?syn-25a6b1a6=1",
-   "izvor": "Financial Times",
-   "chas": "2026-11-20T14:01:58Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "FT пазари",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
-   "zaglavie": "Titan, Muthoot Finance Face Gold Price Correction Risks",
-   "vryzka": "https://news.google.com/rss/articles/CBMisAFBVV95cUxQLVFudHJjejhnMDVfZFd0b1ZvZks1ZHFLUDVuU18xX0Z0aC1mZENNZDdMN1FELWZMbkpkTHgwdERIWDB4c2lzbjJpeGhlam9JNjVWcWlLU0RXdW50LW1RRzZxMXlfd1BYU3ViVHRvblR4eWV1d2U3bHU2bGVTVVktNVdTOU1LTWdzdDBqR1BHS0o3cHBYTC0wbjZTeENjVng3STVTN1lPenN3Y25yYjVTVA?oc=5",
-   "izvor": "TradingView",
-   "chas": "2026-11-20T14:01:38Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": null
-  },
-  {
    "zaglavie": "Waller, Opening Remarks",
    "vryzka": "https://www.federalreserve.gov/newsevents/speech/waller20261120a.htm",
    "izvor": "Fed",
@@ -2635,6 +2639,6 @@
    "bg": "Съобщение на Фед — централната банка на САЩ"
   }
  ],
- "s_bg_red": 91,
- "mahnati_ezik": 1
+ "s_bg_red": 93,
+ "mahnati_ezik": 0
 }
