@@ -1,37 +1,44 @@
 {
- "kogato": "2026-11-21T21:30:17Z",
- "sekundi": 0.53,
+ "kogato": "2026-11-21T21:40:24Z",
+ "sekundi": 7.0,
  "broi": 200,
  "novi_tozi_pyt": 1,
  "iztochnici_ok": [
   "MarketWatch",
   "Fed политика",
+  "Fed речи",
+  "Fed всички",
   "Yahoo злато",
   "Yahoo долар",
   "Investing",
-  "Fed всички",
-  "Fed речи",
   "Mining.com",
   "CNBC",
-  "FT пазари",
-  "Google Fed",
-  "Google злато"
+  "FT пазари"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google злато",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  },
+  {
+   "ime": "Google Fed",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.27с",
-  "новини · FT пазари · 25 бр. за 0.29с",
-  "новини · Fed всички · 9 бр. за 0.15с",
-  "новини · Fed политика · 15 бр. за 0.07с",
-  "новини · Fed речи · 15 бр. за 0.15с",
-  "новини · Google Fed · 34 бр. за 0.3с",
-  "новини · Google злато · 40 бр. за 0.47с",
+  "новини · CNBC · 30 бр. за 0.21с",
+  "новини · FT пазари · 25 бр. за 0.28с",
+  "новини · Fed всички · 9 бр. за 0.05с",
+  "новини · Fed политика · 15 бр. за 0.05с",
+  "новини · Fed речи · 15 бр. за 0.05с",
+  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
   "новини · Investing · 10 бр. за 0.1с",
-  "новини · MarketWatch · 10 бр. за 0.05с",
-  "новини · Mining.com · 36 бр. за 0.26с",
+  "новини · MarketWatch · 10 бр. за 0.03с",
+  "новини · Mining.com · 36 бр. за 0.14с",
   "новини · Yahoo долар · 15 бр. за 0.09с",
-  "новини · Yahoo злато · 17 бр. за 0.08с",
-  "новини · български ред: 99 от 200 · махнати по език: 2"
+  "новини · Yahoo злато · 17 бр. за 0.09с",
+  "новини · български ред: 98 от 200 · махнати по език: 0"
  ],
  "novini": [
   {
@@ -1725,19 +1732,6 @@
    "bg": "Златото поевтинява"
   },
   {
-   "zaglavie": "Gold price fall nears $3,500 as miners face soaring costs",
-   "vryzka": "https://news.google.com/rss/articles/CBMihwFBVV95cUxQYTBKNGdIMDJlUk1JZ3E1dm1pOEtVZmVuT3l5UmRYaHhXMVZVQXdCMlhDVmpYc0FwXzdydlBlMFZDeV9XS2lndUoyaFc1TE5DaXN6T09zTTJNSVgxZVRGbHdMS3dLZnJadlRLdlBDTzRwSlU4VUFwV09ZV2dLdk5LUHhzNHRNSjg?oc=5",
-   "izvor": "Mining.com",
-   "chas": "2026-11-20T23:50:45Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Златото поевтинява"
-  },
-  {
    "zaglavie": "Fed hawks keep 10-year yield elevated despite lower oil prices",
    "vryzka": "https://news.google.com/rss/articles/CBMiekFVX3lxTE9wNGpNMHlmRDQtSHVldVlHdFNwN0d6NURRUExpVmZub3dOamRlbWNwQnI2VzhqVUZxX2JhaXpjZElobi04eFpQLTg3U0RYWTlOVmZEb25ocHQyQ2hLMkNlalRBYTV1TVc3XzZjcndtVFpkRTNHSTgwUmtR?oc=5",
    "izvor": "HousingWire",
@@ -2492,6 +2486,19 @@
    "bg": "Златото и Фед"
   },
   {
+   "zaglavie": "Prediction markets outlook for stocks in 2026 dims amid AI sell-off",
+   "vryzka": "https://www.cnbc.com/2026/11/20/sp-500-8000-kalshi-odds-ai-selloff.html",
+   "izvor": "CNBC",
+   "chas": "2026-11-20T19:59:03Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "CNBC",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
    "zaglavie": "Cook, The U.S. Economy in Global Context",
    "vryzka": "https://www.federalreserve.gov/newsevents/speech/cook20261120a.htm",
    "izvor": "Fed",
@@ -2635,6 +2642,6 @@
    "bg": "Съобщение на Фед — централната банка на САЩ"
   }
  ],
- "s_bg_red": 99,
- "mahnati_ezik": 2
+ "s_bg_red": 98,
+ "mahnati_ezik": 0
 }
