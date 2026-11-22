@@ -1,39 +1,56 @@
 {
- "kogato": "2026-11-22T23:35:31Z",
- "sekundi": 0.47,
+ "kogato": "2026-11-22T23:46:27Z",
+ "sekundi": 12.16,
  "broi": 200,
- "novi_tozi_pyt": 4,
+ "novi_tozi_pyt": 1,
  "iztochnici_ok": [
-  "Fed речи",
   "Fed политика",
-  "Fed всички",
   "MarketWatch",
-  "Investing",
-  "Mining.com",
-  "Yahoo долар",
+  "Fed всички",
+  "Fed речи",
   "Yahoo злато",
+  "Yahoo долар",
+  "Mining.com",
   "FT пазари",
-  "CNBC",
   "Google Fed",
-  "Google злато"
+  "Google злато",
+  "CNBC"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Investing",
+   "greshka": "TimeoutError: The read operation timed out"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.27с",
-  "новини · FT пазари · 25 бр. за 0.26с",
-  "новини · Fed всички · 9 бр. за 0.06с",
-  "новини · Fed политика · 15 бр. за 0.05с",
-  "новини · Fed речи · 15 бр. за 0.04с",
-  "новини · Google Fed · 40 бр. за 0.31с",
-  "новини · Google злато · 40 бр. за 0.39с",
-  "новини · Investing · 10 бр. за 0.1с",
-  "новини · MarketWatch · 10 бр. за 0.05с",
-  "новини · Mining.com · 36 бр. за 0.17с",
-  "новини · Yahoo долар · 15 бр. за 0.2с",
-  "новини · Yahoo злато · 19 бр. за 0.2с",
+  "новини · CNBC · 30 бр. за 0.55с",
+  "новини · FT пазари · 25 бр. за 0.33с",
+  "новини · Fed всички · 9 бр. за 0.11с",
+  "новини · Fed политика · 15 бр. за 0.07с",
+  "новини · Fed речи · 15 бр. за 0.12с",
+  "новини · Google Fed · 40 бр. за 0.34с",
+  "новини · Google злато · 40 бр. за 0.44с",
+  "новини · Investing · ПАДНА: TimeoutError: The read operation timed out",
+  "новини · MarketWatch · 10 бр. за 0.07с",
+  "новини · Mining.com · 36 бр. за 0.23с",
+  "новини · Yahoo долар · 15 бр. за 0.16с",
+  "новини · Yahoo злато · 19 бр. за 0.16с",
   "новини · български ред: 114 от 200 · махнати по език: 2"
  ],
  "novini": [
+  {
+   "zaglavie": "Crude Oil Prices Slide as Bessent Challenges Fed’s Hawkish Rate Expectations",
+   "vryzka": "https://news.google.com/rss/articles/CBMiugFBVV95cUxNd0NhUDVibWNTc3gtOEFMV1VrR3VaMm5weTg3TGY5X3NXVDZUVVN4R3U3cEUzVHlzSmdST2s0c1NLb0hUdGRDcmpPWEVmXzhxUXpUTDg1VHJsUDY5cWJDYU52d0FEYVE1Q18xTDFiMVBsekljLXZlWUhfTm9fNnBKT3Zjd3lwNmE4WDJUUUpwdVdoeHNRTVZzcnJ3OUNMV1NFZDBZU2VET0hJWmpVNEdvbDVReGNtc1Bpc1E?oc=5",
+   "izvor": "FXLeaders",
+   "chas": "2026-11-22T23:34:28Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": "Петролът и очакванията за по-висока лихва от Фед"
+  },
   {
    "zaglavie": "Gold price update morning of November 23rd: Week of strong fluctuations, gold has not lost the opportunity to recover",
    "vryzka": "https://news.google.com/rss/articles/CBMixwFBVV95cUxPaGpSWDZCYlN2TW4zYnNVRXVTT0VmdDFpSXBtNkVZODNLTHZldTdsRUxaM0szNFVJSlJKcnBlWnBQcVZMdmp3dTRqLVVtNk4wZUZEazhTWmJKYVhuSEZhNmlXcmcxYmV1enduY0xFNExsMW45OWtuekNuTW1Pb3Yxc0JIcHlCY1I5M1R0M21FLW5iRTc3MHhEM3JxSHZtbGNyay16bWNHd0htbGt1bmpmZUFjSk9WR0pNaGxvUDdDcUNMLXB5cEdV?oc=5",
@@ -2464,19 +2481,6 @@
    "duma": null,
    "zashto": null,
    "bg": null
-  },
-  {
-   "zaglavie": "Fed Likely to Keep Raising Rates Despite Stock Selloff",
-   "vryzka": "https://news.google.com/rss/articles/CBMigwFBVV95cUxPYzRkUktsMmFreDNGVktfWGFSQnl4S2p2YUxWSjBQdF9qOXU4cURZVzZOd0kwZ0ZBTFd5SzJnZU0tMGYwUTBVUDZWVHJ4bURRVi1OUEtMM0k0YjllNG5QbUYwMXBncEh0SmpadmV5YU9SLW5tUTJnRl9FZ1prWTVtVlY3MA?oc=5",
-   "izvor": "JournalArta",
-   "chas": "2026-11-22T00:49:16Z",
-   "vazhnost": 3,
-   "za": "лихви",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": "Очаквания за по-висока лихва от Фед"
   },
   {
    "zaglavie": "Federal Reserve announces College Fed Challenge winners",
