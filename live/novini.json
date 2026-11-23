@@ -1,39 +1,56 @@
 {
- "kogato": "2026-11-23T01:21:58Z",
- "sekundi": 0.56,
+ "kogato": "2026-11-23T01:32:43Z",
+ "sekundi": 0.6,
  "broi": 200,
- "novi_tozi_pyt": 3,
+ "novi_tozi_pyt": 0,
  "iztochnici_ok": [
   "Fed речи",
-  "Fed политика",
-  "Fed всички",
-  "Investing",
   "MarketWatch",
-  "Yahoo злато",
+  "Fed политика",
+  "Investing",
   "Yahoo долар",
+  "Yahoo злато",
   "Mining.com",
   "CNBC",
   "FT пазари",
-  "Google Fed",
-  "Google злато"
+  "Google злато",
+  "Google Fed"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Fed всички",
+   "greshka": "HTTPError: HTTP Error 404: Not Found"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.26с",
-  "новини · FT пазари · 25 бр. за 0.26с",
-  "новини · Fed всички · 9 бр. за 0.08с",
-  "новини · Fed политика · 15 бр. за 0.07с",
-  "новини · Fed речи · 15 бр. за 0.07с",
-  "новини · Google Fed · 40 бр. за 0.31с",
-  "новини · Google злато · 40 бр. за 0.48с",
-  "новини · Investing · 10 бр. за 0.1с",
-  "новини · MarketWatch · 10 бр. за 0.12с",
-  "новини · Mining.com · 36 бр. за 0.18с",
-  "новини · Yahoo долар · 15 бр. за 0.16с",
-  "новини · Yahoo злато · 19 бр. за 0.16с",
-  "новини · български ред: 117 от 200 · махнати по език: 2"
+  "новини · CNBC · 30 бр. за 0.28с",
+  "новини · FT пазари · 25 бр. за 0.33с",
+  "новини · Fed всички · ПАДНА: HTTPError: HTTP Error 404: Not Found",
+  "новини · Fed политика · 15 бр. за 0.15с",
+  "новини · Fed речи · 15 бр. за 0.12с",
+  "новини · Google Fed · 40 бр. за 0.44с",
+  "новини · Google злато · 40 бр. за 0.45с",
+  "новини · Investing · 10 бр. за 0.16с",
+  "новини · MarketWatch · 10 бр. за 0.14с",
+  "новини · Mining.com · 36 бр. за 0.24с",
+  "новини · Yahoo долар · 15 бр. за 0.18с",
+  "новини · Yahoo злато · 19 бр. за 0.19с",
+  "новини · български ред: 117 от 200 · махнати по език: 3"
  ],
  "novini": [
+  {
+   "zaglavie": "Gold recovers above $3,550 as AI trade concern spurs safe-haven flows",
+   "vryzka": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxNY0Z0dDdVaHdQdm5pbjZyLVBFQU44RzhYTkdDYThPalRySUNDTXR3ZTE0RmNlWDBSWHBTSjFCS0k3VGlNOVJGSGo4RkdGWG5EZmpkZGV2YWhsX3UwM09mRl9mSVhrSG9fWGZrS0tIYjJCeUlvZGtzell1b1Vtb0lFT3I5bWtaNU51OWNSdjQ4TDZ4Q3RBZklNNWxlVk9tcklSQVlQYlEtWDNZb1U2ejhXU2tHSktwS1pKM2JHZ1d5d1VzTHFYOHp4S0xxTVJtbjRZMDA4?oc=5",
+   "izvor": "www.tmgm.com",
+   "chas": "2026-11-23T01:26:56Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": "Златото се връща нагоре"
+  },
   {
    "zaglavie": "Gold rebounds as traders pare bets on near-term US Fed rate hikes",
    "vryzka": "https://news.google.com/rss/articles/CBMipgFBVV95cUxQUHZBckNfc0cyNFNNN3gyYmVxYVJRNW0tblEtOUpIUmcyc3YtWWpCdzNxNFZybG5nZ0pKc1JXei15aFlJRWNZNVNuLWJ5S3E0MHY0UUVCWjNPSDdORDloYXpfM1RySkVVX2tpN1JYUUpwR2NNU3NaTDdRYWkzTTNnbkxORzVRQkV3N3RBeDFjVnZtWVNkOWhBT3h6SmJ5bnNPTzJET2hB?oc=5",
@@ -61,22 +78,9 @@
    "bg": null
   },
   {
-   "zaglavie": "Gold recovers above $3,550 as AI trade concern spurs safe-haven flows",
-   "vryzka": "https://news.google.com/rss/articles/CBMisAFBVV95cUxPSzdCMDZGNVJSUUFTYmstaU9ZeUU1RkNYbnc5M2VkOUlFcVRyUGRkSzBSNkw0MkdVT0xGWXU4M3U5Q3RSS0xtaDNkMU5OODNJa3I1dDc5d2NTOUJ1WHZKM1had3diQjVKSDhod2cxTVZsczc4b0ptaUNhaTIyRDllVk9pWjRzU1hZb0tyQVJZd19xVzZvWnlSVm1sMk1uR1FYNnA0Z1J6dUNQR2xST1owNQ?oc=5",
-   "izvor": "FXStreet",
-   "chas": "2026-11-23T01:09:20Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Златото се връща нагоре"
-  },
-  {
    "zaglavie": "US Stocks Enter Correction With Over 10% Decline; Traders Cut Fed Rate-Hike Bets to 95%",
    "vryzka": "https://news.google.com/rss/articles/CBMidkFVX3lxTE43Q2FOenJWem5mMmtncXN5ZnVLWG9zY1lQVG9RV0xkVmN6VmJBUTR5UHZjMTdjc1owMUtsOXNUMmdsaGVUUTNwdzMzV1IxRV9QZmJhczRvQlNfNDBScmdubVdTSHc0Y2NIY0VxV0ZTRHRFSDZzdnc?oc=5",
-   "izvor": "finance.biggo.com",
+   "izvor": "BigGo Finance",
    "chas": "2026-11-23T01:05:00Z",
    "vazhnost": 3,
    "za": "лихви",
@@ -178,19 +182,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Gold Rate Today in India, 23 Nov 2026 - Live 18K, 22K & 24K Gold Prices",
-   "vryzka": "https://news.google.com/rss/articles/CBMiTEFVX3lxTE9oS1doakpSUWg2blRCZGtNeWp5UXFadUo5cVZtTzd5bzBsdHNnUHlsTG9KVEN5UGVMaENmNVNDSGxrVmVLaHgtYWRPeEE?oc=5",
-   "izvor": "Kotak Neo",
-   "chas": "2026-11-22T23:23:08Z",
-   "vazhnost": 3,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "rate",
-   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
-   "bg": "Цената на златото днес"
-  },
-  {
    "zaglavie": "'Another mistake’: Bill Ackman joins Scott Bessent in warning US Fed against a rate cut in December | Hindustan Times",
    "vryzka": "https://news.google.com/rss/articles/CBMi-wFBVV95cUxPQndGVGJrd2E5d1liMy1odEo2cUZFTDVoQUc0MkV0aXNWdEE4dFhHWXRWeXM2d2k1ZGwtM1NkVjNfcUJqUHNWc2lRRnJadE8yQ25PeWU5cEhMNWExQzNvSHF4RW1hT0xiRjJPbzREejI4UjFVaFFNY2JLcHNGM0NIMzRPVTVTeHd2d0tRaElReGdEX1RmMXlqdFR6ZWhEazNsU3RPanczby1NSEc4Z2JUelhTWGdzaktfODdFRWVCWlpFMjJOREg0aHlpX3dkRkdNUFgxY3ptaVV0cmZreGlXX2F5RHk5TlNKMWlPX012a00zVUhYMnpHaXoza9IBgAJBVV95cUxQRU9YNktMZjZZNE0wejNYX2puNnlyTXJJNzR3ME9wbTNfZ1AwNnZScEMybjJ2R0c1WTdHcXdXQ3BIMkt6akZJU0RWZ3dScjNoNlU2SFEwdy1rTWFIUW5fei1OUkxQRGxSS2VHVWZOSm11ejl2RnVjbm51RkJIS2UtRmw1d1VRZ2l3cUF0aGpXS3N6dEp6eXgxUWx6S1p0ZERVdUx",
    "izvor": "Hindustan Times",
@@ -210,7 +201,7 @@
    "chas": "2026-11-22T23:18:54Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Google Fed",
+   "emisiya": "Google злато",
    "chas_ot_iztochnika": true,
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
@@ -373,6 +364,19 @@
    "bg": "За лихвата на Фед"
   },
   {
+   "zaglavie": "Gold Rate Today in India, 23 Nov 2026 - Live 18K, 22K & 24K Gold Prices",
+   "vryzka": "https://news.google.com/rss/articles/CBMiTEFVX3lxTE9oS1doakpSUWg2blRCZGtNeWp5UXFadUo5cVZtTzd5bzBsdHNnUHlsTG9KVEN5UGVMaENmNVNDSGxrVmVLaHgtYWRPeEE?oc=5",
+   "izvor": "Kotak Neo",
+   "chas": "2026-11-22T21:48:07Z",
+   "vazhnost": 3,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "rate",
+   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
+   "bg": "Цената на златото днес"
+  },
+  {
    "zaglavie": "Gold Rate Today in Hyderabad (22 Nov 2026)",
    "vryzka": "https://news.google.com/rss/articles/CBMic0FVX3lxTE1EOGVFUHN2dE5VSnUtelpmSXJvdFhoQ2FzMk1aTnN6bEE2T21mWEgtcHdjQU43bHd4dWNwY0lnd01qZ0V2OGpOeGdHVkduQ2hrcGpsVVl0cU81M0JQNmJmYUQxTXBiMmtqVmxiNG1DakZQY3c?oc=5",
    "izvor": "Kotak Neo",
@@ -509,7 +513,7 @@
    "chas": "2026-11-22T20:30:10Z",
    "vazhnost": 2,
    "za": "злато",
-   "emisiya": "Google Fed",
+   "emisiya": "Google злато",
    "chas_ot_iztochnika": true,
    "duma": "gold",
    "zashto": "Пряко за златото.",
@@ -587,7 +591,7 @@
    "chas": "2026-11-22T19:32:30Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Google Fed",
+   "emisiya": "Google злато",
    "chas_ot_iztochnika": true,
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
@@ -964,7 +968,7 @@
    "chas": "2026-11-22T16:45:00Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Google Fed",
+   "emisiya": "Google злато",
    "chas_ot_iztochnika": true,
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
@@ -2030,7 +2034,7 @@
    "chas": "2026-11-22T06:45:00Z",
    "vazhnost": 2,
    "za": "злато",
-   "emisiya": "Google Fed",
+   "emisiya": "Google злато",
    "chas_ot_iztochnika": true,
    "duma": "gold",
    "zashto": "Пряко за златото.",
@@ -2636,5 +2640,5 @@
   }
  ],
  "s_bg_red": 117,
- "mahnati_ezik": 2
+ "mahnati_ezik": 3
 }
