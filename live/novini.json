@@ -1,37 +1,44 @@
 {
- "kogato": "2026-11-23T07:15:17Z",
- "sekundi": 0.55,
+ "kogato": "2026-11-23T07:26:23Z",
+ "sekundi": 8.27,
  "broi": 200,
- "novi_tozi_pyt": 3,
+ "novi_tozi_pyt": 0,
  "iztochnici_ok": [
   "MarketWatch",
-  "Fed всички",
-  "Investing",
   "Fed речи",
+  "Fed всички",
   "Fed политика",
+  "Investing",
   "Yahoo злато",
+  "CNBC",
   "Mining.com",
   "Yahoo долар",
-  "CNBC",
-  "FT пазари",
-  "Google злато",
-  "Google Fed"
+  "FT пазари"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google злато",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  },
+  {
+   "ime": "Google Fed",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.3с",
-  "новини · FT пазари · 25 бр. за 0.32с",
-  "новини · Fed всички · 9 бр. за 0.08с",
-  "новини · Fed политика · 15 бр. за 0.12с",
-  "новини · Fed речи · 15 бр. за 0.11с",
-  "новини · Google Fed · 40 бр. за 0.44с",
-  "новини · Google злато · 40 бр. за 0.44с",
-  "новини · Investing · 10 бр. за 0.09с",
-  "новини · MarketWatch · 10 бр. за 0.08с",
+  "новини · CNBC · 30 бр. за 0.21с",
+  "новини · FT пазари · 25 бр. за 0.37с",
+  "новини · Fed всички · 9 бр. за 0.05с",
+  "новини · Fed политика · 15 бр. за 0.13с",
+  "новини · Fed речи · 15 бр. за 0.05с",
+  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Investing · 10 бр. за 0.14с",
+  "новини · MarketWatch · 10 бр. за 0.04с",
   "новини · Mining.com · 36 бр. за 0.21с",
-  "новини · Yahoo долар · 13 бр. за 0.24с",
-  "новини · Yahoo злато · 19 бр. за 0.21с",
-  "новини · български ред: 124 от 200 · махнати по език: 2"
+  "новини · Yahoo долар · 13 бр. за 0.22с",
+  "новини · Yahoo злато · 19 бр. за 0.17с",
+  "новини · български ред: 124 от 200 · махнати по език: 0"
  ],
  "novini": [
   {
@@ -553,19 +560,6 @@
    "duma": "rate",
    "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
    "bg": "Цената на златото днес"
-  },
-  {
-   "zaglavie": "Gold Rebounds as Traders Pare Bets on Near-Term Fed Rate Hikes",
-   "vryzka": "https://news.google.com/rss/articles/CBMiswFBVV95cUxQVy1Pa3puQ1RUS0xLT3pTdTBrdUc0Q0J4TkFqMW81cXpOdUpQSU9LV2wtNlJIS19wOG9uMEVEUlZkZUNIQXJBcXdNeWdaV0JiXzF4WGluNWtSaVU4T09reFVtYkc0dXJOZkFLXzFMUGNzOVl1SHRVaG5PR3dvVnpwR3VTbGJibEloRHVzcjQxYWc5UWxZdWR5OWdmdGE5UTh0c1NSRF9vc09YUk1aVHNFNmFVZw?oc=5",
-   "izvor": "Bloomberg.com",
-   "chas": "2026-11-23T04:40:00Z",
-   "vazhnost": 3,
-   "za": "злато",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": "Златото се връща нагоре на фона на очакванията за по-висока лихва от Фед"
   },
   {
    "zaglavie": "Antam gold price rises to IDR 2,505,000 per gram on Monday (23/11)",
@@ -1268,6 +1262,19 @@
    "duma": "rate",
    "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
    "bg": "Очакванията за лихвата на Фед"
+  },
+  {
+   "zaglavie": "Gold Rebounds as Traders Pare Bets on Near-Term Fed Rate Hikes",
+   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/gold-rebounds-traders-pare-bets-002803539.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-23T00:28:03Z",
+   "vazhnost": 3,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": "Златото се връща нагоре на фона на очакванията за по-висока лихва от Фед"
   },
   {
    "zaglavie": "Demand for gold jumps tenfold as prices retreat from record high",
@@ -2636,5 +2643,5 @@
   }
  ],
  "s_bg_red": 124,
- "mahnati_ezik": 2
+ "mahnati_ezik": 0
 }
