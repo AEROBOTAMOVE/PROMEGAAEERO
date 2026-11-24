@@ -1,43 +1,43 @@
 {
- "kogato": "2026-11-24T04:25:52Z",
- "sekundi": 7.67,
+ "kogato": "2026-11-24T04:36:06Z",
+ "sekundi": 7.96,
  "broi": 200,
- "novi_tozi_pyt": 1,
+ "novi_tozi_pyt": 0,
  "iztochnici_ok": [
   "MarketWatch",
-  "Fed всички",
-  "Yahoo злато",
-  "Yahoo долар",
-  "Investing",
   "Fed политика",
-  "Mining.com",
+  "Fed всички",
+  "Yahoo долар",
+  "Yahoo злато",
+  "Investing",
   "Fed речи",
-  "FT пазари",
-  "CNBC"
+  "Mining.com",
+  "CNBC",
+  "FT пазари"
  ],
  "iztochnici_padnali": [
   {
-   "ime": "Google злато",
+   "ime": "Google Fed",
    "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
   },
   {
-   "ime": "Google Fed",
+   "ime": "Google злато",
    "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
   }
  ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.32с",
+  "новини · CNBC · 30 бр. за 0.27с",
   "новини · FT пазари · 25 бр. за 0.31с",
-  "новини · Fed всички · 9 бр. за 0.09с",
-  "новини · Fed политика · 15 бр. за 0.15с",
+  "новини · Fed всички · 9 бр. за 0.08с",
+  "новини · Fed политика · 15 бр. за 0.06с",
   "новини · Fed речи · 15 бр. за 0.16с",
   "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
   "новини · Google злато · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
-  "новини · Investing · 10 бр. за 0.12с",
+  "новини · Investing · 10 бр. за 0.13с",
   "новини · MarketWatch · 10 бр. за 0.03с",
-  "новини · Mining.com · 36 бр. за 0.15с",
+  "новини · Mining.com · 36 бр. за 0.2с",
   "новини · Yahoo долар · 11 бр. за 0.11с",
-  "новини · Yahoo злато · 17 бр. за 0.1с",
+  "новини · Yahoo злато · 17 бр. за 0.11с",
   "новини · български ред: 94 от 200 · махнати по език: 0"
  ],
  "novini": [
@@ -230,7 +230,7 @@
    "chas": "2026-11-24T02:13:30Z",
    "vazhnost": 2,
    "za": "злато",
-   "emisiya": "Yahoo злато",
+   "emisiya": "Yahoo долар",
    "chas_ot_iztochnika": true,
    "duma": "gold",
    "zashto": "Пряко за златото.",
@@ -693,7 +693,7 @@
   },
   {
    "zaglavie": "i-80 Gold Announces the Start of Production Mining at Archimedes Underground",
-   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/80-gold-announces-start-production-231200201.html?.tsrc=rss",
+   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/80-gold-announces-start-production-231200801.html?.tsrc=rss",
    "izvor": "Yahoo Finance",
    "chas": "2026-11-23T23:12:00Z",
    "vazhnost": 2,
@@ -2557,10 +2557,10 @@
    "chas": "2026-11-18T19:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed всички",
+   "emisiya": "Fed политика",
    "chas_ot_iztochnika": true,
    "duma": "fed",
-   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
+   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
    "bg": "Протоколът от заседанието на Фед за лихвата (FOMC)"
   },
   {
