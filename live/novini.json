@@ -1,39 +1,85 @@
 {
- "kogato": "2026-11-24T21:11:56Z",
- "sekundi": 0.51,
+ "kogato": "2026-11-24T21:22:52Z",
+ "sekundi": 8.08,
  "broi": 200,
- "novi_tozi_pyt": 5,
+ "novi_tozi_pyt": 1,
  "iztochnici_ok": [
+  "MarketWatch",
+  "Mining.com",
   "Fed политика",
   "Fed всички",
   "Fed речи",
-  "MarketWatch",
   "Investing",
-  "Mining.com",
-  "Yahoo долар",
-  "Yahoo злато",
   "CNBC",
-  "FT пазари",
-  "Google злато",
-  "Google Fed"
+  "Yahoo злато",
+  "Yahoo долар",
+  "FT пазари"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google Fed",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  },
+  {
+   "ime": "Google злато",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.33с",
-  "новини · FT пазари · 25 бр. за 0.36с",
-  "новини · Fed всички · 10 бр. за 0.1с",
-  "новини · Fed политика · 15 бр. за 0.1с",
-  "новини · Fed речи · 15 бр. за 0.1с",
-  "новини · Google Fed · 40 бр. за 0.38с",
-  "новини · Google злато · 40 бр. за 0.39с",
-  "новини · Investing · 10 бр. за 0.17с",
-  "новини · MarketWatch · 10 бр. за 0.13с",
-  "новини · Mining.com · 36 бр. за 0.23с",
-  "новини · Yahoo долар · 17 бр. за 0.29с",
-  "новини · Yahoo злато · 19 бр. за 0.3с",
+  "новини · CNBC · 30 бр. за 0.13с",
+  "новини · FT пазари · 25 бр. за 0.27с",
+  "новини · Fed всички · 10 бр. за 0.05с",
+  "новини · Fed политика · 15 бр. за 0.04с",
+  "новини · Fed речи · 15 бр. за 0.05с",
+  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Investing · 10 бр. за 0.07с",
+  "новини · MarketWatch · 10 бр. за 0.02с",
+  "новини · Mining.com · 36 бр. за 0.04с",
+  "новини · Yahoo долар · 17 бр. за 0.19с",
+  "новини · Yahoo злато · 19 бр. за 0.14с",
   "новини · български ред: 81 от 200 · махнати по език: 0"
  ],
  "novini": [
+  {
+   "zaglavie": "I’ve been married for 58 years. It’s ‘our’ money, not ‘his’ and ‘hers.’ Why do so many couples keep their finances separate?",
+   "vryzka": "https://www.marketwatch.com/story/ive-been-married-for-58-years-its-our-money-not-his-and-hers-why-dont-others-feel-the-same-c5745889?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-11-24T21:15:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "Nvidia’s stock drops as these major questions loom over Jensen Huang’s return",
+   "vryzka": "https://www.marketwatch.com/story/nvidias-stock-drops-as-these-major-questions-loom-over-jensen-huangs-return-9096636f?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-11-24T21:14:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "Dell’s stock rises as the AI boom helps sales more than double",
+   "vryzka": "https://www.marketwatch.com/story/dells-stock-rises-as-the-ai-boom-helps-sales-more-than-double-cfb8cf65?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-11-24T21:14:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
   {
    "zaglavie": "Anthropic falls below IPO price as tech rally fades",
    "vryzka": "https://www.ft.com/content/c0cb932a-076e-4471-8009-91749fde5f47?syn-25a6b1a6=1",
@@ -241,19 +287,6 @@
    "duma": null,
    "zashto": null,
    "bg": null
-  },
-  {
-   "zaglavie": "Tudor Gold Announces Positive Preliminary Economic Assessment for Treaty Creek's Goldstorm Deposit: Study Outlines Gold-Copper Underground Mine with Projected 28-Year Mine Life Producing 4,677,902 Ounces of Gold plus Cop",
-   "vryzka": "https://news.google.com/rss/articles/CBMiywJBVV95cUxQNWNJckhLakFFNk5yeUZQV193ek0wN2t2eEtYR3J2TVlVeWNUd0JELVprR2pRbGwzUk9RdW4yNGZ0dVZSbXdQZHRyMldENi1PTGZwaUY0aG1pSlQzUVdpU1dISmZzWlNRZ25iMF9kRzFTdUN4Q1RDQkt2WHB6TWpqVkpyYlpBWWctSi1CSXhjc1F1TWhDcE5pX0NkTDczTW16ZC1GeDY3UEtteHl4NHlWZ0Rtb1haa2lxZzNPYlFHZHMtNVBmR1ZkYjl0UjlpdlJPbWNseDhqemZpdnk0U1ZRaWlrR1pVdlMwTHFSdUNqS0NLY3hOZmJ2RDNYZWNVZDBRZmZVa2VvREkxc0VpYno2OU85dnE0MkRNc3pTRWVGaHhTUThjUTBpeFBwM0VCNURacDlJUl9SMGVVNUdzWkozT1hta1pXcEdCMzdN?oc=5",
-   "izvor": "Investing News Network",
-   "chas": "2026-11-24T19:40:59Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Новина от минния бранш (злато)"
   },
   {
    "zaglavie": "Most Fed Regional Boards Wanted to Raise Rates in October",
@@ -607,19 +640,6 @@
    "bg": "Цената на златото днес"
   },
   {
-   "zaglavie": "I’ve been married for 58 years. It’s ‘our’ money, not ‘his’ and ‘hers.’ Why do so many couples keep their finances separate?",
-   "vryzka": "https://www.marketwatch.com/story/ive-been-married-for-58-years-its-our-money-not-his-and-hers-why-dont-others-feel-the-same-c5745889?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-11-24T18:15:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
    "zaglavie": "3 Indian Growth Stocks With Revenue Growth Up To 30%",
    "vryzka": "https://finance.yahoo.com/markets/stocks/articles/3-indian-growth-stocks-revenue-181448119.html?.tsrc=rss",
    "izvor": "Yahoo Finance",
@@ -730,7 +750,7 @@
    "chas": "2026-11-24T17:58:06Z",
    "vazhnost": 2,
    "za": "долар",
-   "emisiya": "Yahoo долар",
+   "emisiya": "Yahoo злато",
    "chas_ot_iztochnika": true,
    "duma": "dollar",
    "zashto": "Златото се мери в долари: по-силен долар обикновено значи по-евтино злато.",
@@ -841,19 +861,6 @@
    "bg": "Новина от минния бранш (злато)"
   },
   {
-   "zaglavie": "World Gold Council brings digital gold trading to life",
-   "vryzka": "https://news.google.com/rss/articles/CBMihAFBVV95cUxQZXFmVUxBQ3VJVlRfWWhwdDRkTTFYaFVadjZ2RXZsMUVVaWhKaTBsd0NDYlp5UEI0WmxPOW5zQTRLTGllVEpKR3k5YzVlNW5GU2ZGX0JCZ1M3RTZ3T3pWeDhqYTBwbjY1VnkzOTJQemdMLXZ1aDNYNjZoMmowQkstd3ZDRGQ?oc=5",
-   "izvor": "Mining.com",
-   "chas": "2026-11-24T17:33:01Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": null
-  },
-  {
    "zaglavie": "How Yield Curve Flattening Reflects Fed Rate Expectations",
    "vryzka": "https://news.google.com/rss/articles/CBMinAFBVV95cUxNSm5BYmtHam9RWXB5YmpKTTdOdG41cFdLcHN0OEJXa2ZaRzVkaUNjMUpRd0oyNXdodXpVdFV5SDEtOFExVzVNVlBlVzZQckF5VjBRdWpsd3FqZm9hcUptMFJBcHFsVWhtMnB3RFF2dVR0T2JzQnFidG50OUszTGxCUnZCTE0wMjhJaU95b1pLOVIzaDJtc09DVFFKSFE?oc=5",
    "izvor": "StoneX",
@@ -891,6 +898,19 @@
    "duma": "rates",
    "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
    "bg": null
+  },
+  {
+   "zaglavie": "Tudor Gold Announces Positive Preliminary Economic Assessment for Treaty Creek's Goldstorm Deposit: Study Outlines Gold-Copper Underground Mine with Projected 28-Year Mine Life Producing 4,677,902 Ounces of Gold plus Cop",
+   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/tudor-gold-announces-positive-preliminary-172100908.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-24T17:21:00Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": "Новина от минния бранш (злато)"
   },
   {
    "zaglavie": "Gold price rises by Tk 4,724 a bhari in 2 days",
@@ -1623,19 +1643,6 @@
   {
    "zaglavie": "The number of 401(k) millionaires drops as the stock market swings",
    "vryzka": "https://www.marketwatch.com/story/the-number-of-401-k-millionaires-drops-amid-stock-market-swings-23939b94?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-11-24T14:59:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
-   "zaglavie": "Nvidia’s stock drops as these major questions loom over Jensen Huang’s return",
-   "vryzka": "https://www.marketwatch.com/story/nvidias-stock-drops-as-these-major-questions-loom-over-jensen-huangs-return-9096636f?mod=mw_rss_topstories",
    "izvor": "MarketWatch",
    "chas": "2026-11-24T14:59:00Z",
    "vazhnost": 1,
