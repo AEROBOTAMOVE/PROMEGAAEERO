@@ -1,39 +1,59 @@
 {
- "kogato": "2026-11-25T14:43:08Z",
- "sekundi": 0.69,
+ "kogato": "2026-11-25T14:53:15Z",
+ "sekundi": 5.82,
  "broi": 200,
- "novi_tozi_pyt": 7,
+ "novi_tozi_pyt": 1,
  "iztochnici_ok": [
-  "Fed речи",
-  "Fed всички",
-  "Fed политика",
   "MarketWatch",
+  "Fed политика",
+  "Fed всички",
   "Investing",
-  "Mining.com",
-  "CNBC",
   "Yahoo злато",
   "Yahoo долар",
-  "FT пазари",
-  "Google злато",
-  "Google Fed"
+  "Fed речи",
+  "Mining.com",
+  "CNBC",
+  "FT пазари"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google злато",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  },
+  {
+   "ime": "Google Fed",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.28с",
-  "новини · FT пазари · 25 бр. за 0.37с",
-  "новини · Fed всички · 10 бр. за 0.09с",
-  "новини · Fed политика · 15 бр. за 0.09с",
-  "новини · Fed речи · 15 бр. за 0.08с",
-  "новини · Google Fed · 40 бр. за 0.54с",
-  "новини · Google злато · 40 бр. за 0.45с",
-  "новини · Investing · 10 бр. за 0.15с",
-  "новини · MarketWatch · 10 бр. за 0.11с",
-  "новини · Mining.com · 36 бр. за 0.17с",
-  "новини · Yahoo долар · 12 бр. за 0.33с",
-  "новини · Yahoo злато · 19 бр. за 0.33с",
-  "новини · български ред: 113 от 200 · махнати по език: 3"
+  "новини · CNBC · 30 бр. за 0.24с",
+  "новини · FT пазари · 25 бр. за 0.3с",
+  "новини · Fed всички · 10 бр. за 0.06с",
+  "новини · Fed политика · 15 бр. за 0.05с",
+  "новини · Fed речи · 15 бр. за 0.16с",
+  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Investing · 10 бр. за 0.12с",
+  "новини · MarketWatch · 10 бр. за 0.04с",
+  "новини · Mining.com · 36 бр. за 0.19с",
+  "новини · Yahoo долар · 12 бр. за 0.13с",
+  "новини · Yahoo злато · 19 бр. за 0.13с",
+  "новини · български ред: 113 от 200 · махнати по език: 0"
  ],
  "novini": [
+  {
+   "zaglavie": "Third-quarter GDP already looked great. Now it looks even better.",
+   "vryzka": "https://www.marketwatch.com/story/third-quarter-gdp-already-looked-great-now-it-looks-even-better-12057da5?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-11-25T14:47:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": "Данни за растежа на икономиката (БВП)"
+  },
   {
    "zaglavie": "Dell sees sales more than double — but its stock falls anyway",
    "vryzka": "https://www.marketwatch.com/story/dells-stock-rises-as-the-ai-boom-helps-sales-more-than-double-cfb8cf65?mod=mw_rss_topstories",
@@ -412,19 +432,6 @@
    "bg": "Данни за инфлацията в САЩ (PCE)"
   },
   {
-   "zaglavie": "Gold Tests $3,550 as Tech Stocks Fall and Investors Turn Their Attention to US PCE",
-   "vryzka": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxOVzJnSVZSM0x3T0YzcWl1QVV3ZHBTX0xMZWNrdEFRRlIyM094NXhlQmVRb0M1VDlxRmpIbDlrcjNzMVZiRzNPRGJfcWNTU1N1MnJmVkxjS3JxMnpoeTdXbEtjYXYxSi0xZGw4T2pweW5QS2VzU0puLWFSdWxrWGZId1c5R0k4andwMEV4YS12czlvOWJQU1lGVC1OYl9aZndDOGlSV09ZOW0zSFJFTXZiMUdzSjJDTmFmUjVoaHJ3N0hKUVU?oc=5",
-   "izvor": "Investing.com",
-   "chas": "2026-11-25T13:43:43Z",
-   "vazhnost": 3,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "pce",
-   "zashto": "Това е измерването на инфлацията, което Fed гледа най-внимателно при решението за лихвата.",
-   "bg": "Златото и данните за инфлацията в САЩ (PCE)"
-  },
-  {
    "zaglavie": "Stocks or Gold? GDE Refuses to Choose: Every $100 Buys $90 of Each",
    "vryzka": "https://247wallst.com/investing/etf/2026/11/25/stocks-or-gold-gde-refuses-to-choose-every-100-buys-90-of-each/?.tsrc=rss",
    "izvor": "Yahoo Finance",
@@ -436,19 +443,6 @@
    "duma": "gold",
    "zashto": "Пряко за златото.",
    "bg": null
-  },
-  {
-   "zaglavie": "Third-quarter GDP already looked great. Now it looks even better.",
-   "vryzka": "https://www.marketwatch.com/story/third-quarter-gdp-already-looked-great-now-it-looks-even-better-12057da5?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-11-25T13:41:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": "Данни за растежа на икономиката (БВП)"
   },
   {
    "zaglavie": "Fed’s preferred inflation metric rose in October as final 2026 rate meeting nears",
@@ -475,6 +469,19 @@
    "duma": "pce",
    "zashto": "Това е измерването на инфлацията, което Fed гледа най-внимателно при решението за лихвата.",
    "bg": "Данни за инфлацията в САЩ (PCE)"
+  },
+  {
+   "zaglavie": "5 Things Investors Need to Know About Wednesday’s Markets",
+   "vryzka": "https://www.investopedia.com/5-things-to-know-stock-market-november-25-2026-12276784?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-25T13:38:20Z",
+   "vazhnost": 1,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
   },
   {
    "zaglavie": "Inflation remains high despite retreating gas prices, highlighting challenges for the Fed",
@@ -1164,6 +1171,19 @@
    "duma": "rate",
    "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
    "bg": "Цената на златото днес"
+  },
+  {
+   "zaglavie": "Gold Tests $3,550 as Tech Stocks Fall and Investors Turn Their Attention to US PCE",
+   "vryzka": "https://www.investing.com/analysis/gold-tests-3550-as-tech-stocks-fall-and-investors-turn-their-attention-to-us-pce-200692307",
+   "izvor": "Investing.com",
+   "chas": "2026-11-25T12:09:00Z",
+   "vazhnost": 3,
+   "za": "злато",
+   "emisiya": "Investing",
+   "chas_ot_iztochnika": true,
+   "duma": "pce",
+   "zashto": "Това е измерването на инфлацията, което Fed гледа най-внимателно при решението за лихвата.",
+   "bg": "Златото и данните за инфлацията в САЩ (PCE)"
   },
   {
    "zaglavie": "PCE preview: Final inflation test before expected Fed rate hike",
@@ -2479,29 +2499,16 @@
    "bg": "Анализ и прогноза за златото и среброто"
   },
   {
-   "zaglavie": "India as AI play",
-   "vryzka": "https://www.ft.com/content/f3e59769-6b74-4dfc-913a-985286847ff0?syn-25a6b1a6=1",
-   "izvor": "Financial Times",
-   "chas": "2026-11-25T06:30:02Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "FT пазари",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
    "zaglavie": "Minutes of the Board's discount rate meetings on October 19 and October 28, 2026",
    "vryzka": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261124a.htm",
    "izvor": "Fed",
    "chas": "2026-11-24T19:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed всички",
+   "emisiya": "Fed политика",
    "chas_ot_iztochnika": true,
    "duma": "rate",
-   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
+   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
    "bg": "Протокол на Фед за сконтовия процент (лихвата по заемите за банките)"
   },
   {
@@ -2576,10 +2583,10 @@
    "chas": "2026-11-18T19:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed всички",
+   "emisiya": "Fed политика",
    "chas_ot_iztochnika": true,
    "duma": "fed",
-   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
+   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
    "bg": "Протоколът от заседанието на Фед за лихвата (FOMC)"
   },
   {
@@ -2636,5 +2643,5 @@
   }
  ],
  "s_bg_red": 113,
- "mahnati_ezik": 3
+ "mahnati_ezik": 0
 }
