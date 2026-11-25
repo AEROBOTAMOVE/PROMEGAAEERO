@@ -1,35 +1,42 @@
 {
- "kogato": "2026-11-25T12:34:16Z",
- "sekundi": 0.42,
+ "kogato": "2026-11-25T12:45:16Z",
+ "sekundi": 9.09,
  "broi": 200,
- "novi_tozi_pyt": 4,
+ "novi_tozi_pyt": 3,
  "iztochnici_ok": [
   "MarketWatch",
-  "Google злато",
-  "Fed речи",
   "Fed политика",
-  "Mining.com",
   "Fed всички",
+  "Fed речи",
+  "Mining.com",
   "Investing",
-  "Yahoo долар",
-  "Yahoo злато",
   "CNBC",
-  "FT пазари",
-  "Google Fed"
+  "Yahoo злато",
+  "Yahoo долар",
+  "FT пазари"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google злато",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  },
+  {
+   "ime": "Google Fed",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.14с",
-  "новини · FT пазари · 25 бр. за 0.21с",
-  "новини · Fed всички · 10 бр. за 0.05с",
-  "новини · Fed политика · 15 бр. за 0.04с",
+  "новини · CNBC · 30 бр. за 0.09с",
+  "новини · FT пазари · 25 бр. за 0.19с",
+  "новини · Fed всички · 10 бр. за 0.03с",
+  "новини · Fed политика · 15 бр. за 0.03с",
   "новини · Fed речи · 15 бр. за 0.03с",
-  "новини · Google Fed · 40 бр. за 0.35с",
-  "новини · Google злато · 40 бр. за 0.02с",
-  "новини · Investing · 10 бр. за 0.06с",
+  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Investing · 10 бр. за 0.07с",
   "новини · MarketWatch · 10 бр. за 0.02с",
   "новини · Mining.com · 36 бр. за 0.04с",
-  "новини · Yahoo долар · 12 бр. за 0.11с",
+  "новини · Yahoo долар · 12 бр. за 0.12с",
   "новини · Yahoo злато · 19 бр. за 0.12с",
   "новини · български ред: 116 от 200 · махнати по език: 0"
  ],
@@ -45,6 +52,45 @@
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "Brixton Metals Expands the Catalyst Copper-Gold Porphyry and Discovers Copper Mineralization in Maiden Drill Program at the Sentinel Target on its Thorn Project",
+   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/brixton-metals-expands-catalyst-copper-123000664.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-25T12:30:00Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": "Новина от минния бранш (злато)"
+  },
+  {
+   "zaglavie": "Orogen Reports Robust Royalty Revenue Drives Strong Third Quarter Results and Continued Balance Sheet Growth",
+   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/orogen-reports-robust-royalty-revenue-123000640.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-25T12:30:00Z",
+   "vazhnost": 1,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "Algo Grande Copper Confirms Gold-Rich Skarn at Depth in Cerro Grande 1; Hole AG-CG-PH2-004 Returns a Combined 39.94 Metres of 1.4% CuEq, Including 8.77 Metres of 2.3% CuEq",
+   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/algo-grande-copper-confirms-gold-123000961.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-25T12:30:00Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
    "bg": null
   },
   {
@@ -114,12 +160,12 @@
   },
   {
    "zaglavie": "Gold price today, Wednesday, November 25, 2026: Gold prices fall as inflation data and potential new tariffs loom",
-   "vryzka": "https://news.google.com/rss/articles/CBMikwJBVV95cUxPb3dFeUN5SkJCNHNoN2FGTDYzdHNOcXJtS0NVRlBDWUJtOFNiMndWMXBHNHJ0SHFRbm1ORkdDTUtBVEQ4ZUJlRC1QeU5xZ2VPVHVNTVNMa3E2SHpheU5XSGY0YVJEcS1OSmpKM21nTGx4QS1zVUxKWHVNeFd4Wko5NUltTHNTQTU2am1tRjZkX3dGTUttQ09DcUJaYmloUXExakZRUnFCVURWUy1sbENFdXFubllDSXVvZVgtVk5WejVKQzVZY1Nvbkx5N2hxNzhhelVheFlVTUFzNkJhMV9ISm9sR3cxanB0RXhlRGVyNmswd09EOXZuVU5kR3hJVXV4Vk9Wal9ReWY4M29mTGR1bHdhbw?oc=5",
+   "vryzka": "https://finance.yahoo.com/personal-finance/investing/article/gold-price-today-wednesday-november-25-2026-gold-prices-fall-as-inflation-data-and-potential-new-tariffs-loom-121548844.html?.tsrc=rss",
    "izvor": "Yahoo Finance",
    "chas": "2026-11-25T12:15:48Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Google злато",
+   "emisiya": "Yahoo злато",
    "chas_ot_iztochnika": true,
    "duma": "inflation",
    "zashto": "Инфлацията е основната причина да се държи злато — то пази стойност, когато парите я губят.",
@@ -399,19 +445,6 @@
    "bg": null
   },
   {
-   "zaglavie": "Gold Price Today on November 25, 2026",
-   "vryzka": "https://news.google.com/rss/articles/CBMiowFBVV95cUxPdkN3Vkc5ZGNYOVpyNnFWbjQxMENmU0tGSFZQX3gxc2ZfS2RJSF9rM3M0bUZiY3dKUVAtYWxBbnNzRlE2dzZvZUVfdVlqT3pGbW5xWTRsNWtIdmctOEN4dl83VWhvcENZUUFDRTJ5NW55ZVZTeTVCSkZxMFdGR2VBWXRyeDNSWmh4ZHFiSWNGV3U0Y0dTNG5STHBScU1YSkFHSEhF?oc=5",
-   "izvor": "USA Today",
-   "chas": "2026-11-25T11:11:08Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Цената на златото днес"
-  },
-  {
    "zaglavie": "Fed officials debate rate hike path as inflation pressures broaden",
    "vryzka": "https://news.google.com/rss/articles/CBMikgFBVV95cUxNdnJZVnZuaEtHSmdQZzdzOV9UeHBxT1lLeUUtd0h1Y1UxN2JzQXptSkR0TjFMenZqdm5ZYkZtd25uR3NtM1RCdHJiQnJXLWZGSThtVUdGYmxzOWlBTlhzUGFEWE1TYUNsbFRudzBMWENTLXZUQURMSHpmbDYwNmNoSTJiSjNHOWhZRjVqWU5KcXBJQQ?oc=5",
    "izvor": "Traders Union",
@@ -436,6 +469,19 @@
    "duma": null,
    "zashto": null,
    "bg": "Петролът и геополитическото напрежение"
+  },
+  {
+   "zaglavie": "Gold Price Today on November 25, 2026",
+   "vryzka": "https://www.usatoday.com/story/money/investing/2026/11/25/gold-price-on-november-25-2026/92955319007/?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-25T11:08:50Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": "Цената на златото днес"
   },
   {
    "zaglavie": "Fed policymakers at odds over causes of high inflation",
@@ -738,12 +784,12 @@
   },
   {
    "zaglavie": "Gold Trades Near 15-Month Low as Federal Reserve Rate Hike Expectations Weigh on Prices",
-   "vryzka": "https://news.google.com/rss/articles/CBMimwFBVV95cUxObHdZdzk1ek1WVXB1SDBtU0NhS3JsT3prcVdiTTRaWnh5NmRNSXQydHZfQkpXT0dVWDFXSmV5RGRNQ0VoZGhIaEozeHFacDlYNDBtem5pLWY1R29tMDNhV3JibE9VSlFLUUI2UUp5VExkYm1UM0FDM1BIbjRuNUdOZ1hHbWxoSFR6aVRGbEFIQXZWMXVSQktyUnlqNA?oc=5",
+   "vryzka": "https://investorshub.advfn.com/market-news/article/40678/gold-trades-near-15-month-low-as-federal-reserve-rate-hike-expectations-weigh-on-prices?.tsrc=rss",
    "izvor": "Yahoo Finance",
    "chas": "2026-11-25T09:58:15Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Google злато",
+   "emisiya": "Yahoo злато",
    "chas_ot_iztochnika": true,
    "duma": "rate",
    "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
@@ -795,7 +841,7 @@
    "chas": "2026-11-25T09:51:29Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Yahoo долар",
+   "emisiya": "Yahoo злато",
    "chas_ot_iztochnika": true,
    "duma": "pce",
    "zashto": "Това е измерването на инфлацията, което Fed гледа най-внимателно при решението за лихвата.",
@@ -2451,45 +2497,6 @@
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
    "bg": "Златото поевтинява на фона на очакванията за по-висока лихва от Фед"
-  },
-  {
-   "zaglavie": "LME tightens rules in response to aluminium squeeze",
-   "vryzka": "https://news.google.com/rss/articles/CBMihgFBVV95cUxQbG9raWhIZ0tYanZoSU1tU2RNRW5KVHVISzhia1BKUUtpeE41X2xmMlM2bk1HZzk4YXRXTkswOVd2TzFvbGhUT3hZcldMWDVpQ3FZNjlFLVl5bzlfWmpIRlN2TVMwcHpsRVlGT3VaSnhyUVRuZ0VOQm9mbHNuNHhVQks2c1kyUQ?oc=5",
-   "izvor": "Mining.com",
-   "chas": "2026-11-25T00:17:12Z",
-   "vazhnost": 1,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
-   "zaglavie": "My husband secretly sends his ex-wife $1,500 a month after she lost her job. We have $2.4 million saved. Has he lied by omission?",
-   "vryzka": "https://www.marketwatch.com/story/my-husband-secretly-sends-his-ex-wife-1-500-a-month-after-she-lost-her-job-we-have-2-4-million-saved-has-he-lied-by-omission-ede1972a?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-11-25T00:05:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
-   "zaglavie": "Gold Remains Lower as US Tariff Plans Bolster Fed Rate-Hike Bets",
-   "vryzka": "https://news.google.com/rss/articles/CBMixgFBVV95cUxNdW1fTkIyWnYtVzkzZ0kzYUxpS3plWjNRLXZuenQyTm5tNDVtV3czaUNBMEV5WTBic2JoQ0NERWtodmFCd045dE1mTkVnSVZGSmdiT25lOC15V0JZRkEwUU5fY1U2c2FUNUR2eVJfU19ITkJla2g1ZVh2N05XZjl4QmJNTG90OTRkd0ZlMmpUdDBsVEtpSWN3R1daUW9reTl1SWNDRlkwUndjX0UwNEZ5Nm9xUVg5SUY0VWZ3TW8waU5qVHFxWUE?oc=5",
-   "izvor": "TradingView",
-   "chas": "2026-11-25T00:00:00Z",
-   "vazhnost": 3,
-   "za": "злато",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "tariff",
-   "zashto": "Митата вдигат цените и карат страните да търсят убежище — и двете стигат до златото.",
-   "bg": "Златото, очакванията за по-висока лихва от Фед и митата"
   },
   {
    "zaglavie": "Minutes of the Board's discount rate meetings on October 19 and October 28, 2026",
