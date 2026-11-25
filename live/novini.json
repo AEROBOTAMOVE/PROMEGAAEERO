@@ -1,37 +1,44 @@
 {
- "kogato": "2026-11-25T05:25:01Z",
- "sekundi": 0.67,
+ "kogato": "2026-11-25T05:36:02Z",
+ "sekundi": 9.94,
  "broi": 200,
- "novi_tozi_pyt": 1,
+ "novi_tozi_pyt": 3,
  "iztochnici_ok": [
-  "Fed политика",
-  "Fed всички",
-  "Fed речи",
-  "Investing",
   "MarketWatch",
+  "Fed речи",
+  "Fed политика",
+  "Mining.com",
+  "Fed всички",
+  "Investing",
   "Yahoo долар",
   "Yahoo злато",
-  "Mining.com",
-  "CNBC",
-  "Google злато",
   "FT пазари",
-  "Google Fed"
+  "CNBC"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google Fed",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  },
+  {
+   "ime": "Google злато",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.29с",
-  "новини · FT пазари · 25 бр. за 0.49с",
-  "новини · Fed всички · 10 бр. за 0.14с",
-  "новини · Fed политика · 15 бр. за 0.14с",
-  "новини · Fed речи · 15 бр. за 0.14с",
-  "новини · Google Fed · 40 бр. за 0.46с",
-  "новини · Google злато · 40 бр. за 0.41с",
-  "новини · Investing · 10 бр. за 0.13с",
-  "новини · MarketWatch · 10 бр. за 0.19с",
-  "новини · Mining.com · 36 бр. за 0.26с",
-  "новини · Yahoo долар · 11 бр. за 0.2с",
-  "новини · Yahoo злато · 17 бр. за 0.21с",
-  "новини · български ред: 101 от 200 · махнати по език: 0"
+  "новини · CNBC · 30 бр. за 0.21с",
+  "новини · FT пазари · 25 бр. за 0.19с",
+  "новини · Fed всички · 10 бр. за 0.05с",
+  "новини · Fed политика · 15 бр. за 0.04с",
+  "новини · Fed речи · 15 бр. за 0.03с",
+  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Investing · 10 бр. за 0.05с",
+  "новини · MarketWatch · 10 бр. за 0.02с",
+  "новини · Mining.com · 36 бр. за 0.04с",
+  "новини · Yahoo долар · 11 бр. за 0.11с",
+  "новини · Yahoo злато · 17 бр. за 0.13с",
+  "новини · български ред: 100 от 200 · махнати по език: 0"
  ],
  "novini": [
   {
@@ -48,6 +55,45 @@
    "bg": "Златото преди данните за инфлацията в САЩ (PCE), на фона на очакванията за лихвата на Фед"
   },
   {
+   "zaglavie": "M&G boss calls for stamp duty cut to halt London companies’ flight to New York",
+   "vryzka": "https://www.ft.com/content/d6f458a2-41d2-4363-8561-c554c09a5745?syn-25a6b1a6=1",
+   "izvor": "Financial Times",
+   "chas": "2026-11-25T05:00:32Z",
+   "vazhnost": 1,
+   "za": "лихви",
+   "emisiya": "FT пазари",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "London hedge fund Qube squares up to US rivals in expansion drive",
+   "vryzka": "https://www.ft.com/content/b519698f-6ace-47e9-9cd5-1e18f8fdd71b?syn-25a6b1a6=1",
+   "izvor": "Financial Times",
+   "chas": "2026-11-25T05:00:22Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "FT пазари",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "UK pensions watchdog ‘worried’ over schemes’ exposure to AI sector",
+   "vryzka": "https://www.ft.com/content/9910163e-c103-46b5-8bbe-5a12ab5453e6?syn-25a6b1a6=1",
+   "izvor": "Financial Times",
+   "chas": "2026-11-25T05:00:12Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "FT пазари",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
+  {
    "zaglavie": "Gold rates today Andhra Pradesh 25 November: Check price of 24K, 22K, 18K gold as yellow metal rates decline",
    "vryzka": "https://news.google.com/rss/articles/CBMi7AFBVV95cUxNdG1PbDNTSTFFXzlzT1NHVVBtanpQLWU0aHhWVFVWazZiTzJKRGozV0F5dzUxNVppdldzTEJyNEpDeWdObzhBR1BMZDkzX1plSG9rck5NSGZPUV8xZEZ3WlVwdGc2Q0ptU1dmQVBTM2pTQUFubGdnRmdITGxyeDBSM1M4c2FuMUFXR3M5RWVwSVBWZ0FYdlYyX3NOZUlmVE5HTVYtUkxtbDhzSzBydjU5cFhJTUx4NjdmWnhicUZFU0ViQ082NmQxMDRTNW1OU3VPOFQ2ZzFlQ2FfZ3FIa0FzR1pTVlBJYld2SlBLaw?oc=5",
    "izvor": "Livemint",
@@ -59,19 +105,6 @@
    "duma": "rates",
    "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
    "bg": "Цената на златото днес"
-  },
-  {
-   "zaglavie": "ValOre Metals Announces Definitive Agreement to Acquire Bemisa Água Azul Mineração S.A., Owner of the Água Azul Gold Project in Pará State, Brazil",
-   "vryzka": "https://news.google.com/rss/articles/CBMipAJBVV95cUxNNmk0emtxeTFlTlpsVjc4c0xqYWFwZHVqdFFSdElfOHFuSC1tMy1LMm5KeEtzZVpQN3JpbHJCZnR4bTZXdU45c1dBWHoyYUVZenJXbTdESGRCY2Vkdl9zaDVwZXY4anI5T1dIN1hFTm9NOTlLZTZUcmszeUdpdENvWXdWc0dtNmxra3BSbnZXR19TTFl4ekFDTzhoVFczWFd2Q0MtTjIzZ25lNW1zVUxucVd5SFlGa1NpaGs2YTExRGVUNnZZd010QnpReFN4Vldkb2d0el8yS3h1R1JBYXpXM19kSDRMX0NFRVpVSlczRWlYa3VlaElLdzluRTRIOXQ5Qk0yLXlmdUhhdWE3Y0plVWx3UlI5aVNNaHJZRGRpN0dteVFE?oc=5",
-   "izvor": "markets.businessinsider.com",
-   "chas": "2026-11-25T04:52:15Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": null
   },
   {
    "zaglavie": "Gold Rate Today, November 25: Check 18, 22 and 24 carat gold prices in Chennai, Mumbai, Delhi, Kolkata and other cities",
@@ -201,6 +234,19 @@
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "ValOre Metals Announces Definitive Agreement to Acquire Bemisa Água Azul Mineração S.A., Owner of the Água Azul Gold Project in Pará State, Brazil",
+   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/valore-metals-announces-definitive-agreement-034200395.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-25T03:42:00Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
    "bg": null
   },
   {
@@ -2453,45 +2499,6 @@
    "bg": "За лихвата на Фед"
   },
   {
-   "zaglavie": "Copper price erases Nvidia rebound as investors steer clear of metals",
-   "vryzka": "https://www.mining.com/copper-price-erases-nvidia-rebound-as-investors-steer-clear-of-metals/",
-   "izvor": "Mining.com",
-   "chas": "2026-11-24T15:53:54Z",
-   "vazhnost": 3,
-   "za": "злато",
-   "emisiya": "Mining.com",
-   "chas_ot_iztochnika": true,
-   "duma": "tariffs",
-   "zashto": "Митата вдигат цените и карат страните да търсят убежище — и двете стигат до златото.",
-   "bg": null
-  },
-  {
-   "zaglavie": "Hedge the Dollar and Treasuries Barely Beat Bunds",
-   "vryzka": "https://www.trefis.com/stock/spx/articles/628625/hedge-the-dollar-and-treasuries-barely-beat-bunds/2026-11-24?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-11-24T15:52:16Z",
-   "vazhnost": 2,
-   "za": "долар",
-   "emisiya": "Yahoo долар",
-   "chas_ot_iztochnika": true,
-   "duma": "dollar",
-   "zashto": "Златото се мери в долари: по-силен долар обикновено значи по-евтино злато.",
-   "bg": null
-  },
-  {
-   "zaglavie": "JPMorgan cuts gold target to $4,500",
-   "vryzka": "https://news.google.com/rss/articles/CBMikAFBVV95cUxQaWpOOGVuQUxNZXF2TC1tcWx0bDFZa3pSZHVLVC13Q2p5WDJiYVFpa2VMNFpqWndYbDNTaFk0bnBqbER6YVdFLTRkS1BtRnlPNndZbk9rLWgwSXZ5cFV3VVI4Y0hVaGtsbDVOSUNCWWZGeWdSN2ExcXppUmkxUUFCMkxEazFnZFZrWWR1WkY5bVA?oc=5",
-   "izvor": "MoneyWise.com",
-   "chas": "2026-11-24T15:46:21Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "JPMorgan сваля прогнозата си за златото"
-  },
-  {
    "zaglavie": "Federal Reserve announces College Fed Challenge winners",
    "vryzka": "https://www.federalreserve.gov/newsevents/pressreleases/other20261120b.htm",
    "izvor": "Fed",
@@ -2635,6 +2642,6 @@
    "bg": "Реч на член на Фед (Jefferson)"
   }
  ],
- "s_bg_red": 101,
+ "s_bg_red": 100,
  "mahnati_ezik": 0
 }
