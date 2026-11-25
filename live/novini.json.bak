@@ -1,41 +1,37 @@
 {
- "kogato": "2026-11-25T10:36:53Z",
- "sekundi": 0.52,
+ "kogato": "2026-11-25T10:47:38Z",
+ "sekundi": 0.51,
  "broi": 200,
- "novi_tozi_pyt": 4,
+ "novi_tozi_pyt": 1,
  "iztochnici_ok": [
   "Fed речи",
-  "Fed политика",
-  "Investing",
-  "CNBC",
-  "MarketWatch",
-  "Yahoo злато",
-  "Yahoo долар",
-  "Mining.com",
-  "FT пазари",
   "Google злато",
-  "Google Fed"
+  "Fed всички",
+  "Fed политика",
+  "MarketWatch",
+  "Investing",
+  "Yahoo злато",
+  "Mining.com",
+  "Yahoo долар",
+  "CNBC",
+  "Google Fed",
+  "FT пазари"
  ],
- "iztochnici_padnali": [
-  {
-   "ime": "Fed всички",
-   "greshka": "HTTPError: HTTP Error 404: Not Found"
-  }
- ],
+ "iztochnici_padnali": [],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.14с",
-  "новини · FT пазари · 25 бр. за 0.23с",
-  "новини · Fed всички · ПАДНА: HTTPError: HTTP Error 404: Not Found",
-  "новини · Fed политика · 15 бр. за 0.07с",
-  "новини · Fed речи · 15 бр. за 0.06с",
-  "новини · Google Fed · 40 бр. за 0.42с",
-  "новини · Google злато · 40 бр. за 0.41с",
-  "новини · Investing · 10 бр. за 0.09с",
-  "новини · MarketWatch · 10 бр. за 0.15с",
-  "новини · Mining.com · 36 бр. за 0.2с",
-  "новини · Yahoo долар · 12 бр. за 0.17с",
-  "новини · Yahoo злато · 18 бр. за 0.17с",
-  "новини · български ред: 106 от 200 · махнати по език: 3"
+  "новини · CNBC · 30 бр. за 0.23с",
+  "новини · FT пазари · 25 бр. за 0.44с",
+  "новини · Fed всички · 10 бр. за 0.06с",
+  "новини · Fed политика · 15 бр. за 0.06с",
+  "новини · Fed речи · 15 бр. за 0.04с",
+  "новини · Google Fed · 40 бр. за 0.32с",
+  "новини · Google злато · 40 бр. за 0.04с",
+  "новини · Investing · 10 бр. за 0.08с",
+  "новини · MarketWatch · 10 бр. за 0.07с",
+  "новини · Mining.com · 36 бр. за 0.15с",
+  "новини · Yahoo долар · 12 бр. за 0.21с",
+  "новини · Yahoo злато · 18 бр. за 0.15с",
+  "новини · български ред: 105 от 200 · махнати по език: 0"
  ],
  "novini": [
   {
@@ -63,6 +59,19 @@
    "duma": null,
    "zashto": null,
    "bg": "Минна компания съобщава резултати от сондажи за злато"
+  },
+  {
+   "zaglavie": "Gold ETFs Lose $2.2 Billion in a Week, Their Fastest Exit Since June",
+   "vryzka": "https://beincrypto.com/gold-etf-outflows-biggest-since-june/?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-25T10:20:22Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": null
   },
   {
    "zaglavie": "Tech stocks slide as confidence in AI trade fades",
@@ -196,12 +205,12 @@
   },
   {
    "zaglavie": "Gold Trades Near 15-Month Low as Federal Reserve Rate Hike Expectations Weigh on Prices",
-   "vryzka": "https://investorshub.advfn.com/market-news/article/40678/gold-trades-near-15-month-low-as-federal-reserve-rate-hike-expectations-weigh-on-prices?.tsrc=rss",
+   "vryzka": "https://news.google.com/rss/articles/CBMimwFBVV95cUxObHdZdzk1ek1WVXB1SDBtU0NhS3JsT3prcVdiTTRaWnh5NmRNSXQydHZfQkpXT0dVWDFXSmV5RGRNQ0VoZGhIaEozeHFacDlYNDBtem5pLWY1R29tMDNhV3JibE9VSlFLUUI2UUp5VExkYm1UM0FDM1BIbjRuNUdOZ1hHbWxoSFR6aVRGbEFIQXZWMXVSQktyUnlqNA?oc=5",
    "izvor": "Yahoo Finance",
    "chas": "2026-11-25T09:58:15Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Yahoo злато",
+   "emisiya": "Google злато",
    "chas_ot_iztochnika": true,
    "duma": "rate",
    "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
@@ -2470,29 +2479,16 @@
    "bg": null
   },
   {
-   "zaglavie": "Gold Price Down to USD 3,566.45/Ounce",
-   "vryzka": "https://news.google.com/rss/articles/CBMif0FVX3lxTE5EZ0g1ZDN0d19vRi1tOVdEckpuTEIxb1pvTHVzVlREMkktUTByc19Id3luSVhyRkpQaVpSWmxlbURyR1h1SUNhZW1td2U2V296T1pjSUNrc2VFVjMzVm1KX3R1Wl9JQlBuQzBuVEFiSzFGYnlmUzAwaEFtVFdkVWM?oc=5",
-   "izvor": "Fana News -",
-   "chas": "2026-11-24T20:36:53Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Златото поевтинява"
-  },
-  {
    "zaglavie": "Minutes of the Board's discount rate meetings on October 19 and October 28, 2026",
    "vryzka": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261124a.htm",
    "izvor": "Fed",
    "chas": "2026-11-24T19:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed политика",
+   "emisiya": "Fed всички",
    "chas_ot_iztochnika": true,
    "duma": "rate",
-   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
+   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
    "bg": "Протокол на Фед за сконтовия процент (лихвата по заемите за банките)"
   },
   {
@@ -2567,10 +2563,10 @@
    "chas": "2026-11-18T19:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed политика",
+   "emisiya": "Fed всички",
    "chas_ot_iztochnika": true,
    "duma": "fed",
-   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
+   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
    "bg": "Протоколът от заседанието на Фед за лихвата (FOMC)"
   },
   {
@@ -2639,6 +2635,6 @@
    "bg": "Реч на член на Фед (Jefferson)"
   }
  ],
- "s_bg_red": 106,
- "mahnati_ezik": 3
+ "s_bg_red": 105,
+ "mahnati_ezik": 0
 }
