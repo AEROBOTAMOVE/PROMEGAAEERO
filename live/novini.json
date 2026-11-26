@@ -1,36 +1,40 @@
 {
- "kogato": "2026-11-26T21:10:04Z",
- "sekundi": 0.51,
+ "kogato": "2026-11-26T21:20:59Z",
+ "sekundi": 0.49,
  "broi": 200,
- "novi_tozi_pyt": 2,
+ "novi_tozi_pyt": 1,
  "iztochnici_ok": [
+  "MarketWatch",
+  "Fed речи",
   "Fed всички",
   "Fed политика",
-  "Fed речи",
-  "MarketWatch",
   "Investing",
   "Mining.com",
   "Yahoo злато",
   "Yahoo долар",
   "CNBC",
   "FT пазари",
-  "Google Fed",
-  "Google злато"
+  "Google Fed"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google злато",
+   "greshka": "HTTPError: HTTP Error 429: Too Many Requests"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.15с",
-  "новини · FT пазари · 25 бр. за 0.23с",
+  "новини · CNBC · 30 бр. за 0.27с",
+  "новини · FT пазари · 25 бр. за 0.29с",
   "новини · Fed всички · 12 бр. за 0.05с",
-  "новини · Fed политика · 15 бр. за 0.05с",
-  "новини · Fed речи · 15 бр. за 0.05с",
-  "новини · Google Fed · 40 бр. за 0.36с",
-  "новини · Google злато · 40 бр. за 0.43с",
+  "новини · Fed политика · 15 бр. за 0.06с",
+  "новини · Fed речи · 15 бр. за 0.04с",
+  "новини · Google Fed · 40 бр. за 0.4с",
+  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 429: Too Many Requests",
   "новини · Investing · 10 бр. за 0.1с",
-  "новини · MarketWatch · 10 бр. за 0.06с",
-  "новини · Mining.com · 36 бр. за 0.11с",
-  "новини · Yahoo долар · 15 бр. за 0.16с",
-  "новини · Yahoo злато · 18 бр. за 0.16с",
+  "новини · MarketWatch · 10 бр. за 0.04с",
+  "новини · Mining.com · 36 бр. за 0.16с",
+  "новини · Yahoo долар · 15 бр. за 0.17с",
+  "новини · Yahoo злато · 18 бр. за 0.17с",
   "новини · български ред: 101 от 200 · махнати по език: 1"
  ],
  "novini": [
@@ -1231,6 +1235,19 @@
    "bg": "Цената на среброто днес"
   },
   {
+   "zaglavie": "Fed rate hike bets leave gold struggling for momentum",
+   "vryzka": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxQMkZGX29MTTVLWnZOQW1QMTBNMFlGbXhqSHNGNW1DMm0xSmJOTDFYdDFiZ1VTTS1QMFc4c05TbTY3NVAyY3R3TVoza09GYkZneHQ2ODRnbXU5dU9jckY2dlFEUElxTW92T3VEVVpwcWV1aGZiY05DdGlVUU9lTWt1ZkNGR25ESXc1UHl2R0RvTW1ucDg3Nno4OHY5d1J6LTJzYk5sVVhqZE13a2tEcnRkNVNZU2xFcHU5NlA4VlpycE5lMEJ1NVNibWxtV0V4aG1s?oc=5",
+   "izvor": "www.tmgm.com",
+   "chas": "2026-11-26T13:11:39Z",
+   "vazhnost": 3,
+   "za": "злато",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": "Очаквания за по-висока лихва от Фед"
+  },
+  {
    "zaglavie": "‘I felt so seen’: Why families across America are laughing — and crying — over SNL’s ‘Sister’ sketch",
    "vryzka": "https://www.marketwatch.com/story/so-sad-and-so-true-has-your-family-talked-about-snls-sister-sketch-yet-19bf9d67?mod=mw_rss_topstories",
    "izvor": "MarketWatch",
@@ -1645,19 +1662,6 @@
    "duma": null,
    "zashto": null,
    "bg": null
-  },
-  {
-   "zaglavie": "Gold at $8,000 could signal dollar crisis: economist",
-   "vryzka": "https://news.google.com/rss/articles/CBMifkFVX3lxTE01Z29VRjNyOWxkbWR1dG5CbHNyT1ROUUFBOWFFcllJYjdES24tTDZXazVSMDVKdTBINHhubkF5bzVkYlJOdmJRZjJwT1RhTjdoSVJWa3RoUnQ2aHc0a0cxdWMtTmJadkFhZ0haZ1Q3aU5lSktTOHRnM0ZMTUJNUQ?oc=5",
-   "izvor": "Mining.com",
-   "chas": "2026-11-26T10:47:05Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": "Златото и движението на долара"
   },
   {
    "zaglavie": "Gold plunges below $3,800 as Fed rate hike bets and strong dollar bite",
