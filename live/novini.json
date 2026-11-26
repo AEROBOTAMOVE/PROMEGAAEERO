@@ -1,43 +1,52 @@
 {
- "kogato": "2026-11-26T19:13:27Z",
- "sekundi": 0.67,
+ "kogato": "2026-11-26T19:24:11Z",
+ "sekundi": 0.55,
  "broi": 200,
- "novi_tozi_pyt": 0,
+ "novi_tozi_pyt": 1,
  "iztochnici_ok": [
-  "Fed речи",
-  "Investing",
-  "Fed политика",
   "MarketWatch",
-  "Yahoo долар",
+  "Fed речи",
+  "Fed всички",
+  "Fed политика",
+  "Investing",
   "Yahoo злато",
+  "Yahoo долар",
   "Mining.com",
   "CNBC",
+  "FT пазари",
   "Google злато",
-  "Google Fed",
-  "FT пазари"
+  "Google Fed"
  ],
- "iztochnici_padnali": [
-  {
-   "ime": "Fed всички",
-   "greshka": "HTTPError: HTTP Error 404: Not Found"
-  }
- ],
+ "iztochnici_padnali": [],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.36с",
-  "новини · FT пазари · 25 бр. за 0.6с",
-  "новини · Fed всички · ПАДНА: HTTPError: HTTP Error 404: Not Found",
-  "новини · Fed политика · 15 бр. за 0.13с",
-  "новини · Fed речи · 15 бр. за 0.12с",
-  "новини · Google Fed · 40 бр. за 0.46с",
-  "новини · Google злато · 40 бр. за 0.51с",
-  "новини · Investing · 10 бр. за 0.11с",
-  "новини · MarketWatch · 10 бр. за 0.12с",
-  "новини · Mining.com · 36 бр. за 0.26с",
-  "новини · Yahoo долар · 15 бр. за 0.18с",
-  "новини · Yahoo злато · 18 бр. за 0.19с",
+  "новини · CNBC · 30 бр. за 0.18с",
+  "новини · FT пазари · 25 бр. за 0.28с",
+  "новини · Fed всички · 12 бр. за 0.08с",
+  "новини · Fed политика · 15 бр. за 0.08с",
+  "новини · Fed речи · 15 бр. за 0.08с",
+  "новини · Google Fed · 40 бр. за 0.44с",
+  "новини · Google злато · 40 бр. за 0.46с",
+  "новини · Investing · 10 бр. за 0.1с",
+  "новини · MarketWatch · 10 бр. за 0.06с",
+  "новини · Mining.com · 36 бр. за 0.18с",
+  "новини · Yahoo долар · 15 бр. за 0.16с",
+  "новини · Yahoo злато · 18 бр. за 0.15с",
   "новини · български ред: 95 от 200 · махнати по език: 0"
  ],
  "novini": [
+  {
+   "zaglavie": "Agnico Eagle Bets on Massive Gold Expansion Despite Rising Mining Costs",
+   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/agnico-eagle-bets-massive-gold-190217024.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-26T19:02:17Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": "Новина от минния бранш (злато)"
+  },
   {
    "zaglavie": "A 66-year-old nurse is facing down retirement with just $500 saved. Who’s to blame?",
    "vryzka": "https://www.marketwatch.com/story/a-66-year-old-nurse-faces-retirement-with-just-500-saved-whos-to-blame-4249a0fd?mod=mw_rss_topstories",
@@ -120,7 +129,7 @@
    "zaglavie": "Gold price drifts lower in thin US Thanksgiving trading",
    "vryzka": "https://news.google.com/rss/articles/CBMihAFBVV95cUxONlNVMDloblRWT2x5ck9uQ3RBOHpUMlIyb05haUhXbkRmNEUyZ1drTDE1QTdDYmRkUnN1cFBEeVYtVm9Cb3RWZ1BBOTAtbUhOQVlqcmNfQVNNdzRVdFNzemg4UXBscy1OblVhZnNjdHVid0RIMFdfV1cwcUpzanZIeEFSMGk?oc=5",
    "izvor": "Mining.com.au",
-   "chas": "2026-11-26T17:43:22Z",
+   "chas": "2026-11-26T17:42:24Z",
    "vazhnost": 2,
    "za": "злато",
    "emisiya": "Google злато",
@@ -325,6 +334,19 @@
    "bg": "Анализ и прогноза за златото"
   },
   {
+   "zaglavie": "Gold Makes 17% Loss from Last Thanksgiving, Worst Since 2013",
+   "vryzka": "https://news.google.com/rss/articles/CBMikgFBVV95cUxPbGpvMG1zdkR2NFo3WnJXalZ0Z05EbUZxTEhZaHpyNWpGZlJHLXlBSzV6MVJVT1RfcWRlaWxuUDlaREx1d1NmdkdNd2wyazNhc01ObW9sUTJpNXJObmtDRWYwaU9HOVVsSks2UmdTQUVNNEtZQko5a3FCVjBRQlB0ZHpKVHdmZW1LUHM1S1RoQldidw?oc=5",
+   "izvor": "BullionVault",
+   "chas": "2026-11-26T16:01:06Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": null
+  },
+  {
    "zaglavie": "Op-Ed: Critical minerals face a post-construction test",
    "vryzka": "https://www.mining.com/op-ed-critical-minerals-face-a-post-construction-test/",
    "izvor": "Mining.com",
@@ -375,19 +397,6 @@
    "duma": "gold",
    "zashto": "Пряко за златото.",
    "bg": "Златото поскъпва"
-  },
-  {
-   "zaglavie": "Gold Makes 17% Loss from Last Thanksgiving, Worst Since 2013",
-   "vryzka": "https://news.google.com/rss/articles/CBMikgFBVV95cUxPbGpvMG1zdkR2NFo3WnJXalZ0Z05EbUZxTEhZaHpyNWpGZlJHLXlBSzV6MVJVT1RfcWRlaWxuUDlaREx1d1NmdkdNd2wyazNhc01ObW9sUTJpNXJObmtDRWYwaU9HOVVsSks2UmdTQUVNNEtZQko5a3FCVjBRQlB0ZHpKVHdmZW1LUHM1S1RoQldidw?oc=5",
-   "izvor": "BullionVault",
-   "chas": "2026-11-26T15:58:53Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": null
   },
   {
    "zaglavie": "Worried About a Market Crash? 2 Gold Mining Stocks to Buy Before 2026 Ends.",
@@ -560,12 +569,12 @@
   },
   {
    "zaglavie": "Hawkish Fed poised to raise rates despite stock market turmoil",
-   "vryzka": "https://news.google.com/rss/articles/CBMihAFBVV95cUxNREd0RUx1TTJiVHRreUdrdTRYNk5HdVNmMFp4SURfa3c2S1NmalFseWJ5VnZqWkxJZ1gzR1FtZkNjZnJWRzRrU05hNUJCYVhOdGk2RzJRU1NiTVRnYXd4bThxWlhZSmpsMzlGMXZGc0lPaFo3R0FydU5fYkc0Y1c1U0pzSUY?oc=5",
+   "vryzka": "https://www.ft.com/content/3890f725-66dd-4613-8a60-d9e3ea38d25a?syn-25a6b1a6=1",
    "izvor": "Financial Times",
    "chas": "2026-11-26T14:58:45Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Google Fed",
+   "emisiya": "FT пазари",
    "chas_ot_iztochnika": true,
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
@@ -988,19 +997,6 @@
    "bg": "За лихвата на Фед"
   },
   {
-   "zaglavie": "Gold drifts lower as Fed rate-hike fears loom",
-   "vryzka": "https://news.google.com/rss/articles/CBMimAFBVV95cUxOaS01cTRpU3QtN3AzeHN4UHdHdFQ3UTVFUzNqenpXcWdiMUdOU2lpQVh1bk1uWklCRTZSUHpJMExkY2ZPaUh1VVFXMnJFWnB6TVhmNjV4Mm1jbU02X0hBcERnMm8xb204NE5QNTYtbkwwZVM2YUNpNl82NzlUTzRfUVZYelBVRXlRX0FtOUh6U3JYaEpIR2ZMNA?oc=5",
-   "izvor": "Kitco",
-   "chas": "2026-11-26T13:03:19Z",
-   "vazhnost": 3,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": "Златото леко поевтинява на фона на очакванията за по-висока лихва от Фед"
-  },
-  {
    "zaglavie": "Refined Energy Receives Provincial Approval for Golden Goose Drone Magnetic and LiDAR Survey",
    "vryzka": "https://finance.yahoo.com/energy/articles/refined-energy-receives-provincial-approval-130000815.html?.tsrc=rss",
    "izvor": "Yahoo Finance",
@@ -1020,7 +1016,7 @@
    "chas": "2026-11-26T12:50:28Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Google злато",
+   "emisiya": "Google Fed",
    "chas_ot_iztochnika": true,
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
@@ -2528,10 +2524,10 @@
    "chas": "2026-11-24T19:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed политика",
+   "emisiya": "Fed всички",
    "chas_ot_iztochnika": true,
    "duma": "rate",
-   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
+   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
    "bg": "Протокол на Фед за сконтовия процент (лихвата по заемите за банките)"
   },
   {
@@ -2606,10 +2602,10 @@
    "chas": "2026-11-18T19:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed политика",
+   "emisiya": "Fed всички",
    "chas_ot_iztochnika": true,
    "duma": "fed",
-   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
+   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
    "bg": "Протоколът от заседанието на Фед за лихвата (FOMC)"
   },
   {
