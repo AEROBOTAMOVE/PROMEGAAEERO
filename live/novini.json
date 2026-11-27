@@ -1,37 +1,44 @@
 {
- "kogato": "2026-11-27T03:12:32Z",
- "sekundi": 0.55,
+ "kogato": "2026-11-27T03:23:32Z",
+ "sekundi": 8.23,
  "broi": 200,
- "novi_tozi_pyt": 1,
+ "novi_tozi_pyt": 0,
  "iztochnici_ok": [
-  "Fed всички",
   "Fed речи",
   "MarketWatch",
+  "Fed всички",
   "Fed политика",
-  "Yahoo злато",
   "Yahoo долар",
+  "Yahoo злато",
   "Investing",
-  "CNBC",
   "Mining.com",
   "FT пазари",
-  "Google Fed",
-  "Google злато"
+  "CNBC"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google Fed",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  },
+  {
+   "ime": "Google злато",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.28с",
-  "новини · FT пазари · 25 бр. за 0.34с",
-  "новини · Fed всички · 12 бр. за 0.06с",
-  "новини · Fed политика · 15 бр. за 0.13с",
-  "новини · Fed речи · 15 бр. за 0.06с",
-  "новини · Google Fed · 40 бр. за 0.34с",
-  "новини · Google злато · 40 бр. за 0.49с",
-  "новини · Investing · 10 бр. за 0.2с",
-  "новини · MarketWatch · 10 бр. за 0.11с",
-  "новини · Mining.com · 36 бр. за 0.28с",
-  "новини · Yahoo долар · 14 бр. за 0.19с",
-  "новини · Yahoo злато · 19 бр. за 0.18с",
-  "новини · български ред: 106 от 200 · махнати по език: 2"
+  "новини · CNBC · 30 бр. за 0.45с",
+  "новини · FT пазари · 25 бр. за 0.33с",
+  "новини · Fed всички · 12 бр. за 0.05с",
+  "новини · Fed политика · 15 бр. за 0.05с",
+  "новини · Fed речи · 15 бр. за 0.04с",
+  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Investing · 10 бр. за 0.13с",
+  "новини · MarketWatch · 10 бр. за 0.04с",
+  "новини · Mining.com · 36 бр. за 0.17с",
+  "новини · Yahoo долар · 14 бр. за 0.08с",
+  "новини · Yahoo злато · 19 бр. за 0.12с",
+  "новини · български ред: 106 от 200 · махнати по език: 0"
  ],
  "novini": [
   {
@@ -46,19 +53,6 @@
    "duma": "rates",
    "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
    "bg": "Очаквания за по-висока лихва от Фед"
-  },
-  {
-   "zaglavie": "Gold Steadies as Fed Rate Path and AI Stocks Frame Volatile Week",
-   "vryzka": "https://news.google.com/rss/articles/CBMitgFBVV95cUxQdjBId0RKMFpkWFQ3R3VMeVV3T0VOMEI5dzRuWWZaMGNLVFBtRXZoWjJlWHhsdXVqdGNYT2NNc3ctSU9zdXpCR3ZaSXFENDhwQ1BQa1RqV01palJ3LWcxOWFnRXZFRm40NGRTaU9XYU9yOGF2WXAtV0lxOEdDcWZmSUxfYlZfZENjV3JUX0k5YmstSkk3V1ZWVWpkR1VjdDNzdkF6ZGxSNXpOZ1AxZmlGNThJTE0zUQ?oc=5",
-   "izvor": "Bloomberg.com",
-   "chas": "2026-11-27T02:32:00Z",
-   "vazhnost": 3,
-   "za": "злато",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": "Златото е без голяма промяна на фона на очакванията за лихвата на Фед"
   },
   {
    "zaglavie": "Gold (XAU/USD) Price Forecast: Failed Breakout Leaves Bullish Reversal Unconfirmed",
@@ -119,7 +113,7 @@
    "chas": "2026-11-27T01:57:52Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Yahoo злато",
+   "emisiya": "Yahoo долар",
    "chas_ot_iztochnika": true,
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
@@ -332,6 +326,19 @@
    "duma": "gold",
    "zashto": "Пряко за златото.",
    "bg": "Новина от минния бранш (злато)"
+  },
+  {
+   "zaglavie": "Gold Steadies as Fed Rate Path and AI Stocks Frame Volatile Week",
+   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/gold-steadies-fed-rate-path-235335603.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-26T23:53:35Z",
+   "vazhnost": 3,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": "Златото е без голяма промяна на фона на очакванията за лихвата на Фед"
   },
   {
    "zaglavie": "Op-Ed: US midterms won’t change mining policy. They’ll change who gets subpoenaed",
@@ -2636,5 +2643,5 @@
   }
  ],
  "s_bg_red": 106,
- "mahnati_ezik": 2
+ "mahnati_ezik": 0
 }
