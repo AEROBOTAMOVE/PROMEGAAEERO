@@ -1,37 +1,44 @@
 {
- "kogato": "2026-11-27T08:10:41Z",
- "sekundi": 0.56,
+ "kogato": "2026-11-27T08:21:38Z",
+ "sekundi": 7.02,
  "broi": 200,
- "novi_tozi_pyt": 1,
+ "novi_tozi_pyt": 0,
  "iztochnici_ok": [
-  "Fed речи",
-  "Fed всички",
   "MarketWatch",
+  "Fed всички",
   "Fed политика",
-  "Investing",
+  "Fed речи",
   "Mining.com",
+  "Investing",
   "Yahoo долар",
-  "CNBC",
   "Yahoo злато",
-  "FT пазари",
-  "Google Fed",
-  "Google злато"
+  "CNBC",
+  "FT пазари"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google злато",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  },
+  {
+   "ime": "Google Fed",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.24с",
-  "новини · FT пазари · 25 бр. за 0.3с",
-  "новини · Fed всички · 12 бр. за 0.06с",
-  "новини · Fed политика · 15 бр. за 0.06с",
-  "новини · Fed речи · 15 бр. за 0.05с",
-  "новини · Google Fed · 40 бр. за 0.43с",
-  "новини · Google злато · 40 бр. за 0.48с",
-  "новини · Investing · 10 бр. за 0.11с",
-  "новини · MarketWatch · 10 бр. за 0.06с",
-  "новини · Mining.com · 36 бр. за 0.2с",
-  "новини · Yahoo долар · 15 бр. за 0.23с",
-  "новини · Yahoo злато · 19 бр. за 0.26с",
-  "новини · български ред: 117 от 200 · махнати по език: 3"
+  "новини · CNBC · 30 бр. за 0.16с",
+  "новини · FT пазари · 25 бр. за 0.2с",
+  "новини · Fed всички · 12 бр. за 0.04с",
+  "новини · Fed политика · 15 бр. за 0.04с",
+  "новини · Fed речи · 15 бр. за 0.03с",
+  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Investing · 10 бр. за 0.05с",
+  "новини · MarketWatch · 10 бр. за 0.02с",
+  "новини · Mining.com · 36 бр. за 0.04с",
+  "новини · Yahoo долар · 15 бр. за 0.11с",
+  "новини · Yahoo злато · 19 бр. за 0.11с",
+  "новини · български ред: 117 от 200 · махнати по език: 0"
  ],
  "novini": [
   {
@@ -215,19 +222,6 @@
    "duma": "gold",
    "zashto": "Пряко за златото.",
    "bg": "Златото се връща нагоре"
-  },
-  {
-   "zaglavie": "Gold Steadies as Fed Rate Path and AI Stocks Frame Volatile Week",
-   "vryzka": "https://news.google.com/rss/articles/CBMitgFBVV95cUxQdjBId0RKMFpkWFQ3R3VMeVV3T0VOMEI5dzRuWWZaMGNLVFBtRXZoWjJlWHhsdXVqdGNYT2NNc3ctSU9zdXpCR3ZaSXFENDhwQ1BQa1RqV01palJ3LWcxOWFnRXZFRm40NGRTaU9XYU9yOGF2WXAtV0lxOEdDcWZmSUxfYlZfZENjV3JUX0k5YmstSkk3V1ZWVWpkR1VjdDNzdkF6ZGxSNXpOZ1AxZmlGNThJTE0zUQ?oc=5",
-   "izvor": "Bloomberg.com",
-   "chas": "2026-11-27T06:39:00Z",
-   "vazhnost": 3,
-   "za": "злато",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": "Златото е без голяма промяна на фона на очакванията за лихвата на Фед"
   },
   {
    "zaglavie": "Gold, Silver Prices Today: Gold At Rs 1.24 Lakh, Silver Soars 5.1%",
@@ -1320,6 +1314,19 @@
    "duma": "gold",
    "zashto": "Пряко за златото.",
    "bg": "Новина от минния бранш (злато)"
+  },
+  {
+   "zaglavie": "Gold Steadies as Fed Rate Path and AI Stocks Frame Volatile Week",
+   "vryzka": "https://finance.yahoo.com/markets/commodities/articles/gold-steadies-fed-rate-path-235335603.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-26T23:53:35Z",
+   "vazhnost": 3,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": "fed",
+   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
+   "bg": "Златото е без голяма промяна на фона на очакванията за лихвата на Фед"
   },
   {
    "zaglavie": "Op-Ed: US midterms won’t change mining policy. They’ll change who gets subpoenaed",
@@ -2636,5 +2643,5 @@
   }
  ],
  "s_bg_red": 117,
- "mahnati_ezik": 3
+ "mahnati_ezik": 0
 }
