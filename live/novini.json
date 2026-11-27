@@ -1,37 +1,41 @@
 {
- "kogato": "2026-11-27T02:50:57Z",
- "sekundi": 0.45,
+ "kogato": "2026-11-27T03:01:40Z",
+ "sekundi": 0.61,
  "broi": 200,
- "novi_tozi_pyt": 2,
+ "novi_tozi_pyt": 0,
  "iztochnici_ok": [
-  "MarketWatch",
   "Fed политика",
-  "Google злато",
-  "Fed речи",
   "Fed всички",
-  "Yahoo долар",
-  "Investing",
-  "Yahoo злато",
+  "MarketWatch",
+  "Fed речи",
   "Mining.com",
-  "CNBC",
+  "Investing",
+  "Yahoo долар",
+  "Yahoo злато",
   "FT пазари",
+  "CNBC",
   "Google Fed"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google злато",
+   "greshka": "HTTPError: HTTP Error 429: Too Many Requests"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.28с",
-  "новини · FT пазари · 25 бр. за 0.3с",
-  "новини · Fed всички · 12 бр. за 0.05с",
-  "новини · Fed политика · 15 бр. за 0.05с",
-  "новини · Fed речи · 15 бр. за 0.05с",
-  "новини · Google Fed · 40 бр. за 0.37с",
-  "новини · Google злато · 40 бр. за 0.04с",
-  "новини · Investing · 10 бр. за 0.12с",
-  "новини · MarketWatch · 10 бр. за 0.04с",
-  "новини · Mining.com · 36 бр. за 0.17с",
-  "новини · Yahoo долар · 14 бр. за 0.1с",
-  "новини · Yahoo злато · 19 бр. за 0.14с",
-  "новини · български ред: 107 от 200 · махнати по език: 0"
+  "новини · CNBC · 30 бр. за 0.5с",
+  "новини · FT пазари · 25 бр. за 0.34с",
+  "новини · Fed всички · 12 бр. за 0.13с",
+  "новини · Fed политика · 15 бр. за 0.12с",
+  "новини · Fed речи · 15 бр. за 0.13с",
+  "новини · Google Fed · 40 бр. за 0.43с",
+  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 429: Too Many Requests",
+  "новини · Investing · 10 бр. за 0.16с",
+  "новини · MarketWatch · 10 бр. за 0.12с",
+  "новини · Mining.com · 36 бр. за 0.16с",
+  "новини · Yahoo долар · 14 бр. за 0.19с",
+  "новини · Yahoo злато · 19 бр. за 0.21с",
+  "новини · български ред: 107 от 200 · махнати по език: 1"
  ],
  "novini": [
   {
@@ -275,7 +279,7 @@
    "chas": "2026-11-27T00:03:54Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Google злато",
+   "emisiya": "Google Fed",
    "chas_ot_iztochnika": true,
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
@@ -1133,7 +1137,7 @@
    "chas": "2026-11-26T17:02:41Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Google злато",
+   "emisiya": "Google Fed",
    "chas_ot_iztochnika": true,
    "duma": "inflation",
    "zashto": "Инфлацията е основната причина да се държи злато — то пази стойност, когато парите я губят.",
@@ -1289,7 +1293,7 @@
    "chas": "2026-11-26T16:21:03Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Google злато",
+   "emisiya": "Google Fed",
    "chas_ot_iztochnika": true,
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
@@ -2636,5 +2640,5 @@
   }
  ],
  "s_bg_red": 107,
- "mahnati_ezik": 0
+ "mahnati_ezik": 1
 }
