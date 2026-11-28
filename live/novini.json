@@ -1,43 +1,52 @@
 {
- "kogato": "2026-11-28T12:16:45Z",
- "sekundi": 0.87,
+ "kogato": "2026-11-28T12:32:15Z",
+ "sekundi": 1.16,
  "broi": 200,
  "novi_tozi_pyt": 2,
  "iztochnici_ok": [
   "Fed политика",
-  "Fed речи",
   "Investing",
   "MarketWatch",
+  "Fed речи",
+  "Fed всички",
+  "Yahoo долар",
   "Yahoo злато",
   "CNBC",
-  "Yahoo долар",
-  "FT пазари",
   "Google Fed",
   "Google злато",
+  "FT пазари",
   "Mining.com"
  ],
- "iztochnici_padnali": [
-  {
-   "ime": "Fed всички",
-   "greshka": "HTTPError: HTTP Error 404: Not Found"
-  }
- ],
+ "iztochnici_padnali": [],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.22с",
-  "новини · FT пазари · 25 бр. за 0.3с",
-  "новини · Fed всички · ПАДНА: HTTPError: HTTP Error 404: Not Found",
-  "новини · Fed политика · 15 бр. за 0.08с",
-  "новини · Fed речи · 15 бр. за 0.11с",
-  "новини · Google Fed · 40 бр. за 0.33с",
-  "новини · Google злато · 40 бр. за 0.54с",
-  "новини · Investing · 10 бр. за 0.14с",
-  "новини · MarketWatch · 10 бр. за 0.18с",
-  "новини · Mining.com · 36 бр. за 0.83с",
-  "новини · Yahoo долар · 15 бр. за 0.25с",
-  "новини · Yahoo злато · 16 бр. за 0.21с",
-  "новини · български ред: 100 от 200 · махнати по език: 3"
+  "новини · CNBC · 30 бр. за 0.37с",
+  "новини · FT пазари · 25 бр. за 0.56с",
+  "новини · Fed всички · 12 бр. за 0.12с",
+  "новини · Fed политика · 15 бр. за 0.07с",
+  "новини · Fed речи · 15 бр. за 0.1с",
+  "новини · Google Fed · 40 бр. за 0.42с",
+  "новини · Google злато · 40 бр. за 0.48с",
+  "новини · Investing · 10 бр. за 0.08с",
+  "новини · MarketWatch · 10 бр. за 0.09с",
+  "новини · Mining.com · 36 бр. за 1.12с",
+  "новини · Yahoo долар · 15 бр. за 0.24с",
+  "новини · Yahoo злато · 16 бр. за 0.24с",
+  "новини · български ред: 101 от 200 · махнати по език: 3"
  ],
  "novini": [
+  {
+   "zaglavie": "These tech stocks may let you play defense without giving up on AI",
+   "vryzka": "https://www.marketwatch.com/story/these-tech-stocks-may-let-you-play-defense-without-giving-up-on-ai-523ce26d?mod=mw_rss_topstories",
+   "izvor": "MarketWatch",
+   "chas": "2026-11-28T12:30:00Z",
+   "vazhnost": 1,
+   "za": "общо",
+   "emisiya": "MarketWatch",
+   "chas_ot_iztochnika": true,
+   "duma": null,
+   "zashto": null,
+   "bg": null
+  },
   {
    "zaglavie": "Vanguard and Fidelity expect lower returns from US stocks for years to come. Is your 401(k) built for a slower decade?",
    "vryzka": "https://finance.yahoo.com/markets/stocks/articles/vanguard-fidelity-expect-lower-returns-114500964.html?.tsrc=rss",
@@ -58,7 +67,7 @@
    "chas": "2026-11-28T11:39:00Z",
    "vazhnost": 2,
    "za": "злато",
-   "emisiya": "Yahoo злато",
+   "emisiya": "Yahoo долар",
    "chas_ot_iztochnika": true,
    "duma": "dollar",
    "zashto": "Златото се мери в долари: по-силен долар обикновено значи по-евтино злато.",
@@ -78,6 +87,19 @@
    "bg": "Златото и среброто поевтиняват"
   },
   {
+   "zaglavie": "Gold Rate Today in Lalitpur, 28 Nov 2026 - Live 18K, 22K & 24K Gold Prices",
+   "vryzka": "https://news.google.com/rss/articles/CBMickFVX3lxTE5CUWZuU0tRcTNackpsOVJiMlpvenZPNnRRalF5OW5qcUlsdEFXaDNwdkZpR19sRHhyNVZQWFZyY1pNcDduWWd6TGs0c1RFVkpQTmxpT1VUTVNKT0h6cUNDRXQyOHphU2tSeTNLVFAzZUhkQQ?oc=5",
+   "izvor": "Kotak Neo",
+   "chas": "2026-11-28T11:23:56Z",
+   "vazhnost": 3,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "rate",
+   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
+   "bg": "Цената на златото днес"
+  },
+  {
    "zaglavie": "Price of gold in total freefall, $22.5t vanishes",
    "vryzka": "https://news.google.com/rss/articles/CBMi9wFBVV95cUxNRm5rbGxNOVBWZS1FTThGbjNTa0k5RXlwZDFtS1VaSWtCZllUR0g4Um1BZWt4c0dRZW1GZEt2RkNxSkViZjNNcF9EeVBGUTRQUkFzdndJNDlSTzVWR0RfLXdGazlvR0daYVc1Sk82YnYzTkJyS0Q2dzV2aEFwamtuSC1SWlZWemFNWkN4TWRsVnZlcXpBRTFKNlotU2psZmxiYk4za3lTd1cyeFVxeGI2aVlKUmc5SlFYSWhXcEo4TmZMaUlLQ1psRUdnUTdLdjVIU3ZQN2JRejNsT0dPWFdiMWhhMjQwUURVa01JNF9xZHJSejRPb2FB0gH8AUFVX3lxTE1hY3lSWFViR2pTN3NtaE5JM29odVRaMTZCMmVtUDUzV3lwOW0zWXRwSlowY1dvM1NTMXZoRDFoZVQ1eEI0dmtmdkxYVFV0aHhoWG10ajEzeDNfdkZESjdybVp2NUJfejhxSWE4WVRkSkJfejZvcFhqNm5mdnFfQTNRY1B2dzkxbVJUaDlwelpQXzNLRUtnR2ZMSE5TMEVoeDFYVm5LeDg",
    "izvor": "News.com.au",
@@ -95,6 +117,19 @@
    "vryzka": "https://news.google.com/rss/articles/CBMib0FVX3lxTE1TTHFyeU9FRjUtckFJLWlWbi1QTG9YYUVEQVNIaUZvUDNmZUx5TXVVMTk1eUxtdFRuRkdubkVhSVBKem95TThhSzlPS2tzQXo0VjZKbGZET3pBcjdvdFRkQk9jMFdkeFQzdG9rMURadw?oc=5",
    "izvor": "Kotak Neo",
    "chas": "2026-11-28T11:12:42Z",
+   "vazhnost": 3,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "rate",
+   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
+   "bg": "Цената на златото днес"
+  },
+  {
+   "zaglavie": "Gold Rate Today in Ahmedabad (28 Nov 2026)",
+   "vryzka": "https://news.google.com/rss/articles/CBMic0FVX3lxTE5jODVLLTlNWGVRVmdra1hlN1lLRE1YM2dTYnVvY3MzLUc0UzJ6UVg0RHZjWnhNZHMyclBQQ01FWE5UN0NYbkVsVTJ3UUdiYktZcDNPSXh4SjlZRDdNcWNKSXBpLUpYSXJLSVlvc1JvRHpmUGs?oc=5",
+   "izvor": "Kotak Neo",
+   "chas": "2026-11-28T11:10:42Z",
    "vazhnost": 3,
    "za": "злато",
    "emisiya": "Google злато",
@@ -895,19 +930,6 @@
    "duma": "gold",
    "zashto": "Пряко за златото.",
    "bg": null
-  },
-  {
-   "zaglavie": "Gold Rate Today in Lalitpur, 28 Nov 2026 - Live 18K, 22K & 24K Gold Prices",
-   "vryzka": "https://news.google.com/rss/articles/CBMickFVX3lxTE5CUWZuU0tRcTNackpsOVJiMlpvenZPNnRRalF5OW5qcUlsdEFXaDNwdkZpR19sRHhyNVZQWFZyY1pNcDduWWd6TGs0c1RFVkpQTmxpT1VUTVNKT0h6cUNDRXQyOHphU2tSeTNLVFAzZUhkQQ?oc=5",
-   "izvor": "Kotak Neo",
-   "chas": "2026-11-28T00:02:08Z",
-   "vazhnost": 3,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "rate",
-   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
-   "bg": "Цената на златото днес"
   },
   {
    "zaglavie": "I’m in my 70s and buying a new BMW X1. Should I put my only son on the title?",
@@ -2457,32 +2479,6 @@
    "bg": null
   },
   {
-   "zaglavie": "US tech stocks set to jump at open as volatile trading takes hold",
-   "vryzka": "https://www.ft.com/content/b80e6259-dca8-4da3-962d-402106a3cd81?syn-25a6b1a6=1",
-   "izvor": "Financial Times",
-   "chas": "2026-11-27T13:15:41Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "FT пазари",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
-   "zaglavie": "We are living in perilous times if Nvidia CEO Jensen Huang dictates your 401(k) balance",
-   "vryzka": "https://www.marketwatch.com/story/we-are-living-in-perilous-times-if-nvidias-jensen-huang-dictates-your-401-k-balance-e0942d1e?mod=mw_rss_topstories",
-   "izvor": "MarketWatch",
-   "chas": "2026-11-27T13:15:00Z",
-   "vazhnost": 1,
-   "za": "общо",
-   "emisiya": "MarketWatch",
-   "chas_ot_iztochnika": true,
-   "duma": null,
-   "zashto": null,
-   "bg": null
-  },
-  {
    "zaglavie": "Agencies announce dollar thresholds for applicability of truth in lending and consumer leasing rules for consumer credit and lease transactions",
    "vryzka": "https://www.federalreserve.gov/newsevents/pressreleases/bcreg20261125b.htm",
    "izvor": "Fed",
@@ -2639,6 +2635,6 @@
    "bg": "Реч на член на Фед (Waller) за плащанията"
   }
  ],
- "s_bg_red": 100,
+ "s_bg_red": 101,
  "mahnati_ezik": 3
 }
