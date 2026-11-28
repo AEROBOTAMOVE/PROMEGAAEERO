@@ -1,37 +1,41 @@
 {
- "kogato": "2026-11-28T02:21:01Z",
- "sekundi": 0.95,
+ "kogato": "2026-11-28T02:32:02Z",
+ "sekundi": 1.99,
  "broi": 200,
- "novi_tozi_pyt": 1,
+ "novi_tozi_pyt": 0,
  "iztochnici_ok": [
   "Fed речи",
-  "Fed всички",
   "MarketWatch",
-  "Fed политика",
   "Yahoo долар",
-  "Yahoo злато",
   "Investing",
+  "Yahoo злато",
+  "Fed всички",
+  "Fed политика",
   "CNBC",
   "FT пазари",
-  "Google Fed",
   "Google злато",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google Fed",
+   "greshka": "HTTPError: HTTP Error 429: Too Many Requests"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.3с",
+  "новини · CNBC · 30 бр. за 0.24с",
   "новини · FT пазари · 25 бр. за 0.35с",
-  "новини · Fed всички · 12 бр. за 0.07с",
-  "новини · Fed политика · 15 бр. за 0.13с",
-  "новини · Fed речи · 15 бр. за 0.06с",
-  "новини · Google Fed · 40 бр. за 0.33с",
-  "новини · Google злато · 40 бр. за 0.42с",
-  "новини · Investing · 10 бр. за 0.18с",
-  "новини · MarketWatch · 10 бр. за 0.09с",
-  "новини · Mining.com · 36 бр. за 0.89с",
-  "новини · Yahoo долар · 15 бр. за 0.14с",
-  "новини · Yahoo злато · 17 бр. за 0.15с",
-  "новини · български ред: 89 от 200 · махнати по език: 1"
+  "новини · Fed всички · 12 бр. за 0.14с",
+  "новини · Fed политика · 15 бр. за 0.14с",
+  "новини · Fed речи · 15 бр. за 0.08с",
+  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 429: Too Many Requests",
+  "новини · Google злато · 40 бр. за 0.43с",
+  "новини · Investing · 10 бр. за 0.11с",
+  "новини · MarketWatch · 10 бр. за 0.08с",
+  "новини · Mining.com · 36 бр. за 1.94с",
+  "новини · Yahoo долар · 15 бр. за 0.12с",
+  "новини · Yahoo злато · 17 бр. за 0.13с",
+  "новини · български ред: 89 от 200 · махнати по език: 0"
  ],
  "novini": [
   {
@@ -46,6 +50,19 @@
    "duma": "gold",
    "zashto": "Пряко за златото.",
    "bg": "Анализ и прогноза за златото"
+  },
+  {
+   "zaglavie": "Price of gold in total freefall, $22.5t vanishes",
+   "vryzka": "https://news.google.com/rss/articles/CBMi9wFBVV95cUxNRm5rbGxNOVBWZS1FTThGbjNTa0k5RXlwZDFtS1VaSWtCZllUR0g4Um1BZWt4c0dRZW1GZEt2RkNxSkViZjNNcF9EeVBGUTRQUkFzdndJNDlSTzVWR0RfLXdGazlvR0daYVc1Sk82YnYzTkJyS0Q2dzV2aEFwamtuSC1SWlZWemFNWkN4TWRsVnZlcXpBRTFKNlotU2psZmxiYk4za3lTd1cyeFVxeGI2aVlKUmc5SlFYSWhXcEo4TmZMaUlLQ1psRUdnUTdLdjVIU3ZQN2JRejNsT0dPWFdiMWhhMjQwUURVa01JNF9xZHJSejRPb2FB0gH8AUFVX3lxTE1hY3lSWFViR2pTN3NtaE5JM29odVRaMTZCMmVtUDUzV3lwOW0zWXRwSlowY1dvM1NTMXZoRDFoZVQ1eEI0dmtmdkxYVFV0aHhoWG10ajEzeDNfdkZESjdybVp2NUJfejhxSWE4WVRkSkJfejZvcFhqNm5mdnFfQTNRY1B2dzkxbVJUaDlwelpQXzNLRUtnR2ZMSE5TMEVoeDFYVm5LeDg",
+   "izvor": "News.com.au",
+   "chas": "2026-11-28T02:16:35Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Google злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
+   "bg": null
   },
   {
    "zaglavie": "Fed Rate Hike Odds Rise To Almost 100%: Can AI Selloff Force A Rethink? - TalkMarkets",
@@ -106,7 +123,7 @@
    "chas": "2026-11-28T00:17:00Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Google Fed",
+   "emisiya": "Google злато",
    "chas_ot_iztochnika": true,
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
@@ -188,19 +205,6 @@
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null,
-   "bg": null
-  },
-  {
-   "zaglavie": "Price of gold in total freefall, $22.5t vanishes",
-   "vryzka": "https://news.google.com/rss/articles/CBMi9wFBVV95cUxNRm5rbGxNOVBWZS1FTThGbjNTa0k5RXlwZDFtS1VaSWtCZllUR0g4Um1BZWt4c0dRZW1GZEt2RkNxSkViZjNNcF9EeVBGUTRQUkFzdndJNDlSTzVWR0RfLXdGazlvR0daYVc1Sk82YnYzTkJyS0Q2dzV2aEFwamtuSC1SWlZWemFNWkN4TWRsVnZlcXpBRTFKNlotU2psZmxiYk4za3lTd1cyeFVxeGI2aVlKUmc5SlFYSWhXcEo4TmZMaUlLQ1psRUdnUTdLdjVIU3ZQN2JRejNsT0dPWFdiMWhhMjQwUURVa01JNF9xZHJSejRPb2FB0gH8AUFVX3lxTE1hY3lSWFViR2pTN3NtaE5JM29odVRaMTZCMmVtUDUzV3lwOW0zWXRwSlowY1dvM1NTMXZoRDFoZVQ1eEI0dmtmdkxYVFV0aHhoWG10ajEzeDNfdkZESjdybVp2NUJfejhxSWE4WVRkSkJfejZvcFhqNm5mdnFfQTNRY1B2dzkxbVJUaDlwelpQXzNLRUtnR2ZMSE5TMEVoeDFYVm5LeDg",
-   "izvor": "News.com.au",
-   "chas": "2026-11-27T23:20:04Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Google злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
    "bg": null
   },
   {
@@ -574,7 +578,7 @@
    "chas": "2026-11-27T19:21:40Z",
    "vazhnost": 3,
    "za": "злато",
-   "emisiya": "Google Fed",
+   "emisiya": "Google злато",
    "chas_ot_iztochnika": true,
    "duma": "fed",
    "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
@@ -2636,5 +2640,5 @@
   }
  ],
  "s_bg_red": 89,
- "mahnati_ezik": 1
+ "mahnati_ezik": 0
 }
