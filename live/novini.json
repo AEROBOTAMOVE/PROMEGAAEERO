@@ -1,37 +1,41 @@
 {
- "kogato": "2026-11-28T17:35:34Z",
- "sekundi": 0.79,
+ "kogato": "2026-11-28T17:51:02Z",
+ "sekundi": 0.8,
  "broi": 200,
  "novi_tozi_pyt": 1,
  "iztochnici_ok": [
-  "Fed всички",
-  "Fed речи",
-  "MarketWatch",
   "Fed политика",
+  "Fed всички",
   "Investing",
-  "CNBC",
-  "Yahoo долар",
+  "MarketWatch",
   "Yahoo злато",
+  "Yahoo долар",
+  "Fed речи",
   "FT пазари",
+  "CNBC",
   "Google Fed",
-  "Google злато",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google злато",
+   "greshka": "HTTPError: HTTP Error 429: Too Many Requests"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.18с",
-  "новини · FT пазари · 25 бр. за 0.24с",
-  "новини · Fed всички · 12 бр. за 0.07с",
-  "новини · Fed политика · 15 бр. за 0.07с",
-  "новини · Fed речи · 15 бр. за 0.06с",
-  "новини · Google Fed · 40 бр. за 0.34с",
-  "новини · Google злато · 40 бр. за 0.44с",
-  "новини · Investing · 10 бр. за 0.11с",
-  "новини · MarketWatch · 10 бр. за 0.06с",
-  "новини · Mining.com · 36 бр. за 0.73с",
-  "новини · Yahoo долар · 16 бр. за 0.2с",
-  "новини · Yahoo злато · 16 бр. за 0.21с",
-  "новини · български ред: 112 от 200 · махнати по език: 3"
+  "новини · CNBC · 30 бр. за 0.34с",
+  "новини · FT пазари · 25 бр. за 0.34с",
+  "новини · Fed всички · 12 бр. за 0.11с",
+  "новини · Fed политика · 15 бр. за 0.1с",
+  "новини · Fed речи · 15 бр. за 0.25с",
+  "новини · Google Fed · 40 бр. за 0.46с",
+  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 429: Too Many Requests",
+  "новини · Investing · 10 бр. за 0.13с",
+  "новини · MarketWatch · 10 бр. за 0.16с",
+  "новини · Mining.com · 36 бр. за 0.74с",
+  "новини · Yahoo долар · 16 бр. за 0.25с",
+  "новини · Yahoo злато · 16 бр. за 0.23с",
+  "новини · български ред: 113 от 200 · махнати по език: 0"
  ],
  "novini": [
   {
@@ -600,7 +604,7 @@
    "chas": "2026-11-28T11:39:00Z",
    "vazhnost": 2,
    "za": "злато",
-   "emisiya": "Yahoo долар",
+   "emisiya": "Yahoo злато",
    "chas_ot_iztochnika": true,
    "duma": "dollar",
    "zashto": "Златото се мери в долари: по-силен долар обикновено значи по-евтино злато.",
@@ -1712,6 +1716,19 @@
    "bg": null
   },
   {
+   "zaglavie": "Volatile US market confronts jobs data, rate view as next tests | Gulf Times",
+   "vryzka": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxNZHdhd2EzUUVXNXNtdFFMUGdmdGJhLUs3dTF1TFpQREltUFNKMmxSYzdGQmZ3eUxBVE9udFh0OWpyYjZobkVKZWxucnVzcEFDQngwUUFNTENsYWt6T0wwZTV1enMzU3dLLXlvSlA4OVY4aXdFX3A2eERTazhRelA1ZlY0TldtYXpYQTZJZ3lhNXVpam9nMmZCS1F6Z2NWTmUyVThfSmFCMFM1VHNlSkdPNXR1cDZicDlR0gG4AUFVX3lxTE1kd2F3YTNRRVc1c210UUxQZ2Z0YmEtSzd1MXVMWlBESW1QU0oybFJjN0ZCZnd5TEFUT250WHQ5anJiNmhuRUplbG5ydXNwQUNCeDBRQU1MQ2xha3pPTDBlNXV6czNTd0steW9KUDg5Vjhpd0VfcDZ4RFNrOFF6UDVmVjROV21helhBNklneWE1dWlqb2cyZkJLUXpnY1ZOZTJVOF9KYUIwUzVUc2VKR081dHVwNmJwOVE?oc=5",
+   "izvor": "Gulf Times",
+   "chas": "2026-11-27T21:00:00Z",
+   "vazhnost": 3,
+   "za": "лихви",
+   "emisiya": "Google Fed",
+   "chas_ot_iztochnika": true,
+   "duma": "rate",
+   "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
+   "bg": "Данни за заетостта в САЩ"
+  },
+  {
    "zaglavie": "Entrée, Mongolia target March 31 for Oyu Tolgoi deal",
    "vryzka": "https://www.mining.com/entree-mongolia-target-march-31-for-oyu-tolgoi-deal/",
    "izvor": "Mining.com",
@@ -2466,19 +2483,6 @@
    "bg": "Златото и движението на долара"
   },
   {
-   "zaglavie": "Kinross Gold (KGC) Down 14.7% Since Last Earnings Report: Can It Rebound?",
-   "vryzka": "https://finance.yahoo.com/markets/stocks/articles/kinross-gold-kgc-down-14-153016058.html?.tsrc=rss",
-   "izvor": "Yahoo Finance",
-   "chas": "2026-11-27T15:30:16Z",
-   "vazhnost": 2,
-   "za": "злато",
-   "emisiya": "Yahoo злато",
-   "chas_ot_iztochnika": true,
-   "duma": "gold",
-   "zashto": "Пряко за златото.",
-   "bg": null
-  },
-  {
    "zaglavie": "Agencies announce dollar thresholds for applicability of truth in lending and consumer leasing rules for consumer credit and lease transactions",
    "vryzka": "https://www.federalreserve.gov/newsevents/pressreleases/bcreg20261125b.htm",
    "izvor": "Fed",
@@ -2524,10 +2528,10 @@
    "chas": "2026-11-24T19:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed всички",
+   "emisiya": "Fed политика",
    "chas_ot_iztochnika": true,
    "duma": "rate",
-   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
+   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
    "bg": "Протокол на Фед за сконтовия процент (лихвата по заемите за банките)"
   },
   {
@@ -2602,10 +2606,10 @@
    "chas": "2026-11-18T19:00:00Z",
    "vazhnost": 3,
    "za": "лихви",
-   "emisiya": "Fed всички",
+   "emisiya": "Fed политика",
    "chas_ot_iztochnika": true,
    "duma": "fed",
-   "zashto": "Съобщение на Фед — лихвите и парите в САЩ стигат до златото.",
+   "zashto": "Решение или изявление на Фед за паричната политика — най-силният лост върху златото.",
    "bg": "Протоколът от заседанието на Фед за лихвата (FOMC)"
   },
   {
@@ -2635,6 +2639,6 @@
    "bg": "Реч на член на Фед (Waller) за плащанията"
   }
  ],
- "s_bg_red": 112,
- "mahnati_ezik": 3
+ "s_bg_red": 113,
+ "mahnati_ezik": 0
 }
