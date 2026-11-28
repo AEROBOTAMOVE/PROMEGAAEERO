@@ -1,37 +1,44 @@
 {
- "kogato": "2026-11-28T18:28:30Z",
- "sekundi": 0.89,
+ "kogato": "2026-11-28T18:44:13Z",
+ "sekundi": 9.55,
  "broi": 200,
  "novi_tozi_pyt": 1,
  "iztochnici_ok": [
+  "MarketWatch",
   "Fed всички",
   "Fed политика",
-  "MarketWatch",
-  "Investing",
   "Fed речи",
-  "Yahoo долар",
-  "Yahoo злато",
+  "Investing",
   "CNBC",
+  "Yahoo злато",
+  "Yahoo долар",
   "FT пазари",
-  "Google злато",
-  "Google Fed",
   "Mining.com"
  ],
- "iztochnici_padnali": [],
+ "iztochnici_padnali": [
+  {
+   "ime": "Google Fed",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  },
+  {
+   "ime": "Google злато",
+   "greshka": "HTTPError: HTTP Error 503: Service Unavailable"
+  }
+ ],
  "belezhki": [
-  "новини · CNBC · 30 бр. за 0.24с",
-  "новини · FT пазари · 25 бр. за 0.31с",
-  "новини · Fed всички · 12 бр. за 0.07с",
-  "новини · Fed политика · 15 бр. за 0.12с",
-  "новини · Fed речи · 15 бр. за 0.14с",
-  "новини · Google Fed · 40 бр. за 0.43с",
-  "новини · Google злато · 40 бр. за 0.46с",
-  "новини · Investing · 10 бр. за 0.13с",
-  "новини · MarketWatch · 10 бр. за 0.13с",
-  "новини · Mining.com · 36 бр. за 0.85с",
-  "новини · Yahoo долар · 16 бр. за 0.22с",
-  "новини · Yahoo злато · 16 бр. за 0.22с",
-  "новини · български ред: 114 от 200 · махнати по език: 1"
+  "новини · CNBC · 30 бр. за 0.09с",
+  "новини · FT пазари · 25 бр. за 0.22с",
+  "новини · Fed всички · 12 бр. за 0.03с",
+  "новини · Fed политика · 15 бр. за 0.03с",
+  "новини · Fed речи · 15 бр. за 0.05с",
+  "новини · Google Fed · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Google злато · ПАДНА: HTTPError: HTTP Error 503: Service Unavailable",
+  "новини · Investing · 10 бр. за 0.09с",
+  "новини · MarketWatch · 10 бр. за 0.02с",
+  "новини · Mining.com · 36 бр. за 0.66с",
+  "новини · Yahoo долар · 16 бр. за 0.11с",
+  "новини · Yahoo злато · 16 бр. за 0.11с",
+  "новини · български ред: 113 от 200 · махнати по език: 0"
  ],
  "novini": [
   {
@@ -58,6 +65,19 @@
    "chas_ot_iztochnika": true,
    "duma": null,
    "zashto": null,
+   "bg": null
+  },
+  {
+   "zaglavie": "Kinross Gold (TSX:K) Stock Looks Undervalued Even After A 312% Run",
+   "vryzka": "https://finance.yahoo.com/markets/stocks/articles/kinross-gold-tsx-k-stock-180739252.html?.tsrc=rss",
+   "izvor": "Yahoo Finance",
+   "chas": "2026-11-28T18:07:39Z",
+   "vazhnost": 2,
+   "za": "злато",
+   "emisiya": "Yahoo злато",
+   "chas_ot_iztochnika": true,
+   "duma": "gold",
+   "zashto": "Пряко за златото.",
    "bg": null
   },
   {
@@ -678,7 +698,7 @@
    "chas": "2026-11-28T11:39:00Z",
    "vazhnost": 2,
    "za": "злато",
-   "emisiya": "Yahoo долар",
+   "emisiya": "Yahoo злато",
    "chas_ot_iztochnika": true,
    "duma": "dollar",
    "zashto": "Златото се мери в долари: по-силен долар обикновено значи по-евтино злато.",
@@ -1606,19 +1626,6 @@
    "duma": "rate",
    "zashto": "Лихвите са прекият съперник на златото: то не носи доход и поевтинява, когато другаде плащат повече.",
    "bg": null
-  },
-  {
-   "zaglavie": "Gold Rebounds for the Week, but Fed Rate Hike Fears Keep Bears in Control",
-   "vryzka": "https://news.google.com/rss/articles/CBMitwFBVV95cUxOWjlHeF9OSExxalJNQ09fckYzMHBhel9Yb1pYdjBuU3pHbHB6bE1hR2ZPUnl5WEZsM2xlMi1RM0lnMm5NeDRQbk1FMDVJRXIxNVZfeGFtNnNDZ2I0Z0M3QlBTVkt3b0VlU3lFRHBwbWU0NkFxTTNMWldUOHVKbFhPdERpWUtQRDJULVZ5VExZUE9oWVNsdER1YThfWWRBNzZDaElRSTYtb0QtbExWUTlKTmhXT01YWVU?oc=5",
-   "izvor": "Investing.com India",
-   "chas": "2026-11-27T22:37:08Z",
-   "vazhnost": 3,
-   "za": "злато",
-   "emisiya": "Google Fed",
-   "chas_ot_iztochnika": true,
-   "duma": "fed",
-   "zashto": "Fed решава каква да е лихвата в САЩ. По-евтини пари обикновено вдигат златото.",
-   "bg": "Златото се връща нагоре на фона на очакванията за по-висока лихва от Фед"
   },
   {
    "zaglavie": "President Trump floats 10 percent credit card interest rate cap",
@@ -2635,6 +2642,6 @@
    "bg": "Реч на член на Фед (Waller) за плащанията"
   }
  ],
- "s_bg_red": 114,
- "mahnati_ezik": 1
+ "s_bg_red": 113,
+ "mahnati_ezik": 0
 }
